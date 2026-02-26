@@ -332,7 +332,7 @@ Duration: ~50s
 
 ### Sistema custom (sin i18next)
 
-- **~1595 claves** por idioma (EN/ES)
+- **~1605 claves** por idioma (EN/ES)
 - Hook `useTranslation()` con interpolacion
 - Cambio instantaneo via Zustand
 - Paridad perfecta verificada
@@ -431,7 +431,7 @@ const { t } = useTranslation();
 </div>
 
 <div class="p-4 bg-amber-500/10 rounded-lg text-center">
-  <div class="text-4xl font-bold text-amber-400">~1595</div>
+  <div class="text-4xl font-bold text-amber-400">~1605</div>
   <div>Claves i18n (x2)</div>
 </div>
 
@@ -467,7 +467,7 @@ const { t } = useTranslation();
 5. **Seguridad enterprise** — SAST, CSP, rate limiting
 6. **UX avanzada** — PWA, Cmd+K, MagicInput
 7. **IA opcional** — 4 proveedores, BYOK, fallback
-8. **i18n completo** — ~1595 claves EN/ES
+8. **i18n completo** — ~1605 claves EN/ES
 
 </div>
 <div>
