@@ -68,6 +68,7 @@ export default function ToolsPage() {
             <Button
               key={cat.value}
               size="sm"
+              aria-pressed={category === cat.value}
               variant={category === cat.value ? "primary" : "ghost"}
               onPress={() => setCategory(cat.value)}
               className="rounded-full"

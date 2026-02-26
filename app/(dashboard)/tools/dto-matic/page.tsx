@@ -172,6 +172,7 @@ export default function DtoMaticPage() {
                     <Button
                       key={opt.val}
                       size="sm"
+                      aria-pressed={config.targetLanguage === opt.val}
                       variant={config.targetLanguage === opt.val ? "primary" : "ghost"}
                       onPress={() => updateConfig("targetLanguage", opt.val as TargetLanguage)}
                       aria-label={opt.label}
@@ -194,6 +195,7 @@ export default function DtoMaticPage() {
                     <Button
                       key={opt.val}
                       size="sm"
+                      aria-pressed={config.mode === opt.val}
                       variant={config.mode === opt.val ? "primary" : "ghost"}
                       onPress={() => setMode(opt.val)}
                       aria-label={opt.label}
@@ -362,6 +364,7 @@ export default function DtoMaticPage() {
                           return (
                             <Button
                               key={file.id}
+                              aria-pressed={isActive}
                               variant={isActive ? "primary" : "ghost"}
                               onPress={() => setSelectedFileId(file.id)}
                               className={cn(

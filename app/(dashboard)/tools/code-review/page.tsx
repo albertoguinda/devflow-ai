@@ -366,6 +366,7 @@ export default function CodeReviewPage() {
                         <Button
                           key={filter.key}
                           size="sm"
+                          aria-pressed={isActive}
                           variant={isActive ? "primary" : "ghost"}
                           onPress={() => setSeverityFilter(filter.key)}
                           className="text-xs font-bold"

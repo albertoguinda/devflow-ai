@@ -325,10 +325,11 @@ export default function JsonFormatterPage() {
                 <div className="p-4 border-b border-divider flex justify-between items-center bg-muted/20">
                   <div className="flex gap-1">
                     {["format", "minify", "to-yaml", "to-xml", "to-csv"].map((m) => (
-                      <Button 
-                        key={m} 
-                        size="sm" 
-                        variant={mode === m ? "primary" : "ghost"} 
+                      <Button
+                        key={m}
+                        size="sm"
+                        aria-pressed={mode === m}
+                        variant={mode === m ? "primary" : "ghost"}
                         onPress={() => { setMode(m as JsonFormatMode); process(); }}
                         className="h-8 px-3 text-[10px] font-black uppercase tracking-tighter"
                       >

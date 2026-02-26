@@ -132,6 +132,7 @@ export default function UuidGeneratorPage() {
                       {VERSIONS.map((v) => (
                         <Button
                           key={v.id}
+                          aria-pressed={config.version === v.id}
                           variant={config.version === v.id ? "primary" : "ghost"}
                           onPress={() => updateConfig("version", v.id)}
                           className={cn(
