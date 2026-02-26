@@ -167,6 +167,8 @@ export default function HttpStatusFinderPage() {
                 <Button
                   key={cat}
                   size="sm"
+                  aria-pressed={categoryFilter === cat}
+                  aria-label={t("httpStatus.filterCategory", { category: cat })}
                   variant={categoryFilter === cat ? "primary" : "ghost"}
                   onPress={() => setCategoryFilter(categoryFilter === cat ? null : cat as HttpStatusCategory)}
                   className="text-[10px] font-black uppercase"

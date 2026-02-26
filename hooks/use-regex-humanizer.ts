@@ -5,6 +5,7 @@ import type { RegexAnalysis, TestResult } from "@/types/regex-humanizer";
 import { explainRegex, generateRegex, testRegex } from "@/lib/application/regex-humanizer";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToolHistory } from "@/hooks/use-tool-history";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface HistoryItem {
   id: string;
@@ -30,6 +31,7 @@ interface UseRegexHumanizerReturn {
 }
 
 export function useRegexHumanizer(): UseRegexHumanizerReturn {
+  const { t } = useTranslation();
   const locale = useLocaleStore((s) => s.locale);
   const [pattern, setPattern] = useState("");
   const [explanation, setExplanation] = useState<RegexAnalysis | null>(null);
@@ -54,11 +56,11 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
         timestamp: new Date().toISOString(),
       });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Explanation failed");
+      setError(e instanceof Error ? e.message : t("regex.explanationFailed"));
     } finally {
       setIsExplaining(false);
     }
-  }, [locale, addItemToHistory]);
+  }, [locale, addItemToHistory, t]);
 
   const generate = useCallback(async (description: string) => {
     if (!description.trim()) return;
@@ -71,11 +73,11 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
       const explanationResult = explainRegex(regex, "javascript", locale);
       setExplanation(explanationResult);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Generation failed");
+      setError(e instanceof Error ? e.message : t("regex.generationFailed"));
     } finally {
       setIsGenerating(false);
     }
-  }, [locale]);
+  }, [locale, t]);
 
   const test = useCallback(async (regexPattern: string, text: string) => {
     setError(null);
@@ -83,9 +85,9 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
       const result = testRegex(regexPattern, text, locale);
       setTestResult(result);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Test failed");
+      setError(e instanceof Error ? e.message : t("regex.testFailed"));
     }
-  }, [locale]);
+  }, [locale, t]);
 
   const reset = useCallback(() => {
     setPattern("");

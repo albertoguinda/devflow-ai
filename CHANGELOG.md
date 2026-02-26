@@ -5,6 +5,35 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.11.0] - 2026-02-26
+
+### Accessibility & i18n Polish
+
+Final polish pass: ARIA toggle button semantics, i18n gap closure, UX audit across all 15 tools, and documentation updates.
+
+#### Accessibility (WCAG AAA)
+- **Token Visualizer** — Added `aria-pressed` to 3 model selector buttons for screen reader state announcement
+- **Variable Name Wizard** — Added `aria-pressed` to 5 language selector buttons and 5 batch target convention buttons
+- **HTTP Status Finder** — Added `aria-pressed` + individual `aria-label` (i18n) to 5 category filter buttons
+- **UX Audit** — Verified all 15 tools: error states (`role="alert"`), empty states (meaningful placeholders), and loading states (spinner + disabled) all passing
+
+#### i18n
+- **Regex Humanizer hook** — Replaced 3 hardcoded English error fallbacks with `t()` calls (`regex.explanationFailed`, `regex.generationFailed`, `regex.testFailed`)
+- **Git Commit Generator hook** — Replaced hardcoded `"Breaking change detected in diff"` with `t("gitCommit.breakingDetected")`
+- **5 new i18n keys** added to both locales: `httpStatus.filterCategory`, `regex.explanationFailed`, `regex.generationFailed`, `regex.testFailed`, `gitCommit.breakingDetected`
+- **1600 keys** per locale (was ~1595), perfect EN/ES parity
+
+#### Documentation
+- **SECURITY.md** — Updated supported versions to include 4.x
+- **docs/DEPLOYMENT.md** — Updated health check version example to 4.11.0
+- **TODO.md** — Reorganized with completed items and updated pending tasks
+- **package.json** — Bumped version to 4.11.0
+
+#### Stats
+- **1416 unit tests passing** (45 files), **20 E2E specs**
+- **0 TypeScript errors**, **0 lint errors**, **0 lint warnings**
+- **1600 i18n keys** per locale (was ~1595)
+
 ## [4.10.0] - 2026-02-25
 
 ### Deep Audit & Hardening Sprint

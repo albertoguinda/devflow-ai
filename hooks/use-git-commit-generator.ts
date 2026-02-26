@@ -20,10 +20,12 @@ import {
 import { useToolHistory } from "@/hooks/use-tool-history";
 import { useMemo } from "react";
 import { useLocaleStore } from "@/lib/stores/locale-store";
+import { useTranslation } from "@/hooks/use-translation";
 
 export type HistoryItem = CommitResult;
 
 export function useGitCommitGenerator() {
+  const { t } = useTranslation();
   const locale = useLocaleStore((s) => s.locale);
   const [config, setConfig] = useState<CommitConfig>(DEFAULT_COMMIT_CONFIG);
   const [result, setResult] = useState<CommitResult | null>(null);
@@ -79,9 +81,9 @@ export function useGitCommitGenerator() {
       ...prev,
       type: analysis.suggestedType,
       scope: analysis.suggestedScope,
-      breakingChange: analysis.isBreaking ? "Breaking change detected in diff" : "",
+      breakingChange: analysis.isBreaking ? t("gitCommit.breakingDetected") : "",
     }));
-  }, [diffInput]);
+  }, [diffInput, t]);
 
   const loadExample = useCallback((type: CommitType) => {
     const example = EXAMPLE_COMMITS[type];

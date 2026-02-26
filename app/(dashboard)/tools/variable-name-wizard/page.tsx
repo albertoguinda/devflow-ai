@@ -200,6 +200,7 @@ export default function VariableNameWizardPage() {
                   {LANGUAGES.map(lang => (
                     <Button
                       key={lang.id}
+                      aria-pressed={config.language === lang.id}
                       variant={config.language === lang.id ? "primary" : "ghost"}
                       onPress={() => updateConfig("language", lang.id as WizardConfig["language"])}
                       aria-label={lang.label}
@@ -466,6 +467,7 @@ export default function VariableNameWizardPage() {
                       <Button
                         key={c}
                         size="sm"
+                        aria-pressed={batchTarget === c}
                         variant={batchTarget === c ? "primary" : "ghost"}
                         onPress={() => setBatchTarget(c)}
                         className={cn(

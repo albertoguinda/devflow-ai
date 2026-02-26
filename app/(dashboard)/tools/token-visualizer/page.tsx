@@ -134,6 +134,7 @@ export default function TokenVisualizerPage() {
                     <Button
                       key={p.id}
                       size="sm"
+                      aria-pressed={provider === p.id}
                       variant={provider === p.id ? "primary" : "ghost"}
                       onPress={() => setProvider(p.id as TokenizerProvider)}
                       aria-label={p.label}
