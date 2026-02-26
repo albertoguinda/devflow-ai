@@ -24,7 +24,7 @@ DevFlow AI es una plataforma open-source que centraliza **15 herramientas** esen
 - 20 E2E specs con Playwright (15 tools + settings + navigation + accessibility WCAG AAA)
 - Lighthouse score **100/100/100/100** en Desktop
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
-- Internacionalizacion completa (English/Castellano, **~1595 claves** por idioma)
+- Internacionalizacion completa (English/Castellano, **~1605 claves** por idioma)
 - **35 rutas** generadas (pages + API routes)
 - **8 CI jobs**: quality, security, dependency-review, build, e2e, CodeQL SAST, Semgrep SAST, Lighthouse
 - Command Palette (`Cmd+K`) para acceso rapido a cualquier herramienta
@@ -62,7 +62,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 - Lograr coverage estrategico 100/80/0 con enforcement per-file
 - Deploy en produccion con CI/CD completo (10 jobs: quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse)
 - Lighthouse score 100 en todas las metricas (Desktop)
-- Internacionalizacion completa (EN/ES, ~1595 claves por idioma)
+- Internacionalizacion completa (EN/ES, ~1605 claves por idioma)
 - Seguridad enterprise: CSP, HSTS, prototype pollution, SAST (CodeQL + Semgrep), harden-runner, eslint-plugin-security
 
 #### Objetivos de Producto
@@ -195,7 +195,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 
 **RF-18: Internacionalizacion**
 
-- ~1595 claves traducidas en English y Castellano
+- ~1605 claves traducidas en English y Castellano
 - Cambio de idioma en tiempo real sin recarga
 
 ### 3.2 Requisitos No Funcionales
@@ -404,7 +404,7 @@ page.tsx (Server Component - async)
 
 **Sistema custom ligero** (sin dependencia de i18next):
 
-- ~1595 claves de traduccion en `locales/en.json` y `locales/es.json`
+- ~1605 claves de traduccion en `locales/en.json` y `locales/es.json`
 - Hook `useTranslation()` con interpolacion `{key}`
 - Funcion server-side `t()` para Server Components
 - Cambio de idioma instantaneo via Zustand
@@ -556,7 +556,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 │  Job 1: QUALITY (paralelo)                                            │
 │  ├─ npm run lint              (ESLint 9 + eslint-plugin-security)     │
 │  ├─ npm run type-check        (tsc --noEmit strict)                   │
-│  ├─ npm run test:coverage     (1419 tests + umbrales per-file)        │
+│  ├─ npm run test:coverage     (1416 tests + umbrales per-file)        │
 │  └─ PR coverage comments      (artifacts 14 dias)                     │
 │                                                                        │
 │  Job 2: SECURITY (paralelo)                                           │
@@ -621,7 +621,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | Componentes React          | 25+                |
 | Custom hooks               | 22+                |
 | Paginas (routes)           | 35                 |
-| Claves i18n                | ~1595 (x2 idiomas) |
+| Claves i18n                | ~1605 (x2 idiomas) |
 | Jobs CI/CD                 | 10                 |
 | Commits                    | 150+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
@@ -652,7 +652,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 - Skeletons de carga ✓
 - TypeScript strict mode ✓
 - Dark/Light mode con deteccion automatica ✓
-- i18n completo (EN/ES, ~1595 claves por idioma) ✓
+- i18n completo (EN/ES, ~1605 claves por idioma) ✓
 - Tests unitarios (1416 passing, 45 archivos) ✓
 - Tests E2E con Playwright (20 specs, 15 tools + a11y) ✓
 - CI/CD pipeline (10 jobs) ✓
@@ -689,7 +689,7 @@ Sprint autonomo de 8 tareas para la entrega del TFM:
 5. **API Cost Calculator:** Indicador "cached prices" cuando los datos live no estan disponibles. Modelos Claude 4.x (Opus 4.6, Sonnet 4.6, Haiku 4.5) anadidos
 6. **PWA & offline:** Verificado manifest.ts, service worker, install prompt. Build 35 rutas, 0 warnings
 7. **UX polish:** Timestamps relativos (`formatRelativeTime`) en historial, localizados EN/ES. Metadata SEO verificada en las 15 herramientas
-8. **i18n completeness:** 1595 claves en ambos idiomas, paridad perfecta. 0 strings hardcodeadas
+8. **i18n completeness:** 1605 claves en ambos idiomas, paridad perfecta. 0 strings hardcodeadas
 
 ---
 

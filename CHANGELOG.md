@@ -7,21 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.11.0] - 2026-02-26
 
-### Accessibility & i18n Polish
+### Accessibility, i18n & Security Polish
 
-Final polish pass: ARIA toggle button semantics, i18n gap closure, UX audit across all 15 tools, and documentation updates.
+Final polish pass: ARIA toggle button semantics across all tools, i18n gap closure, security patch, UX audit across all 15 tools, and documentation updates.
 
 #### Accessibility (WCAG AAA)
 - **Token Visualizer** — Added `aria-pressed` to 3 model selector buttons for screen reader state announcement
 - **Variable Name Wizard** — Added `aria-pressed` to 5 language selector buttons and 5 batch target convention buttons
 - **HTTP Status Finder** — Added `aria-pressed` + individual `aria-label` (i18n) to 5 category filter buttons
+- **Base64** — Added `aria-pressed` to encode/decode toggle and standard/URL-safe variant toggle (4 buttons)
+- **Tools Index** — Added `aria-pressed` to category filter buttons
+- **UUID Generator** — Added `aria-pressed` to version selector buttons
+- **JSON Formatter** — Added `aria-pressed` to format mode buttons
+- **Code Review** — Added `aria-pressed` to severity filter buttons
+- **DTO-Matic** — Added `aria-pressed` to target language, output mode, and file selector buttons
 - **UX Audit** — Verified all 15 tools: error states (`role="alert"`), empty states (meaningful placeholders), and loading states (spinner + disabled) all passing
 
 #### i18n
 - **Regex Humanizer hook** — Replaced 3 hardcoded English error fallbacks with `t()` calls (`regex.explanationFailed`, `regex.generationFailed`, `regex.testFailed`)
 - **Git Commit Generator hook** — Replaced hardcoded `"Breaking change detected in diff"` with `t("gitCommit.breakingDetected")`
-- **5 new i18n keys** added to both locales: `httpStatus.filterCategory`, `regex.explanationFailed`, `regex.generationFailed`, `regex.testFailed`, `gitCommit.breakingDetected`
-- **1600 keys** per locale (was ~1595), perfect EN/ES parity
+- **DTO-Matic hook** — Replaced hardcoded `"Mock generation failed"` with `t("dtoMatic.mockGenerationFailed")`
+- **Variable Name Wizard hook** — Replaced hardcoded `"Conversion failed"` and `"Generation failed"` with `t()` calls
+- **Cron Builder** — Replaced hardcoded `placeholder="*"` and `title` template literal with i18n keys (`cron.fieldPlaceholder`, `cron.validRange`)
+- **10 new i18n keys** added to both locales — **1605 keys** per locale (was ~1595), perfect EN/ES parity
+
+#### Security
+- **Rollup** — Patched path traversal vulnerability (GHSA-mw96-cpmx-2vgc) via `npm audit fix`
 
 #### Documentation
 - **SECURITY.md** — Updated supported versions to include 4.x
@@ -32,7 +43,8 @@ Final polish pass: ARIA toggle button semantics, i18n gap closure, UX audit acro
 #### Stats
 - **1416 unit tests passing** (45 files), **20 E2E specs**
 - **0 TypeScript errors**, **0 lint errors**, **0 lint warnings**
-- **1600 i18n keys** per locale (was ~1595)
+- **0 npm vulnerabilities**
+- **1605 i18n keys** per locale (was ~1595)
 
 ## [4.10.0] - 2026-02-25
 
