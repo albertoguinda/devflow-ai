@@ -227,6 +227,7 @@ export default function GitCommitGeneratorPage() {
                   onChange={(e) => updateConfig("body", e.target.value)}
                   className="font-mono text-xs"
                   rows={4}
+                  aria-label={t("gitCommit.bodyPlaceholder")}
                 />
               </div>
 
