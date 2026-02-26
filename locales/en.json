@@ -1265,6 +1265,8 @@
   "uuid.exportedAs": "Exported as {format}",
   "cron.expressionBuilder": "Expression Builder",
   "cron.infrastructureTab": "Infrastructure",
+  "cron.fieldPlaceholder": "*",
+  "cron.validRange": "Valid range: {range}",
   "cron.minuteLabel": "Minute",
   "cron.hourLabel": "Hour",
   "cron.dayLabel": "Day",

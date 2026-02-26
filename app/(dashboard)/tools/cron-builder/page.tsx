@@ -315,10 +315,10 @@ export default function CronBuilderPage() {
                             }
                           }}
                           className="flex-1 font-mono font-bold"
-                          placeholder="*"
+                          placeholder={t("cron.fieldPlaceholder")}
                           aria-label={f.label}
                         />
-                        <span className="text-[10px] opacity-30 font-mono w-10" title={`Valid range: ${f.range}`}>{f.range}</span>
+                        <span className="text-[10px] opacity-30 font-mono w-10" title={t("cron.validRange", { range: f.range })}>{f.range}</span>
                       </div>
                     ))}
                   </div>
