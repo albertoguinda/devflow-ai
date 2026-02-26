@@ -69,7 +69,6 @@ const nextConfig: NextConfig = {
       "@heroui/styles",
       "gsap",
       "zod",
-      "react-hook-form",
       "recharts",
       "js-tiktoken",
     ],

@@ -532,15 +532,15 @@ Build:         OK (35 rutas generadas)
 | Icons          | Lucide React          | 0.563+       | 500+ iconos, tree-shakeable                |
 | Animations     | GSAP + Framer Motion  | 3.14 + 12.30 | Professional-grade                         |
 | State          | Zustand               | 5.0          | Lightweight, localStorage persist          |
-| Forms          | React Hook Form + Zod | 7.71 + 4.3   | Performant validation                      |
+| Validation     | Zod                   | 4.3          | Schema validation for API inputs           |
 | Testing        | Vitest                | 4.0          | Fast, compatible con Testing Library       |
 | Linting        | ESLint                | 9.x          | Flat config                                |
 | Error Tracking | Sentry                | 10.38        | Client + Server + Edge                     |
 | CI/CD          | GitHub Actions        | -            | 10 jobs (quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse) |
 | Hosting        | Vercel                | -            | Edge Network, ISR, preview URLs            |
 
-**Total dependencias produccion:** 18 (minimalista)
-**Total dependencias desarrollo:** 15
+**Total dependencias produccion:** 21 (minimalista)
+**Total dependencias desarrollo:** 19
 
 ---
 

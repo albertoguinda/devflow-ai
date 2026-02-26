@@ -185,7 +185,7 @@ Path aliases: `@/*` maps to project root (e.g., `@/lib/application/json-formatte
 - **Tailwind CSS v4** (CSS-first config, no `tailwind.config.js`)
 - **Lucide React** for all icons
 - **Animations**: GSAP (scroll/complex) + Framer Motion (layout/transitions)
-- **Forms**: react-hook-form + @hookform/resolvers + zod for validation
+- **Forms**: Zod for validation
 - **Tokenization**: js-tiktoken for client-side token counting
 - Dark/light mode via `next-themes` with `attribute="class"`
 
@@ -193,7 +193,7 @@ Path aliases: `@/*` maps to project root (e.g., `@/lib/application/json-formatte
 
 - `reactCompiler: true` — stable React Compiler
 - `experimental.viewTransition: true` — View Transitions API
-- `experimental.optimizePackageImports` for lucide-react, framer-motion, @heroui/react, @heroui/styles, gsap, zod, react-hook-form, recharts, js-tiktoken
+- `experimental.optimizePackageImports` for lucide-react, framer-motion, @heroui/react, @heroui/styles, gsap, zod, recharts, js-tiktoken
 - Security headers on all routes; **CSP skipped in dev** (`NODE_ENV === 'production'` only) for Turbopack compatibility
 - `compiler.removeConsole` strips `console.*` in production except `info`, `error`, `warn` (easter egg uses `console.info`)
 - `images.formats: ["image/avif", "image/webp"]`
