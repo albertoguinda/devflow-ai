@@ -34,9 +34,14 @@ Final polish pass: ARIA toggle button semantics across all tools, i18n gap closu
 #### Security
 - **Rollup** — Patched path traversal vulnerability (GHSA-mw96-cpmx-2vgc) via `npm audit fix`
 
+#### Removed
+- **`react-hook-form`** and **`@hookform/resolvers`** — unused dependencies (never imported in source code). Zod handles all validation.
+
 #### Documentation
 - **SECURITY.md** — Updated supported versions to include 4.x
 - **docs/DEPLOYMENT.md** — Updated health check version example to 4.11.0
+- **docs/TFM.md** — Updated i18n keys, CI job count, dependency counts, stack table
+- **slides/presentation.md** — Updated i18n key counts
 - **TODO.md** — Reorganized with completed items and updated pending tasks
 - **package.json** — Bumped version to 4.11.0
 
@@ -45,6 +50,7 @@ Final polish pass: ARIA toggle button semantics across all tools, i18n gap closu
 - **0 TypeScript errors**, **0 lint errors**, **0 lint warnings**
 - **0 npm vulnerabilities**
 - **1605 i18n keys** per locale (was ~1595)
+- **21 production dependencies** (was 23, removed 2 unused)
 
 ## [4.10.0] - 2026-02-25
 

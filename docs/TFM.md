@@ -26,7 +26,7 @@ DevFlow AI es una plataforma open-source que centraliza **15 herramientas** esen
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
 - Internacionalizacion completa (English/Castellano, **~1605 claves** por idioma)
 - **35 rutas** generadas (pages + API routes)
-- **8 CI jobs**: quality, security, dependency-review, build, e2e, CodeQL SAST, Semgrep SAST, Lighthouse
+- **10 CI jobs**: quality, security, dependency-review, build, e2e, a11y, CodeQL SAST, Semgrep SAST, Lighthouse, release
 - Command Palette (`Cmd+K`) para acceso rapido a cualquier herramienta
 - Export/Import de configuracion
 - Deploy en produccion con CI/CD y error tracking (Sentry)
@@ -625,7 +625,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | Jobs CI/CD                 | 10                 |
 | Commits                    | 150+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
-| Dependencias produccion    | 18                 |
+| Dependencias produccion    | 21                 |
 
 ### 8.2 Lighthouse Scores (Desktop)
 
