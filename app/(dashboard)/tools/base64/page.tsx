@@ -123,8 +123,8 @@ export default function Base64Page() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex bg-muted p-1 rounded-xl">
-                <Button size="sm" variant={mode === "encode" ? "primary" : "ghost"} onPress={() => setMode("encode")} className="font-bold h-8">{t("base64.encodeBtn")}</Button>
-                <Button size="sm" variant={mode === "decode" ? "primary" : "ghost"} onPress={() => setMode("decode")} className="font-bold h-8">{t("base64.decodeBtn")}</Button>
+                <Button size="sm" aria-pressed={mode === "encode"} variant={mode === "encode" ? "primary" : "ghost"} onPress={() => setMode("encode")} className="font-bold h-8">{t("base64.encodeBtn")}</Button>
+                <Button size="sm" aria-pressed={mode === "decode"} variant={mode === "decode" ? "primary" : "ghost"} onPress={() => setMode("decode")} className="font-bold h-8">{t("base64.decodeBtn")}</Button>
               </div>
               <div className="flex gap-1">
                 <Button size="sm" variant="ghost" onPress={() => {
@@ -172,8 +172,8 @@ export default function Base64Page() {
                 <Settings2 className="size-3" /> {t("base64.configTitle")}
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <Button size="sm" variant={config.variant === "standard" ? "primary" : "ghost"} onPress={() => updateConfig("variant", "standard")} className="font-bold">{t("base64.standardBtn")}</Button>
-                <Button size="sm" variant={config.variant === "url-safe" ? "primary" : "ghost"} onPress={() => updateConfig("variant", "url-safe")} className="font-bold">{t("base64.urlSafeBtn")}</Button>
+                <Button size="sm" aria-pressed={config.variant === "standard"} variant={config.variant === "standard" ? "primary" : "ghost"} onPress={() => updateConfig("variant", "standard")} className="font-bold">{t("base64.standardBtn")}</Button>
+                <Button size="sm" aria-pressed={config.variant === "url-safe"} variant={config.variant === "url-safe" ? "primary" : "ghost"} onPress={() => updateConfig("variant", "url-safe")} className="font-bold">{t("base64.urlSafeBtn")}</Button>
               </div>
             </div>
 

@@ -114,9 +114,9 @@ export function useDtoMatic() {
       const mock = generateMockData(parsed.fields, count);
       setMockData(JSON.stringify(mock, null, 2));
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Mock generation failed");
+      setError(e instanceof Error ? e.message : t("dtoMatic.mockGenerationFailed"));
     }
-  }, [jsonInput]);
+  }, [jsonInput, t]);
 
   const formatInput = useCallback(() => {
     if (isValidJson(jsonInput)) {

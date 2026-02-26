@@ -9,6 +9,7 @@ import type {
 import { DEFAULT_WIZARD_CONFIG } from "@/types/variable-name-wizard";
 import { convertToAll, generateSuggestions } from "@/lib/application/variable-name-wizard";
 import { useLocaleStore } from "@/lib/stores/locale-store";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface UseVariableNameWizardReturn {
   input: string;
@@ -41,6 +42,7 @@ function loadConfig(): WizardConfig {
 }
 
 export function useVariableNameWizard(): UseVariableNameWizardReturn {
+  const { t } = useTranslation();
   const locale = useLocaleStore((s) => s.locale);
   const [input, setInput] = useState("");
   const [mode, setMode] = useState<"convert" | "generate">("generate");
@@ -64,11 +66,11 @@ export function useVariableNameWizard(): UseVariableNameWizardReturn {
       const result = convertToAll(input);
       setConversionResult(result);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Conversion failed");
+      setError(e instanceof Error ? e.message : t("varName.conversionFailed"));
     } finally {
       setIsProcessing(false);
     }
-  }, [input]);
+  }, [input, t]);
 
   const generate = useCallback(async () => {
     if (!input.trim()) return;
@@ -78,11 +80,11 @@ export function useVariableNameWizard(): UseVariableNameWizardReturn {
       const result = generateSuggestions(input, config.type, config, locale);
       setGenerationResult(result);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Generation failed");
+      setError(e instanceof Error ? e.message : t("varName.generationFailed"));
     } finally {
       setIsProcessing(false);
     }
-  }, [input, config, locale]);
+  }, [input, config, locale, t]);
 
   const updateConfig = useCallback(<K extends keyof WizardConfig>(key: K, value: WizardConfig[K]) => {
     setConfig((prev) => ({ ...prev, [key]: value }));
