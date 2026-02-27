@@ -24,6 +24,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useHttpStatusFinder } from "@/hooks/use-http-status-finder";
+import { generateCodeSnippets } from "@/lib/application/http-status-finder";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";
@@ -314,22 +315,21 @@ export default function HttpStatusFinderPage() {
                   <Terminal className="size-5 text-primary" />
                   {t("httpStatus.codeImpl")}
                 </h3>
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {selectedCode.snippets ? Object.entries(selectedCode.snippets).map(([lang, code]) => (
-                    <div key={lang} className="space-y-2 group">
-                      <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-black uppercase text-muted-foreground tracking-tighter group-hover:text-primary transition-colors">{lang}</span>
-                        <CopyButton text={code} size="sm" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="grid gap-6 sm:grid-cols-2">
+                  {(() => {
+                    const snippets = selectedCode.snippets ?? generateCodeSnippets(selectedCode.code);
+                    return Object.entries(snippets).map(([lang, code]) => (
+                      <div key={lang} className="space-y-2 group">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[10px] font-black uppercase text-muted-foreground tracking-tighter group-hover:text-primary transition-colors">{lang}</span>
+                          <CopyButton text={code} size="sm" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        <pre className="p-4 bg-muted/30 rounded-2xl font-mono text-[10px] border border-divider overflow-x-auto h-40 scrollbar-hide">
+                          <code>{code}</code>
+                        </pre>
                       </div>
-                      <pre className="p-4 bg-muted/30 rounded-2xl font-mono text-[10px] border border-divider overflow-x-auto h-32 scrollbar-hide">
-                        <code>{code}</code>
-                      </pre>
-                    </div>
-                  )) : (
-                    <div className="col-span-full p-10 bg-muted/10 border-2 border-dashed border-divider rounded-3xl text-center">
-                      <p className="text-sm italic opacity-40">{t("httpStatus.genericResponse")}</p>
-                    </div>
-                  )}
+                    ));
+                  })()}
                 </div>
               </Card>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import type { RegexAnalysis, TestResult } from "@/types/regex-humanizer";
+import type { RegexAnalysis, TestResult, RegexFlavor } from "@/types/regex-humanizer";
 import { explainRegex, generateRegex, testRegex } from "@/lib/application/regex-humanizer";
 // Re-export for pages (dependency flow: Page → Hook → lib/application)
 export { getCommonPatterns } from "@/lib/application/regex-humanizer";
@@ -18,6 +18,7 @@ interface HistoryItem {
 
 interface UseRegexHumanizerReturn {
   pattern: string;
+  flavor: RegexFlavor;
   explanation: RegexAnalysis | null;
   testResult: TestResult | null;
   isExplaining: boolean;
@@ -25,6 +26,7 @@ interface UseRegexHumanizerReturn {
   error: string | null;
   history: HistoryItem[];
   setPattern: (pattern: string) => void;
+  setFlavor: (flavor: RegexFlavor) => void;
   explain: (pattern: string) => Promise<void>;
   generate: (description: string) => Promise<void>;
   test: (pattern: string, text: string) => Promise<void>;
@@ -36,6 +38,7 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
   const { t } = useTranslation();
   const locale = useLocaleStore((s) => s.locale);
   const [pattern, setPattern] = useState("");
+  const [flavor, setFlavor] = useState<RegexFlavor>("javascript");
   const [explanation, setExplanation] = useState<RegexAnalysis | null>(null);
   const [testResult, setTestResult] = useState<TestResult | null>(null);
   const [isExplaining, setIsExplaining] = useState(false);
@@ -49,7 +52,7 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
     setIsExplaining(true);
     setError(null);
     try {
-      const result = explainRegex(patternInput, "javascript", locale);
+      const result = explainRegex(patternInput, flavor, locale);
       setExplanation(result);
       addItemToHistory({
         id: crypto.randomUUID(),
@@ -62,7 +65,7 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
     } finally {
       setIsExplaining(false);
     }
-  }, [locale, addItemToHistory, t]);
+  }, [locale, flavor, addItemToHistory, t]);
 
   const generate = useCallback(async (description: string) => {
     if (!description.trim()) return;
@@ -72,14 +75,14 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
       const regex = generateRegex(description, locale);
       setPattern(regex);
       // Auto-explain generated regex
-      const explanationResult = explainRegex(regex, "javascript", locale);
+      const explanationResult = explainRegex(regex, flavor, locale);
       setExplanation(explanationResult);
     } catch (e) {
       setError(e instanceof Error ? e.message : t("regex.generationFailed"));
     } finally {
       setIsGenerating(false);
     }
-  }, [locale, t]);
+  }, [locale, flavor, t]);
 
   const test = useCallback(async (regexPattern: string, text: string) => {
     setError(null);
@@ -100,6 +103,7 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
 
   return {
     pattern,
+    flavor,
     explanation,
     testResult,
     isExplaining,
@@ -107,6 +111,7 @@ export function useRegexHumanizer(): UseRegexHumanizerReturn {
     error,
     history,
     setPattern,
+    setFlavor,
     explain,
     generate,
     test,

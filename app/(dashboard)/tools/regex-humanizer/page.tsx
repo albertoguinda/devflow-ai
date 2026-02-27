@@ -29,7 +29,7 @@ import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
-import type { RegexGroup } from "@/types/regex-humanizer";
+import type { RegexGroup, RegexFlavor } from "@/types/regex-humanizer";
 
 export default function RegexHumanizerPage() {
   const { t } = useTranslation();
@@ -37,11 +37,13 @@ export default function RegexHumanizerPage() {
   const commonPatterns = useMemo(() => getCommonPatterns(locale), [locale]);
   const {
     pattern,
+    flavor,
     explanation,
     testResult,
     isExplaining,
     error: regexError,
     setPattern,
+    setFlavor,
     explain,
     generate,
     test,
@@ -167,6 +169,23 @@ export default function RegexHumanizerPage() {
                       <AlertTriangle className="size-3" /> {t("regex.invalidSyntax")}
                     </p>
                   )}
+                </div>
+                <div className="space-y-1.5">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{t("regex.flavorLabel")}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {(["javascript", "python", "go", "pcre", "rust"] as RegexFlavor[]).map((f) => (
+                      <Button
+                        key={f}
+                        size="sm"
+                        aria-pressed={flavor === f}
+                        variant={flavor === f ? "primary" : "ghost"}
+                        onPress={() => setFlavor(f)}
+                        className="px-2.5 text-[10px] font-bold capitalize"
+                      >
+                        {f === "pcre" ? "PCRE" : f}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
                 <div className="space-y-1.5">
                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{t("regex.presets")}</p>

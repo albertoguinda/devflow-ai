@@ -6,6 +6,7 @@ import {
   processBase64,
   getByteView,
   detectContent,
+  batchProcess,
 } from "@/lib/application/base64";
 import { DEFAULT_BASE64_CONFIG } from "@/types/base64";
 
@@ -327,6 +328,48 @@ describe("Base64 Encoder/Decoder", () => {
       const result = getByteView("Hello", false);
       expect(result.error).toBeUndefined();
       expect(result.decimal.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("batchProcess", () => {
+    it("should encode multiple lines", () => {
+      const results = batchProcess(["Hello", "World"], "encode");
+      expect(results).toHaveLength(2);
+      expect(results[0]!.status).toBe("success");
+      expect(results[0]!.output).toBe("SGVsbG8=");
+      expect(results[1]!.status).toBe("success");
+      expect(results[1]!.output).toBe("V29ybGQ=");
+    });
+
+    it("should decode multiple lines", () => {
+      const results = batchProcess(["SGVsbG8=", "V29ybGQ="], "decode");
+      expect(results).toHaveLength(2);
+      expect(results[0]!.output).toBe("Hello");
+      expect(results[1]!.output).toBe("World");
+    });
+
+    it("should skip empty lines", () => {
+      const results = batchProcess(["Hello", "", "  ", "World"], "encode");
+      expect(results).toHaveLength(2);
+    });
+
+    it("should handle errors gracefully per line", () => {
+      // Invalid base64 mixed with valid
+      const results = batchProcess(["SGVsbG8=", "!!!invalid!!!"], "decode");
+      expect(results).toHaveLength(2);
+      expect(results[0]!.status).toBe("success");
+      expect(results[1]!.status).toBe("error");
+      expect(results[1]!.error).toBeDefined();
+    });
+
+    it("should return empty array for empty input", () => {
+      const results = batchProcess([], "encode");
+      expect(results).toHaveLength(0);
+    });
+
+    it("should preserve original input in each result", () => {
+      const results = batchProcess(["test"], "encode");
+      expect(results[0]!.input).toBe("test");
     });
   });
 });

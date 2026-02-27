@@ -1123,4 +1123,67 @@ describe("DTO-Matic", () => {
       expect(entityFile!.content).toContain("Date");
     });
   });
+
+  describe("SQL DDL generation", () => {
+    const sqlConfig = {
+      ...DEFAULT_CONFIG,
+      targetLanguage: "sql" as const,
+      sqlDialect: "postgresql" as const,
+    };
+
+    it("should generate PostgreSQL DDL with CREATE TABLE", () => {
+      const result = generateCode('{"name": "Alice", "age": 25}', sqlConfig);
+      expect(result.files.length).toBeGreaterThanOrEqual(1);
+      const ddlFile = result.files.find((f) => f.type === "ddl");
+      expect(ddlFile).toBeDefined();
+      expect(ddlFile!.content).toContain("CREATE TABLE");
+      expect(ddlFile!.content).toContain("SERIAL");
+      expect(ddlFile!.language).toBe("sql");
+    });
+
+    it("should use INTEGER for number fields", () => {
+      const result = generateCode('{"count": 42}', sqlConfig);
+      const ddl = result.files.find((f) => f.type === "ddl")!;
+      expect(ddl.content).toContain("INTEGER");
+    });
+
+    it("should use VARCHAR for string fields", () => {
+      const result = generateCode('{"name": "test"}', sqlConfig);
+      const ddl = result.files.find((f) => f.type === "ddl")!;
+      expect(ddl.content).toContain("VARCHAR");
+    });
+
+    it("should use BOOLEAN for boolean fields", () => {
+      const result = generateCode('{"active": true}', sqlConfig);
+      const ddl = result.files.find((f) => f.type === "ddl")!;
+      expect(ddl.content).toContain("BOOLEAN");
+    });
+
+    it("should generate MySQL DDL with AUTO_INCREMENT", () => {
+      const mysqlConfig = { ...sqlConfig, sqlDialect: "mysql" as const };
+      const result = generateCode('{"name": "test"}', mysqlConfig);
+      const ddl = result.files.find((f) => f.type === "ddl")!;
+      expect(ddl.content).toContain("AUTO_INCREMENT");
+      expect(ddl.content).not.toContain("SERIAL");
+    });
+
+    it("should generate .sql file extension", () => {
+      const result = generateCode('{"id": 1}', sqlConfig);
+      const ddl = result.files.find((f) => f.type === "ddl")!;
+      expect(ddl.name).toMatch(/\.sql$/);
+    });
+
+    it("should handle nested objects with foreign key references", () => {
+      const json = '{"name": "test", "address": {"street": "Main St", "city": "NY"}}';
+      const result = generateCode(json, sqlConfig);
+      const ddl = result.files.find((f) => f.type === "ddl")!;
+      expect(ddl.content).toContain("REFERENCES");
+    });
+
+    it("should add NOT NULL for required fields", () => {
+      const result = generateCode('{"name": "test"}', sqlConfig);
+      const ddl = result.files.find((f) => f.type === "ddl")!;
+      expect(ddl.content).toContain("NOT NULL");
+    });
+  });
 });

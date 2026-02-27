@@ -1,11 +1,39 @@
-# TODO — DevFlow AI v4.12.0 (Security Hardening & Architecture Audit)
+# TODO — DevFlow AI v4.13.0 (15-Tool Feature Iteration)
 
 > Last updated: 2026-02-27
-> Context: Comprehensive security audit, critical bug fixes, Clean Architecture enforcement, and zero tech debt sprint. 53 files changed.
+> Context: Feature improvements across all 15 tools benchmarked against best-in-class alternatives. 1446 tests, 45 files.
 
 ---
 
 ## Completed in This Session (2026-02-27)
+
+### 15-Tool Feature Iteration
+- [x] JSON Formatter — Syntax highlighting (color-coded tokens, dark/light)
+- [x] Base64 — Batch multi-line processing (encode/decode N lines)
+- [x] UUID Generator — v3 (MD5) and v5 (SHA-1) namespace UUIDs (deterministic)
+- [x] Regex Humanizer — Flavor selector (JS/Python/Go/PCRE/Rust) + 10 compatibility warnings
+- [x] HTTP Status Finder — Code snippet generator (curl/fetch/axios/python)
+- [x] Variable Name Wizard — Abbreviation expand/contract UI
+- [x] Cron Builder — Parse existing cron expression into fields
+- [x] Tailwind Sorter — Side-by-side dark/light mode preview
+- [x] DTO-Matic — SQL DDL generation (PostgreSQL/MySQL)
+- [x] Git Commit Generator — Smart scope suggestion chips
+- [x] Code Review — Side-by-side diff view (original vs refactored)
+- [x] Prompt Analyzer — Interactive radar tooltips with coaching tips
+- [x] Token Visualizer — Inline cost estimation chip
+- [x] Cost Calculator — Feature matrix filter (Vision, JSON Mode, etc.)
+- [x] Context Manager — Full-text search across documents
+
+### Tests
+- [x] +30 new tests: batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL (8)
+- [x] 1446 total tests passing (45 test files)
+
+### i18n
+- [x] +45 keys in EN and ES (full parity)
+
+---
+
+## Completed in Previous Session (2026-02-27) — v4.12.0
 
 ### Security Hardening (HIGH)
 - [x] BYOK bypass — min 20-char key + blocked pollinations as BYOK provider

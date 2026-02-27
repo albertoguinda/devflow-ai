@@ -14,7 +14,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 88.7,
     updatedAt: "2026-02-15",
-    category: "general"
+    category: "general",
+    features: ["vision", "json_mode", "function_calling", "streaming"]
   },
   {
     id: "gpt-4o-mini",
@@ -28,7 +29,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 82.0,
     updatedAt: "2026-02-15",
-    category: "lightweight"
+    category: "lightweight",
+    features: ["vision", "json_mode", "function_calling", "streaming"]
   },
   {
     id: "o1",
@@ -42,7 +44,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 92.3,
     updatedAt: "2026-02-15",
-    category: "reasoning"
+    category: "reasoning",
+    features: ["json_mode", "streaming"]
   },
 
   // Anthropic
@@ -58,7 +61,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 95.2,
     updatedAt: "2026-02-22",
-    category: "general"
+    category: "general",
+    features: ["vision", "json_mode", "function_calling", "streaming"]
   },
   {
     id: "claude-sonnet-4-6",
@@ -72,7 +76,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 92.1,
     updatedAt: "2026-02-22",
-    category: "general"
+    category: "general",
+    features: ["vision", "json_mode", "function_calling", "streaming"]
   },
   {
     id: "claude-haiku-4-5",
@@ -86,7 +91,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 82.0,
     updatedAt: "2026-02-22",
-    category: "lightweight"
+    category: "lightweight",
+    features: ["vision", "json_mode", "function_calling", "streaming"]
   },
 
   // DeepSeek (High Value)
@@ -102,7 +108,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 88.5,
     updatedAt: "2026-02-15",
-    category: "general"
+    category: "general",
+    features: ["json_mode", "function_calling", "streaming"]
   },
   {
     id: "deepseek-r1",
@@ -116,7 +123,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 90.8,
     updatedAt: "2026-02-15",
-    category: "reasoning"
+    category: "reasoning",
+    features: ["json_mode", "streaming"]
   },
 
   // Groq (Performance/Speed)
@@ -132,7 +140,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 86.0,
     updatedAt: "2026-02-15",
-    category: "general"
+    category: "general",
+    features: ["json_mode", "function_calling", "streaming"]
   },
 
   // Google
@@ -148,7 +157,8 @@ export const AI_MODELS: AIModel[] = [
     isPopular: true,
     benchmarkScore: 82.5,
     updatedAt: "2026-02-15",
-    category: "lightweight"
+    category: "lightweight",
+    features: ["vision", "json_mode", "function_calling", "streaming"]
   }
 ];
 

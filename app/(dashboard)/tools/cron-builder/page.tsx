@@ -98,8 +98,20 @@ export default function CronBuilderPage() {
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const { addToast } = useToast();
   const [naturalLanguageInput, setNaturalLanguageInput] = useState("");
+  const [pasteInput, setPasteInput] = useState("");
 
   const [activeTab, setActiveTab] = useState<"builder" | "infra" | string>("builder");
+
+  const handleParseCron = useCallback(() => {
+    try {
+      const parsed = parseExpression(pasteInput.trim());
+      setExpression(parsed);
+      setPasteInput("");
+      addToast(t("cron.parsedSuccess"), "success");
+    } catch {
+      addToast(t("cron.parseError"), "error");
+    }
+  }, [pasteInput, setExpression, addToast, t]);
 
   const applyCronFromAI = useCallback((cronString: string) => {
     try {
@@ -293,6 +305,32 @@ export default function CronBuilderPage() {
                       </ul>
                     </div>
                   )}
+
+                  <div className="flex gap-2">
+                    <Input
+                      variant="primary"
+                      value={pasteInput}
+                      onChange={(e) => setPasteInput(e.target.value)}
+                      onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          if (pasteInput.trim()) handleParseCron();
+                        }
+                      }}
+                      placeholder={t("cron.parsePlaceholder")}
+                      className="flex-1 font-mono"
+                      aria-label={t("cron.parsePlaceholder")}
+                    />
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      isDisabled={!pasteInput.trim()}
+                      onPress={handleParseCron}
+                      className="font-bold shrink-0"
+                    >
+                      <Play className="size-3.5 mr-1" /> {t("cron.parseBtn")}
+                    </Button>
+                  </div>
 
                   <div className="space-y-4">
                     {[

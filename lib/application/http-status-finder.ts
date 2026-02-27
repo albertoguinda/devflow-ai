@@ -452,6 +452,42 @@ export function getCategoryInfo(category: HttpStatusCategory, locale: Locale = "
 }
 
 /**
+ * Generate code snippets for handling any HTTP status code.
+ * Returns curl, fetch, axios, and python request examples.
+ */
+export function generateCodeSnippets(code: number): Record<string, string> {
+  const isSuccess = code >= 200 && code < 300;
+  const isRedirect = code >= 300 && code < 400;
+  const isClientError = code >= 400 && code < 500;
+
+  return {
+    curl: `curl -s -o /dev/null -w "%{http_code}" https://api.example.com/resource\n# Expected: ${code}${isRedirect ? "\n# Add -L to follow redirects" : ""}`,
+
+    fetch: `const response = await fetch("https://api.example.com/resource");
+
+if (response.status === ${code}) {
+  ${isSuccess ? "const data = await response.json();\n  console.log(data);" : isClientError ? `console.error("${code} error:", response.statusText);` : isRedirect ? `const redirectUrl = response.headers.get("Location");` : `throw new Error(\`Server error: \${response.status}\`);`}
+}`,
+
+    axios: `try {
+  const { data, status } = await axios.get("/api/resource"${isRedirect ? ", { maxRedirects: 0 }" : ""});
+  ${isSuccess ? "console.log(data);" : `if (status === ${code}) { /* handle ${code} */ }`}
+} catch (error) {
+  if (axios.isAxiosError(error) && error.response?.status === ${code}) {
+    ${isClientError ? `console.error("${code}:", error.response.data);` : `console.error("Server error ${code}");`}
+  }
+}`,
+
+    python: `import requests
+
+response = requests.get("https://api.example.com/resource"${isRedirect ? ", allow_redirects=False" : ""})
+
+if response.status_code == ${code}:
+    ${isSuccess ? "data = response.json()\n    print(data)" : isClientError ? `print(f"Error ${code}: {response.text}")` : isRedirect ? 'redirect_url = response.headers.get("Location")' : `raise Exception(f"Server error: {response.status_code}")`}`,
+  };
+}
+
+/**
  * Process a search query (number or keyword)
  */
 export function processSearch(query: string, category?: HttpStatusCategory, locale: Locale = "en"): SearchResult {

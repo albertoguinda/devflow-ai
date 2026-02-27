@@ -5,6 +5,37 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.13.0] - 2026-02-27
+
+### 15-Tool Feature Iteration
+
+Feature improvements across all 15 tools, benchmarked against best-in-class alternatives (regex101, crontab.guru, quicktype.io, JSON Crack). All improvements are local-first (no AI required), zero new dependencies, WCAG AAA compliant, fully i18n'd.
+
+#### Added
+- **JSON Formatter** — Syntax highlighting with color-coded tokens (keys, strings, numbers, booleans, null, brackets) for both light/dark mode
+- **Base64** — Batch multi-line processing: encode/decode N lines at once with per-line status (success/error)
+- **UUID Generator** — Namespace UUIDs v3 (MD5) and v5 (SHA-1): deterministic generation from namespace + name, 4 RFC 4122 namespace presets + custom
+- **Regex Humanizer** — Flavor selector (JavaScript, Python, Go, PCRE, Rust) with 10 cross-flavor compatibility warnings
+- **HTTP Status Finder** — Code snippet generator: auto-generated curl, fetch, axios, and Python snippets for any status code
+- **Variable Name Wizard** — Abbreviation UI: expand/contract abbreviations with real-time preview (exposes existing lib functions)
+- **Cron Builder** — Parse existing expression: paste a cron string to auto-populate the 5 field editors
+- **Tailwind Sorter** — Dark mode preview: side-by-side Light/Dark sandbox rendering
+- **DTO-Matic** — SQL DDL generation: CREATE TABLE for PostgreSQL and MySQL with type mapping, NOT NULL, foreign keys for nested objects
+- **Git Commit Generator** — Smart scope suggestion chips based on keyword detection in description
+- **Code Review** — Side-by-side diff view comparing original vs refactored code with added/removed line highlighting
+- **Prompt Analyzer** — Interactive radar tooltips with per-dimension coaching tips (EN/ES) on hover
+- **Token Visualizer** — Inline cost estimation chip showing ~$X.XXXX based on selected provider's model pricing
+- **Cost Calculator** — Feature matrix filter: filter models by capabilities (Vision, JSON Mode, Function Calling, Streaming, Fine-tuning)
+- **Context Manager** — Full-text search across document title, content, and tags
+
+#### Tests
+- +30 new tests (1416 → 1446): batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL generation (8)
+
+#### i18n
+- +45 keys in both EN and ES locales (full parity maintained)
+
+---
+
 ## [4.12.0] - 2026-02-27
 
 ### Security Hardening & Architecture Audit

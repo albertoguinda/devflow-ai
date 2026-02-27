@@ -9,7 +9,7 @@ import type {
 import { DEFAULT_WIZARD_CONFIG } from "@/types/variable-name-wizard";
 import { convertToAll, generateSuggestions } from "@/lib/application/variable-name-wizard";
 // Re-export for pages (dependency flow: Page → Hook → lib/application)
-export { convertToAll } from "@/lib/application/variable-name-wizard";
+export { convertToAll, expandAbbreviations, abbreviateName } from "@/lib/application/variable-name-wizard";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useTranslation } from "@/hooks/use-translation";
 

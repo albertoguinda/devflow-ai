@@ -1,6 +1,15 @@
 // UUID Generator Types
 
-export type UuidVersion = "v1" | "v4" | "v7" | "nil" | "max" | "ulid" | "nanoid";
+export type UuidVersion = "v1" | "v3" | "v4" | "v5" | "v7" | "nil" | "max" | "ulid" | "nanoid";
+
+export type UuidNamespace = "dns" | "url" | "oid" | "x500" | "custom";
+
+export const UUID_NAMESPACES: Record<Exclude<UuidNamespace, "custom">, string> = {
+  dns: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+  url: "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+  oid: "6ba7b812-9dad-11d1-80b4-00c04fd430c8",
+  x500: "6ba7b814-9dad-11d1-80b4-00c04fd430c8",
+};
 export type UuidFormat = "standard" | "uppercase" | "no-hyphens" | "braces" | "urn" | "base64" | "base58";
 
 export interface UuidConfig {

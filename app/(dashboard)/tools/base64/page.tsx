@@ -32,6 +32,7 @@ import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { cn } from "@/lib/utils";
 export default function Base64Page() {
   const { t } = useTranslation();
   const { navigateTo } = useSmartNavigation();
@@ -40,10 +41,14 @@ export default function Base64Page() {
     mode,
     config,
     result,
+    batchInput,
+    batchResults,
     setInput,
     setMode,
+    setBatchInput,
     updateConfig,
     process,
+    processBatch,
     reset,
     loadExample,
   } = useBase64();
@@ -51,7 +56,7 @@ export default function Base64Page() {
   const { explainBase64WithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
 
-  const [activeView, setActiveView] = useState<"text" | "preview" | "inspector">("text");
+  const [activeView, setActiveView] = useState<"text" | "preview" | "inspector" | "batch">("text");
 
   const byteColumns: ColumnConfig[] = [
     { name: t("table.colOffset"), uid: "offset" },
@@ -270,6 +275,7 @@ export default function Base64Page() {
                   <Tabs.Tab id="text">{t("base64.textView")}</Tabs.Tab>
                   <Tabs.Tab id="preview">{t("base64.smartPreview")}</Tabs.Tab>
                   <Tabs.Tab id="inspector">{t("base64.byteInspector")}</Tabs.Tab>
+                  <Tabs.Tab id="batch">{t("base64.batchTab")}</Tabs.Tab>
                 </Tabs.List>
               </Tabs.ListContainer>
               <div className="flex gap-2">
@@ -392,6 +398,55 @@ export default function Base64Page() {
                       initialVisibleColumns={["offset", "hex", "binary", "decimal"]}
                       emptyContent={t("base64.processContent")}
                     />
+                  </div>
+                </Card>
+              </Tabs.Panel>
+
+              <Tabs.Panel id="batch">
+                <Card className="p-0 overflow-hidden shadow-xl border-divider h-[600px] flex flex-col">
+                  <div className="p-4 border-b border-divider bg-muted/20 flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase tracking-widest opacity-40">{t("base64.batchTitle")}</span>
+                    <span className="text-[9px] font-mono opacity-30">{t("base64.batchHint")}</span>
+                  </div>
+                  <div className="p-4 space-y-4 flex-1 overflow-auto">
+                    <TextArea
+                      value={batchInput}
+                      onChange={(e) => setBatchInput(e.target.value)}
+                      placeholder={t("base64.batchPlaceholder")}
+                      className="h-32 w-full resize-none rounded-xl border border-divider bg-background p-4 font-mono text-xs focus:ring-2 focus:ring-primary/20 shadow-inner"
+                      aria-label={t("base64.batchPlaceholder")}
+                    />
+                    <Button
+                      onPress={processBatch}
+                      isDisabled={!batchInput.trim()}
+                      variant="primary"
+                      className="w-full font-bold"
+                    >
+                      {mode === "encode" ? t("base64.batchEncode") : t("base64.batchDecode")}
+                    </Button>
+                    {batchResults.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="flex gap-3 text-[10px] font-bold">
+                          <span className="text-emerald-600 dark:text-emerald-400">{batchResults.filter(r => r.status === "success").length} {t("base64.batchSuccess")}</span>
+                          <span className="text-red-600 dark:text-red-400">{batchResults.filter(r => r.status === "error").length} {t("base64.batchErrors")}</span>
+                        </div>
+                        <div className="space-y-1.5 max-h-[300px] overflow-auto">
+                          {batchResults.map((item, i) => (
+                            <div key={i} className={cn("p-3 rounded-xl border text-xs font-mono", item.status === "success" ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5")}>
+                              <div className="flex justify-between items-start gap-2">
+                                <span className="text-muted-foreground truncate max-w-[200px]">{item.input}</span>
+                                <CopyButton text={item.output} size="sm" variant="ghost" />
+                              </div>
+                              {item.status === "success" ? (
+                                <p className="mt-1 text-emerald-700 dark:text-emerald-300 break-all">{item.output}</p>
+                              ) : (
+                                <p className="mt-1 text-red-600 dark:text-red-400">{item.error}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </Card>
               </Tabs.Panel>

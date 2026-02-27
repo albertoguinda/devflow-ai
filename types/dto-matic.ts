@@ -3,7 +3,7 @@
 
 export type GenerationMode = "quick" | "clean-arch" | "zod";
 
-export type TargetLanguage = "typescript" | "java" | "csharp" | "go" | "python";
+export type TargetLanguage = "typescript" | "java" | "csharp" | "go" | "python" | "sql";
 
 export type NamingConvention = "camelCase" | "PascalCase" | "snake_case";
 
@@ -22,12 +22,13 @@ export interface DtoMaticConfig {
   javaPackage?: string;
   csharpNamespace?: string;
   goPackage?: string;
+  sqlDialect?: "postgresql" | "mysql";
 }
 
 export interface GeneratedFile {
   id: string;
   name: string;
-  type: "interface" | "entity" | "mapper" | "zod" | "index" | "class" | "struct" | "record";
+  type: "interface" | "entity" | "mapper" | "zod" | "index" | "class" | "struct" | "record" | "ddl";
   content: string;
   language: TargetLanguage;
 }

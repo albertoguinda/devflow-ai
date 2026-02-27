@@ -33,7 +33,7 @@ import { Button, Card } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
 import { checkCollisions } from "@/hooks/use-uuid-generator";
-import type { UuidVersion, UuidFormat } from "@/types/uuid-generator";
+import type { UuidVersion, UuidFormat, UuidNamespace } from "@/types/uuid-generator";
 
 export default function UuidGeneratorPage() {
   const { t } = useTranslation();
@@ -42,6 +42,10 @@ export default function UuidGeneratorPage() {
     config,
     result,
     analysis,
+    namespace,
+    namespaceName,
+    setNamespace,
+    setNamespaceName,
     updateConfig,
     generate,
     analyze,
@@ -64,9 +68,18 @@ export default function UuidGeneratorPage() {
   const VERSIONS: { id: UuidVersion; label: string; desc: string }[] = [
     { id: "v4", label: t("uuid.v4Label"), desc: t("uuid.v4DescShort") },
     { id: "v7", label: t("uuid.v7Label"), desc: t("uuid.v7DescShort") },
+    { id: "v5", label: t("uuid.v5Label"), desc: t("uuid.v5DescShort") },
+    { id: "v3", label: t("uuid.v3Label"), desc: t("uuid.v3DescShort") },
     { id: "v1", label: t("uuid.v1Label"), desc: t("uuid.v1DescShort") },
     { id: "nil", label: t("uuid.nilLabel"), desc: t("uuid.nilDescShort") },
     { id: "max", label: t("uuid.maxLabel"), desc: t("uuid.maxDescShort") },
+  ];
+
+  const NAMESPACE_OPTIONS: { id: UuidNamespace; label: string }[] = [
+    { id: "dns", label: "DNS" },
+    { id: "url", label: "URL" },
+    { id: "oid", label: "OID" },
+    { id: "x500", label: "X.500" },
   ];
 
   const FORMATS: { id: UuidFormat; label: string }[] = [
@@ -149,18 +162,50 @@ export default function UuidGeneratorPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.customPrefix")}</label>
-                    <Input
-                      variant="primary"
-                      placeholder={t("uuid.placeholderHexPrefix")}
-                      value={config.prefix}
-                      onChange={(e) => {
-                        const filtered = e.target.value.replace(/[^0-9a-fA-F]/g, "");
-                        updateConfig("prefix", filtered);
-                      }}
-                    />
-                  </div>
+                  {(config.version === "v3" || config.version === "v5") ? (
+                    <div className="space-y-4 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.namespaceLabel")}</label>
+                        <div className="grid grid-cols-4 gap-1.5">
+                          {NAMESPACE_OPTIONS.map((ns) => (
+                            <Button
+                              key={ns.id}
+                              size="sm"
+                              aria-pressed={namespace === ns.id}
+                              variant={namespace === ns.id ? "primary" : "ghost"}
+                              onPress={() => setNamespace(ns.id)}
+                              className="text-[10px] font-bold"
+                            >
+                              {ns.label}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.nameLabel")}</label>
+                        <Input
+                          variant="primary"
+                          placeholder={t("uuid.namePlaceholder")}
+                          value={namespaceName}
+                          onChange={(e) => setNamespaceName(e.target.value)}
+                        />
+                      </div>
+                      <p className="text-[9px] text-muted-foreground italic">{t("uuid.deterministicNote")}</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.customPrefix")}</label>
+                      <Input
+                        variant="primary"
+                        placeholder={t("uuid.placeholderHexPrefix")}
+                        value={config.prefix}
+                        onChange={(e) => {
+                          const filtered = e.target.value.replace(/[^0-9a-fA-F]/g, "");
+                          updateConfig("prefix", filtered);
+                        }}
+                      />
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">

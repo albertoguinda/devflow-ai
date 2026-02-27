@@ -38,6 +38,55 @@ import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
 import type { JsonPathResult, JsonFormatMode, JsonDiffResult } from "@/types/json-formatter";
 
+function highlightJsonLine(line: string): React.ReactNode[] {
+  const tokens: React.ReactNode[] = [];
+  // Regex to match JSON tokens: keys, strings, numbers, booleans, null, punctuation
+  // eslint-disable-next-line security/detect-unsafe-regex -- bounded alternations on well-formed JSON lines; no user-controlled input reaches this regex
+  const tokenRegex = /("(?:[^"\\]|\\.)*")\s*:|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)\b|(true|false)|(null)|([{}[\],:])/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  while ((match = tokenRegex.exec(line)) !== null) {
+    // Add any unmatched text before this token
+    if (match.index > lastIndex) {
+      tokens.push(<span key={key++}>{line.slice(lastIndex, match.index)}</span>);
+    }
+
+    if (match[1] !== undefined) {
+      // Key (string before colon)
+      tokens.push(<span key={key++} className="text-cyan-600 dark:text-cyan-400">{match[1]}</span>);
+      // Add the colon with its whitespace
+      const afterKey = line.slice(match.index + match[1].length, match.index + match[0].length);
+      tokens.push(<span key={key++} className="text-muted-foreground/60">{afterKey}</span>);
+    } else if (match[2] !== undefined) {
+      // String value
+      tokens.push(<span key={key++} className="text-emerald-600 dark:text-emerald-400">{match[2]}</span>);
+    } else if (match[3] !== undefined) {
+      // Number
+      tokens.push(<span key={key++} className="text-amber-600 dark:text-amber-400">{match[3]}</span>);
+    } else if (match[4] !== undefined) {
+      // Boolean
+      tokens.push(<span key={key++} className="text-violet-600 dark:text-violet-400">{match[4]}</span>);
+    } else if (match[5] !== undefined) {
+      // null
+      tokens.push(<span key={key++} className="text-muted-foreground italic">{match[5]}</span>);
+    } else if (match[6] !== undefined) {
+      // Brackets, braces, commas, colons
+      tokens.push(<span key={key++} className="text-muted-foreground/60">{match[6]}</span>);
+    }
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  // Add any remaining text
+  if (lastIndex < line.length) {
+    tokens.push(<span key={key++}>{line.slice(lastIndex)}</span>);
+  }
+
+  return tokens.length > 0 ? tokens : [<span key={0}>{line}</span>];
+}
+
 export default function JsonFormatterPage() {
   const { t } = useTranslation();
   const { navigateTo } = useSmartNavigation();
@@ -345,7 +394,7 @@ export default function JsonFormatterPage() {
                       <code>{result.output.split("\n").map((line, i) => (
                         <div key={i} className="flex">
                           <span className="inline-block w-10 pr-3 text-right text-muted-foreground/40 select-none shrink-0">{i + 1}</span>
-                          <span>{line}</span>
+                          <span>{highlightJsonLine(line)}</span>
                         </div>
                       ))}</code>
                     </pre>

@@ -11,6 +11,7 @@ export interface AIModel {
   benchmarkScore?: number; // MMLU or similar
   updatedAt: string;
   category: "general" | "reasoning" | "coding" | "lightweight";
+  features?: string[] | undefined;
 }
 
 export type AIProvider =

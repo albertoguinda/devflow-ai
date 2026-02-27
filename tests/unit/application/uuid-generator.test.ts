@@ -3,6 +3,9 @@ import {
   generateUuidV4,
   generateUuidV1,
   generateUuidV7,
+  generateUuidV3,
+  generateUuidV5,
+  resolveNamespace,
   generateUuid,
   formatUuid,
   generateUuids,
@@ -14,7 +17,7 @@ import {
   formatBulkExport,
   checkCollisions,
 } from "@/lib/application/uuid-generator";
-import { DEFAULT_UUID_CONFIG } from "@/types/uuid-generator";
+import { DEFAULT_UUID_CONFIG, UUID_NAMESPACES } from "@/types/uuid-generator";
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -429,20 +432,20 @@ describe("UUID Generator", () => {
   });
 
   describe("validateUuid - unknown version", () => {
-    it("should return unknown version for version 3 UUID", () => {
+    it("should return v3 version for version 3 UUID", () => {
       // version nibble at position 12 of hex is '3'
       const v3uuid = "550e8400-e29b-31d4-a716-446655440000";
       const result = validateUuid(v3uuid);
       expect(result.isValid).toBe(true);
-      expect(result.version).toBe("unknown");
+      expect(result.version).toBe("v3");
       expect(result.variant).toBe("RFC 4122");
     });
 
-    it("should return unknown version for version 5 UUID", () => {
+    it("should return v5 version for version 5 UUID", () => {
       const v5uuid = "550e8400-e29b-51d4-a716-446655440000";
       const result = validateUuid(v5uuid);
       expect(result.isValid).toBe(true);
-      expect(result.version).toBe("unknown");
+      expect(result.version).toBe("v5");
     });
 
     it("should return unknown version for version 6 UUID", () => {
@@ -677,6 +680,95 @@ describe("UUID Generator", () => {
         expect(clockVal).toBeGreaterThanOrEqual(0);
         expect(clockVal).toBeLessThanOrEqual(0xFFFF);
       }
+    });
+  });
+
+  describe("generateUuidV3 (MD5, deterministic)", () => {
+    it("should generate valid UUID v3 format", () => {
+      const uuid = generateUuidV3(UUID_NAMESPACES.dns, "example.com");
+      expect(uuid).toMatch(UUID_REGEX);
+    });
+
+    it("should set version nibble to 3", () => {
+      const uuid = generateUuidV3(UUID_NAMESPACES.dns, "test");
+      expect(uuid[14]).toBe("3");
+    });
+
+    it("should be deterministic (same input = same output)", () => {
+      const a = generateUuidV3(UUID_NAMESPACES.dns, "example.com");
+      const b = generateUuidV3(UUID_NAMESPACES.dns, "example.com");
+      expect(a).toBe(b);
+    });
+
+    it("should produce different UUIDs for different names", () => {
+      const a = generateUuidV3(UUID_NAMESPACES.dns, "foo.com");
+      const b = generateUuidV3(UUID_NAMESPACES.dns, "bar.com");
+      expect(a).not.toBe(b);
+    });
+
+    it("should produce different UUIDs for different namespaces", () => {
+      const a = generateUuidV3(UUID_NAMESPACES.dns, "example.com");
+      const b = generateUuidV3(UUID_NAMESPACES.url, "example.com");
+      expect(a).not.toBe(b);
+    });
+  });
+
+  describe("generateUuidV5 (SHA-1, deterministic)", () => {
+    it("should generate valid UUID v5 format", async () => {
+      const uuid = await generateUuidV5(UUID_NAMESPACES.dns, "example.com");
+      expect(uuid).toMatch(UUID_REGEX);
+    });
+
+    it("should set version nibble to 5", async () => {
+      const uuid = await generateUuidV5(UUID_NAMESPACES.dns, "test");
+      expect(uuid[14]).toBe("5");
+    });
+
+    it("should be deterministic (same input = same output)", async () => {
+      const a = await generateUuidV5(UUID_NAMESPACES.dns, "example.com");
+      const b = await generateUuidV5(UUID_NAMESPACES.dns, "example.com");
+      expect(a).toBe(b);
+    });
+
+    it("should produce different UUIDs for different names", async () => {
+      const a = await generateUuidV5(UUID_NAMESPACES.dns, "foo.com");
+      const b = await generateUuidV5(UUID_NAMESPACES.dns, "bar.com");
+      expect(a).not.toBe(b);
+    });
+
+    it("should set RFC 4122 variant bits", async () => {
+      const uuid = await generateUuidV5(UUID_NAMESPACES.url, "https://example.com");
+      const hex = uuid.replace(/-/g, "");
+      const variantNibble = parseInt(hex[16]!, 16);
+      expect(variantNibble).toBeGreaterThanOrEqual(0x8);
+      expect(variantNibble).toBeLessThanOrEqual(0xb);
+    });
+  });
+
+  describe("resolveNamespace", () => {
+    it("should return DNS namespace UUID", () => {
+      expect(resolveNamespace("dns")).toBe(UUID_NAMESPACES.dns);
+    });
+
+    it("should return URL namespace UUID", () => {
+      expect(resolveNamespace("url")).toBe(UUID_NAMESPACES.url);
+    });
+
+    it("should return OID namespace UUID", () => {
+      expect(resolveNamespace("oid")).toBe(UUID_NAMESPACES.oid);
+    });
+
+    it("should return X.500 namespace UUID", () => {
+      expect(resolveNamespace("x500")).toBe(UUID_NAMESPACES.x500);
+    });
+
+    it("should return custom UUID when provided", () => {
+      const custom = "12345678-1234-1234-1234-123456789abc";
+      expect(resolveNamespace("custom", custom)).toBe(custom);
+    });
+
+    it("should return nil UUID for custom without value", () => {
+      expect(resolveNamespace("custom")).toBe("00000000-0000-0000-0000-000000000000");
     });
   });
 });

@@ -56,12 +56,14 @@ export default function GitCommitGeneratorPage() {
     generate,
     generateBatch,
     analyze,
+    getSuggestions,
     reset,
     clearHistory,
   } = useGitCommitGenerator();
 
   const [activeTab, setActiveTab] = useState<"composer" | "changelog" | "history" | string>("composer");
   const [batchInput, setBatchInput] = useState("");
+  const scopeSuggestions = useMemo(() => getSuggestions(config.description), [config.description, getSuggestions]);
   const batchMessages = useMemo(() => {
     if (!batchInput.trim()) return [];
     return generateBatch(batchInput.split("\n"));
@@ -181,13 +183,28 @@ export default function GitCommitGeneratorPage() {
                 </div>
                 <div className="space-y-1">
                   <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("gitCommit.scopeLabel")}</label>
-                  <Input 
+                  <Input
                     variant="primary"
                     placeholder={t("gitCommit.scopePlaceholder")}
-                    value={config.scope} 
-                    onChange={(e) => updateConfig("scope", e.target.value)} 
+                    value={config.scope}
+                    onChange={(e) => updateConfig("scope", e.target.value)}
                     className="font-bold text-xs"
                   />
+                  {scopeSuggestions.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {scopeSuggestions.map((s) => (
+                        <Button
+                          key={s}
+                          size="sm"
+                          variant={config.scope === s ? "primary" : "ghost"}
+                          onPress={() => updateConfig("scope", s)}
+                          className="text-[9px] font-bold h-6 px-2"
+                        >
+                          {s}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -1603,5 +1603,52 @@
   "tailwind.aiOptimizeBtn": "Optimizar con IA",
   "dtoMatic.aiOptimizer": "Optimizador IA de Tipos",
   "dtoMatic.aiOptimizeBtn": "Optimizar con IA",
-  "dtoMatic.aiSuggestion": "Sugerencia"
+  "dtoMatic.aiSuggestion": "Sugerencia",
+
+  "base64.batchTab": "Lote",
+  "base64.batchTitle": "Procesamiento por lotes",
+  "base64.batchHint": "Un elemento por linea",
+  "base64.batchPlaceholder": "Pega multiples lineas para codificar/decodificar...",
+  "base64.batchEncode": "Codificar Todo",
+  "base64.batchDecode": "Decodificar Todo",
+  "base64.batchSuccess": "exitosos",
+  "base64.batchErrors": "errores",
+
+  "uuid.v3Label": "v3 (MD5)",
+  "uuid.v3DescShort": "Determinista MD5",
+  "uuid.v5Label": "v5 (SHA-1)",
+  "uuid.v5DescShort": "Determinista SHA-1",
+  "uuid.namespaceLabel": "Espacio de nombres",
+  "uuid.nameLabel": "Nombre",
+  "uuid.namePlaceholder": "Ingresa un nombre (ej. example.com)",
+  "uuid.deterministicNote": "Mismo namespace + nombre siempre produce el mismo UUID",
+
+  "regex.flavorLabel": "Sabor de regex",
+
+  "varName.abbreviationsTab": "Abreviaciones",
+  "varName.abbreviationsTitle": "Expandir y Abreviar",
+  "varName.abbrPlaceholder": "Escribe un nombre de variable (ej. getUserReq)",
+  "varName.expandedLabel": "Expandido",
+  "varName.abbreviatedLabel": "Abreviado",
+
+  "cron.parsePlaceholder": "Pega un cron existente (ej. */5 * * * *)",
+  "cron.parseBtn": "Parsear",
+  "cron.parsedSuccess": "Expresion cron parseada",
+  "cron.parseError": "Expresion cron invalida",
+
+  "tailwind.lightPreview": "Claro",
+  "tailwind.darkPreview": "Oscuro",
+
+  "codeReview.originalCode": "Original",
+  "codeReview.refactoredCode": "Refactorizado",
+
+  "tokenViz.inputCost": "coste de entrada",
+
+  "costCalc.filterFeatures": "Capacidades",
+  "costCalc.featureVision": "Vision",
+  "costCalc.featureJsonMode": "Modo JSON",
+  "costCalc.featureFnCalling": "Llamada a Funciones",
+  "costCalc.featureStreaming": "Streaming",
+
+  "ctxMgr.searchDocs": "Buscar documentos..."
 }

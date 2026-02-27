@@ -10,6 +10,7 @@ import {
   exportContext,
   exportForAI,
   preloadTokenEncoder,
+  searchDocuments,
 } from "@/lib/application/context-manager";
 // Re-export for pages (dependency flow: Page → Hook → lib/application)
 export { MODEL_PRESETS } from "@/lib/application/context-manager";
@@ -57,11 +58,15 @@ interface UseContextManagerReturn {
   setMaxTokens: (maxTokens: number) => void;
   exportWindow: (format: "xml" | "json" | "markdown") => ExportedContext | null;
   exportForAI: (options?: { stripComments?: boolean }) => string | null;
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  filteredDocuments: import("@/types/context-manager").ContextDocument[];
 }
 
 export function useContextManager(): UseContextManagerReturn {
   const [windows, setWindows] = useState<ContextWindow[]>(getInitialWindows);
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Preload js-tiktoken encoder asynchronously (keeps it out of initial bundle)
   useEffect(() => { preloadTokenEncoder(); }, []);
@@ -85,6 +90,11 @@ export function useContextManager(): UseContextManagerReturn {
     () => windows.find((w) => w.id === activeWindowId) ?? null,
     [windows, activeWindowId]
   );
+
+  const filteredDocuments = useMemo(() => {
+    if (!activeWindow) return [];
+    return searchDocuments(activeWindow, searchQuery);
+  }, [activeWindow, searchQuery]);
 
   const createWindowHandler = useCallback(
     (name: string): string => {
@@ -203,5 +213,8 @@ export function useContextManager(): UseContextManagerReturn {
     setMaxTokens,
     exportWindow: exportWindowHandler,
     exportForAI: exportForAIHandler,
+    searchQuery,
+    setSearchQuery,
+    filteredDocuments,
   };
 }

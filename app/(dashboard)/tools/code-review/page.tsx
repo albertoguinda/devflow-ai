@@ -468,7 +468,7 @@ export default function CodeReviewPage() {
                 </Card>
               )}
 
-              {/* Smart Refactor Preview */}
+              {/* Smart Refactor Preview — Side-by-Side Diff */}
               {result.refactoredCode && (
                 <Card className="p-6 border-primary/20 bg-primary/5 shadow-xl shadow-primary/5">
                   <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -496,9 +496,28 @@ export default function CodeReviewPage() {
                       </Button>
                     </div>
                   </div>
-                  <pre className="rounded-xl border border-primary/10 bg-background/80 p-5 font-mono text-sm leading-relaxed overflow-auto max-h-[300px] shadow-inner">
-                    <code>{result.refactoredCode}</code>
-                  </pre>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <span className="text-[9px] font-black uppercase text-red-500 dark:text-red-400 tracking-widest mb-1 block">{t("codeReview.originalCode")}</span>
+                      <pre className="rounded-xl border border-red-500/10 bg-red-500/5 p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] shadow-inner">
+                        <code>{code.split("\n").map((line, i) => {
+                          const refLines = (result.refactoredCode ?? "").split("\n");
+                          const changed = refLines[i] !== line;
+                          return <div key={i} className={changed ? "bg-red-500/10 -mx-4 px-4" : ""}>{line || " "}</div>;
+                        })}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-black uppercase text-emerald-500 dark:text-emerald-400 tracking-widest mb-1 block">{t("codeReview.refactoredCode")}</span>
+                      <pre className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] shadow-inner">
+                        <code>{(result.refactoredCode ?? "").split("\n").map((line, i) => {
+                          const origLines = code.split("\n");
+                          const changed = origLines[i] !== line;
+                          return <div key={i} className={changed ? "bg-emerald-500/10 -mx-4 px-4" : ""}>{line || " "}</div>;
+                        })}</code>
+                      </pre>
+                    </div>
+                  </div>
                 </Card>
               )}
             </>

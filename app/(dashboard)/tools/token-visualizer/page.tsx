@@ -27,6 +27,7 @@ import { TextArea } from "@heroui/react";
 import { Card, Button } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { AI_MODELS } from "@/config/ai-models";
 import type { TokenizerProvider } from "@/types/token-visualizer";
 
 export default function TokenVisualizerPage() {
@@ -326,6 +327,16 @@ export default function TokenVisualizerPage() {
                       <Timer className="size-3 mr-1" /> {visualization.totalTokens} {t("tokenViz.totalTokens")}
                     </StatusBadge>
                     <span className="text-[10px] font-black opacity-40 uppercase">{visualization.input.length} {t("tokenViz.characters")}</span>
+                    {(() => {
+                      const model = AI_MODELS.find(m => m.isPopular && m.provider === (provider === "llama" ? "groq" : provider === "anthropic" ? "anthropic" : "openai"));
+                      if (!model) return null;
+                      const cost = (visualization.totalTokens / 1_000_000) * model.inputPricePerMToken;
+                      return (
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400" title={`${model.displayName} ${t("tokenViz.inputCost")}`}>
+                          ~${cost < 0.01 ? cost.toFixed(6) : cost.toFixed(4)}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <CopyButton text={visualization.input} />
                 </div>

@@ -44,6 +44,8 @@ import { CopyButton } from "@/components/shared/copy-button";
 import { TextArea } from "@heroui/react";
 import { Card, Button } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
+import { useLocaleStore } from "@/lib/stores/locale-store";
+import { cn } from "@/lib/utils";
 import type { PromptIssue, AnatomyElement, PromptAnalysisResult, PromptDimension } from "@/types/prompt-analyzer";
 
 const DIMENSION_ICONS: Record<AnatomyElement, React.ElementType> = {
@@ -82,7 +84,19 @@ const AXIS_LABEL_KEYS: Record<AnatomyElement, string> = {
   clarification: "promptAnalyzer.radar.clarify",
 };
 
+const COACHING_TIPS: Record<AnatomyElement, { en: string; es: string }> = {
+  role: { en: "Try 'You are a senior...' or 'Act as a...'", es: "Prueba 'Eres un senior...' o 'Actúa como un...'" },
+  task: { en: "Be specific: what action, what output, what scope", es: "Sé específico: qué acción, qué resultado, qué alcance" },
+  context: { en: "Add background info, constraints, audience", es: "Añade contexto, restricciones, audiencia" },
+  steps: { en: "Break complex tasks into numbered steps", es: "Divide tareas complejas en pasos numerados" },
+  format: { en: "Specify output format: JSON, list, table, code", es: "Especifica el formato: JSON, lista, tabla, código" },
+  constraints: { en: "Set limits: max length, tone, avoid topics", es: "Establece límites: longitud máxima, tono, evitar temas" },
+  clarification: { en: "Ask the model to clarify if unsure", es: "Pide al modelo que aclare si no está seguro" },
+};
+
 function AnatomyRadar({ dimensions, compareDimensions, axisLabels }: { dimensions: PromptDimension[]; compareDimensions?: PromptDimension[] | undefined; axisLabels: Record<AnatomyElement, string> }) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const locale = useLocaleStore((s) => s.locale);
   const size = 280;
   const cx = size / 2;
   const cy = size / 2;
@@ -109,57 +123,84 @@ function AnatomyRadar({ dimensions, compareDimensions, axisLabels }: { dimension
 
   const gridLevels = [25, 50, 75, 100];
 
+  const hoveredDim = hoveredIndex !== null ? dimensions[hoveredIndex] : null;
+
   return (
-    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full" aria-hidden="true">
-      {/* Grid */}
-      {gridLevels.map((level) => (
-        <polygon
-          key={level}
-          points={Array.from({ length: n }, (_, i) => {
-            const p = getPoint(i, level);
-            return `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
-          }).join(" ")}
-          fill="none"
-          stroke="currentColor"
-          strokeOpacity={0.15}
-          strokeWidth={0.7}
-        />
-      ))}
-      {/* Axis lines */}
-      {dimensions.map((_, i) => {
-        const p = getPoint(i, 100);
-        return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.7} />;
-      })}
-      {/* Axis labels */}
-      {dimensions.map((d, i) => {
-        const lp = getLabelPoint(i);
-        return (
-          <text
-            key={`label-${d.id}`}
-            x={lp.x}
-            y={lp.y}
-            textAnchor="middle"
-            dominantBaseline="central"
-            className="fill-current text-muted-foreground"
-            fontSize={10}
-            fontWeight={600}
-          >
-            {axisLabels[d.id]}
-          </text>
-        );
-      })}
-      {/* Compare fill (if present) */}
-      {compareDimensions && (
-        <path d={toPath(compareDimensions)} className="fill-violet-500/12 stroke-violet-500 dark:fill-violet-400/12 dark:stroke-violet-400" strokeWidth={1} strokeDasharray="3 2" />
+    <div className="relative">
+      <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full" aria-hidden="true">
+        {/* Grid */}
+        {gridLevels.map((level) => (
+          <polygon
+            key={level}
+            points={Array.from({ length: n }, (_, i) => {
+              const p = getPoint(i, level);
+              return `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+            }).join(" ")}
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity={0.15}
+            strokeWidth={0.7}
+          />
+        ))}
+        {/* Axis lines */}
+        {dimensions.map((_, i) => {
+          const p = getPoint(i, 100);
+          return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.7} />;
+        })}
+        {/* Axis labels */}
+        {dimensions.map((d, i) => {
+          const lp = getLabelPoint(i);
+          return (
+            <text
+              key={`label-${d.id}`}
+              x={lp.x}
+              y={lp.y}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className={cn("fill-current transition-opacity", hoveredIndex !== null && hoveredIndex !== i ? "opacity-30" : "text-muted-foreground")}
+              fontSize={10}
+              fontWeight={hoveredIndex === i ? 800 : 600}
+            >
+              {axisLabels[d.id]}
+            </text>
+          );
+        })}
+        {/* Compare fill (if present) */}
+        {compareDimensions && (
+          <path d={toPath(compareDimensions)} className="fill-violet-500/12 stroke-violet-500 dark:fill-violet-400/12 dark:stroke-violet-400" strokeWidth={1} strokeDasharray="3 2" />
+        )}
+        {/* Main fill */}
+        <path d={toPath(dimensions)} className="fill-blue-500/20 stroke-blue-500 dark:fill-blue-400/20 dark:stroke-blue-400" strokeWidth={2} />
+        {/* Interactive dots with hover */}
+        {dimensions.map((d, i) => {
+          const p = getPoint(i, d.score);
+          return (
+            <g key={i}>
+              <circle cx={p.x} cy={p.y} r={hoveredIndex === i ? 5 : 3} className={cn("transition-all", hoveredIndex === i ? "fill-blue-600 dark:fill-blue-300" : "fill-blue-500 dark:fill-blue-400")} />
+              {/* Invisible larger hit area */}
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={14}
+                fill="transparent"
+                className="cursor-pointer"
+                onMouseEnter={() => setHoveredIndex(i)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              />
+            </g>
+          );
+        })}
+      </svg>
+      {/* Tooltip */}
+      {hoveredDim && (
+        <div className="absolute bottom-0 left-0 right-0 p-2 bg-background/95 backdrop-blur-sm border border-divider rounded-lg shadow-lg text-center animate-in fade-in duration-150">
+          <p className="text-[10px] font-black uppercase text-primary">{axisLabels[hoveredDim.id]} — {hoveredDim.score}/100</p>
+          {hoveredDim.score < 60 && (
+            <p className="text-[9px] text-amber-600 dark:text-amber-400 mt-0.5">{COACHING_TIPS[hoveredDim.id][locale]}</p>
+          )}
+        </div>
       )}
-      {/* Main fill */}
-      <path d={toPath(dimensions)} className="fill-blue-500/20 stroke-blue-500 dark:fill-blue-400/20 dark:stroke-blue-400" strokeWidth={2} />
-      {/* Dots */}
-      {dimensions.map((d, i) => {
-        const p = getPoint(i, d.score);
-        return <circle key={i} cx={p.x} cy={p.y} r={3} className="fill-blue-500 dark:fill-blue-400" />;
-      })}
-    </svg>
+    </div>
   );
 }
 

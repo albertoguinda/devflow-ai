@@ -444,6 +444,10 @@ export function explainRegex(
   // Build explanation
   const explanation = buildExplanation(tokens, groups, commonPattern, flags, locale);
 
+  // Add flavor-specific warnings
+  const flavorWarnings = getFlavorWarnings(pattern, flags, flavor, locale);
+  const allWarnings = [...safety.warnings, ...flavorWarnings];
+
   return {
     id: crypto.randomUUID(),
     pattern,
@@ -455,9 +459,80 @@ export function explainRegex(
     commonPattern: commonPattern?.name ?? null,
     safetyScore: safety.score,
     isDangerous: safety.isDangerous,
-    warnings: safety.warnings,
+    warnings: allWarnings,
     analyzedAt: new Date().toISOString(),
   };
+}
+
+// --- Flavor Compatibility Warnings ---
+
+interface FlavorCheck {
+  test: (pattern: string, flags: string) => boolean;
+  incompatible: RegexFlavor[];
+  message: Record<RegexLocale, string>;
+}
+
+const FLAVOR_CHECKS: FlavorCheck[] = [
+  {
+    test: (p) => /\(\?<=/.test(p) || /\(\?<!/.test(p),
+    incompatible: ["go"],
+    message: { en: "Lookbehind assertions are not supported in Go regex", es: "Las aserciones lookbehind no son compatibles con regex de Go" },
+  },
+  {
+    test: (p) => /\(\?=/.test(p) || /\(\?!/.test(p),
+    incompatible: ["go"],
+    message: { en: "Lookahead assertions are not supported in Go regex", es: "Las aserciones lookahead no son compatibles con regex de Go" },
+  },
+  {
+    test: (_p, f) => f.includes("u"),
+    incompatible: ["python", "go", "pcre"],
+    message: { en: "The 'u' (unicode) flag is JavaScript-specific", es: "La flag 'u' (unicode) es específica de JavaScript" },
+  },
+  {
+    test: (p) => /\\A/.test(p),
+    incompatible: ["javascript"],
+    message: { en: "\\A (start of string) does not exist in JavaScript — use ^ instead", es: "\\A (inicio de cadena) no existe en JavaScript — usa ^ en su lugar" },
+  },
+  {
+    test: (p) => /\\Z/.test(p),
+    incompatible: ["javascript"],
+    message: { en: "\\Z (end of string) does not exist in JavaScript — use $ instead", es: "\\Z (fin de cadena) no existe en JavaScript — usa $ en su lugar" },
+  },
+  {
+    test: (p) => /\(\?P</.test(p),
+    incompatible: ["javascript"],
+    message: { en: "(?P<name>) is Python syntax — use (?<name>) in JavaScript", es: "(?P<nombre>) es sintaxis Python — usa (?<nombre>) en JavaScript" },
+  },
+  {
+    test: (p) => /\(\?P=/.test(p),
+    incompatible: ["javascript", "go"],
+    message: { en: "(?P=name) backreference is Python-specific", es: "La retroreferencia (?P=nombre) es específica de Python" },
+  },
+  {
+    test: (p) => /\(\?\{/.test(p),
+    incompatible: ["javascript", "go", "python"],
+    message: { en: "Code callouts (?{...}) are PCRE-specific", es: "Las llamadas a código (?{...}) son específicas de PCRE" },
+  },
+  {
+    test: (_p, f) => f.includes("s"),
+    incompatible: ["go"],
+    message: { en: "The 's' (dotAll) flag is not supported in Go — use [\\s\\S] instead", es: "La flag 's' (dotAll) no es compatible con Go — usa [\\s\\S] en su lugar" },
+  },
+  {
+    test: (p) => /\{,\d+\}/.test(p),
+    incompatible: ["javascript"],
+    message: { en: "{,n} (implicit zero minimum) is not valid in JavaScript — use {0,n}", es: "{,n} (mínimo implícito cero) no es válido en JavaScript — usa {0,n}" },
+  },
+];
+
+function getFlavorWarnings(pattern: string, flags: string, flavor: RegexFlavor, locale: RegexLocale): string[] {
+  const warnings: string[] = [];
+  for (const check of FLAVOR_CHECKS) {
+    if (check.test(pattern, flags) && check.incompatible.includes(flavor)) {
+      warnings.push(check.message[locale]);
+    }
+  }
+  return warnings;
 }
 
 function performSafetyAnalysis(pattern: string): { score: number; isDangerous: boolean; warnings: string[] } {

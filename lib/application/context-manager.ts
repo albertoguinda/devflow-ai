@@ -116,6 +116,24 @@ function recalculateWindow(window: ContextWindow): ContextWindow {
   };
 }
 
+/**
+ * Search documents within a context window by title, content, and tags.
+ * Returns matching documents with case-insensitive matching.
+ */
+export function searchDocuments(
+  window: ContextWindow,
+  query: string
+): ContextDocument[] {
+  if (!query.trim()) return window.documents;
+  const lower = query.toLowerCase();
+  return window.documents.filter(
+    (doc) =>
+      doc.title.toLowerCase().includes(lower) ||
+      doc.content.toLowerCase().includes(lower) ||
+      doc.tags.some((tag) => tag.toLowerCase().includes(lower))
+  );
+}
+
 export function addDocumentToWindow(
   window: ContextWindow,
   document: ContextDocument

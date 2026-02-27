@@ -156,6 +156,41 @@ export function detectContent(text: string, isBase64: boolean = false): Base64Re
 }
 
 /**
+ * Batch process multiple lines (encode or decode each line independently)
+ */
+export interface BatchItem {
+  input: string;
+  output: string;
+  status: "success" | "error";
+  error?: string | undefined;
+}
+
+export function batchProcess(
+  lines: string[],
+  mode: Base64Mode,
+  config: Base64Config = DEFAULT_BASE64_CONFIG
+): BatchItem[] {
+  return lines
+    .filter((line) => line.trim().length > 0)
+    .map((line) => {
+      try {
+        const output =
+          mode === "encode"
+            ? encodeBase64(line, config)
+            : decodeBase64(line, config);
+        return { input: line, output, status: "success" as const };
+      } catch (e) {
+        return {
+          input: line,
+          output: "",
+          status: "error" as const,
+          error: (e as Error).message,
+        };
+      }
+    });
+}
+
+/**
  * Main processing function
  */
 export function processBase64(

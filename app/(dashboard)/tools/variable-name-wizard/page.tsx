@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import {
   Tabs,
   TextArea,
+  Input,
   Select,
   Label,
   ListBox,
@@ -40,7 +41,7 @@ import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
-import { convertToAll } from "@/hooks/use-variable-name-wizard";
+import { convertToAll, expandAbbreviations, abbreviateName } from "@/hooks/use-variable-name-wizard";
 import type { NameSuggestion, VariableType, WizardConfig, NamingConvention } from "@/types/variable-name-wizard";
 
 export default function VariableNameWizardPage() {
@@ -64,6 +65,9 @@ export default function VariableNameWizardPage() {
   const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState<"generate" | "convert" | string>("generate");
   const [batchInput, setBatchInput] = useState("");
+  const [abbrInput, setAbbrInput] = useState("");
+  const [abbrExpanded, setAbbrExpanded] = useState("");
+  const [abbrShortened, setAbbrShortened] = useState("");
   const [batchTarget, setBatchTarget] = useState<NamingConvention>("camelCase");
   const batchResults = useMemo(() => {
     if (!batchInput.trim()) return [];
@@ -312,6 +316,7 @@ export default function VariableNameWizardPage() {
               <Tabs.List aria-label={t("varName.ariaWizardMode")}>
                 <Tabs.Tab id="generate">{t("varName.smartSuggestions")}</Tabs.Tab>
                 <Tabs.Tab id="convert">{t("varName.caseTransformer")}</Tabs.Tab>
+                <Tabs.Tab id="abbreviations">{t("varName.abbreviationsTab")}</Tabs.Tab>
               </Tabs.List>
             </Tabs.ListContainer>
 
@@ -497,6 +502,51 @@ export default function VariableNameWizardPage() {
                         label={t("varName.copyAll")}
                         className="w-full mt-2 font-bold"
                       />
+                    </div>
+                  )}
+                </Card>
+              </div>
+            </Tabs.Panel>
+
+            <Tabs.Panel id="abbreviations">
+              <div className="space-y-6">
+                <Card className="p-6">
+                  <h3 className="text-xs font-black uppercase text-muted-foreground mb-4 tracking-widest flex items-center gap-2">
+                    <Zap className="size-3 text-amber-500" /> {t("varName.abbreviationsTitle")}
+                  </h3>
+                  <Input
+                    variant="primary"
+                    placeholder={t("varName.abbrPlaceholder")}
+                    value={abbrInput}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setAbbrInput(val);
+                      if (val.trim()) {
+                        setAbbrExpanded(expandAbbreviations(val));
+                        setAbbrShortened(abbreviateName(val));
+                      } else {
+                        setAbbrExpanded("");
+                        setAbbrShortened("");
+                      }
+                    }}
+                    aria-label={t("varName.abbrPlaceholder")}
+                  />
+                  {abbrInput.trim() && (
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                      <Card className="p-5 border-emerald-500/20 bg-emerald-500/5">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-widest">{t("varName.expandedLabel")}</span>
+                          <CopyButton text={abbrExpanded} size="sm" variant="ghost" />
+                        </div>
+                        <p className="font-mono text-sm font-bold text-emerald-700 dark:text-emerald-300">{abbrExpanded}</p>
+                      </Card>
+                      <Card className="p-5 border-amber-500/20 bg-amber-500/5">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400 tracking-widest">{t("varName.abbreviatedLabel")}</span>
+                          <CopyButton text={abbrShortened} size="sm" variant="ghost" />
+                        </div>
+                        <p className="font-mono text-sm font-bold text-amber-700 dark:text-amber-300">{abbrShortened}</p>
+                      </Card>
                     </div>
                   )}
                 </Card>

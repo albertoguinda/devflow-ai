@@ -65,6 +65,9 @@ export default function ContextManagerPage() {
     changePriority,
     setMaxTokens,
     exportForAI,
+    searchQuery,
+    setSearchQuery,
+    filteredDocuments,
   } = useContextManager();
 
   const [showAddDoc, setShowAddDoc] = useState(false);
@@ -581,10 +584,23 @@ export default function ContextManagerPage() {
                     </div>
                   </div>
 
+                  {activeWindow.documents.length > 0 && (
+                    <div className="mb-3">
+                      <Input
+                        variant="primary"
+                        placeholder={t("ctxMgr.searchDocs")}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="text-sm"
+                        aria-label={t("ctxMgr.searchDocs")}
+                      />
+                    </div>
+                  )}
+
                   {activeWindow.documents.length > 0 ? (
                     <DataTable
                       columns={docColumns}
-                      data={activeWindow.documents}
+                      data={searchQuery.trim() ? filteredDocuments : activeWindow.documents}
                       filterField="title"
                       renderCell={renderDocCell}
                       initialVisibleColumns={["title", "tokens", "priority", "actions"]}

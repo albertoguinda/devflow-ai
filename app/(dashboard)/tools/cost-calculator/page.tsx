@@ -69,6 +69,20 @@ export default function CostCalculatorPage() {
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
 
   const [detailModel, setDetailModel] = useState<CostCalculation | null>(null);
+  const [featureFilters, setFeatureFilters] = useState<string[]>([]);
+
+  const FEATURE_OPTIONS = [
+    { id: "vision", label: t("costCalc.featureVision") },
+    { id: "json_mode", label: t("costCalc.featureJsonMode") },
+    { id: "function_calling", label: t("costCalc.featureFnCalling") },
+    { id: "streaming", label: t("costCalc.featureStreaming") },
+  ];
+
+  const toggleFeature = (feature: string) => {
+    setFeatureFilters((prev) =>
+      prev.includes(feature) ? prev.filter((f) => f !== feature) : [...prev, feature]
+    );
+  };
 
   const providerOptions = useMemo(() =>
     Object.entries(PROVIDER_LABELS).map(([uid, p]) => ({ uid, name: `${p.emoji} ${p.label}` })),
@@ -458,10 +472,27 @@ export default function CostCalculatorPage() {
               </div>
             </div>
 
+            {/* Feature Filters */}
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest self-center mr-1">{t("costCalc.filterFeatures")}</span>
+              {FEATURE_OPTIONS.map((feat) => (
+                <Button
+                  key={feat.id}
+                  size="sm"
+                  aria-pressed={featureFilters.includes(feat.id)}
+                  variant={featureFilters.includes(feat.id) ? "primary" : "ghost"}
+                  onPress={() => toggleFeature(feat.id)}
+                  className="text-[10px] font-bold h-7 px-2.5"
+                >
+                  {feat.label}
+                </Button>
+              ))}
+            </div>
+
             {comparison ? (
               <DataTable
                 columns={columns}
-                data={comparison.results}
+                data={featureFilters.length > 0 ? comparison.results.filter((r) => featureFilters.every((f) => r.model.features?.includes(f))) : comparison.results}
                 filterField="model.displayName"
                 statusOptions={providerOptions}
                 statusFilterField="model.provider"
