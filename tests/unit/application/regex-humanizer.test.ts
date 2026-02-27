@@ -1011,4 +1011,70 @@ describe("Regex Humanizer", () => {
       expect(result.allMatches.length).toBeGreaterThan(0);
     });
   });
+
+  describe("flavor warnings via explainRegex", () => {
+    it("should warn about lookbehind in Go", () => {
+      const result = explainRegex("(?<=prefix)\\w+", "go");
+      expect(result.warnings.some((w) => w.toLowerCase().includes("lookbehind"))).toBe(true);
+    });
+
+    it("should warn about lookahead in Go", () => {
+      const result = explainRegex("foo(?=bar)", "go");
+      expect(result.warnings.some((w) => w.toLowerCase().includes("lookahead"))).toBe(true);
+    });
+
+    it("should not warn about lookbehind in JavaScript", () => {
+      const result = explainRegex("(?<=prefix)\\w+", "javascript");
+      expect(result.warnings.some((w) => w.toLowerCase().includes("lookbehind"))).toBe(false);
+    });
+
+    it("should warn about \\A in JavaScript", () => {
+      const result = explainRegex("\\Afoo", "javascript");
+      expect(result.warnings.some((w) => w.includes("\\A"))).toBe(true);
+    });
+
+    it("should warn about \\Z in JavaScript", () => {
+      const result = explainRegex("foo\\Z", "javascript");
+      expect(result.warnings.some((w) => w.includes("\\Z"))).toBe(true);
+    });
+
+    it("should warn about (?P<name>) in JavaScript", () => {
+      const result = explainRegex("(?P<word>\\w+)", "javascript");
+      expect(result.warnings.some((w) => w.includes("(?P<"))).toBe(true);
+    });
+
+    it("should not warn about (?P<name>) in Python", () => {
+      const result = explainRegex("(?P<word>\\w+)", "python");
+      expect(result.warnings.some((w) => w.includes("(?P<"))).toBe(false);
+    });
+
+    it("should warn about (?P=name) backreference in Go", () => {
+      const result = explainRegex("(?P=word)", "go");
+      expect(result.warnings.some((w) => w.includes("(?P="))).toBe(true);
+    });
+
+    it("should warn about code callouts in Python", () => {
+      const result = explainRegex("(?{code})", "python");
+      expect(result.warnings.some((w) => w.toLowerCase().includes("callout") || w.toLowerCase().includes("código"))).toBe(true);
+    });
+
+    it("should warn about {,n} in JavaScript", () => {
+      const result = explainRegex("a{,3}", "javascript");
+      expect(result.warnings.some((w) => w.includes("{,n}"))).toBe(true);
+    });
+
+    it("should return no flavor warnings when pattern is compatible", () => {
+      const result = explainRegex("^\\d{3}-\\d{4}$", "javascript");
+      // Basic pattern should have no flavor-specific warnings
+      const flavorWarnings = result.warnings.filter((w) =>
+        w.includes("flag") || w.includes("not supported") || w.includes("does not exist") || w.includes("syntax")
+      );
+      expect(flavorWarnings).toHaveLength(0);
+    });
+
+    it("should return warnings in Spanish locale", () => {
+      const result = explainRegex("(?<=prefix)\\w+", "go", "es");
+      expect(result.warnings.some((w) => w.includes("lookbehind") || w.includes("compatibles"))).toBe(true);
+    });
+  });
 });

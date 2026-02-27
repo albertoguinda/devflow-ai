@@ -496,7 +496,7 @@ export default function CodeReviewPage() {
                       </Button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                     <div>
                       <span className="text-[9px] font-black uppercase text-red-500 dark:text-red-400 tracking-widest mb-1 block">{t("codeReview.originalCode")}</span>
                       <pre className="rounded-xl border border-red-500/10 bg-red-500/5 p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] shadow-inner">

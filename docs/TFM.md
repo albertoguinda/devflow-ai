@@ -20,7 +20,7 @@ DevFlow AI es una plataforma open-source que centraliza **15 herramientas** esen
 
 - 15 herramientas funcionales end-to-end
 - 100% ejecucion local + IA opcional con 4 proveedores (Gemini, Groq, OpenRouter, Pollinations)
-- **1446 tests** con coverage estrategico 100/80/0 per-file (45 archivos de test)
+- **1466 tests** con coverage estrategico 100/80/0 per-file (45 archivos de test)
 - 20 E2E specs con Playwright (15 tools + settings + navigation + accessibility WCAG AAA)
 - Lighthouse score **100/100/100/100** en Desktop
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
@@ -451,7 +451,7 @@ Modelo de coverage estrategico con enforcement per-file:
 
 ```
 Test Files  45 passed (45)
-Tests       1446 passed (1446)
+Tests       1466 passed (1466)
 Duration    ~50s
 ```
 
@@ -460,7 +460,7 @@ Duration    ~50s
 | Test File            | Tests | Calidad   |
 | -------------------- | ----- | --------- |
 | uuid-generator       | 112   | Excelente |
-| regex-humanizer      | 83    | Excelente |
+| regex-humanizer      | 150   | Excelente |
 | cron-builder         | 75    | Excelente |
 | variable-name-wizard | 74    | Excelente |
 | git-commit-generator | 71    | Excelente |
@@ -469,7 +469,7 @@ Duration    ~50s
 | dto-matic            | 108   | Excelente |
 | code-review          | 55    | Excelente |
 | tailwind-sorter      | 53    | Muy bueno |
-| http-status-finder   | 51    | Muy bueno |
+| http-status-finder   | 72    | Excelente |
 | prompt-analyzer      | 43    | Muy bueno |
 | cost-calculator      | 45    | Muy bueno |
 | token-visualizer     | 40    | Muy bueno |

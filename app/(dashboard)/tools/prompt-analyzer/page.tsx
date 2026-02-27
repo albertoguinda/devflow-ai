@@ -193,7 +193,7 @@ function AnatomyRadar({ dimensions, compareDimensions, axisLabels }: { dimension
       </svg>
       {/* Tooltip */}
       {hoveredDim && (
-        <div className="absolute bottom-0 left-0 right-0 p-2 bg-background/95 backdrop-blur-sm border border-divider rounded-lg shadow-lg text-center animate-in fade-in duration-150">
+        <div className="absolute bottom-0 left-1 right-1 p-2 bg-background/95 backdrop-blur-sm border border-divider rounded-lg shadow-lg text-center animate-in fade-in duration-150">
           <p className="text-[10px] font-black uppercase text-primary">{axisLabels[hoveredDim.id]} — {hoveredDim.score}/100</p>
           {hoveredDim.score < 60 && (
             <p className="text-[9px] text-amber-600 dark:text-amber-400 mt-0.5">{COACHING_TIPS[hoveredDim.id][locale]}</p>

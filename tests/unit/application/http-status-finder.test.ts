@@ -9,6 +9,7 @@ import {
   isValidStatusCode,
   getCategoryInfo,
   processSearch,
+  generateCodeSnippets,
 } from "@/lib/application/http-status-finder";
 import type { HttpStatusCategory } from "@/types/http-status-finder";
 
@@ -402,6 +403,60 @@ describe("HTTP Status Code Finder", () => {
       result.codes.forEach((c) => expect(c.category).toBe("5xx"));
       const err500 = result.codes.find((c) => c.code === 500);
       expect(err500?.description).toContain("generico");
+    });
+  });
+
+  describe("generateCodeSnippets", () => {
+    it("should return all 4 snippet types", () => {
+      const snippets = generateCodeSnippets(200);
+      expect(Object.keys(snippets)).toEqual(["curl", "fetch", "axios", "python"]);
+    });
+
+    it("should include status code in all snippets", () => {
+      const snippets = generateCodeSnippets(404);
+      expect(snippets["curl"]).toContain("404");
+      expect(snippets["fetch"]).toContain("404");
+      expect(snippets["axios"]).toContain("404");
+      expect(snippets["python"]).toContain("404");
+    });
+
+    it("should generate success handling for 2xx codes", () => {
+      const snippets = generateCodeSnippets(200);
+      expect(snippets["fetch"]).toContain("response.json()");
+      expect(snippets["python"]).toContain("response.json()");
+      expect(snippets["axios"]).toContain("console.log(data)");
+    });
+
+    it("should generate redirect handling for 3xx codes", () => {
+      const snippets = generateCodeSnippets(301);
+      expect(snippets["curl"]).toContain("-L");
+      expect(snippets["fetch"]).toContain("Location");
+      expect(snippets["axios"]).toContain("maxRedirects");
+      expect(snippets["python"]).toContain("allow_redirects=False");
+    });
+
+    it("should generate client error handling for 4xx codes", () => {
+      const snippets = generateCodeSnippets(403);
+      expect(snippets["fetch"]).toContain("error");
+      expect(snippets["axios"]).toContain("403");
+      expect(snippets["python"]).toContain("Error 403");
+    });
+
+    it("should generate server error handling for 5xx codes", () => {
+      const snippets = generateCodeSnippets(500);
+      expect(snippets["fetch"]).toContain("Server error");
+      expect(snippets["axios"]).toContain("Server error 500");
+      expect(snippets["python"]).toContain("Server error");
+    });
+
+    it("should work for uncommon codes", () => {
+      const snippets = generateCodeSnippets(418);
+      expect(snippets["fetch"]).toContain("418");
+    });
+
+    it("should include curl expected status in output", () => {
+      const snippets = generateCodeSnippets(204);
+      expect(snippets["curl"]).toContain("Expected: 204");
     });
   });
 });

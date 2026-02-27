@@ -12,8 +12,8 @@ test.describe("JSON Formatter", () => {
     const formatBtn = page.getByRole("button", { name: /format/i }).first();
     await formatBtn.click();
 
-    // Output should contain formatted JSON with indentation
-    await expect(page.getByText('"name"')).toBeVisible();
+    // Output should contain formatted JSON with indentation (syntax highlighted spans)
+    await expect(page.locator(".text-cyan-600, .text-cyan-400").first()).toBeVisible();
   });
 
   test("shows error for invalid JSON", async ({ page }) => {

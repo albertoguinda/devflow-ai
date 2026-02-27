@@ -166,7 +166,7 @@ export default function UuidGeneratorPage() {
                     <div className="space-y-4 p-4 bg-primary/5 border border-primary/20 rounded-xl">
                       <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.namespaceLabel")}</label>
-                        <div className="grid grid-cols-4 gap-1.5">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                           {NAMESPACE_OPTIONS.map((ns) => (
                             <Button
                               key={ns.id}

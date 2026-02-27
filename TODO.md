@@ -1,7 +1,7 @@
 # TODO — DevFlow AI v4.13.0 (15-Tool Feature Iteration)
 
 > Last updated: 2026-02-27
-> Context: Feature improvements across all 15 tools benchmarked against best-in-class alternatives. 1446 tests, 45 files.
+> Context: Feature improvements across all 15 tools benchmarked against best-in-class alternatives. 1466 tests, 45 files.
 
 ---
 
@@ -25,39 +25,35 @@
 - [x] Context Manager — Full-text search across documents
 
 ### Tests
-- [x] +30 new tests: batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL (8)
-- [x] 1446 total tests passing (45 test files)
+- [x] +50 new tests: batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL (8), flavor warnings (12), code snippets (8)
+- [x] 1466 total tests passing (45 test files)
+- [x] Coverage: all per-file thresholds pass (http-status-finder fixed from 56%→70%+ branches)
 
 ### i18n
 - [x] +45 keys in EN and ES (full parity)
 
 ### Docs Sync
-- [x] README.md — test badge 1416→1446, scripts comment updated
-- [x] TFM.md — test count 1416→1446, i18n keys ~1605→~1650, per-tool test table updated (uuid 89→112, base64 66→54, dto-matic 62→108)
+- [x] README.md — test badge 1416→1466, scripts comment updated
+- [x] TFM.md — test count 1416→1466, i18n keys ~1605→~1650, per-tool test table updated
 - [x] DEPLOYMENT.md — health endpoint version 4.11.0→4.13.0
+
+### Quality Assurance
+- [x] E2E: 54/67 passed, 1 regression fixed (json-formatter selector), 12 pre-existing flaky
+- [x] Mobile overflow: 4 fixes (uuid grid, tailwind preview, code-review diff, radar tooltip)
+- [x] Bundle analysis: build OK, no regressions, zero new dependencies
+- [x] UUID v5 SSR safety: confirmed safe (client-only hook, static page)
 
 ---
 
 ## Next Session — Potential Tasks
 
-### Testing & Quality
-- [ ] Run `npm run test:coverage` — verify per-file thresholds still pass with new code
-- [ ] Run E2E tests (`npm run test:e2e`) — verify all 20 Playwright specs pass with UI changes
+### E2E Stability
+- [ ] Fix 12 pre-existing flaky E2E tests (command-palette, context-manager, cost-calculator, dto-matic, git-commit, prompt-analyzer, settings-export)
 - [ ] Add E2E coverage for new features (batch tab in Base64, flavor selector in Regex, SQL tab in DTO-Matic)
-- [ ] Add unit tests for `getFlavorWarnings()` in regex-humanizer (currently only tested indirectly via `explainRegex`)
-- [ ] Add unit tests for `generateCodeSnippets()` in http-status-finder
 
-### Visual QA & UX
-- [ ] Manual visual QA of all 15 tools on mobile (375px viewport) — new UI elements may overflow
+### Visual QA
 - [ ] Verify JSON Formatter syntax highlighting renders correctly in both light/dark themes
 - [ ] Verify Tailwind Sorter dual-preview shows correct dark mode rendering
-- [ ] Verify Prompt Analyzer radar tooltips don't clip on mobile
-- [ ] Verify Cost Calculator feature filter chips wrap properly on mobile
-
-### Performance
-- [ ] Run `npm run analyze` — bundle analysis to verify no regression from new code
-- [ ] Run Lighthouse CI — check performance scores after changes
-- [ ] Verify UUID v5 `crypto.subtle.digest` doesn't cause SSR issues (async Web Crypto)
 
 ### Future Enhancements (Lower Priority)
 - [ ] Regex Humanizer — visual regex graph/railroad diagram

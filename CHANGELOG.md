@@ -28,8 +28,12 @@ Feature improvements across all 15 tools, benchmarked against best-in-class alte
 - **Cost Calculator** — Feature matrix filter: filter models by capabilities (Vision, JSON Mode, Function Calling, Streaming, Fine-tuning)
 - **Context Manager** — Full-text search across document title, content, and tags
 
+#### Fixed
+- **JSON Formatter E2E** — Updated Playwright selector for syntax-highlighted output (strict mode violation with `getByText`)
+- **Mobile overflow** — UUID namespace grid (2-col on mobile), Tailwind Sorter preview (stacks on mobile), Code Review diff (stacks on mobile), Prompt Analyzer tooltip (added margin inset)
+
 #### Tests
-- +30 new tests (1416 → 1446): batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL generation (8)
+- +50 new tests (1416 → 1466): batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL generation (8), flavor warnings (12), code snippets (8)
 
 #### i18n
 - +45 keys in both EN and ES locales (full parity maintained)

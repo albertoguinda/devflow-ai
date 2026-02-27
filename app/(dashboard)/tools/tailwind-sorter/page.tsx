@@ -164,10 +164,10 @@ export default function TailwindSorterPage() {
               <Eye className="size-3" />
               {t("tailwind.instantSandbox")}
             </h3>
-            <div className="grid grid-cols-2 gap-3 relative z-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
               <div className="flex flex-col items-center">
                 <span className="text-[9px] font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.lightPreview")}</span>
-                <div className="flex items-center justify-center p-6 bg-white rounded-2xl border border-default-200 min-h-[120px] w-full">
+                <div className="flex items-center justify-center p-4 sm:p-6 bg-white rounded-2xl border border-default-200 min-h-[120px] w-full">
                   <div className={cn("transition-all duration-500 p-4 rounded", result?.output || "bg-sky-500 text-white")}>
                     <span className="text-sm font-bold text-gray-900">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
                   </div>
@@ -175,7 +175,7 @@ export default function TailwindSorterPage() {
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-[9px] font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.darkPreview")}</span>
-                <div className="flex items-center justify-center p-6 bg-gray-900 rounded-2xl border border-gray-700 min-h-[120px] w-full dark">
+                <div className="flex items-center justify-center p-4 sm:p-6 bg-gray-900 rounded-2xl border border-gray-700 min-h-[120px] w-full dark">
                   <div className={cn("transition-all duration-500 p-4 rounded", result?.output || "bg-sky-500 text-white")}>
                     <span className="text-sm font-bold text-gray-100">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
                   </div>
