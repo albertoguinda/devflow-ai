@@ -35,21 +35,21 @@
 
 |       | Tool                       | Description                                                                              |
 | ----- | -------------------------- | ---------------------------------------------------------------------------------------- |
-| `{ }` | **JSON Formatter**         | Format, minify, validate JSON. Extract paths, diff documents, generate TS interfaces.    |
+| `{ }` | **JSON Formatter**         | Format, minify, validate JSON. Syntax highlighting, diff documents, generate TS interfaces. |
 | `Aa`  | **Variable Name Wizard**   | Generate variable names and convert between 8 conventions (camel, snake, kebab...).      |
-| `#`   | **Regex Humanizer**        | Explain regex in plain language. Generate patterns from descriptions. Real-time tester.  |
+| `#`   | **Regex Humanizer**        | Explain regex in plain language. Multi-flavor support (JS/Python/Go/PCRE/Rust). Tester.  |
 | `< >` | **Code Review Assistant**  | Code quality analysis: code smells, cyclomatic complexity, refactoring suggestions.      |
 | `$`   | **API Cost Calculator**    | Compare costs across OpenAI, Anthropic, Google and other providers. Monthly projections. |
-| `01`  | **Base64 Encoder/Decoder** | Encode/decode with URL-safe, data URL and Unicode support.                               |
-| `id`  | **UUID Generator**         | Generate UUID v1, v4, v7. Validation, parsing and bulk generation up to 1000.            |
-| `->`  | **DTO-Matic**              | Convert JSON to TypeScript interfaces, entities and mappers. Zod schemas included.       |
+| `01`  | **Base64 Encoder/Decoder** | Encode/decode with URL-safe, data URL, Unicode and batch multi-line support.             |
+| `id`  | **UUID Generator**         | Generate UUID v1, v3, v4, v5, v7. Namespace UUIDs, validation, bulk generation.          |
+| `->`  | **DTO-Matic**              | Convert JSON to TypeScript, Java, Go, Python, SQL DDL. Zod schemas included.             |
 | `>>`  | **Git Commit Generator**   | Conventional commits with types, scopes, emojis and real-time validation.                |
 | `*`   | **Cron Builder**           | Visual cron expression builder with execution preview.                                   |
 | `~`   | **Tailwind Sorter**        | Sort Tailwind classes by category, remove duplicates, order variants.                    |
 | `?`   | **Prompt Analyzer**        | Evaluate prompt quality, detect injections and suggest improvements.                     |
 | `Tk`  | **Token Visualizer**       | Real-time tokenization visualization with per-token cost estimation.                     |
 | `[ ]` | **Context Manager**        | Organize LLM context windows with chunking and prioritization.                           |
-| `200` | **HTTP Status Finder**     | Complete reference of 61 HTTP status codes with examples and usage guides.              |
+| `200` | **HTTP Status Finder**     | 61 HTTP status codes with code snippets (curl/fetch/axios/python) and usage guides.     |
 
 ---
 
@@ -348,21 +348,21 @@ Coverage reports and Playwright reports are uploaded as artifacts.
 
 |       | Herramienta                | Descripcion                                                                                    |
 | ----- | -------------------------- | ---------------------------------------------------------------------------------------------- |
-| `{ }` | **JSON Formatter**         | Formatea, minifica, valida JSON. Extrae paths, compara documentos, genera interfaces TS.       |
+| `{ }` | **JSON Formatter**         | Formatea, minifica, valida JSON. Syntax highlighting, compara documentos, genera interfaces TS. |
 | `Aa`  | **Variable Name Wizard**   | Genera nombres de variables y convierte entre 8 convenciones (camel, snake, kebab...).         |
-| `#`   | **Regex Humanizer**        | Explica regex en lenguaje natural. Genera patrones desde descripciones. Tester en tiempo real. |
+| `#`   | **Regex Humanizer**        | Explica regex en lenguaje natural. Multi-flavor (JS/Python/Go/PCRE/Rust). Tester en tiempo real. |
 | `< >` | **Code Review Assistant**  | Analiza calidad de codigo: code smells, complejidad ciclomatica, sugerencias de refactor.      |
 | `$`   | **API Cost Calculator**    | Compara costes entre OpenAI, Anthropic, Google y otros providers. Proyecciones mensuales.      |
-| `01`  | **Base64 Encoder/Decoder** | Encode/decode con soporte URL-safe, data URLs y Unicode.                                       |
-| `id`  | **UUID Generator**         | Genera UUID v1, v4, v7. Validacion, parsing y bulk generation hasta 1000.                      |
-| `->`  | **DTO-Matic**              | Convierte JSON a interfaces TypeScript, entities y mappers. Schemas Zod incluidos.             |
+| `01`  | **Base64 Encoder/Decoder** | Encode/decode con soporte URL-safe, data URLs, Unicode y procesamiento batch.                  |
+| `id`  | **UUID Generator**         | Genera UUID v1, v3, v4, v5, v7. UUIDs con namespace, validacion, generacion masiva.            |
+| `->`  | **DTO-Matic**              | Convierte JSON a TypeScript, Java, Go, Python, SQL DDL. Schemas Zod incluidos.                 |
 | `>>`  | **Git Commit Generator**   | Commits convencionales con tipos, scopes, emojis y validacion en tiempo real.                  |
 | `*`   | **Cron Builder**           | Constructor visual de expresiones cron con previsualizacion de ejecuciones.                    |
 | `~`   | **Tailwind Sorter**        | Ordena clases Tailwind por categoria, elimina duplicados, ordena variantes.                    |
 | `?`   | **Prompt Analyzer**        | Evalua calidad de prompts, detecta inyecciones y sugiere mejoras.                              |
 | `Tk`  | **Token Visualizer**       | Visualiza tokenizacion en tiempo real con estimacion de costes por token.                      |
 | `[ ]` | **Context Manager**        | Organiza ventanas de contexto para LLMs con chunking y priorizacion.                           |
-| `200` | **HTTP Status Finder**     | Referencia completa de 61 codigos HTTP con ejemplos y guias de uso.                           |
+| `200` | **HTTP Status Finder**     | 61 codigos HTTP con snippets de codigo (curl/fetch/axios/python) y guias de uso.              |
 
 ---
 
