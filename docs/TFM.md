@@ -20,11 +20,11 @@ DevFlow AI es una plataforma open-source que centraliza **15 herramientas** esen
 
 - 15 herramientas funcionales end-to-end
 - 100% ejecucion local + IA opcional con 4 proveedores (Gemini, Groq, OpenRouter, Pollinations)
-- **1416 tests** con coverage estrategico 100/80/0 per-file (45 archivos de test)
+- **1446 tests** con coverage estrategico 100/80/0 per-file (45 archivos de test)
 - 20 E2E specs con Playwright (15 tools + settings + navigation + accessibility WCAG AAA)
 - Lighthouse score **100/100/100/100** en Desktop
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
-- Internacionalizacion completa (English/Castellano, **~1605 claves** por idioma)
+- Internacionalizacion completa (English/Castellano, **~1650 claves** por idioma)
 - **35 rutas** generadas (pages + API routes)
 - **10 CI jobs**: quality, security, dependency-review, build, e2e, a11y, CodeQL SAST, Semgrep SAST, Lighthouse, release
 - Command Palette (`Cmd+K`) para acceso rapido a cualquier herramienta
@@ -451,7 +451,7 @@ Modelo de coverage estrategico con enforcement per-file:
 
 ```
 Test Files  45 passed (45)
-Tests       1416 passed (1416)
+Tests       1446 passed (1446)
 Duration    ~50s
 ```
 
@@ -459,14 +459,14 @@ Duration    ~50s
 
 | Test File            | Tests | Calidad   |
 | -------------------- | ----- | --------- |
-| uuid-generator       | 89    | Excelente |
+| uuid-generator       | 112   | Excelente |
 | regex-humanizer      | 83    | Excelente |
 | cron-builder         | 75    | Excelente |
 | variable-name-wizard | 74    | Excelente |
 | git-commit-generator | 71    | Excelente |
-| base64               | 66    | Excelente |
+| base64               | 54    | Excelente |
 | json-formatter       | 61    | Excelente |
-| dto-matic            | 62    | Excelente |
+| dto-matic            | 108   | Excelente |
 | code-review          | 55    | Excelente |
 | tailwind-sorter      | 53    | Muy bueno |
 | http-status-finder   | 51    | Muy bueno |

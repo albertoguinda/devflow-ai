@@ -31,6 +31,42 @@
 ### i18n
 - [x] +45 keys in EN and ES (full parity)
 
+### Docs Sync
+- [x] README.md — test badge 1416→1446, scripts comment updated
+- [x] TFM.md — test count 1416→1446, i18n keys ~1605→~1650, per-tool test table updated (uuid 89→112, base64 66→54, dto-matic 62→108)
+- [x] DEPLOYMENT.md — health endpoint version 4.11.0→4.13.0
+
+---
+
+## Next Session — Potential Tasks
+
+### Testing & Quality
+- [ ] Run `npm run test:coverage` — verify per-file thresholds still pass with new code
+- [ ] Run E2E tests (`npm run test:e2e`) — verify all 20 Playwright specs pass with UI changes
+- [ ] Add E2E coverage for new features (batch tab in Base64, flavor selector in Regex, SQL tab in DTO-Matic)
+- [ ] Add unit tests for `getFlavorWarnings()` in regex-humanizer (currently only tested indirectly via `explainRegex`)
+- [ ] Add unit tests for `generateCodeSnippets()` in http-status-finder
+
+### Visual QA & UX
+- [ ] Manual visual QA of all 15 tools on mobile (375px viewport) — new UI elements may overflow
+- [ ] Verify JSON Formatter syntax highlighting renders correctly in both light/dark themes
+- [ ] Verify Tailwind Sorter dual-preview shows correct dark mode rendering
+- [ ] Verify Prompt Analyzer radar tooltips don't clip on mobile
+- [ ] Verify Cost Calculator feature filter chips wrap properly on mobile
+
+### Performance
+- [ ] Run `npm run analyze` — bundle analysis to verify no regression from new code
+- [ ] Run Lighthouse CI — check performance scores after changes
+- [ ] Verify UUID v5 `crypto.subtle.digest` doesn't cause SSR issues (async Web Crypto)
+
+### Future Enhancements (Lower Priority)
+- [ ] Regex Humanizer — visual regex graph/railroad diagram
+- [ ] JSON Formatter — tree view collapse/expand
+- [ ] UUID Generator — UUID v7 timestamp extraction display
+- [ ] Context Manager — highlight search terms in results
+- [ ] Cost Calculator — comparison chart (Recharts bar chart for selected models)
+- [ ] Base64 — file upload for batch processing (drag & drop)
+
 ---
 
 ## Completed in Previous Session (2026-02-27) — v4.12.0
