@@ -29,8 +29,8 @@ const CostProjectionChart = dynamic(
   { ssr: false, loading: () => <div className="h-[300px] w-full animate-pulse rounded-xl bg-muted/50" /> },
 );
 import { useTranslation } from "@/hooks/use-translation";
-import { formatCost, exportComparisonCsv } from "@/lib/application/cost-calculator";
-import type { Currency } from "@/lib/application/cost-calculator";
+import { formatCost, exportComparisonCsv } from "@/hooks/use-cost-calculator";
+import type { Currency } from "@/hooks/use-cost-calculator";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
@@ -411,7 +411,7 @@ export default function CostCalculatorPage() {
           )}
 
           {isAIEnabled && aiError && (
-            <Card className="p-3 border-danger/30 bg-danger/5" role="alert">
+            <Card className="p-3 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
               <p className="text-xs text-danger font-bold flex items-center gap-2">
                 <AlertTriangle className="size-3.5 shrink-0" aria-hidden="true" />
                 {t("ai.errorOccurred", { message: aiError.message })}

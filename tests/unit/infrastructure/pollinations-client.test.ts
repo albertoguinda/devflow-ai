@@ -69,6 +69,6 @@ describe("PollinationsClient", () => {
 
     await expect(
       client.generateText("test", "system"),
-    ).rejects.toThrow("Pollinations API error (500): Internal Server Error");
+    ).rejects.toThrow("AI provider returned an error (500)");
   });
 });

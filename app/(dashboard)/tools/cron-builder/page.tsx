@@ -30,7 +30,7 @@ import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
-import { parseExpression } from "@/lib/application/cron-builder";
+import { parseExpression } from "@/hooks/use-cron-builder";
 import type { ConfigFormat, NextExecution } from "@/types/cron-builder";
 
 function MiniCalendar({ executions }: { executions: NextExecution[] }) {
@@ -260,7 +260,7 @@ export default function CronBuilderPage() {
                   )}
 
                   {isAIEnabled && aiError && (
-                    <Card className="p-3 border-danger/30 bg-danger/5" role="alert">
+                    <Card className="p-3 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
                       <p className="text-xs text-danger font-bold flex items-center gap-2">
                         <AlertTriangle className="size-3.5 shrink-0" aria-hidden="true" />
                         {t("ai.errorOccurred", { message: aiError.message })}

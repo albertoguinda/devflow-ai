@@ -37,7 +37,7 @@ import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { StatusBadge } from "@/components/shared/status-badge";
 import type { CommitType, CommitResult } from "@/types/git-commit-generator";
-import { getCommitTypeInfo } from "@/lib/application/git-commit-generator";
+import { getCommitTypeInfo } from "@/hooks/use-git-commit-generator";
 
 export default function GitCommitGeneratorPage() {
   const { t } = useTranslation();
@@ -421,7 +421,7 @@ export default function GitCommitGeneratorPage() {
                 )}
 
                 {isAIEnabled && aiError && (
-                  <Card className="p-3 border-danger/30 bg-danger/5" role="alert">
+                  <Card className="p-3 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
                     <p className="text-xs text-danger font-bold flex items-center gap-2">
                       <AlertTriangle className="size-3.5 shrink-0" aria-hidden="true" />
                       {t("ai.errorOccurred", { message: aiError.message })}

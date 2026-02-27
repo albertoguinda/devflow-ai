@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useCallback, useState } from "react";
+import { createContext, useContext, useCallback, useState, useRef } from "react";
 
 export type ToastType = "success" | "error" | "warning" | "info";
 
@@ -29,6 +29,7 @@ export function useToast() {
 
 export function useToastState() {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const timerMapRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   const addToast = useCallback(
     (message: string, type: ToastType = "info", duration = 4000) => {
@@ -38,15 +39,22 @@ export function useToastState() {
       setToasts((prev) => [...prev.slice(-4), newToast]);
 
       if (duration > 0) {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           setToasts((prev) => prev.filter((t) => t.id !== id));
+          timerMapRef.current.delete(id);
         }, duration);
+        timerMapRef.current.set(id, timer);
       }
     },
     []
   );
 
   const removeToast = useCallback((id: string) => {
+    const timer = timerMapRef.current.get(id);
+    if (timer !== undefined) {
+      clearTimeout(timer);
+      timerMapRef.current.delete(id);
+    }
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 

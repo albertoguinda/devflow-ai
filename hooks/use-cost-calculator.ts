@@ -5,7 +5,13 @@ import useSWR from "swr";
 import {
   compareAllModels,
   calculateMonthlyCost,
+  formatCost,
+  exportComparisonCsv,
 } from "@/lib/application/cost-calculator";
+export type { Currency } from "@/lib/application/cost-calculator";
+
+// Re-export utilities for pages (dependency flow: Page → Hook → lib/application)
+export { formatCost, exportComparisonCsv };
 import type { CostComparison } from "@/types/cost-calculator";
 import { AI_MODELS } from "@/config/ai-models";
 import { fetchLatestPrices, PRICING_CACHE_KEY } from "@/infrastructure/services/pricing-service";
@@ -14,8 +20,20 @@ import { fetchLatestPrices, PRICING_CACHE_KEY } from "@/infrastructure/services/
 function getInitialInputTokens(): number {
   if (typeof window === "undefined") return 1000;
   try {
-    const shared = localStorage.getItem("devflow-shared-data");
-    if (shared) return Math.ceil(shared.length / 4);
+    const raw = localStorage.getItem("devflow-shared-data");
+    if (raw) {
+      // Handle possible JSON envelope from older ToolSuggestions writer
+      let text = raw;
+      try {
+        const parsed = JSON.parse(raw) as { data?: string };
+        if (typeof parsed === "object" && parsed !== null && typeof parsed.data === "string") {
+          text = parsed.data;
+        }
+      } catch {
+        // Not JSON — treat as plain string
+      }
+      return Math.ceil(text.length / 4);
+    }
   } catch {
     // Storage unavailable
   }
@@ -48,7 +66,7 @@ export function useCostCalculator() {
   }, [inputTokens, outputTokens, models]);
 
   const selectedModel = useMemo(
-    () => models.find((m) => m.id === selectedModelId) || models[0],
+    () => models.find((m) => m.id === selectedModelId) ?? models[0] ?? null,
     [selectedModelId, models]
   );
 
@@ -71,6 +89,13 @@ export function useCostCalculator() {
 
   const isUsingFallback = !latestModels || latestModels.length === 0;
 
+  // Derive sync timestamp from whether latest models are available
+  // useMemo ensures this only recomputes when latestModels reference changes
+  const lastSync = useMemo(
+    () => (latestModels && latestModels.length > 0 ? new Date().toISOString() : null),
+    [latestModels],
+  );
+
   return {
     inputTokens,
     setInputTokens,
@@ -85,7 +110,7 @@ export function useCostCalculator() {
     reset,
     isSyncing: isValidating,
     isUsingFallback,
-    lastSync: latestModels ? new Date().toISOString() : null,
+    lastSync,
     syncPrices: () => mutate(),
     models
   };

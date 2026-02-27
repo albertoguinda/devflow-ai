@@ -76,17 +76,16 @@ export async function POST(request: NextRequest) {
 
     const result = parseSuggestResponse(response.text);
 
+    // Record token usage (request already recorded by withRateLimit)
     const env = getServerEnv();
     const limiter = getRateLimiter(env.RATE_LIMIT_RPM, env.RATE_LIMIT_DAILY_TOKENS);
     const ip = getClientIP(request);
-    limiter.recordRequest(ip);
     limiter.recordTokens(ip, response.usage.totalTokens);
 
     return successResponse(result);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "AI request failed";
-    return errorResponse(message, 502);
+    console.error("[suggest] AI call failed:", error);
+    return errorResponse("AI request failed. Please try again.", 502);
   }
 }
 
@@ -96,7 +95,8 @@ function parseSuggestResponse(text: string): AISuggestResult {
   try {
     parsed = JSON.parse(cleaned) as Record<string, unknown>;
   } catch {
-    throw new Error(`AI returned malformed JSON: ${cleaned.slice(0, 200)}`);
+    console.error("[suggest] AI returned malformed JSON:", cleaned.slice(0, 200));
+    throw new Error("AI returned an unexpected response format");
   }
 
   return {

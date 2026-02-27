@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type {
   DtoMaticConfig,
   GenerationResult,
@@ -17,7 +17,6 @@ import {
 import { useToolHistory } from "@/hooks/use-tool-history";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { useTranslation } from "@/hooks/use-translation";
-import { useEffect } from "react";
 
 interface HistoryItem {
   id: string;

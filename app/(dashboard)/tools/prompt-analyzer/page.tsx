@@ -613,7 +613,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                     size="sm"
                     variant="primary"
                     onPress={() => {
-                      setPrompt(result.refinedPrompt!);
+                      setPrompt(result.refinedPrompt ?? '');
                       addToast(t("promptAnalyzer.toastApplied"), "success");
                     }}
                     className="gap-1.5"
@@ -701,7 +701,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
           )}
 
           {isAIEnabled && aiError && (
-            <Card className="p-3 border-danger/30 bg-danger/5" role="alert">
+            <Card className="p-3 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
               <p className="text-xs text-danger font-bold flex items-center gap-2">
                 <AlertTriangle className="size-3.5 shrink-0" aria-hidden="true" />
                 {t("ai.errorOccurred", { message: aiError.message })}

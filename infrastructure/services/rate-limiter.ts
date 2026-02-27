@@ -141,13 +141,19 @@ export class RateLimiter {
   }
 }
 
-/** Singleton rate limiter instance for the server */
+/**
+ * Singleton rate limiter instance for the server.
+ * Config is fixed at first initialization for the lifetime of the process.
+ * Call with explicit params on first init (from middleware); subsequent calls reuse the instance.
+ */
 let instance: RateLimiter | null = null;
 
 export function getRateLimiter(
   rpm?: number,
   dailyTokens?: number,
 ): RateLimiter {
-  instance ??= new RateLimiter(rpm, dailyTokens);
+  if (!instance) {
+    instance = new RateLimiter(rpm, dailyTokens);
+  }
   return instance;
 }

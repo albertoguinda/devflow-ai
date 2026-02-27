@@ -41,12 +41,23 @@ function makeRequest(
 }
 
 describe("getClientIP", () => {
-  it("should prefer x-real-ip over x-forwarded-for", () => {
+  it("should ignore x-real-ip when VERCEL env is not set", () => {
+    const req = makeRequest({
+      "x-real-ip": "10.0.0.1",
+      "x-forwarded-for": "1.2.3.4, 5.6.7.8",
+    });
+    // Without VERCEL=1, x-real-ip is untrusted — falls through to x-forwarded-for
+    expect(getClientIP(req)).toBe("5.6.7.8");
+  });
+
+  it("should prefer x-real-ip when VERCEL=1 is set", () => {
+    process.env["VERCEL"] = "1";
     const req = makeRequest({
       "x-real-ip": "10.0.0.1",
       "x-forwarded-for": "1.2.3.4, 5.6.7.8",
     });
     expect(getClientIP(req)).toBe("10.0.0.1");
+    delete process.env["VERCEL"];
   });
 
   it("should extract last IP from x-forwarded-for (proxy-set)", () => {
@@ -59,9 +70,10 @@ describe("getClientIP", () => {
     expect(getClientIP(req)).toBe("1.2.3.4");
   });
 
-  it("should extract IP from x-real-ip when no x-forwarded-for", () => {
+  it("should fall through to x-forwarded-for when x-real-ip is untrusted", () => {
     const req = makeRequest({ "x-real-ip": "10.0.0.1" });
-    expect(getClientIP(req)).toBe("10.0.0.1");
+    // Without VERCEL=1, x-real-ip is not trusted and there's no x-forwarded-for
+    expect(getClientIP(req)).toBe("127.0.0.1");
   });
 
   it("should default to 127.0.0.1 when no headers", () => {
@@ -79,20 +91,38 @@ describe("getClientIP", () => {
     expect(getClientIP(req)).toBe("5.6.7.8");
   });
 
-  it("should trim whitespace from x-real-ip", () => {
+  it("should trust x-real-ip on Vercel and trim whitespace", () => {
+    process.env["VERCEL"] = "1";
     const req = makeRequest({ "x-real-ip": " 10.0.0.1 " });
     expect(getClientIP(req)).toBe("10.0.0.1");
+    delete process.env["VERCEL"];
   });
 });
 
 describe("extractBYOK", () => {
-  it("should extract BYOK config from headers", () => {
+  it("should extract BYOK config from headers with valid key length", () => {
     const req = makeRequest({
-      "x-devflow-api-key": "my-key",
+      "x-devflow-api-key": "my-valid-api-key-that-is-long-enough",
       "x-devflow-provider": "gemini",
     });
     const byok = extractBYOK(req);
-    expect(byok).toEqual({ key: "my-key", provider: "gemini" });
+    expect(byok).toEqual({ key: "my-valid-api-key-that-is-long-enough", provider: "gemini" });
+  });
+
+  it("should reject BYOK with key shorter than 20 characters", () => {
+    const req = makeRequest({
+      "x-devflow-api-key": "short-key",
+      "x-devflow-provider": "gemini",
+    });
+    expect(extractBYOK(req)).toBeUndefined();
+  });
+
+  it("should reject BYOK with pollinations provider", () => {
+    const req = makeRequest({
+      "x-devflow-api-key": "my-valid-api-key-that-is-long-enough",
+      "x-devflow-provider": "pollinations",
+    });
+    expect(extractBYOK(req)).toBeUndefined();
   });
 
   it("should return undefined when headers are missing", () => {

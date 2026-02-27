@@ -5,6 +5,58 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.12.0] - 2026-02-27
+
+### Security Hardening & Architecture Audit
+
+Comprehensive security audit, critical bug fixes, Clean Architecture enforcement, and zero tech debt sprint across the entire codebase.
+
+#### Security (HIGH)
+- **BYOK bypass prevention** — Added minimum 20-char key validation + blocked `pollinations` as BYOK provider (was allowing free-tier abuse)
+- **TOCTOU race condition** — Moved `recordRequest()` into `withRateLimit` middleware (atomic check-and-record before AI call)
+- **Error message sanitization** — All 5 route handlers + 3 provider clients now return generic errors to client, full details server-side only
+- **IP trust gating** — `x-real-ip` header only trusted when `VERCEL=1` env is set (prevents spoofing in non-proxy deployments)
+
+#### Security (MEDIUM)
+- **Tokenize output guard** — Added 10,000 segment maximum to prevent memory exhaustion on large inputs
+- **Settings export denylist** — History keys containing user content excluded from export (`devflow-code-review-history`, etc.)
+- **Status endpoint info leak** — Removed provider name, premium config, and rate limit details from `/api/ai/status` response
+- **Health endpoint** — Removed version exposure from `/api/health` response
+- **X-XSS-Protection** — Changed from deprecated `1; mode=block` to `0` (modern CSP handles XSS)
+
+#### Fixed (CRITICAL)
+- **Cross-tool navigation data mismatch** — `ToolSuggestions` now uses `useSmartNavigation.navigateTo()` instead of writing raw JSON envelope to localStorage (was causing parse failures in receiving tools)
+- **Toast timer memory leak** — Added `useRef<Map>` for timer ID tracking with proper cleanup on unmount and individual toast removal
+
+#### Fixed (IMPORTANT)
+- **13 tool pages** — Added `aria-live="assertive"` to all `role="alert"` error elements for screen reader announcement
+- **3 non-null assertions** — Replaced `!` with `?? ''` / `?? 0` in code-review, prompt-analyzer, and base64 pages
+- **Context Manager** — Fixed `useAISettingsStore()` called without selector (caused unnecessary re-renders)
+- **Dashboard layout** — Fixed stale prerender URL (`/tools/regex-tester` → `/tools/regex-humanizer`)
+- **Duplicate React imports** — Merged in git-commit-generator and dto-matic hooks
+- **Dead exports** — Removed `usePulse` and `useCounter` from hooks barrel file
+
+#### Architecture
+- **Dependency flow enforcement** — 8 tool pages were importing directly from `lib/application/`; added re-exports to hooks and updated all imports to follow Page → Hook → lib/application flow
+- **Re-exports added** — `use-cron-builder`, `use-regex-humanizer`, `use-uuid-generator`, `use-variable-name-wizard`, `use-http-status-finder`, `use-context-manager`, `use-cost-calculator`, `use-git-commit-generator`
+
+#### Tech Debt Elimination
+- **SEO metadata** — Added `<Metadata>` layouts for `/about` and `/docs` pages
+- **Dead code** — Removed unused `fetchAIStatus` function from `lib/api/fetcher.ts`
+- **Empty barrel files** — Deleted 3 comment-only index files (`components/features/`, `infrastructure/`, `infrastructure/persistence/repositories/`)
+- **Label semantics** — Replaced 3 misused `<label>` elements with `<p>` in regex-humanizer (labels without associated form controls)
+- **localStorage debounce** — Added 300ms debounce to config persistence in variable-name-wizard hook
+- **GSAP lazy import** — Converted synchronous `import gsap` to dynamic `import("gsap")` in score-badge component (reduces initial bundle)
+
+#### Tests Updated
+- 6 test files updated to match new security behaviors (sanitized error messages, BYOK validation, IP trust gating, status endpoint, tool-suggestions navigation)
+
+#### Stats
+- **1416 unit tests passing** (45 files), **20 E2E specs**
+- **0 TypeScript errors**, **0 lint errors**, **0 lint warnings**
+- **0 npm vulnerabilities**
+- **53 files changed** across security, architecture, and quality layers
+
 ## [4.11.0] - 2026-02-26
 
 ### Accessibility, i18n & Security Polish

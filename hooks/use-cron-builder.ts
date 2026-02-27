@@ -16,6 +16,8 @@ import {
   generateConfig,
   getCronPresets,
 } from "@/lib/application/cron-builder";
+// Re-export for pages (dependency flow: Page → Hook → lib/application)
+export { parseExpression } from "@/lib/application/cron-builder";
 import { useToolHistory } from "@/hooks/use-tool-history";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 

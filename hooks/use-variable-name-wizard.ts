@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import type {
   ConversionResult,
   GenerationResult,
@@ -8,6 +8,8 @@ import type {
 } from "@/types/variable-name-wizard";
 import { DEFAULT_WIZARD_CONFIG } from "@/types/variable-name-wizard";
 import { convertToAll, generateSuggestions } from "@/lib/application/variable-name-wizard";
+// Re-export for pages (dependency flow: Page → Hook → lib/application)
+export { convertToAll } from "@/lib/application/variable-name-wizard";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useTranslation } from "@/hooks/use-translation";
 
@@ -52,10 +54,17 @@ export function useVariableNameWizard(): UseVariableNameWizardReturn {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-    } catch { /* quota exceeded — ignore */ }
+    if (saveTimerRef.current !== null) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+      } catch { /* quota exceeded — ignore */ }
+    }, 300);
+    return () => {
+      if (saveTimerRef.current !== null) clearTimeout(saveTimerRef.current);
+    };
   }, [config]);
 
   const convert = useCallback(async () => {

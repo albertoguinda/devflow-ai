@@ -15,6 +15,8 @@ import {
   parseUuid,
   formatBulkExport,
 } from "@/lib/application/uuid-generator";
+// Re-export for pages (dependency flow: Page → Hook → lib/application)
+export { checkCollisions } from "@/lib/application/uuid-generator";
 import { useToolHistory } from "@/hooks/use-tool-history";
 
 interface HistoryItem {

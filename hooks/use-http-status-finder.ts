@@ -9,6 +9,8 @@ import {
   processSearch,
   getCommonCodes,
 } from "@/lib/application/http-status-finder";
+// Re-export for pages (dependency flow: Page → Hook → lib/application)
+export { getCategoryInfo } from "@/lib/application/http-status-finder";
 import { useToolHistory } from "@/hooks/use-tool-history";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 

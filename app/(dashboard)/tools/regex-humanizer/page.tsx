@@ -17,7 +17,7 @@ import {
   Bot,
 } from "lucide-react";
 import { useRegexHumanizer } from "@/hooks/use-regex-humanizer";
-import { getCommonPatterns } from "@/lib/application/regex-humanizer";
+import { getCommonPatterns } from "@/hooks/use-regex-humanizer";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
@@ -146,9 +146,9 @@ export default function RegexHumanizerPage() {
             <Tabs.Panel id="explain">
               <div className="space-y-4 mt-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                     {t("regex.regexPattern")}
-                  </label>
+                  </p>
                   <TextArea
                     value={pattern}
                     onChange={(e) => setPattern(e.target.value)}
@@ -199,9 +199,9 @@ export default function RegexHumanizerPage() {
             <Tabs.Panel id="generate">
               <div className="space-y-4 mt-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                     {t("regex.naturalLangDesc")}
-                  </label>
+                  </p>
                   <TextArea
                     value={generateDesc}
                     onChange={(e) => setGenerateDesc(e.target.value)}
@@ -434,7 +434,7 @@ export default function RegexHumanizerPage() {
                   <Tabs.Panel id="test">
                     <div className="p-6 space-y-4">
                       <div className="flex flex-col gap-2">
-                        <label className="text-[10px] font-bold text-muted-foreground uppercase">{t("regex.sampleText")}</label>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase">{t("regex.sampleText")}</p>
                         <TextArea
                           value={testText}
                           onChange={(e) => setTestText(e.target.value)}

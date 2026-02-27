@@ -48,17 +48,3 @@ export async function aiFetcher<T>(
 
   return result.data;
 }
-
-/**
- * Fetch AI status (GET endpoint).
- */
-export async function fetchAIStatus<T>(): Promise<T> {
-  const response = await fetch("/api/ai/status");
-  const result = (await response.json()) as ApiResult<T>;
-
-  if (result.error !== null) {
-    throw new Error(result.error);
-  }
-
-  return result.data;
-}

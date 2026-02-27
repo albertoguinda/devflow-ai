@@ -64,7 +64,7 @@ describe("OpenRouterClient", () => {
 
     await expect(
       client.generateText("test", "system"),
-    ).rejects.toThrow("OpenRouter API error (403): Forbidden");
+    ).rejects.toThrow("AI provider returned an error (403)");
   });
 
   it("should use default options (maxTokens 4096, temperature 0.3)", async () => {

@@ -1,11 +1,52 @@
-# TODO — DevFlow AI v4.11.0 (Post-Audit Polish)
+# TODO — DevFlow AI v4.12.0 (Security Hardening & Architecture Audit)
 
-> Last updated: 2026-02-26
-> Context: Continuation of deep audit session. All Priority 1-3 tasks from v4.10.0 completed. ARIA semantics fixed on all toggle buttons, i18n gaps closed (1605 keys), security patched, UX audited, docs fully updated.
+> Last updated: 2026-02-27
+> Context: Comprehensive security audit, critical bug fixes, Clean Architecture enforcement, and zero tech debt sprint. 53 files changed.
 
 ---
 
-## Completed in This Session (2026-02-26)
+## Completed in This Session (2026-02-27)
+
+### Security Hardening (HIGH)
+- [x] BYOK bypass — min 20-char key + blocked pollinations as BYOK provider
+- [x] TOCTOU race condition — atomic rate limit check-and-record in middleware
+- [x] Error message sanitization — 5 route handlers + 3 provider clients (generic to client, full server-side)
+- [x] IP trust gating — `x-real-ip` only trusted when `VERCEL=1`
+
+### Security (MEDIUM)
+- [x] Tokenize output guard — 10K segment maximum
+- [x] Settings export denylist — history keys excluded from export
+- [x] Status endpoint info leak — removed provider/config/limits from response
+- [x] Health endpoint — removed version exposure
+- [x] X-XSS-Protection — `1; mode=block` → `0` (deprecated)
+
+### Critical Bug Fixes
+- [x] Cross-tool navigation data mismatch — ToolSuggestions uses `useSmartNavigation`
+- [x] Toast timer memory leak — `useRef<Map>` with proper cleanup
+
+### Architecture
+- [x] Dependency flow enforcement — 8 pages fixed (Page → Hook → lib/application)
+- [x] Re-exports added to 8 hooks as facade layer
+- [x] Dead code removed (`fetchAIStatus`, `usePulse`, `useCounter`)
+- [x] Empty barrel files deleted (3 files)
+
+### Tech Debt Elimination
+- [x] SEO metadata for about/docs pages
+- [x] Label semantics fix in regex-humanizer (3 `<label>` → `<p>`)
+- [x] localStorage debounce (300ms) in variable-name-wizard
+- [x] GSAP lazy import in score-badge
+- [x] 13 tool pages — `aria-live="assertive"` on error elements
+- [x] 3 non-null assertions → safe fallbacks
+- [x] Context Manager — Zustand selector fix
+- [x] Dashboard layout — stale prerender URL fix
+- [x] Duplicate React imports merged
+
+### Tests
+- [x] 6 test files updated for new security behaviors
+
+---
+
+## Completed in Previous Session (2026-02-26)
 
 ### Accessibility — Toggle Button Semantics (All Tools)
 - [x] **Token Visualizer** — Added `aria-pressed` to model selector buttons (3 providers)
@@ -53,7 +94,7 @@
 
 ---
 
-## Completed in Previous Session (2026-02-25)
+## Completed in v4.10.0 (2026-02-25)
 
 ### Bug Fixes
 - [x] Easter egg invisible in production — switched to `console.info`
@@ -92,7 +133,7 @@ When resuming work:
 3. **End of session**: Update CHANGELOG.md, commit, push, verify CI on GitHub
 
 ### Quick Context
-- **Version**: 4.11.0 (current)
+- **Version**: 4.12.0 (current)
 - **Tests**: 45 files, 1416 passing
 - **ESLint**: 0 errors, 0 warnings
 - **TypeScript**: 0 errors (strict mode, zero `any`)

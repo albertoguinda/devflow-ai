@@ -11,6 +11,8 @@ import {
   exportForAI,
   preloadTokenEncoder,
 } from "@/lib/application/context-manager";
+// Re-export for pages (dependency flow: Page → Hook → lib/application)
+export { MODEL_PRESETS } from "@/lib/application/context-manager";
 import type {
   ContextWindow,
   DocumentType,

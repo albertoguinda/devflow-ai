@@ -8,10 +8,7 @@ import {
   validateBody,
   successResponse,
   errorResponse,
-  getClientIP,
 } from "@/lib/api/middleware";
-import { getRateLimiter } from "@/infrastructure/services/rate-limiter";
-import { getServerEnv } from "@/infrastructure/config/env";
 
 /**
  * Tokenize endpoint — uses real BPE tokenization via js-tiktoken.
@@ -32,6 +29,15 @@ export async function POST(request: NextRequest) {
     const encoding = getEncodingForModel(model);
     const tokens = encoding.encode(text);
 
+    // Guard against oversized responses (CPU + memory protection)
+    const MAX_SEGMENTS = 10_000;
+    if (tokens.length > MAX_SEGMENTS) {
+      return errorResponse(
+        `Input produces ${tokens.length} tokens; maximum for visualization is ${MAX_SEGMENTS}.`,
+        400,
+      );
+    }
+
     const segments: AITokenSegment[] = [];
     const decoder = new TextDecoder("utf-8", { fatal: false });
 
@@ -50,17 +56,12 @@ export async function POST(request: NextRequest) {
       model,
     };
 
-    // Record request for rate limiting (consistent with other AI routes)
-    const env = getServerEnv();
-    const limiter = getRateLimiter(env.RATE_LIMIT_RPM, env.RATE_LIMIT_DAILY_TOKENS);
-    const ip = getClientIP(request);
-    limiter.recordRequest(ip);
+    // Request already recorded by withRateLimit (no token recording for tokenize)
 
     return successResponse(result);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Tokenization failed";
-    return errorResponse(message, 500);
+    console.error("[tokenize] Tokenization failed:", error);
+    return errorResponse("Tokenization failed. Please try again.", 500);
   }
 }
 

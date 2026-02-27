@@ -85,7 +85,7 @@ export default function DtoMaticPage() {
       <ToolSuggestions toolId="dto-matic" input={jsonInput} output={selectedFile?.content || ""} />
 
       {error && (
-        <Card className="p-4 border-danger/30 bg-danger/5 flex items-center gap-3" role="alert">
+        <Card className="p-4 border-danger/30 bg-danger/5 flex items-center gap-3" role="alert" aria-live="assertive">
           <AlertCircle className="size-4 text-danger shrink-0" aria-hidden="true" />
           <p className="text-sm font-medium text-danger">{error}</p>
         </Card>
@@ -282,7 +282,7 @@ export default function DtoMaticPage() {
               )}
 
               {isAIEnabled && aiError && (
-                <Card className="p-3 border-danger/30 bg-danger/5" role="alert">
+                <Card className="p-3 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
                   <p className="text-xs text-danger font-bold flex items-center gap-2">
                     <AlertTriangle className="size-3.5 shrink-0" aria-hidden="true" />
                     {t("ai.errorOccurred", { message: aiError.message })}

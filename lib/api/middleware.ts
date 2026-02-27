@@ -8,9 +8,11 @@ import { getServerEnv } from "@/infrastructure/config/env";
  * Extract client IP from request headers.
  */
 export function getClientIP(request: NextRequest): string {
-  // Prefer x-real-ip (set by reverse proxy like Vercel, not spoofable)
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  if (realIp) return realIp;
+  // x-real-ip is injected by Vercel's edge proxy — only trust in Vercel deployments
+  if (process.env["VERCEL"] === "1") {
+    const realIp = request.headers.get("x-real-ip")?.trim();
+    if (realIp) return realIp;
+  }
 
   // Fallback to x-forwarded-for: take the LAST IP (set by trusted proxy)
   // First IP is client-controlled and spoofable
@@ -42,6 +44,12 @@ export function extractBYOK(request: NextRequest): BYOKConfig | undefined {
   if (!key || !provider) return undefined;
   if (!VALID_PROVIDERS.includes(provider as AIProviderType)) return undefined;
 
+  // Enforce minimum key length to block trivial bypass attempts
+  if (key.trim().length < 20) return undefined;
+
+  // Pollinations requires no API key — BYOK elevation only for keyed providers
+  if (provider === "pollinations") return undefined;
+
   return { key, provider: provider as AIProviderType };
 }
 
@@ -72,6 +80,10 @@ export function withRateLimit(
       },
     );
   }
+
+  // Record request immediately (optimistic) to prevent TOCTOU race under concurrency.
+  // Token usage is recorded separately after the AI call completes.
+  limiter.recordRequest(ip);
 
   return null;
 }

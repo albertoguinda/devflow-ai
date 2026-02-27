@@ -14,6 +14,20 @@ vi.mock("@/hooks/use-tool-recommendations", () => ({
   useToolRecommendations: (...args: unknown[]) => mockRecommendations(...args),
 }));
 
+// Mock smart navigation — stores plain string (not JSON envelope)
+vi.mock("@/hooks/use-smart-navigation", () => ({
+  useSmartNavigation: () => ({
+    navigateTo: (slug: string, data?: string) => {
+      if (data) {
+        localStorage.setItem("devflow-shared-data", data);
+      }
+      mockPush(`/tools/${slug}`);
+    },
+    getSharedData: () => localStorage.getItem("devflow-shared-data"),
+    clearSharedData: () => localStorage.removeItem("devflow-shared-data"),
+  }),
+}));
+
 // Mock translations
 vi.mock("@/hooks/use-translation", () => ({
   useTranslation: () => ({
@@ -86,7 +100,7 @@ describe("ToolSuggestions", () => {
     expect(mockPush).toHaveBeenCalledWith("/tools/base64-codec");
   });
 
-  it("sets shared data in localStorage with source and target tool IDs", async () => {
+  it("sets shared data in localStorage as plain string via useSmartNavigation", async () => {
     mockRecommendations.mockReturnValue([
       { toolSlug: "base64-codec", toolName: "Base64", dataToPass: "shared-data" },
     ]);
@@ -97,11 +111,9 @@ describe("ToolSuggestions", () => {
 
     await user.click(screen.getByText("Base64"));
 
-    const stored = JSON.parse(localStorage.getItem("devflow-shared-data") ?? "{}");
-    expect(stored.data).toBe("shared-data");
-    expect(stored.sourceToolId).toBe("json-formatter");
-    expect(stored.targetToolId).toBe("base64-codec");
-    expect(stored.timestamp).toBeDefined();
+    // Data is now stored as a plain string (not JSON envelope) via useSmartNavigation
+    const stored = localStorage.getItem("devflow-shared-data");
+    expect(stored).toBe("shared-data");
   });
 
   it("shows Sparkles icon and 'Next steps' label", () => {

@@ -20,7 +20,5 @@ export {
   useFadeIn,
   useStaggerIn,
   useScrollReveal,
-  usePulse,
-  useCounter,
 } from "./use-gsap";
 export { useTranslation } from "./use-translation";

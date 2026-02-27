@@ -54,9 +54,8 @@ export class PollinationsClient implements AIProviderPort {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(
-        `Pollinations API error (${response.status}): ${errorText}`,
-      );
+      console.error(`[pollinations] upstream error ${response.status}:`, errorText);
+      throw new Error(`AI provider returned an error (${response.status})`);
     }
 
     const data = (await response.json()) as PollinationsChatResponse;

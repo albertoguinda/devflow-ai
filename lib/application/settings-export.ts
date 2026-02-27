@@ -3,6 +3,15 @@ import type { SettingsExport } from "@/types/settings-export";
 const APP_PREFIX = "devflow-";
 const CURRENT_VERSION = "1.0";
 
+/** Keys containing user-generated content that should not be exported */
+const EXPORT_DENYLIST = new Set([
+  "devflow-code-review-history",
+  "devflow-dto-matic-history",
+  "devflow-git-commit-history",
+  "devflow-prompt-analyzer-history",
+  "devflow-shared-data",
+]);
+
 /**
  * Export all DevFlow settings from localStorage
  */
@@ -11,7 +20,7 @@ export function exportAllSettings(): SettingsExport {
 
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key && key.startsWith(APP_PREFIX)) {
+    if (key && key.startsWith(APP_PREFIX) && !EXPORT_DENYLIST.has(key)) {
       const value = localStorage.getItem(key);
       if (value !== null) {
         settings[key] = value;

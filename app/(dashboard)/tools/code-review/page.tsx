@@ -397,7 +397,7 @@ export default function CodeReviewPage() {
                 </Card>
               )}
               {isAIEnabled && aiError && !aiResult && (
-                <Card className="p-4 border-danger/30 bg-danger/5" role="alert">
+                <Card className="p-4 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
                   <div className="flex items-center gap-2 text-danger">
                     <AlertTriangle className="size-4" aria-hidden="true" />
                     <span className="text-sm font-medium">{t("ai.unavailable")}</span>
@@ -487,7 +487,7 @@ export default function CodeReviewPage() {
                         size="sm"
                         variant="primary"
                         onPress={() => {
-                          setCode(result.refactoredCode!);
+                          setCode(result.refactoredCode ?? '');
                           addToast(t("codeReview.toastRefactoredApplied"), "success");
                         }}
                         className="font-bold"

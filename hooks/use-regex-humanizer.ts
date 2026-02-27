@@ -3,6 +3,8 @@
 import { useState, useCallback } from "react";
 import type { RegexAnalysis, TestResult } from "@/types/regex-humanizer";
 import { explainRegex, generateRegex, testRegex } from "@/lib/application/regex-humanizer";
+// Re-export for pages (dependency flow: Page → Hook → lib/application)
+export { getCommonPatterns } from "@/lib/application/regex-humanizer";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToolHistory } from "@/hooks/use-tool-history";
 import { useTranslation } from "@/hooks/use-translation";

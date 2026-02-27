@@ -32,7 +32,7 @@ import { StatusBadge } from "@/components/shared/status-badge";
 import { Button, Card } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
-import { checkCollisions } from "@/lib/application/uuid-generator";
+import { checkCollisions } from "@/hooks/use-uuid-generator";
 import type { UuidVersion, UuidFormat } from "@/types/uuid-generator";
 
 export default function UuidGeneratorPage() {

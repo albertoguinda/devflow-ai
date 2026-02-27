@@ -64,7 +64,7 @@ describe("GroqClient", () => {
 
     await expect(
       client.generateText("test", "system"),
-    ).rejects.toThrow("Groq API error (401): Unauthorized");
+    ).rejects.toThrow("AI provider returned an error (401)");
   });
 
   it("should pass generation options", async () => {

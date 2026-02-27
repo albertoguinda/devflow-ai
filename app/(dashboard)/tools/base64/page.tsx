@@ -69,7 +69,7 @@ export default function Base64Page() {
       offset: i.toString(16).padStart(4, '0').toUpperCase(),
       hex: h.toUpperCase(),
       binary: binParts[i],
-      decimal: result.byteView!.decimal[i],
+      decimal: result.byteView?.decimal[i] ?? 0,
     }));
   }, [result]);
 
@@ -248,7 +248,7 @@ export default function Base64Page() {
           )}
 
           {isAIEnabled && aiError && (
-            <Card className="p-3 border-danger/30 bg-danger/5" role="alert">
+            <Card className="p-3 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
               <p className="text-xs text-danger font-bold flex items-center gap-2">
                 <AlertTriangle className="size-3.5 shrink-0" aria-hidden="true" />
                 {t("ai.errorOccurred", { message: aiError.message })}

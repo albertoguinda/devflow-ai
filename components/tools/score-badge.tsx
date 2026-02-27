@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
 import type { ScoreCategory } from "@/types/prompt-analyzer";
 
 interface ScoreBadgeProps {
@@ -56,27 +55,35 @@ export function ScoreBadge({
       return;
     }
 
-    // Animate progress circle from 0 to target
-    gsap.fromTo(
-      progressCircle,
-      { strokeDashoffset: circumference },
-      {
-        strokeDashoffset: targetOffset,
+    let cancelled = false;
+
+    void import("gsap").then(({ default: gsap }) => {
+      if (cancelled) return;
+
+      // Animate progress circle from 0 to target
+      gsap.fromTo(
+        progressCircle,
+        { strokeDashoffset: circumference },
+        {
+          strokeDashoffset: targetOffset,
+          duration: 1,
+          ease: "power2.out",
+        }
+      );
+
+      // Animate score number from 0 to target
+      const obj = { value: 0 };
+      gsap.to(obj, {
+        value: score,
         duration: 1,
         ease: "power2.out",
-      }
-    );
-
-    // Animate score number from 0 to target
-    const obj = { value: 0 };
-    gsap.to(obj, {
-      value: score,
-      duration: 1,
-      ease: "power2.out",
-      onUpdate: () => {
-        scoreElement.textContent = Math.round(obj.value).toString();
-      },
+        onUpdate: () => {
+          scoreElement.textContent = Math.round(obj.value).toString();
+        },
+      });
     });
+
+    return () => { cancelled = true; };
   }, [score, circumference, targetOffset, animate]);
 
   return (

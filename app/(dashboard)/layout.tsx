@@ -222,7 +222,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               source: "list",
               urls: [
                 "/tools/json-formatter",
-                "/tools/regex-tester",
+                "/tools/regex-humanizer",
                 "/tools/uuid-generator",
               ],
             },

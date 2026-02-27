@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import type {
   CommitConfig,
   CommitResult,
@@ -17,8 +17,9 @@ import {
   validateCommitMessage,
   getCommitTypes,
 } from "@/lib/application/git-commit-generator";
+// Re-export for pages (dependency flow: Page → Hook → lib/application)
+export { getCommitTypeInfo } from "@/lib/application/git-commit-generator";
 import { useToolHistory } from "@/hooks/use-tool-history";
-import { useMemo } from "react";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useTranslation } from "@/hooks/use-translation";
 
