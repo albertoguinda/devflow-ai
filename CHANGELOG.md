@@ -31,6 +31,7 @@ Feature improvements across all 15 tools, benchmarked against best-in-class alte
 #### Fixed
 - **JSON Formatter E2E** — Updated Playwright selector for syntax-highlighted output (strict mode violation with `getByText`)
 - **Mobile overflow** — UUID namespace grid (2-col on mobile), Tailwind Sorter preview (stacks on mobile), Code Review diff (stacks on mobile), Prompt Analyzer tooltip (added margin inset)
+- **E2E stability** — Fixed 12 flaky tests across 7 spec files (command-palette, context-manager, cost-calculator, dto-matic, git-commit, prompt-analyzer, settings-export): replaced `waitForTimeout` with proper waits, fixed generic selectors with aria-labels/placeholders, resolved strict mode violations, rewrote settings-export theme test (was targeting wrong role)
 
 #### Tests
 - +50 new tests (1416 → 1466): batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL generation (8), flavor warnings (12), code snippets (8)
