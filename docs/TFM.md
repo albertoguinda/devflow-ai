@@ -62,7 +62,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 - Lograr coverage estrategico 100/80/0 con enforcement per-file
 - Deploy en produccion con CI/CD completo (10 jobs: quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse)
 - Lighthouse score 100 en todas las metricas (Desktop)
-- Internacionalizacion completa (EN/ES, ~1605 claves por idioma)
+- Internacionalizacion completa (EN/ES, ~1650 claves por idioma)
 - Seguridad enterprise: CSP, HSTS, prototype pollution, SAST (CodeQL + Semgrep), harden-runner, eslint-plugin-security
 
 #### Objetivos de Producto
@@ -195,7 +195,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 
 **RF-18: Internacionalizacion**
 
-- ~1605 claves traducidas en English y Castellano
+- ~1650 claves traducidas en English y Castellano
 - Cambio de idioma en tiempo real sin recarga
 
 ### 3.2 Requisitos No Funcionales
@@ -404,7 +404,7 @@ page.tsx (Server Component - async)
 
 **Sistema custom ligero** (sin dependencia de i18next):
 
-- ~1605 claves de traduccion en `locales/en.json` y `locales/es.json`
+- ~1650 claves de traduccion en `locales/en.json` y `locales/es.json`
 - Hook `useTranslation()` con interpolacion `{key}`
 - Funcion server-side `t()` para Server Components
 - Cambio de idioma instantaneo via Zustand
@@ -424,8 +424,15 @@ page.tsx (Server Component - async)
 
 **Application Security:**
 
-- Prototype pollution protection en JSON processing
-- ReDoS protection en Regex Humanizer (timeout 2s + limite 500 matches)
+- Prototype pollution protection en JSON processing y Context Manager (`__proto__`, `constructor`, `prototype` filtrados)
+- ReDoS protection en Regex Humanizer (input caps: patron 500 chars, test 50K chars) y security-patterns (`{5,50}` acotado)
+- XML injection prevention en Context Manager (`escapeXml()` en `exportForAI` y `exportAsXml`)
+- CSV formula injection prevention en Cost Calculator (`escapeCsvCell()`)
+- AbortController timeouts en todos los fetch: 30s server-side (AI providers), 45s client-side
+- Error log sanitization: upstream bodies truncados a 500 chars, Bearer tokens redactados
+- `crypto.getRandomValues()` en UUID v7 y ULID (sustituye `Math.random()`)
+- Input size guards en JSON Formatter (diff 2K lineas, fix 50KB) y Settings import (1MB por clave)
+- SSR guards en `document.cookie` y `localStorage` (previene crash en contexto servidor)
 - Zero `eval()`, zero `Function()`, zero `innerHTML` en el codigo fuente
 - TypeScript strict mode previene categorias enteras de bugs
 - npm audit en CI (bloquea merges en vulnerabilidades high/critical)
@@ -621,7 +628,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | Componentes React          | 25+                |
 | Custom hooks               | 22+                |
 | Paginas (routes)           | 35                 |
-| Claves i18n                | ~1605 (x2 idiomas) |
+| Claves i18n                | ~1650 (x2 idiomas) |
 | Jobs CI/CD                 | 10                 |
 | Commits                    | 150+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
@@ -652,7 +659,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 - Skeletons de carga ✓
 - TypeScript strict mode ✓
 - Dark/Light mode con deteccion automatica ✓
-- i18n completo (EN/ES, ~1605 claves por idioma) ✓
+- i18n completo (EN/ES, ~1650 claves por idioma) ✓
 - Tests unitarios (1466 passing, 45 archivos) ✓
 - Tests E2E con Playwright (20 specs, 15 tools + a11y) ✓
 - CI/CD pipeline (10 jobs) ✓
@@ -689,7 +696,7 @@ Sprint autonomo de 8 tareas para la entrega del TFM:
 5. **API Cost Calculator:** Indicador "cached prices" cuando los datos live no estan disponibles. Modelos Claude 4.x (Opus 4.6, Sonnet 4.6, Haiku 4.5) anadidos
 6. **PWA & offline:** Verificado manifest.ts, service worker, install prompt. Build 35 rutas, 0 warnings
 7. **UX polish:** Timestamps relativos (`formatRelativeTime`) en historial, localizados EN/ES. Metadata SEO verificada en las 15 herramientas
-8. **i18n completeness:** 1605 claves en ambos idiomas, paridad perfecta. 0 strings hardcodeadas
+8. **i18n completeness:** ~1650 claves en ambos idiomas, paridad perfecta. 0 strings hardcodeadas
 
 ---
 
@@ -701,7 +708,7 @@ Sprint autonomo de 8 tareas para la entrega del TFM:
 2. **Arquitectura ejemplar:** Clean Architecture con patron 5-capas replicado sin excepciones en las 15 herramientas
 3. **Performance maxima:** Lighthouse 100/100/100/100, Server Components, ISR
 4. **Testing robusto:** 1466 tests unitarios + 20 E2E specs + accessibility audit (axe-core WCAG AAA), coverage per-file
-5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner
+5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner, exhaustive 4-layer security audit (29 fixes across 24 files: prototype pollution, XML injection, ReDoS, CSV injection, AbortController timeouts, crypto.getRandomValues)
 6. **Developer Experience:** TypeScript strict, ESLint + security plugin, CI/CD con 10 quality gates
 7. **UX avanzada:** PWA instalable, Command Palette (Cmd+K), MagicInput, Export/Import, dark/light mode, WCAG AAA
 8. **IA opcional:** 4 proveedores con fallback automatico, BYOK, rate limiting IP-based

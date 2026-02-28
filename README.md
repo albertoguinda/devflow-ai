@@ -273,6 +273,10 @@ All responses include strict security headers via `next.config.ts`:
 - **No user data** &mdash; localStorage only, no external transmission
 - **CSP enforced** &mdash; blocks XSS, clickjacking, and data injection
 - **Prototype pollution protection** &mdash; dangerous keys (`__proto__`, `constructor`, `prototype`) filtered
+- **XML/CSV injection prevention** &mdash; `escapeXml()` on Context Manager exports, `escapeCsvCell()` on Cost Calculator CSV
+- **ReDoS protection** &mdash; input size caps, bounded quantifiers, diff line limits
+- **AbortController timeouts** &mdash; 30s on server-side AI calls, 45s on client-side fetches
+- **Cryptographically secure random** &mdash; `crypto.getRandomValues()` for UUID v7 and ULID generation
 - **Dependency audit** &mdash; `npm audit --audit-level=high` runs in CI on every push
 - **Supply chain** &mdash; lockfile-lint validates registry sources, CycloneDX SBOM generated on every build
 - **SAST** &mdash; Semgrep (OWASP Top 10 + React/Next.js rules) + CodeQL JS/TS on every push and PR
@@ -543,6 +547,10 @@ Todas las respuestas incluyen cabeceras de seguridad estrictas via `next.config.
 - **Sin datos de usuario** &mdash; solo localStorage, sin transmision externa
 - **CSP reforzado** &mdash; bloquea XSS, clickjacking e inyeccion de datos
 - **Proteccion contra prototype pollution** &mdash; claves peligrosas (`__proto__`, `constructor`, `prototype`) filtradas
+- **Prevencion de inyeccion XML/CSV** &mdash; `escapeXml()` en exports del Context Manager, `escapeCsvCell()` en CSV del Cost Calculator
+- **Proteccion ReDoS** &mdash; limites de tamano en inputs, cuantificadores acotados, limites de lineas en diff
+- **Timeouts AbortController** &mdash; 30s en llamadas AI server-side, 45s en fetches client-side
+- **Random criptograficamente seguro** &mdash; `crypto.getRandomValues()` para UUID v7 y ULID
 - **Auditoria de dependencias** &mdash; `npm audit --audit-level=high` se ejecuta en CI en cada push
 - **Cadena de suministro** &mdash; lockfile-lint valida fuentes del registro, SBOM CycloneDX generado en cada build
 - **SAST** &mdash; Semgrep (OWASP Top 10 + reglas React/Next.js) + CodeQL JS/TS en cada push y PR
