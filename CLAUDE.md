@@ -48,6 +48,8 @@ When making changes, keep these files in sync:
 ## Commands
 
 ```bash
+npm install              # Install dependencies
+cp .env.example .env.local  # Optional: configure AI providers (app works without any keys)
 npm run dev              # Dev server with Turbopack (localhost:3000)
 npm run build            # Production build
 npm run start            # Production server (after build)
