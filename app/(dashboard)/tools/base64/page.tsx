@@ -440,7 +440,7 @@ export default function Base64Page() {
                               {item.status === "success" ? (
                                 <p className="mt-1 text-emerald-700 dark:text-emerald-300 break-all">{item.output}</p>
                               ) : (
-                                <p className="mt-1 text-red-600 dark:text-red-400">{item.error}</p>
+                                <p className="mt-1 text-red-600 dark:text-red-400">{item.error && t(`base64.error.${item.error}`) !== `base64.error.${item.error}` ? t(`base64.error.${item.error}`) : item.error}</p>
                               )}
                             </div>
                           ))}

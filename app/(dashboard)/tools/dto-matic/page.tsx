@@ -33,6 +33,7 @@ import { CopyButton } from "@/components/shared/copy-button";
 import { Button, Card } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { downloadBlob } from "@/lib/utils/download";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import type { TargetLanguage } from "@/types/dto-matic";
@@ -401,12 +402,7 @@ export default function DtoMaticPage() {
                                 if (!result) return;
                                 const allCode = result.files.map(f => `// === ${f.name} ===\n${f.content}`).join("\n\n");
                                 const blob = new Blob([allCode], { type: "text/plain" });
-                                const url = URL.createObjectURL(blob);
-                                const a = document.createElement("a");
-                                a.href = url;
-                                a.download = `${config.rootName || "dto"}-generated.txt`;
-                                a.click();
-                                URL.revokeObjectURL(url);
+                                downloadBlob(blob, `${config.rootName || "dto"}-generated.txt`);
                               }}
                               aria-label={t("dtoMatic.downloadAll")}
                             >

@@ -902,39 +902,43 @@ export function generateRegex(description: string, locale: RegexLocale = "en"): 
   const s = getStrings(locale);
   const kw = s.keywords;
 
+  // Build Map for O(1) pattern lookup by id
+  const patternMap = new Map(patterns.map((p) => [p.id, p.pattern]));
+  const getPattern = (id: string): string => patternMap.get(id) ?? "^.*$";
+
   // Check for common pattern keywords
   if (kw.email.some((k) => desc.includes(k))) {
-    return patterns.find((p) => p.id === "email")!.pattern;
+    return getPattern("email");
   }
   if (kw.url.some((k) => desc.includes(k))) {
-    return patterns.find((p) => p.id === "url")!.pattern;
+    return getPattern("url");
   }
   if (kw.phone.some((k) => desc.includes(k))) {
     if (kw.phoneSpanish.some((k) => desc.includes(k))) {
-      return patterns.find((p) => p.id === "phone-es")!.pattern;
+      return getPattern("phone-es");
     }
     return "^\\+?[\\d\\s\\-\\(\\)]+$";
   }
   if (kw.date.some((k) => desc.includes(k))) {
     if (kw.dateIso.some((k) => desc.includes(k))) {
-      return patterns.find((p) => p.id === "date-iso")!.pattern;
+      return getPattern("date-iso");
     }
     if (kw.dateDDMM.some((k) => desc.includes(k))) {
       return "^\\d{2}/\\d{2}/\\d{4}$";
     }
-    return patterns.find((p) => p.id === "date-iso")!.pattern;
+    return getPattern("date-iso");
   }
   if (kw.ip.some((k) => desc.includes(k))) {
-    return patterns.find((p) => p.id === "ipv4")!.pattern;
+    return getPattern("ipv4");
   }
   if (kw.password.some((k) => desc.includes(k))) {
-    return patterns.find((p) => p.id === "password")!.pattern;
+    return getPattern("password");
   }
   if (kw.dni.some((k) => desc.includes(k))) {
-    return patterns.find((p) => p.id === "dni-es")!.pattern;
+    return getPattern("dni-es");
   }
   if (kw.color.some((k) => desc.includes(k))) {
-    return patterns.find((p) => p.id === "hex-color")!.pattern;
+    return getPattern("hex-color");
   }
 
   // Parse digit patterns (both EN and ES keywords accepted regardless of locale)
@@ -973,7 +977,8 @@ export function generateRegex(description: string, locale: RegexLocale = "en"): 
   return "^.*$";
 }
 
-const GROUP_COLORS = [
+/** Default group colors — UI concern injected into test results for rendering */
+export const DEFAULT_GROUP_COLORS = [
   "text-blue-600 dark:text-blue-400",
   "text-emerald-600 dark:text-emerald-400",
   "text-purple-600 dark:text-purple-400",
@@ -986,7 +991,7 @@ const GROUP_COLORS = [
 const MAX_PATTERN_LENGTH = 500;
 const MAX_TEST_INPUT_LENGTH = 50_000;
 
-export function testRegex(patternInput: string, input: string, locale: RegexLocale = "en"): TestResult {
+export function testRegex(patternInput: string, input: string, locale: RegexLocale = "en", groupColors: string[] = DEFAULT_GROUP_COLORS): TestResult {
   const s = getStrings(locale);
 
   if (patternInput.length > MAX_PATTERN_LENGTH) {
@@ -1022,7 +1027,7 @@ export function testRegex(patternInput: string, input: string, locale: RegexLoca
       }
 
       const groups: Record<string, string> = {};
-      const groupColors: Record<string, string> = {};
+      const groupColorMap: Record<string, string> = {};
 
       // Named groups (safe copy, skip prototype pollution keys)
       if (match.groups) {
@@ -1038,7 +1043,7 @@ export function testRegex(patternInput: string, input: string, locale: RegexLoca
         const groupValue = match[i];
         if (groupValue !== undefined) {
           groups[`$${i}`] = groupValue;
-          groupColors[`$${i}`] = GROUP_COLORS[(i - 1) % GROUP_COLORS.length]!;
+          groupColorMap[`$${i}`] = groupColors[(i - 1) % groupColors.length]!;
         }
       }
 
@@ -1046,7 +1051,7 @@ export function testRegex(patternInput: string, input: string, locale: RegexLoca
         match: match[0] ?? "",
         index: match.index,
         groups,
-        groupColors,
+        groupColors: groupColorMap,
       });
 
       // Prevent infinite loops with zero-length matches (Unicode-safe)

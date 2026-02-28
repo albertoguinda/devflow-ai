@@ -260,10 +260,12 @@ export function sortObjectKeys(obj: unknown): unknown {
 }
 
 /**
- * Calculates statistics about the JSON structure
+ * Calculates statistics about the JSON structure.
+ * Accepts an optional pre-parsed value to avoid re-parsing.
  */
-export function calculateJsonStats(input: string): JsonStats {
-  const parsed = JSON.parse(input);
+export function calculateJsonStats(input: string, parsed?: unknown): JsonStats {
+  const obj = parsed ?? JSON.parse(input);
+  const encoder = new TextEncoder();
 
   const stats: JsonStats = {
     keys: 0,
@@ -275,8 +277,8 @@ export function calculateJsonStats(input: string): JsonStats {
     numbers: 0,
     booleans: 0,
     nulls: 0,
-    sizeBytes: new Blob([input]).size,
-    minifiedSize: new Blob([JSON.stringify(parsed)]).size,
+    sizeBytes: encoder.encode(input).byteLength,
+    minifiedSize: encoder.encode(JSON.stringify(obj)).byteLength,
   };
 
   function traverse(value: unknown, currentDepth: number): void {
@@ -318,7 +320,7 @@ export function calculateJsonStats(input: string): JsonStats {
     }
   }
 
-  traverse(parsed, 0);
+  traverse(obj, 0);
 
   return stats;
 }
@@ -341,6 +343,7 @@ export function extractJsonPaths(input: string): JsonPathResult[] {
       });
     } else if (value !== null && typeof value === "object") {
       for (const [key, v] of Object.entries(value as Record<string, unknown>)) {
+        if (DANGEROUS_KEYS.has(key)) continue;
         const newPath = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(key)
           ? `${path}.${key}`
           : `${path}["${key}"]`;
@@ -456,13 +459,14 @@ export function processJson(
         numbers: 0,
         booleans: 0,
         nulls: 0,
-        sizeBytes: new Blob([input]).size,
+        sizeBytes: new TextEncoder().encode(input).byteLength,
         minifiedSize: 0,
       },
       timestamp: new Date().toISOString(),
     };
   }
 
+  const parsed = JSON.parse(input);
   let output: string;
 
   switch (mode) {
@@ -476,19 +480,19 @@ export function processJson(
       output = formatJson(input, config);
       break;
     case "to-yaml":
-      output = jsonToYaml(JSON.parse(input));
+      output = jsonToYaml(parsed);
       break;
     case "to-xml":
-      output = jsonToXml(JSON.parse(input));
+      output = jsonToXml(parsed);
       break;
     case "to-csv":
-      output = jsonToCsv(JSON.parse(input));
+      output = jsonToCsv(parsed);
       break;
     default:
       output = input;
   }
 
-  const stats = calculateJsonStats(input);
+  const stats = calculateJsonStats(input, parsed);
 
   return {
     id: crypto.randomUUID(),

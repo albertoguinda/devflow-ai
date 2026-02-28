@@ -5,6 +5,41 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.14.0] - 2026-02-28
+
+### Security, Quality & Performance Audit
+
+Exhaustive audit with 3 specialized agents. ~25 fixes across security (5), code quality (6), and performance (8).
+
+#### Security
+- **JSON Formatter** — Prototype pollution guard in `extractJsonPaths`: dangerous keys (`__proto__`, `constructor`, `prototype`) now filtered
+- **UUID Generator** — SQL export sanitization: UUID values validated with regex before interpolation in SQL INSERT statements
+- **AI Routes** — Zod response validation schemas for `/api/ai/review`, `/api/ai/suggest`, `/api/ai/refine`: AI responses are now validated and sanitized before returning to client
+- **Regex Humanizer** — Replaced `Array.find()!` (10 NPE-risk instances) with `Map` lookup + safe fallback in `generateRegex`
+- **Regex Humanizer** — `GROUP_COLORS` UI constant extracted as injectable parameter, separating UI concerns from pure logic
+
+#### Changed
+- **Architecture** — `http-status-finder/page.tsx` now imports `generateCodeSnippets` through the hook layer (was bypassing to `lib/application/`)
+- **i18n** — Settings export/import messages now use translation keys instead of hardcoded English strings
+- **i18n** — Code review complexity/maintainability tooltips now use `t()` instead of hardcoded English
+- **i18n** — Base64 error messages changed to error codes (`EMPTY_INPUT`, `INVALID_BASE64_CHARS`, etc.) with i18n translation in the page layer
+- **Utilities** — Extracted `downloadBlob()` to `lib/utils/download.ts`, replacing 5 duplicate inline implementations
+- **Empty catches** — Added explanatory comments to empty catch blocks in `magic-input.tsx` and `base64.ts`
+
+#### Performance
+- **JSON Formatter** — Memoized syntax-highlighted output with `useMemo` (avoids re-highlighting on unrelated state changes)
+- **Code Review** — Pre-computed diff lines with `useMemo` (eliminates 4x `.split("\n")` per render)
+- **Token Visualizer** — Cost estimation extracted from IIFE to `useMemo`; stable `tokenId`-based React keys on segments
+- **Tool Suggestions** — 300ms debounce on recommendation engine input to reduce expensive recomputation
+- **CommandPalette** — Converted to `next/dynamic({ ssr: false })` for smaller initial bundle
+- **JSON Formatter** — `processJson` now parses JSON once and passes parsed value to all converters (was parsing 2-3x)
+- **JSON Formatter** — `calculateJsonStats` accepts pre-parsed value; replaced `new Blob([]).size` with `TextEncoder.encode().byteLength`
+
+#### Added
+- `lib/api/schemas/ai-response.schema.ts` — Zod schemas for AI response validation
+- `lib/utils/download.ts` — Shared `downloadBlob()` utility
+- 12 new i18n keys in both `en.json` and `es.json` (settings export, code review tooltips, base64 errors)
+
 ## [4.13.0] - 2026-02-27
 
 ### 15-Tool Feature Iteration

@@ -118,6 +118,17 @@ export default function JsonFormatterPage() {
   const [activeTab, setActiveTab] = useState<"output" | "paths" | "typescript" | "compare">("output");
   const [copiedPath, setCopiedPath] = useState<string | null>(null);
 
+  const outputText = result?.output;
+  const highlightedLines = useMemo(() => {
+    if (!outputText) return null;
+    return outputText.split("\n").map((line, i) => (
+      <div key={i} className="flex">
+        <span className="inline-block w-10 pr-3 text-right text-muted-foreground/40 select-none shrink-0">{i + 1}</span>
+        <span>{highlightJsonLine(line)}</span>
+      </div>
+    ));
+  }, [outputText]);
+
   const copyPath = useCallback((path: string) => {
     void navigator.clipboard.writeText(path);
     setCopiedPath(path);
@@ -389,14 +400,9 @@ export default function JsonFormatterPage() {
                   <CopyButton text={result?.output || ""} />
                 </div>
                 <div className="flex-1 overflow-auto bg-background relative group">
-                  {result?.output ? (
+                  {highlightedLines ? (
                     <pre className="p-4 font-mono text-[11px] leading-relaxed">
-                      <code>{result.output.split("\n").map((line, i) => (
-                        <div key={i} className="flex">
-                          <span className="inline-block w-10 pr-3 text-right text-muted-foreground/40 select-none shrink-0">{i + 1}</span>
-                          <span>{highlightJsonLine(line)}</span>
-                        </div>
-                      ))}</code>
+                      <code>{highlightedLines}</code>
                     </pre>
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-40">

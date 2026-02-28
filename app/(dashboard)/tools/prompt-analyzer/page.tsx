@@ -46,6 +46,7 @@ import { Card, Button } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { cn } from "@/lib/utils";
+import { downloadBlob } from "@/lib/utils/download";
 import type { PromptIssue, AnatomyElement, PromptAnalysisResult, PromptDimension } from "@/types/prompt-analyzer";
 
 const DIMENSION_ICONS: Record<AnatomyElement, React.ElementType> = {
@@ -304,12 +305,7 @@ ${result.suggestions.map(s => `- ${s}`).join("\n")}
 ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
 `;
     const blob = new Blob([report], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `prompt-analysis-${new Date().toISOString().slice(0, 10)}.md`;
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(blob, `prompt-analysis-${new Date().toISOString().slice(0, 10)}.md`);
   };
 
   return (

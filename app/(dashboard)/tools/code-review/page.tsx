@@ -106,6 +106,14 @@ export default function CodeReviewPage() {
     };
   }, [result]);
 
+  const refactoredCode = result?.refactoredCode;
+  const diffLines = useMemo(() => {
+    if (!refactoredCode) return null;
+    const origLines = code.split("\n");
+    const refLines = refactoredCode.split("\n");
+    return { origLines, refLines };
+  }, [code, refactoredCode]);
+
   const handleReset = () => {
     setCode("");
     setLanguage("typescript");
@@ -318,7 +326,7 @@ export default function CodeReviewPage() {
                 <Card className="p-6 col-span-2">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase cursor-help" title="Cyclomatic complexity: number of independent code paths. Optimal: ≤ 10. High values make code harder to test.">{t("codeReview.complexity")} ⓘ</p>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.complexityTooltip")}>{t("codeReview.complexity")} ⓘ</p>
                       <p className="text-xl font-bold flex items-center gap-2">
                         {result.metrics.complexity}
                         <StatusBadge variant={result.metrics.complexity > 10 ? "warning" : "success"}>
@@ -327,7 +335,7 @@ export default function CodeReviewPage() {
                       </p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase cursor-help" title="Maintainability Index (0–100): composite score based on complexity, lines of code, and documentation coverage. Higher is better.">{t("codeReview.maintainability")} ⓘ</p>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.maintainabilityTooltip")}>{t("codeReview.maintainability")} ⓘ</p>
                       <p className="text-xl font-bold text-emerald-500 dark:text-emerald-400">{result.metrics.maintainabilityIndex}%</p>
                     </div>
                   </div>
@@ -500,9 +508,8 @@ export default function CodeReviewPage() {
                     <div>
                       <span className="text-[9px] font-black uppercase text-red-500 dark:text-red-400 tracking-widest mb-1 block">{t("codeReview.originalCode")}</span>
                       <pre className="rounded-xl border border-red-500/10 bg-red-500/5 p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] shadow-inner">
-                        <code>{code.split("\n").map((line, i) => {
-                          const refLines = (result.refactoredCode ?? "").split("\n");
-                          const changed = refLines[i] !== line;
+                        <code>{diffLines?.origLines.map((line, i) => {
+                          const changed = diffLines.refLines[i] !== line;
                           return <div key={i} className={changed ? "bg-red-500/10 -mx-4 px-4" : ""}>{line || " "}</div>;
                         })}</code>
                       </pre>
@@ -510,9 +517,8 @@ export default function CodeReviewPage() {
                     <div>
                       <span className="text-[9px] font-black uppercase text-emerald-500 dark:text-emerald-400 tracking-widest mb-1 block">{t("codeReview.refactoredCode")}</span>
                       <pre className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] shadow-inner">
-                        <code>{(result.refactoredCode ?? "").split("\n").map((line, i) => {
-                          const origLines = code.split("\n");
-                          const changed = origLines[i] !== line;
+                        <code>{diffLines?.refLines.map((line, i) => {
+                          const changed = diffLines.origLines[i] !== line;
                           return <div key={i} className={changed ? "bg-emerald-500/10 -mx-4 px-4" : ""}>{line || " "}</div>;
                         })}</code>
                       </pre>

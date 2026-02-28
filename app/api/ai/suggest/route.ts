@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import type { AISuggestResult } from "@/types/ai";
-import { aiSuggestSchema } from "@/lib/api/schemas";
+import { aiSuggestSchema, aiSuggestResponseSchema } from "@/lib/api/schemas";
 import {
   extractBYOK,
   withRateLimit,
@@ -91,17 +91,19 @@ export async function POST(request: NextRequest) {
 
 function parseSuggestResponse(text: string): AISuggestResult {
   const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-  let parsed: Record<string, unknown>;
+  let raw: unknown;
   try {
-    parsed = JSON.parse(cleaned) as Record<string, unknown>;
+    raw = JSON.parse(cleaned);
   } catch {
     console.error("[suggest] AI returned malformed JSON:", cleaned.slice(0, 200));
     throw new Error("AI returned an unexpected response format");
   }
 
-  return {
-    suggestions: Array.isArray(parsed["suggestions"])
-      ? (parsed["suggestions"] as AISuggestResult["suggestions"])
-      : [],
-  };
+  const validated = aiSuggestResponseSchema.safeParse(raw);
+  if (!validated.success) {
+    console.error("[suggest] AI response failed validation:", validated.error.message);
+    return { suggestions: [] };
+  }
+
+  return validated.data;
 }

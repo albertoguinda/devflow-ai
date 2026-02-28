@@ -37,6 +37,7 @@ import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { PROVIDER_LABELS } from "@/config/ai-models";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { downloadBlob } from "@/lib/utils/download";
 import type { CostCalculation } from "@/types/cost-calculator";
 
 const CURRENCIES: { value: Currency; label: string; symbol: string }[] = [
@@ -456,12 +457,7 @@ export default function CostCalculatorPage() {
                       onPress={() => {
                         const csv = exportComparisonCsv(comparison, currency);
                         const blob = new Blob([csv], { type: "text/csv" });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = `cost-comparison-${new Date().toISOString().slice(0, 10)}.csv`;
-                        a.click();
-                        URL.revokeObjectURL(url);
+                        downloadBlob(blob, `cost-comparison-${new Date().toISOString().slice(0, 10)}.csv`);
                       }}
                       aria-label={t("costCalc.exportCsv")}
                     >

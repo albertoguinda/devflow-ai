@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Binary,
   RotateCcw,
@@ -54,6 +54,14 @@ export default function TokenVisualizerPage() {
     { id: "anthropic", label: t("tokenViz.modelAnthropic"), color: "text-orange-500 dark:text-orange-400" },
     { id: "llama", label: t("tokenViz.modelLlama"), color: "text-blue-500 dark:text-blue-400" },
   ] as const;
+
+  const estimatedCost = useMemo(() => {
+    if (!visualization) return null;
+    const model = AI_MODELS.find(m => m.isPopular && m.provider === (provider === "llama" ? "groq" : provider === "anthropic" ? "anthropic" : "openai"));
+    if (!model) return null;
+    const cost = (visualization.totalTokens / 1_000_000) * model.inputPricePerMToken;
+    return { cost, modelName: model.displayName };
+  }, [visualization, provider]);
 
   // Auto-tokenize when input or provider changes
   useEffect(() => {
@@ -233,7 +241,7 @@ export default function TokenVisualizerPage() {
                   </div>
                   <div className="flex flex-wrap gap-1 p-3 bg-background/50 rounded-xl border border-violet-500/10 max-h-[150px] overflow-auto">
                     {realTokenResult.segments.map((s, i) => (
-                      <span key={i} title={`Token ID: ${s.tokenId}`} className="px-1 py-0.5 rounded font-mono text-[10px] border bg-violet-500/10 border-violet-500/20 text-violet-600 dark:text-violet-400 cursor-default hover:scale-110 transition-transform">
+                      <span key={`${s.tokenId}-${i}`} title={`Token ID: ${s.tokenId}`} className="px-1 py-0.5 rounded font-mono text-[10px] border bg-violet-500/10 border-violet-500/20 text-violet-600 dark:text-violet-400 cursor-default hover:scale-110 transition-transform">
                         {s.text.replace(/ /g, "\u2423")}
                       </span>
                     ))}
@@ -327,23 +335,18 @@ export default function TokenVisualizerPage() {
                       <Timer className="size-3 mr-1" /> {visualization.totalTokens} {t("tokenViz.totalTokens")}
                     </StatusBadge>
                     <span className="text-[10px] font-black opacity-40 uppercase">{visualization.input.length} {t("tokenViz.characters")}</span>
-                    {(() => {
-                      const model = AI_MODELS.find(m => m.isPopular && m.provider === (provider === "llama" ? "groq" : provider === "anthropic" ? "anthropic" : "openai"));
-                      if (!model) return null;
-                      const cost = (visualization.totalTokens / 1_000_000) * model.inputPricePerMToken;
-                      return (
-                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400" title={`${model.displayName} ${t("tokenViz.inputCost")}`}>
-                          ~${cost < 0.01 ? cost.toFixed(6) : cost.toFixed(4)}
-                        </span>
-                      );
-                    })()}
+                    {estimatedCost && (
+                      <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400" title={`${estimatedCost.modelName} ${t("tokenViz.inputCost")}`}>
+                        ~${estimatedCost.cost < 0.01 ? estimatedCost.cost.toFixed(6) : estimatedCost.cost.toFixed(4)}
+                      </span>
+                    )}
                   </div>
                   <CopyButton text={visualization.input} />
                 </div>
                 <div className="p-6 overflow-auto flex-1 bg-background scrollbar-hide">
                   <div className="flex flex-wrap gap-1.5">
                     {visualization.segments.map((s, i) => (
-                      <span key={i} title={`Token #${s.tokenId}: "${s.text}"`} className={cn(
+                      <span key={`${s.tokenId}-${i}`} title={`Token #${s.tokenId}: "${s.text}"`} className={cn(
                         "px-1.5 py-0.5 rounded font-mono text-xs border transition-all hover:scale-110 cursor-default",
                         s.isWaste ? "bg-red-500/20 border-red-500/40 text-red-600 font-bold" : s.color
                       )}>

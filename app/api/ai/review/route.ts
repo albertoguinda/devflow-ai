@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import type { AIReviewResult } from "@/types/ai";
-import { aiReviewSchema } from "@/lib/api/schemas";
+import { aiReviewSchema, aiReviewResponseSchema } from "@/lib/api/schemas";
 import {
   extractBYOK,
   withRateLimit,
@@ -64,25 +64,19 @@ export async function POST(request: NextRequest) {
 
 function parseReviewResponse(text: string): AIReviewResult {
   const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-  let parsed: Record<string, unknown>;
+  let raw: unknown;
   try {
-    parsed = JSON.parse(cleaned) as Record<string, unknown>;
+    raw = JSON.parse(cleaned);
   } catch {
     console.error("[review] AI returned malformed JSON:", cleaned.slice(0, 200));
     throw new Error("AI returned an unexpected response format");
   }
 
-  return {
-    issues: Array.isArray(parsed["issues"])
-      ? (parsed["issues"] as AIReviewResult["issues"])
-      : [],
-    score: typeof parsed["score"] === "number" ? parsed["score"] : 50,
-    suggestions: Array.isArray(parsed["suggestions"])
-      ? (parsed["suggestions"] as string[])
-      : [],
-    refactoredCode:
-      typeof parsed["refactoredCode"] === "string"
-        ? parsed["refactoredCode"]
-        : "",
-  };
+  const validated = aiReviewResponseSchema.safeParse(raw);
+  if (!validated.success) {
+    console.error("[review] AI response failed validation:", validated.error.message);
+    return { issues: [], score: 50, suggestions: [], refactoredCode: "" };
+  }
+
+  return validated.data;
 }

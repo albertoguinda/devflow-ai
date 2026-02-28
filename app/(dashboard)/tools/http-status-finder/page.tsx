@@ -24,7 +24,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useHttpStatusFinder } from "@/hooks/use-http-status-finder";
-import { generateCodeSnippets } from "@/lib/application/http-status-finder";
+import { generateCodeSnippets } from "@/hooks/use-http-status-finder";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";

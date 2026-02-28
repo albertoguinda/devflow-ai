@@ -401,7 +401,10 @@ export function formatBulkExport(uuids: string[], format: "text" | "json" | "csv
   switch (format) {
     case "json": return JSON.stringify(uuids, null, 2);
     case "csv": return "uuid\n" + uuids.join("\n");
-    case "sql": return "INSERT INTO table_name (uuid_column) VALUES\n" + uuids.map(u => `('${u}')`).join(",\n") + ";";
+    case "sql": {
+      const UUID_SAFE = /^[0-9a-f\-{}urn:uuid ]+$/i;
+      return "INSERT INTO table_name (uuid_column) VALUES\n" + uuids.filter(u => UUID_SAFE.test(u)).map(u => `('${u}')`).join(",\n") + ";";
+    }
     default: return uuids.join("\n");
   }
 }

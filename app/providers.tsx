@@ -8,7 +8,10 @@ import { SWRConfig } from "swr";
 import { FavoritesProvider } from "@/lib/context";
 import { ToastProvider } from "@/components/shared/toast-container";
 import { useLocaleStore } from "@/lib/stores/locale-store";
-import { CommandPalette } from "@/components/shared/command-palette";
+const CommandPalette = dynamic(
+  () => import("@/components/shared/command-palette").then((m) => m.CommandPalette),
+  { ssr: false },
+);
 
 const InstallPrompt = dynamic(
   () => import("@/components/shared/install-prompt").then((m) => m.InstallPrompt),

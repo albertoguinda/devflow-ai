@@ -85,7 +85,7 @@ export function getByteView(input: string, isBase64: boolean): ByteRepresentatio
       }
     } catch {
       bytes = new Uint8Array();
-      error = "Invalid base64 input";
+      error = "INVALID_BASE64_INPUT";
     }
   } else {
     bytes = new TextEncoder().encode(input);
@@ -106,14 +106,14 @@ export function validateBase64(
   input: string,
   variant: "standard" | "url-safe" = "standard"
 ): { isValid: boolean; error?: string } {
-  if (!input.trim()) return { isValid: false, error: "Empty input" };
+  if (!input.trim()) return { isValid: false, error: "EMPTY_INPUT" };
   const cleaned = input.replace(/[\s\n\r]/g, "");
   const standardPattern = /^[A-Za-z0-9+/]*={0,2}$/;
   const urlSafePattern = /^[A-Za-z0-9\-_]*$/;
   const pattern = variant === "url-safe" ? urlSafePattern : standardPattern;
 
-  if (!pattern.test(cleaned)) return { isValid: false, error: `Invalid ${variant === "url-safe" ? "URL-safe " : ""}Base64 characters` };
-  if (variant === "standard" && cleaned.length % 4 !== 0) return { isValid: false, error: "Invalid Base64 length" };
+  if (!pattern.test(cleaned)) return { isValid: false, error: "INVALID_BASE64_CHARS" };
+  if (variant === "standard" && cleaned.length % 4 !== 0) return { isValid: false, error: "INVALID_BASE64_LENGTH" };
 
   try {
     let base64 = cleaned;
@@ -125,7 +125,7 @@ export function validateBase64(
     atob(base64);
     return { isValid: true };
   } catch {
-    return { isValid: false, error: "Invalid Base64 encoding" };
+    return { isValid: false, error: "INVALID_BASE64_ENCODING" };
   }
 }
 
@@ -147,7 +147,7 @@ export function detectContent(text: string, isBase64: boolean = false): Base64Re
 
   const trimmed = content.trim();
   if ((trimmed.startsWith("{") && trimmed.endsWith("}")) || (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
-    try { JSON.parse(trimmed); return "json"; } catch { }
+    try { JSON.parse(trimmed); return "json"; } catch { /* Not valid JSON — fall through to other detections */ }
   }
   if (/^[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+$/.test(trimmed)) return "jwt";
   if (/^[0-9a-fA-F\s]+$/.test(trimmed) && trimmed.length > 8) return "hex";
@@ -201,7 +201,7 @@ export function processBase64(
   if (!input.trim()) {
     return {
       id: crypto.randomUUID(),
-      input, output: "", mode, isValid: false, error: "Empty input",
+      input, output: "", mode, isValid: false, error: "EMPTY_INPUT",
       stats: { inputLength: 0, outputLength: 0, inputBytes: 0, outputBytes: 0, compressionRatio: 0 },
       timestamp: new Date().toISOString(),
     };

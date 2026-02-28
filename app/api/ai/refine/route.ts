@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import type { AIRefineResult } from "@/types/ai";
-import { aiRefineSchema } from "@/lib/api/schemas";
+import { aiRefineSchema, aiRefineResponseSchema } from "@/lib/api/schemas";
 import {
   extractBYOK,
   withRateLimit,
@@ -55,22 +55,19 @@ export async function POST(request: NextRequest) {
 
 function parseRefineResponse(text: string): AIRefineResult {
   const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-  let parsed: Record<string, unknown>;
+  let raw: unknown;
   try {
-    parsed = JSON.parse(cleaned) as Record<string, unknown>;
+    raw = JSON.parse(cleaned);
   } catch {
     console.error("[refine] AI returned malformed JSON:", cleaned.slice(0, 200));
     throw new Error("AI returned an unexpected response format");
   }
 
-  return {
-    refinedPrompt:
-      typeof parsed["refinedPrompt"] === "string"
-        ? parsed["refinedPrompt"]
-        : "",
-    changelog: Array.isArray(parsed["changelog"])
-      ? (parsed["changelog"] as string[])
-      : [],
-    score: typeof parsed["score"] === "number" ? parsed["score"] : 50,
-  };
+  const validated = aiRefineResponseSchema.safeParse(raw);
+  if (!validated.success) {
+    console.error("[refine] AI response failed validation:", validated.error.message);
+    return { refinedPrompt: "", changelog: [], score: 50 };
+  }
+
+  return validated.data;
 }

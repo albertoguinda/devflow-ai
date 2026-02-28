@@ -32,6 +32,7 @@ import { StatusBadge } from "@/components/shared/status-badge";
 import { Button, Card } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { downloadBlob } from "@/lib/utils/download";
 import { checkCollisions } from "@/hooks/use-uuid-generator";
 import type { UuidVersion, UuidFormat, UuidNamespace } from "@/types/uuid-generator";
 
@@ -94,12 +95,7 @@ export default function UuidGeneratorPage() {
     if (!result?.uuids.length) return;
     const content = exportedContent;
     const blob = new Blob([content], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `uuids.${exportFormat}`;
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(blob, `uuids.${exportFormat}`);
     addToast(t("uuid.exportedAs", { format: exportFormat.toUpperCase() }), "success");
   };
 

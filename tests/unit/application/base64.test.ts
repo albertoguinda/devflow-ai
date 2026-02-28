@@ -104,13 +104,13 @@ describe("Base64 Encoder/Decoder", () => {
     it("should invalidate empty input", () => {
       const result = validateBase64("");
       expect(result.isValid).toBe(false);
-      expect(result.error).toBe("Empty input");
+      expect(result.error).toBe("EMPTY_INPUT");
     });
 
     it("should invalidate invalid characters", () => {
       const result = validateBase64("Hello World!");
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain("Invalid");
+      expect(result.error).toBe("INVALID_BASE64_CHARS");
     });
 
     it("should invalidate incorrect length", () => {
@@ -142,7 +142,7 @@ describe("Base64 Encoder/Decoder", () => {
     it("should return error for empty input", () => {
       const result = processBase64("", "encode");
       expect(result.isValid).toBe(false);
-      expect(result.error).toBe("Empty input");
+      expect(result.error).toBe("EMPTY_INPUT");
     });
 
     it("should return error for invalid base64 in decode mode", () => {
@@ -177,22 +177,21 @@ describe("Base64 Encoder/Decoder", () => {
       const result = validateBase64("Invalid!@#$Base64", "standard");
       expect(result.isValid).toBe(false);
       expect(result.error).toBeDefined();
-      expect(result.error).toContain("Invalid");
+      expect(result.error).toBe("INVALID_BASE64_CHARS");
     });
 
     it("should return isValid false with error for invalid url-safe base64 characters", () => {
       const result = validateBase64("Invalid+Base/64==", "url-safe");
       expect(result.isValid).toBe(false);
       expect(result.error).toBeDefined();
-      expect(result.error).toContain("Invalid");
-      expect(result.error).toContain("URL-safe");
+      expect(result.error).toBe("INVALID_BASE64_CHARS");
     });
 
     it("should return isValid false for standard base64 with wrong length", () => {
       // Standard base64 must be multiple of 4
       const result = validateBase64("SGVsb"); // length 5, not multiple of 4
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain("length");
+      expect(result.error).toBe("INVALID_BASE64_LENGTH");
     });
   });
 
@@ -274,7 +273,7 @@ describe("Base64 Encoder/Decoder", () => {
     it("should handle whitespace-only input as empty", () => {
       const result = processBase64("   ", "encode");
       expect(result.isValid).toBe(false);
-      expect(result.error).toBe("Empty input");
+      expect(result.error).toBe("EMPTY_INPUT");
     });
   });
 
@@ -313,7 +312,7 @@ describe("Base64 Encoder/Decoder", () => {
   describe("getByteView — error reporting", () => {
     it("should return error field for invalid base64 input", () => {
       const result = getByteView("!!!invalid!!!", true);
-      expect(result.error).toBe("Invalid base64 input");
+      expect(result.error).toBe("INVALID_BASE64_INPUT");
       expect(result.hex).toBe("");
       expect(result.decimal).toEqual([]);
     });
