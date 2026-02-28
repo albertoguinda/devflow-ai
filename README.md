@@ -283,6 +283,9 @@ All responses include strict security headers via `next.config.ts`:
 - **SHA-pinned actions** &mdash; all GitHub Actions pinned to full commit SHAs
 - **Runner hardening** &mdash; StepSecurity harden-runner monitors all CI jobs
 - **eslint-plugin-security** &mdash; catches eval(), non-literal require(), trojan source attacks
+- **Prompt sandboxing** &mdash; `<user_input>` XML delimiters isolate user content in all AI route prompts
+- **Storage shape validation** &mdash; `Array.isArray` guards on all localStorage deserialization
+- **Input size caps** &mdash; 50K char ceiling on recommendation engine, bounded quantifiers everywhere
 
 ---
 
@@ -557,6 +560,9 @@ Todas las respuestas incluyen cabeceras de seguridad estrictas via `next.config.
 - **Acciones con SHA fijo** &mdash; todas las GitHub Actions fijadas a SHAs completos
 - **Endurecimiento del runner** &mdash; StepSecurity harden-runner monitorea todos los jobs CI
 - **eslint-plugin-security** &mdash; detecta eval(), require() no literal, ataques trojan source
+- **Sandboxing de prompts** &mdash; delimitadores XML `<user_input>` aislan contenido de usuario en todos los prompts IA
+- **Validacion de forma en storage** &mdash; guardas `Array.isArray` en toda deserializacion de localStorage
+- **Limites de tamano** &mdash; tope de 50K chars en motor de recomendaciones, cuantificadores acotados
 
 ---
 
