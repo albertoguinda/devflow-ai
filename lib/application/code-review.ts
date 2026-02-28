@@ -54,7 +54,7 @@ const LANGUAGE_PATTERNS: Record<SupportedLanguage, Pattern[]> = {
   ],
   php: [
     { pattern: /\b(eval|exec|system|passthru|shell_exec)\s*\(/g, severity: "critical", category: "security", message: "Dangerous function execution", suggestion: "Avoid these functions as they are prone to injection" },
-    { pattern: /\$_GET| \$_POST| \$_REQUEST/g, severity: "warning", category: "security", message: "Direct superglobal access", suggestion: "Use filter_input() or a framework request object" },
+    { pattern: /\$_(GET|POST|REQUEST)/g, severity: "warning", category: "security", message: "Direct superglobal access", suggestion: "Use filter_input() or a framework request object" },
     { pattern: /mysql_query\s*\(/g, severity: "critical", category: "security", message: "Deprecated MySQL extension", suggestion: "Use PDO or MySQLi with prepared statements" },
     { pattern: /@\w+\s*\(/g, severity: "warning", category: "best-practice", message: "Error suppression operator used (@)", suggestion: "Handle errors properly instead of suppressing them" }
   ],

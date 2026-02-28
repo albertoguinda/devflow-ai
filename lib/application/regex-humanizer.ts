@@ -983,8 +983,19 @@ const GROUP_COLORS = [
 ];
 
 // --- Test Regex ---
+const MAX_PATTERN_LENGTH = 500;
+const MAX_TEST_INPUT_LENGTH = 50_000;
+
 export function testRegex(patternInput: string, input: string, locale: RegexLocale = "en"): TestResult {
   const s = getStrings(locale);
+
+  if (patternInput.length > MAX_PATTERN_LENGTH) {
+    return { pattern: patternInput, input, isValid: false, matches: false, allMatches: [], error: "Pattern too long (max 500 characters)" };
+  }
+  if (input.length > MAX_TEST_INPUT_LENGTH) {
+    return { pattern: patternInput, input, isValid: false, matches: false, allMatches: [], error: "Test input too long (max 50,000 characters)" };
+  }
+
   let pattern = patternInput;
   let flags = "g";
 
@@ -1013,9 +1024,13 @@ export function testRegex(patternInput: string, input: string, locale: RegexLoca
       const groups: Record<string, string> = {};
       const groupColors: Record<string, string> = {};
 
-      // Named groups
+      // Named groups (safe copy, skip prototype pollution keys)
       if (match.groups) {
-        Object.assign(groups, match.groups);
+        for (const [k, v] of Object.entries(match.groups)) {
+          if (k !== "__proto__" && k !== "constructor" && k !== "prototype") {
+            groups[k] = v ?? "";
+          }
+        }
       }
 
       // Numbered groups

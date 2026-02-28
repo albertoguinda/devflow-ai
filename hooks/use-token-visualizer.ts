@@ -18,18 +18,22 @@ interface UseTokenVisualizerReturn {
 
 function getSharedInput(): string {
   if (typeof window === "undefined") return "";
-  const raw = localStorage.getItem("devflow-shared-data") ?? "";
-  if (!raw) return "";
-  // Handle possible JSON envelope from older ToolSuggestions writer
   try {
-    const parsed = JSON.parse(raw) as { data?: string };
-    if (typeof parsed === "object" && parsed !== null && typeof parsed.data === "string") {
-      return parsed.data;
+    const raw = localStorage.getItem("devflow-shared-data") ?? "";
+    if (!raw) return "";
+    // Handle possible JSON envelope from older ToolSuggestions writer
+    try {
+      const parsed = JSON.parse(raw) as { data?: string };
+      if (typeof parsed === "object" && parsed !== null && typeof parsed.data === "string") {
+        return parsed.data;
+      }
+    } catch {
+      // Not JSON — treat as plain string (expected format)
     }
+    return raw;
   } catch {
-    // Not JSON — treat as plain string (expected format)
+    return "";
   }
-  return raw;
 }
 
 const ALL_PROVIDERS: TokenizerProvider[] = ["openai", "anthropic", "llama"];

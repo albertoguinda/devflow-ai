@@ -38,28 +38,36 @@ export class GroqClient implements AIProviderPort {
     options?: GenerateOptions,
   ): Promise<AITextResponse> {
     const start = Date.now();
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30_000);
 
-    const response = await fetch(GROQ_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: MODEL_ID,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: prompt },
-        ],
-        max_tokens: options?.maxTokens ?? 4096,
-        temperature: options?.temperature ?? 0.3,
-        top_p: options?.topP ?? 0.95,
-      }),
-    });
+    let response: Response;
+    try {
+      response = await fetch(GROQ_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: MODEL_ID,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: prompt },
+          ],
+          max_tokens: options?.maxTokens ?? 4096,
+          temperature: options?.temperature ?? 0.3,
+          top_p: options?.topP ?? 0.95,
+        }),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`[groq] upstream error ${response.status}:`, errorText);
+      const errorText = (await response.text()).slice(0, 500);
+      console.error(`[groq] upstream error ${response.status}:`, errorText.replace(/(Bearer\s+)\S+/gi, "$1[REDACTED]"));
       throw new Error(`AI provider returned an error (${response.status})`);
     }
 

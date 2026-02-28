@@ -91,14 +91,21 @@ export function formatCost(cost: number, currency: Currency = "USD", locale: "en
   return `${symbol}${converted.toLocaleString(loc, { minimumFractionDigits: 2 })}`;
 }
 
+function escapeCsvCell(value: string): string {
+  if (/[",\n\r]/.test(value) || /^[=+\-@]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+  return value;
+}
+
 export function exportComparisonCsv(comparison: CostComparison, currency: Currency = "USD"): string {
   const headers = ["Model", "Provider", "Input Cost", "Output Cost", "Total Cost", "Value Score"];
   const rows = comparison.results.map((r) => [
-    r.model.displayName,
-    r.model.provider,
-    formatCost(r.inputCost, currency),
-    formatCost(r.outputCost, currency),
-    formatCost(r.totalCost, currency),
+    escapeCsvCell(r.model.displayName),
+    escapeCsvCell(r.model.provider),
+    escapeCsvCell(formatCost(r.inputCost, currency)),
+    escapeCsvCell(formatCost(r.outputCost, currency)),
+    escapeCsvCell(formatCost(r.totalCost, currency)),
     r.valueScore ? (r.valueScore / 1_000_000).toFixed(2) : "N/A",
   ]);
   return [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");

@@ -35,6 +35,18 @@ export function useTailwindSorter(): UseTailwindSorterReturn {
   const { history, addToHistory: addItemToHistory, clearHistory } =
     useToolHistory<HistoryItem>("devflow-tailwind-sorter-history", 15);
 
+  // Silent sort for auto-sort (no history recording)
+  const sortSilent = useCallback(() => {
+    if (!input.trim()) return;
+    setIsSorting(true);
+    try {
+      const sortResult = sortClasses(input, config);
+      setResult(sortResult);
+    } finally {
+      setIsSorting(false);
+    }
+  }, [input, config]);
+
   const sort = useCallback(() => {
     if (!input.trim()) return;
     setIsSorting(true);
@@ -52,15 +64,15 @@ export function useTailwindSorter(): UseTailwindSorterReturn {
     }
   }, [input, config, addItemToHistory]);
 
-  // Auto-sort with debounce
+  // Auto-sort with debounce (silent — no history spam)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (input.trim()) {
-        sort();
+        sortSilent();
       }
     }, 400);
     return () => clearTimeout(timer);
-  }, [input, config, sort]);
+  }, [input, config, sortSilent]);
 
   const updateConfig = useCallback(<K extends keyof SorterConfig>(key: K, value: SorterConfig[K]) => {
     setConfig((prev) => ({ ...prev, [key]: value }));

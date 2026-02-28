@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useCallback, useState, useRef } from "react";
+import { createContext, useContext, useCallback, useState, useRef, useEffect } from "react";
 
 export type ToastType = "success" | "error" | "warning" | "info";
 
@@ -30,6 +30,15 @@ export function useToast() {
 export function useToastState() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const timerMapRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+
+  // Clear all pending timers on unmount
+  useEffect(() => {
+    const map = timerMapRef.current;
+    return () => {
+      map.forEach((timer) => clearTimeout(timer));
+      map.clear();
+    };
+  }, []);
 
   const addToast = useCallback(
     (message: string, type: ToastType = "info", duration = 4000) => {

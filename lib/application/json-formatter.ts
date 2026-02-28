@@ -48,8 +48,13 @@ export function validateJson(input: string): { isValid: boolean; error?: JsonVal
 /**
  * Attempts to fix common JSON syntax errors
  */
+const MAX_FIX_LENGTH = 50_000;
+
 export function fixJson(input: string): string {
   let fixed = input.trim();
+
+  // Skip auto-fix for very large inputs to avoid ReDoS risk
+  if (fixed.length > MAX_FIX_LENGTH) return fixed;
 
   // 1. Replace single quotes with double quotes (handles escaped quotes)
   fixed = fixed.replace(/'((?:[^'\\]|\\.)*)'/g, '"$1"');
@@ -501,6 +506,8 @@ export function processJson(
  * Both inputs are pretty-printed first (sorted keys) so structural differences are highlighted.
  * Uses a simple LCS-based diff algorithm.
  */
+const MAX_DIFF_LINES = 2000;
+
 export function diffJsonLines(json1: string, json2: string): JsonDiffResult {
   const format = (s: string): string[] => {
     try {
@@ -513,6 +520,11 @@ export function diffJsonLines(json1: string, json2: string): JsonDiffResult {
 
   const lines1 = format(json1);
   const lines2 = format(json2);
+
+  // Guard against O(n²) memory explosion on large inputs
+  if (lines1.length > MAX_DIFF_LINES || lines2.length > MAX_DIFF_LINES) {
+    return { lines: [], addedCount: 0, removedCount: 0, unchangedCount: 0 };
+  }
 
   // LCS table
   const m = lines1.length;

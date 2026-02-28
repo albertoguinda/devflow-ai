@@ -53,18 +53,20 @@ export function tokenizeText(text: string, provider: TokenizerProvider): TokenSe
       const mid = Math.floor(word.length / 2);
       const parts = [word.slice(0, mid), word.slice(mid)];
       for (const part of parts) {
+        const id = currentTokenId++;
         segments.push({
           text: part,
-          tokenId: currentTokenId++,
-          color: getTokenColor(currentTokenId),
+          tokenId: id,
+          color: getTokenColor(id),
           isWaste: false
         });
       }
     } else {
+      const id = currentTokenId++;
       segments.push({
         text: word,
-        tokenId: currentTokenId++,
-        color: getTokenColor(currentTokenId),
+        tokenId: id,
+        color: getTokenColor(id),
         isWaste
       });
     }

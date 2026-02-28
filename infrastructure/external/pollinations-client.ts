@@ -34,26 +34,34 @@ export class PollinationsClient implements AIProviderPort {
     options?: GenerateOptions,
   ): Promise<AITextResponse> {
     const start = Date.now();
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30_000);
 
-    const response = await fetch(POLLINATIONS_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: MODEL_ID,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: prompt },
-        ],
-        max_tokens: options?.maxTokens ?? 4096,
-        temperature: options?.temperature ?? 0.3,
-        top_p: options?.topP ?? 0.95,
-      }),
-    });
+    let response: Response;
+    try {
+      response = await fetch(POLLINATIONS_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: MODEL_ID,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: prompt },
+          ],
+          max_tokens: options?.maxTokens ?? 4096,
+          temperature: options?.temperature ?? 0.3,
+          top_p: options?.topP ?? 0.95,
+        }),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     if (!response.ok) {
-      const errorText = await response.text();
+      const errorText = (await response.text()).slice(0, 500);
       console.error(`[pollinations] upstream error ${response.status}:`, errorText);
       throw new Error(`AI provider returned an error (${response.status})`);
     }

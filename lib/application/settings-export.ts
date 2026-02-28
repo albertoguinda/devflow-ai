@@ -82,11 +82,13 @@ export function validateImport(data: unknown): { valid: boolean; error?: string;
 /**
  * Import settings into localStorage
  */
+const MAX_VALUE_LENGTH = 1_000_000; // 1MB per key
+
 export function importSettings(exportData: SettingsExport): { imported: number } {
   let imported = 0;
 
   for (const [key, value] of Object.entries(exportData.settings)) {
-    if (key.startsWith(APP_PREFIX)) {
+    if (key.startsWith(APP_PREFIX) && value.length <= MAX_VALUE_LENGTH) {
       localStorage.setItem(key, value);
       imported++;
     }

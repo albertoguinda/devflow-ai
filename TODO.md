@@ -37,6 +37,51 @@
 - [x] Deep code review of all 15 tool pages, hooks, and lib/application logic
 - [x] Result: 0 critical bugs, 0 high-severity issues, codebase production-ready
 
+### Exhaustive 4-Layer Audit + Fixes (24 files, 256 insertions)
+
+#### Security by Design (16 fixes)
+- [x] AI providers (Groq, OpenRouter, Pollinations) — 30s AbortController timeout on all external fetch calls
+- [x] AI providers — error log sanitization: truncate to 500 chars, redact Bearer tokens
+- [x] Client fetcher — 45s AbortController timeout on all AI API calls
+- [x] Context Manager `exportForAI` — XML injection fix via `escapeXml()` on all interpolated values
+- [x] Context Manager `exportAsXml` — `escapeXml()` on `doc.type` and `doc.priority` attributes
+- [x] Context Manager `generateTree` — prototype pollution guard (`__proto__`, `constructor`, `prototype` keys skipped)
+- [x] Settings export `importSettings` — per-key value length cap (1MB) to prevent localStorage DoS
+- [x] UUID `hexToBytes` — validates namespace format (32 hex chars) before parsing
+- [x] UUID `generateUuidV7`/`generateUlid` — replaced `Math.random()` with `crypto.getRandomValues()`
+- [x] JSON Formatter `diffJsonLines` — 2000-line cap to prevent O(n²) memory exhaustion
+- [x] JSON Formatter `fixJson` — 50KB input guard to prevent ReDoS in single-quote regex
+- [x] Regex Humanizer `testRegex` — input size caps (pattern 500 chars, input 50K chars)
+- [x] Regex Humanizer `testRegex` — safe named groups copy (filters `__proto__`/`constructor`/`prototype`)
+- [x] Cost Calculator CSV export — formula injection prevention via `escapeCsvCell()`
+- [x] Security patterns — ReDoS fix: `{5,}` → `{5,50}` on obfuscation detection regex
+- [x] Favorites context — `localStorage` operations wrapped in try-catch
+
+#### Security by Default (2 fixes)
+- [x] Locale store — SSR guard on `document.cookie` write
+- [x] useTranslation — removed duplicate cookie write (locale-store persist handles it)
+
+#### Code Quality (8 fixes)
+- [x] CopyButton — useEffect cleanup for timer on unmount (prevents state-after-unmount)
+- [x] Toast system — clear all pending timers on unmount
+- [x] GitHubStars — AbortController cleanup on unmount
+- [x] GSAP hooks — tween.kill() cleanup in all 5 hooks (useFadeIn, useStaggerIn, usePulse, useCounter)
+- [x] Tailwind Sorter — split sort into silent auto-sort (no history spam) + explicit button sort
+- [x] DTO-Matic — one-shot ref guard for shared data load
+- [x] Token Visualizer — try-catch around localStorage.getItem in getSharedInput
+- [x] Favorites context — memoized context value with useMemo
+
+#### Optimization (3 fixes)
+- [x] Code Review — PHP superglobal regex fixed (removed leading spaces, now detects `$_POST` correctly)
+- [x] Token Visualizer — off-by-one fix in `getTokenColor` (was using incremented tokenId)
+- [x] Variable Name Wizard — `REVERSE_ABBREVIATIONS` pre-computed at module level (was rebuilt per call)
+
+#### Verification
+- [x] TypeScript: 0 errors (strict mode)
+- [x] ESLint: 0 errors, 0 warnings
+- [x] Unit tests: 45 files, 1466 passing
+- [x] Infrastructure tests: 8 files, 55 passing (all AbortController changes verified)
+
 ---
 
 ## Completed in Previous Session (2026-02-27)

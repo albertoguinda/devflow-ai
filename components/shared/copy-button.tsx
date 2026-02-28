@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@heroui/react";
 import { Copy, Check } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
@@ -39,6 +39,13 @@ export function CopyButton({
   const resolvedAriaLabel = ariaLabel ?? t("common.copyToClipboard");
   const [copied, setCopied] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  // Clean up pending timer on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleCopy = useCallback(async () => {
     const value = getText ? getText() : text;

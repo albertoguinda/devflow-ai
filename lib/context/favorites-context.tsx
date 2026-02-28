@@ -6,6 +6,7 @@ import {
   useReducer,
   useEffect,
   useCallback,
+  useMemo,
   type ReactNode,
 } from "react";
 import type { FavoriteItem } from "@/types/tools";
@@ -77,8 +78,8 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   // Load from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem(FAVORITES_STORAGE_KEY);
     try {
+      const saved = localStorage.getItem(FAVORITES_STORAGE_KEY);
       const parsed = saved ? (JSON.parse(saved) as FavoriteItem[]) : [];
       dispatch({ type: "LOAD_FAVORITES", payload: parsed });
     } catch {
@@ -89,10 +90,14 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   // Persist to localStorage on change
   useEffect(() => {
     if (!state.isLoading) {
-      localStorage.setItem(
-        FAVORITES_STORAGE_KEY,
-        JSON.stringify(state.favorites)
-      );
+      try {
+        localStorage.setItem(
+          FAVORITES_STORAGE_KEY,
+          JSON.stringify(state.favorites)
+        );
+      } catch {
+        // Quota exceeded or storage unavailable — silently ignore
+      }
     }
   }, [state.favorites, state.isLoading]);
 
@@ -112,12 +117,15 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     [isFavorite]
   );
 
-  const value: FavoritesContextType = {
-    favorites: state.favorites,
-    isFavorite,
-    toggleFavorite,
-    isLoading: state.isLoading,
-  };
+  const value = useMemo<FavoritesContextType>(
+    () => ({
+      favorites: state.favorites,
+      isFavorite,
+      toggleFavorite,
+      isLoading: state.isLoading,
+    }),
+    [state.favorites, state.isLoading, isFavorite, toggleFavorite]
+  );
 
   // React 19: use <Context> directly instead of <Context.Provider>
   return <FavoritesContext value={value}>{children}</FavoritesContext>;

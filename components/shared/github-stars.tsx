@@ -6,7 +6,10 @@ export function GitHubStars() {
   const [stars, setStars] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("https://api.github.com/repos/albertoguinda/devflow-ai")
+    const controller = new AbortController();
+    fetch("https://api.github.com/repos/albertoguinda/devflow-ai", {
+      signal: controller.signal,
+    })
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error("fetch failed"))))
       .then((data: { stargazers_count?: number }) => {
         if (typeof data.stargazers_count === "number") {
@@ -16,6 +19,7 @@ export function GitHubStars() {
       .catch(() => {
         // Silently fallback — keep null state
       });
+    return () => controller.abort();
   }, []);
 
   return (

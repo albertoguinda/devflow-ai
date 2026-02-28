@@ -28,11 +28,40 @@ Feature improvements across all 15 tools, benchmarked against best-in-class alte
 - **Cost Calculator** — Feature matrix filter: filter models by capabilities (Vision, JSON Mode, Function Calling, Streaming, Fine-tuning)
 - **Context Manager** — Full-text search across document title, content, and tags
 
+#### Security
+- **AI providers** — 30s AbortController timeout on all external fetch calls (Groq, OpenRouter, Pollinations); prevents serverless worker exhaustion
+- **AI providers** — Error log sanitization: upstream error bodies truncated to 500 chars, Bearer tokens redacted before logging
+- **Client fetcher** — 45s AbortController timeout on all AI API calls from the browser
+- **Context Manager** — XML injection fix: `escapeXml()` applied to all interpolated values in `exportForAI` and `exportAsXml`
+- **Context Manager** — Prototype pollution guard in `generateTree`: `__proto__`, `constructor`, `prototype` keys are skipped
+- **Settings export** — Import guard: per-key value length capped at 1MB to prevent localStorage DoS
+- **UUID Generator** — `hexToBytes` validates UUID namespace format (length + hex) before use
+- **UUID Generator** — `generateUuidV7` and `generateUlid` now use `crypto.getRandomValues()` instead of `Math.random()`
+- **JSON Formatter** — `diffJsonLines` capped at 2,000 lines to prevent O(n^2) memory exhaustion
+- **JSON Formatter** — `fixJson` skips auto-repair for inputs >50KB to prevent ReDoS
+- **Regex Humanizer** — Input size caps: pattern max 500 chars, test input max 50K chars
+- **Regex Humanizer** — `testRegex` named groups copy uses key filtering instead of `Object.assign` (prototype pollution prevention)
+- **Cost Calculator** — CSV export: formula injection prevention via `escapeCsvCell` (escapes `=`, `+`, `-`, `@` prefixes)
+- **Security patterns** — ReDoS fix: suspicious spacing regex bounded to `{5,50}` (was unbounded `{5,}`)
+- **Favorites context** — `localStorage.getItem/setItem` wrapped in try-catch (prevents crash in private browsing/quota exceeded)
+- **Locale store** — SSR guard on `document.cookie` write (prevents `ReferenceError` in server context)
+
 #### Fixed
 - **JSON Formatter E2E** — Updated Playwright selector for syntax-highlighted output (strict mode violation with `getByText`)
 - **Mobile overflow** — UUID namespace grid (2-col on mobile), Tailwind Sorter preview (stacks on mobile), Code Review diff (stacks on mobile), Prompt Analyzer tooltip (added margin inset)
 - **E2E stability** — Fixed 12 flaky tests across 7 spec files (command-palette, context-manager, cost-calculator, dto-matic, git-commit, prompt-analyzer, settings-export): replaced `waitForTimeout` with proper waits, fixed generic selectors with aria-labels/placeholders, resolved strict mode violations, rewrote settings-export theme test (was targeting wrong role)
 - **Context Manager** — Search highlight: matching terms in document title and file path are now highlighted with `<mark>` when searching
+- **Context Manager** — Division by zero guard in `recalculateWindow` when `maxTokens` is 0
+- **Code Review** — PHP superglobal regex fix: `$_POST` and `$_REQUEST` now detected without leading space requirement
+- **Token Visualizer** — Off-by-one fix: `getTokenColor` now uses the correct tokenId (was using incremented value)
+- **CopyButton** — Timer cleanup on unmount prevents state-after-unmount warning
+- **Toast system** — Timer cleanup on unmount: all pending timers cleared when ToastProvider unmounts
+- **GitHubStars** — AbortController cleanup prevents state-after-unmount on navigation
+- **GSAP hooks** — Tween cleanup: all 5 GSAP hooks (`useFadeIn`, `useStaggerIn`, `usePulse`, `useCounter`) now kill tweens on unmount
+- **Tailwind Sorter** — Auto-sort no longer writes to history on every keystroke (split into silent/explicit sort)
+- **DTO-Matic** — Shared data load uses one-shot ref guard (prevents overwriting user input on re-render)
+- **useTranslation** — Removed duplicate cookie write (locale-store already handles it via persist middleware)
+- **Variable Name Wizard** — `expandAbbreviations` reverse map pre-computed at module level (was rebuilt on every call)
 
 #### Tests
 - +50 new unit tests (1416 → 1466): batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL generation (8), flavor warnings (12), code snippets (8)

@@ -20,7 +20,7 @@ export function useFadeIn(delay = 0) {
       return;
     }
 
-    gsap.fromTo(
+    const tween = gsap.fromTo(
       ref.current,
       { opacity: 0 },
       {
@@ -30,6 +30,7 @@ export function useFadeIn(delay = 0) {
         ease: "power2.out",
       }
     );
+    return () => { tween.kill(); };
   }, [delay]);
 
   return ref;
@@ -55,7 +56,7 @@ export function useStaggerIn(childSelector = ":scope > *", delay = 0) {
       return;
     }
 
-    gsap.fromTo(
+    const tween = gsap.fromTo(
       elements,
       { opacity: 0 },
       {
@@ -66,6 +67,7 @@ export function useStaggerIn(childSelector = ":scope > *", delay = 0) {
         ease: "power2.out",
       }
     );
+    return () => { tween.kill(); };
   }, [childSelector, delay]);
 
   return ref;
@@ -117,7 +119,7 @@ export function usePulse(trigger: boolean) {
       return;
     }
 
-    gsap.fromTo(
+    const tween = gsap.fromTo(
       ref.current,
       { scale: 1 },
       {
@@ -128,6 +130,7 @@ export function usePulse(trigger: boolean) {
         repeat: 1,
       }
     );
+    return () => { tween.kill(); };
   }, [trigger]);
 
   return ref;
@@ -146,7 +149,7 @@ export function useCounter(target: number, duration = 1.5) {
     }
 
     const obj = { value: 0 };
-    gsap.to(obj, {
+    const tween = gsap.to(obj, {
       value: target,
       duration,
       ease: "power2.out",
@@ -156,6 +159,7 @@ export function useCounter(target: number, duration = 1.5) {
         }
       },
     });
+    return () => { tween.kill(); };
   }, [target, duration]);
 
   return ref;

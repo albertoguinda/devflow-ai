@@ -88,7 +88,7 @@ const INJECTION_PATTERNS: {
   },
   {
     // eslint-disable-next-line security/detect-unsafe-regex -- bounded repetition for obfuscation detection
-    pattern: /\b([a-z]\s+){5,}/i,
+    pattern: /\b([a-z]\s+){5,50}/i,
     type: "prompt_injection",
     severity: "warning",
     description: "Suspicious spacing detected (potential payload splitting)",

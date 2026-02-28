@@ -105,9 +105,9 @@ function recalculateWindow(window: ContextWindow): ContextWindow {
     (sum, doc) => sum + doc.tokenCount,
     0
   );
-  const utilizationPercentage = Math.round(
-    (totalTokens / window.maxTokens) * 100
-  );
+  const utilizationPercentage = window.maxTokens > 0
+    ? Math.round((totalTokens / window.maxTokens) * 100)
+    : 0;
 
   return {
     ...window,
@@ -210,7 +210,7 @@ export function exportContext(
 function exportAsXml(window: ContextWindow): string {
   const docs = window.documents
     .map(
-      (doc) => `  <document type="${doc.type}" priority="${doc.priority}">
+      (doc) => `  <document type="${escapeXml(doc.type)}" priority="${escapeXml(String(doc.priority))}">
     <title>${escapeXml(doc.title)}</title>
     <content><![CDATA[${doc.content}]]></content>
     <tags>${doc.tags.map((t) => `<tag>${escapeXml(t)}</tag>`).join("")}</tags>
@@ -246,9 +246,11 @@ export function generateTree(documents: ContextDocument[]): string {
   interface TreeNode { [key: string]: TreeNode; }
   const tree: TreeNode = {};
 
+  const DANGEROUS_KEYS = new Set(["__proto__", "constructor", "prototype"]);
   paths.forEach(path => {
     let current: TreeNode = tree;
     path.split("/").forEach(part => {
+      if (DANGEROUS_KEYS.has(part)) return;
       if (!current[part]) current[part] = {};
       current = current[part] as TreeNode;
     });
@@ -279,8 +281,8 @@ export function exportForAI(window: ContextWindow, options: { stripComments?: bo
         if (options.stripComments) {
           content = stripComments(content, doc.type);
         }
-        return `<file path="${doc.filePath || doc.title}" type="${doc.type}">
-${doc.instructions ? `<instructions>${doc.instructions}</instructions>\n` : ""}<content>
+        return `<file path="${escapeXml(doc.filePath || doc.title)}" type="${escapeXml(doc.type)}">
+${doc.instructions ? `<instructions>${escapeXml(doc.instructions)}</instructions>\n` : ""}<content>
 ${content}
 </content>
 </file>`;

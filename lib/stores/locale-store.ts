@@ -13,7 +13,9 @@ export const useLocaleStore = create<LocaleState>()(
     (set) => ({
       locale: "en",
       setLocale: (locale) => {
-        document.cookie = `devflow-locale=${locale};path=/;max-age=31536000;SameSite=Lax`;
+        if (typeof document !== "undefined") {
+          document.cookie = `devflow-locale=${locale};path=/;max-age=31536000;SameSite=Lax`;
+        }
         set({ locale });
       },
     }),

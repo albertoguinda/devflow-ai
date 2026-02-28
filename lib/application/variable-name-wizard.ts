@@ -641,16 +641,17 @@ export const COMMON_ABBREVIATIONS: Record<string, string> = {
   window: "win",
 };
 
+// Pre-computed reverse abbreviation map (abbr → full word)
+const REVERSE_ABBREVIATIONS: Record<string, string> = Object.fromEntries(
+  Object.entries(COMMON_ABBREVIATIONS).map(([full, abbr]) => [abbr, full])
+);
+
 /**
  * Expand abbreviations in a name
  */
 export function expandAbbreviations(name: string): string {
   const words = splitIntoWords(name);
-  const reverseAbbreviations = Object.fromEntries(
-    Object.entries(COMMON_ABBREVIATIONS).map(([full, abbr]) => [abbr, full])
-  );
-
-  const expanded = words.map((word) => reverseAbbreviations[word] ?? word);
+  const expanded = words.map((word) => REVERSE_ABBREVIATIONS[word] ?? word);
   return expanded.join(" ");
 }
 

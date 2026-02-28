@@ -21,6 +21,9 @@ const MAX_UUID = "ffffffff-ffff-ffff-ffff-ffffffffffff";
  */
 function hexToBytes(hex: string): Uint8Array {
   const clean = hex.replace(/-/g, "");
+  if (clean.length !== 32 || !/^[0-9a-f]+$/i.test(clean)) {
+    throw new Error(`Invalid UUID namespace: "${hex}"`);
+  }
   const bytes = new Uint8Array(16);
   for (let i = 0; i < 16; i++) {
     bytes[i] = parseInt(clean.slice(i * 2, i * 2 + 2), 16);
@@ -203,7 +206,9 @@ export function generateUuidV1(): string {
 export function generateUuidV7(): string {
   const now = Date.now();
   const msHex = now.toString(16).padStart(12, "0");
-  const random = Array.from({ length: 16 }, () => Math.floor(Math.random() * 256));
+  const randomBytes = new Uint8Array(16);
+  crypto.getRandomValues(randomBytes);
+  const random = Array.from(randomBytes);
   random[0] = 0x70 | ((random[0] ?? 0) & 0x0f);
   random[2] = 0x80 | ((random[2] ?? 0) & 0x3f);
   const randomHex = random.map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -226,10 +231,12 @@ export function generateUlid(): string {
     ts = Math.floor(ts / 32);
   }
 
-  // Encode 80 bits of randomness (16 chars)
+  // Encode 80 bits of randomness (16 chars) using crypto
+  const randBytes = new Uint8Array(16);
+  crypto.getRandomValues(randBytes);
   const randPart: string[] = [];
   for (let i = 0; i < 16; i++) {
-    randPart.push(CROCKFORD[Math.floor(Math.random() * 32)]!);
+    randPart.push(CROCKFORD[(randBytes[i] ?? 0) % 32]!);
   }
 
   return timePart.join("") + randPart.join("");

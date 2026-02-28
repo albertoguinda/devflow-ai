@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import type {
   DtoMaticConfig,
   GenerationResult,
@@ -54,12 +54,14 @@ export function useDtoMatic() {
     useToolHistory<HistoryItem>("devflow-dto-matic-history", 10);
   
   const { getSharedData } = useSmartNavigation();
+  const sharedDataLoaded = useRef(false);
 
   useEffect(() => {
+    if (sharedDataLoaded.current) return;
+    sharedDataLoaded.current = true;
     const shared = getSharedData();
     if (shared) {
       setJsonInput(shared);
-      // Optional: clearSharedData(); // Keep it for now in case of refresh
     }
   }, [getSharedData]);
 
