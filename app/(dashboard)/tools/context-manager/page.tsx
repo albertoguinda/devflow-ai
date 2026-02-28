@@ -217,6 +217,19 @@ export default function ContextManagerPage() {
     { name: t("table.colActions"), uid: "actions" },
   ];
 
+  const highlightMatch = useCallback((text: string, query: string) => {
+    if (!query.trim()) return text;
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // eslint-disable-next-line security/detect-non-literal-regexp -- escaped user input for search highlight
+    const parts = text.split(new RegExp(`(${escaped})`, "gi"));
+    if (parts.length === 1) return text;
+    return parts.map((part, i) =>
+      part.toLowerCase() === query.toLowerCase()
+        ? <mark key={i} className="bg-primary/30 text-foreground rounded-sm px-0.5">{part}</mark>
+        : part
+    );
+  }, []);
+
   const renderDocCell = useCallback((doc: Document, columnKey: React.Key) => {
     const key = columnKey.toString();
     switch (key) {
@@ -234,9 +247,9 @@ export default function ContextManagerPage() {
               {doc.type === "code" ? <FileCode className="size-3.5" /> : <FileText className="size-3.5" />}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-xs truncate group-hover/title:text-primary transition-colors">{doc.title}</span>
+              <span className="font-bold text-xs truncate group-hover/title:text-primary transition-colors">{highlightMatch(doc.title, searchQuery)}</span>
               {doc.filePath && doc.filePath !== doc.title && (
-                <span className="text-[10px] text-muted-foreground font-mono truncate">{doc.filePath}</span>
+                <span className="text-[10px] text-muted-foreground font-mono truncate">{highlightMatch(doc.filePath, searchQuery)}</span>
               )}
             </div>
           </div>
@@ -276,7 +289,7 @@ export default function ContextManagerPage() {
       default:
         return String(doc[key as keyof typeof doc] ?? "");
     }
-  }, [changePriority, t, activeWindow]);
+  }, [changePriority, t, activeWindow, highlightMatch, searchQuery]);
 
   // Hidden file input
   const fileInputElement = (

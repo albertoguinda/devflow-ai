@@ -38,4 +38,24 @@ test.describe("Base64 Encoder/Decoder", () => {
     // Output should contain the decoded text
     await expect(page.locator("pre code").first()).toContainText("Hello World");
   });
+
+  test("batch encodes multiple lines", async ({ page }) => {
+    await page.goto("/tools/base64");
+
+    // Switch to Batch tab
+    const batchTab = page.getByRole("tab", { name: /batch/i });
+    await batchTab.click();
+
+    // Fill batch input with multiple lines
+    const batchInput = page.getByPlaceholder(/paste multiple lines/i);
+    await expect(batchInput).toBeVisible({ timeout: 10000 });
+    await batchInput.fill("Hello\nWorld\nTest");
+
+    // Click encode all button
+    const encodeAllBtn = page.getByRole("button", { name: /encode all|codificar todo/i });
+    await encodeAllBtn.click();
+
+    // Should show success count
+    await expect(page.getByText(/3/).first()).toBeVisible({ timeout: 5000 });
+  });
 });
