@@ -20,16 +20,28 @@ test.describe("Settings Export/Import", () => {
   });
 
   test("theme toggle changes theme", async ({ page }) => {
-    // Find theme toggle (Switch or button)
-    const themeToggle = page.getByRole("switch").first();
-    if (await themeToggle.isVisible()) {
-      const htmlBefore = await page.locator("html").getAttribute("class");
-      await themeToggle.click();
-      // Wait for theme transition
-      await page.waitForTimeout(500);
-      const htmlAfter = await page.locator("html").getAttribute("class");
-      // Theme class should change
-      expect(htmlBefore).not.toBe(htmlAfter);
+    // Theme uses three buttons: light, dark, system (not a switch)
+    const htmlBefore = await page.locator("html").getAttribute("class");
+
+    // Click the "dark" theme button (has Moon icon)
+    const darkBtn = page.getByRole("button", { name: /dark|oscuro/i });
+    if (await darkBtn.isVisible()) {
+      await darkBtn.click();
+    } else {
+      // If already dark, click light
+      const lightBtn = page.getByRole("button", { name: /light|claro/i });
+      await lightBtn.click();
     }
+
+    // Wait for the HTML class to actually change (theme transition)
+    await page.waitForFunction(
+      (prevClass) => document.documentElement.getAttribute("class") !== prevClass,
+      htmlBefore,
+      { timeout: 5000 }
+    );
+
+    const htmlAfter = await page.locator("html").getAttribute("class");
+    // Theme class should have changed
+    expect(htmlBefore).not.toBe(htmlAfter);
   });
 });
