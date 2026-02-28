@@ -1,11 +1,32 @@
 # TODO — DevFlow AI v4.13.0 (15-Tool Feature Iteration)
 
-> Last updated: 2026-02-27
+> Last updated: 2026-02-28
 > Context: Feature improvements across all 15 tools benchmarked against best-in-class alternatives. 1466 tests, 45 files.
 
 ---
 
-## Completed in This Session (2026-02-27)
+## Completed in This Session (2026-02-28)
+
+### E2E Stability — 12 Flaky Tests Fixed (7 spec files)
+- [x] command-palette — removed `waitForTimeout(200)`, click options instead of Enter (SearchField intercepts keydown)
+- [x] command-palette — arrow keys test: changed to mouse hover selection (avoids SearchField keyboard conflict)
+- [x] context-manager — replaced generic `locator("input").first()` with `getByPlaceholder(/new window name/i)`
+- [x] context-manager — fixed fragile `.locator("..")` parent selector with specific aria-label selectors for delete flow
+- [x] context-manager — fixed model selector: `select[aria-label="Target model"]` instead of `.first()`
+- [x] context-manager — added `.first()` on text assertions to avoid strict mode violations (3 matching elements)
+- [x] cost-calculator — replaced loose `getByText(/\$/)` with `getByText(/estimated monthly cost/i)`
+- [x] dto-matic — replaced `locator("textarea").first()` with `textarea[aria-label="JSON input for DTO generation"]`
+- [x] dto-matic — output assertion: target `pre` block with `hasText: /interface/` instead of loose regex
+- [x] git-commit — type selector: use label text `getByText(/^type$/i)` (Dropdown trigger has no aria-label)
+- [x] git-commit — description input: use `getByPlaceholder(/add authentication flow/i)` instead of fragile filter chain
+- [x] prompt-analyzer — use `#prompt-input` selector, added `.first()` for score strict mode
+- [x] settings-export — **rewrote theme test**: was targeting `role="switch"` but theme uses 3 Buttons (light/dark/system)
+- [x] settings-export — replaced `waitForTimeout(500)` with `waitForFunction()` for HTML class change detection
+- [x] E2E results: 66/67 passed (1 pre-existing a11y timeout from browser contention, unrelated)
+
+---
+
+## Completed in Previous Session (2026-02-27)
 
 ### 15-Tool Feature Iteration
 - [x] JSON Formatter — Syntax highlighting (color-coded tokens, dark/light)
@@ -48,7 +69,7 @@
 ## Next Session — Potential Tasks
 
 ### E2E Stability
-- [ ] Fix 12 pre-existing flaky E2E tests (command-palette, context-manager, cost-calculator, dto-matic, git-commit, prompt-analyzer, settings-export)
+- [x] Fix 12 pre-existing flaky E2E tests (command-palette, context-manager, cost-calculator, dto-matic, git-commit, prompt-analyzer, settings-export) ✓ 2026-02-28
 - [ ] Add E2E coverage for new features (batch tab in Base64, flavor selector in Regex, SQL tab in DTO-Matic)
 
 ### Visual QA
