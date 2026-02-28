@@ -105,14 +105,14 @@ Final comprehensive audit with 3 agents (security, quality, performance). ~25 fi
 - **Dashboard Layout** — `NAV_ITEMS` memoized with `useMemo([t])`
 
 #### Changed
-- **Dependencies** — `serialize-javascript` override to `>=7.0.3` (fixes GHSA-5c6j-r48x-rmvq)
+- **Dependencies** — `@sentry/nextjs` 10.39.0→10.40.0: resolves `serialize-javascript` RCE (GHSA-5c6j-r48x-rmvq) by removing vulnerable webpack chain
 - **Tool Recommendations** — `detectDataTypes` 50K char length guard to prevent expensive regex on huge inputs
 
 ## [4.13.0] - 2026-02-27
 
 ### 15-Tool Feature Iteration
 
-Feature improvements across all 15 tools, benchmarked against best-in-class alternatives (regex101, crontab.guru, quicktype.io, JSON Crack). All improvements are local-first (no AI required), zero new dependencies, WCAG AAA compliant, fully i18n'd.
+Feature improvements across all 15 tools, benchmarked against best-in-class alternatives (regex101, crontab.guru, quicktype.io, JSON Crack). All improvements are local-first (no AI required), zero new dependencies, WCAG AAA compliant, fully i18n'd (~1656 keys per locale).
 
 #### Added
 - **JSON Formatter** — Syntax highlighting with color-coded tokens (keys, strings, numbers, booleans, null, brackets) for both light/dark mode

@@ -121,11 +121,15 @@ Lazy garbage collection cleans stale entries on each check.
 |--------|------------|
 | API key exposure | Server-only env vars (no `NEXT_PUBLIC_` prefix) |
 | BYOK key theft | In-memory Zustand store (no persist), HTTPS headers |
-| Prompt injection | System prompts server-side only, anti-injection instructions |
-| Abuse / scraping | IP-based rate limiting |
-| Large payloads | Zod max-length validation on all inputs |
-| XSS via AI response | JSON-parsed responses, no `dangerouslySetInnerHTML` |
+| Prompt injection | `<user_input>` XML delimiters + anti-injection system prompts |
+| Abuse / scraping | IP-based rate limiting (10 RPM free / 50 RPM BYOK) |
+| Large payloads | Zod max-length validation on all inputs + AI response caps |
+| XSS via AI response | JSON-parsed responses, Zod response validation, no `dangerouslySetInnerHTML` |
 | CSP bypass | All `/api/ai/*` go through `'self'` |
+| Prototype pollution | Dangerous keys filtered in JSON processing (`__proto__`, `constructor`, `prototype`) |
+| ReDoS | Input size caps, bounded quantifiers, diff line limits |
+| XML/CSV injection | `escapeXml()` and `escapeCsvCell()` on all exports |
+| Storage tampering | `Array.isArray` shape validation on all localStorage deserialization |
 
 ## State Management
 

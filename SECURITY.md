@@ -24,6 +24,14 @@ DevFlow AI is a **local-first** developer toolkit. Key security properties:
 - **Rate limiting** — in-memory, IP-based rate limiter (10 RPM free, 50 RPM BYOK); configurable via `RATE_LIMIT_RPM` and `RATE_LIMIT_DAILY_TOKENS` env vars
 - **Input validation** — Zod schemas validate all API route inputs; `eslint-plugin-security` flags risky patterns
 - **No `eval()` or `dangerouslySetInnerHTML`** — static analysis enforced
+- **Prototype pollution protection** — `__proto__`, `constructor`, `prototype` keys filtered in JSON processing and Context Manager
+- **Prompt sandboxing** — `<user_input>` XML delimiters isolate user content in all AI route prompts
+- **ReDoS protection** — input size caps, bounded quantifiers, diff line limits across all regex-heavy tools
+- **XML/CSV injection prevention** — `escapeXml()` on Context Manager exports, `escapeCsvCell()` on Cost Calculator CSV
+- **AbortController timeouts** — 30s on server-side AI calls, 45s on client-side fetches
+- **Cryptographically secure random** — `crypto.getRandomValues()` / `crypto.randomUUID()` for UUID and ULID generation
+- **Storage shape validation** — `Array.isArray` guards on all localStorage deserialization
+- **AI response validation** — Zod schemas with `.max()` length caps validate all AI provider responses before returning to client
 
 ### CI/CD
 - **CodeQL SAST** — `.github/workflows/codeql.yml` (JavaScript/TypeScript, `security-extended` query suite, weekly + push/PR)
