@@ -24,7 +24,7 @@ DevFlow AI es una plataforma open-source que centraliza **15 herramientas** esen
 - 20 E2E specs con Playwright (15 tools + settings + navigation + accessibility WCAG AAA)
 - Lighthouse score **100/100/100/100** en Desktop
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
-- Internacionalizacion completa (English/Castellano, **~1650 claves** por idioma)
+- Internacionalizacion completa (English/Castellano, **~1656 claves** por idioma)
 - **35 rutas** generadas (pages + API routes)
 - **10 CI jobs**: quality, security, dependency-review, build, e2e, a11y, CodeQL SAST, Semgrep SAST, Lighthouse, release
 - Command Palette (`Cmd+K`) para acceso rapido a cualquier herramienta
@@ -62,7 +62,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 - Lograr coverage estrategico 100/80/0 con enforcement per-file
 - Deploy en produccion con CI/CD completo (10 jobs: quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse)
 - Lighthouse score 100 en todas las metricas (Desktop)
-- Internacionalizacion completa (EN/ES, ~1650 claves por idioma)
+- Internacionalizacion completa (EN/ES, ~1656 claves por idioma)
 - Seguridad enterprise: CSP, HSTS, prototype pollution, SAST (CodeQL + Semgrep), harden-runner, eslint-plugin-security
 
 #### Objetivos de Producto
@@ -175,7 +175,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 | 4   | **Code Review Assistant**  | Analisis de calidad: code smells, complejidad ciclomatica, refactoring         | Alta        |
 | 5   | **API Cost Calculator**    | Comparar costes de 10+ modelos de IA con proyecciones mensuales                | Media       |
 | 6   | **Base64 Encoder/Decoder** | Encode/decode con soporte URL-safe, data URLs y Unicode                        | Media       |
-| 7   | **UUID Generator**         | Generar UUID v1, v4, v7. Validacion, parsing y bulk generation hasta 1000      | Media       |
+| 7   | **UUID Generator**         | Generar UUID v1, v3, v4, v5, v7. Namespace UUIDs, validacion, bulk generation  | Media       |
 | 8   | **DTO-Matic**              | Convertir JSON a interfaces TypeScript, entities, mappers y schemas Zod        | Alta        |
 | 9   | **Git Commit Generator**   | Commits convencionales con tipos, scopes, emojis y validacion                  | Media       |
 | 10  | **Cron Builder**           | Constructor visual de expresiones cron con preview de ejecuciones              | Alta        |
@@ -183,7 +183,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 | 12  | **Prompt Analyzer**        | Evaluar calidad de prompts, detectar inyecciones, sugerir mejoras              | Alta        |
 | 13  | **Token Visualizer**       | Visualizar tokenizacion en tiempo real con estimacion de costes por token      | Media       |
 | 14  | **Context Manager**        | Organizar context windows con chunking, prioridades y export XML/JSON/MD       | Alta        |
-| 15  | **HTTP Status Finder**     | Referencia completa de 55+ codigos HTTP con ejemplos y guias de uso            | Baja        |
+| 15  | **HTTP Status Finder**     | Referencia completa de 61 codigos HTTP con snippets y guias de uso             | Baja        |
 
 **RF-16: Sistema de Favoritos**
 
@@ -195,7 +195,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 
 **RF-18: Internacionalizacion**
 
-- ~1650 claves traducidas en English y Castellano
+- ~1656 claves traducidas en English y Castellano
 - Cambio de idioma en tiempo real sin recarga
 
 ### 3.2 Requisitos No Funcionales
@@ -232,7 +232,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 - Coverage estrategico 100/80/0 con enforcement per-file
 - TypeScript maximum strict mode (15+ flags estrictos)
 - ESLint 9 flat config
-- Limites de codigo: funciones max 20 lineas, archivos max 200 lineas
+- Convencion de codigo: funciones cortas y focalizadas, archivos con responsabilidad unica
 
 ### 3.3 Decisiones de Diseno
 
@@ -404,7 +404,7 @@ page.tsx (Server Component - async)
 
 **Sistema custom ligero** (sin dependencia de i18next):
 
-- ~1650 claves de traduccion en `locales/en.json` y `locales/es.json`
+- ~1656 claves de traduccion en `locales/en.json` y `locales/es.json`
 - Hook `useTranslation()` con interpolacion `{key}`
 - Funcion server-side `t()` para Server Components
 - Cambio de idioma instantaneo via Zustand
@@ -433,6 +433,9 @@ page.tsx (Server Component - async)
 - `crypto.getRandomValues()` en UUID v7 y ULID (sustituye `Math.random()`)
 - Input size guards en JSON Formatter (diff 2K lineas, fix 50KB) y Settings import (1MB por clave)
 - SSR guards en `document.cookie` y `localStorage` (previene crash en contexto servidor)
+- Prompt sandboxing: delimitadores XML `<user_input>` aislan contenido de usuario en todos los prompts IA
+- Storage shape validation: guardas `Array.isArray` en toda deserializacion de localStorage
+- Input size caps: 50K chars en motor de recomendaciones, cuantificadores acotados en regex
 - Zero `eval()`, zero `Function()`, zero `innerHTML` en el codigo fuente
 - TypeScript strict mode previene categorias enteras de bugs
 - npm audit en CI (bloquea merges en vulnerabilidades high/critical)
@@ -462,31 +465,34 @@ Tests       1466 passed (1466)
 Duration    ~50s
 ```
 
-**Distribucion por herramienta:**
+**Distribucion por area (actual):**
 
-| Test File            | Tests | Calidad   |
-| -------------------- | ----- | --------- |
-| uuid-generator       | 112   | Excelente |
-| regex-humanizer      | 150   | Excelente |
-| cron-builder         | 75    | Excelente |
-| variable-name-wizard | 74    | Excelente |
-| git-commit-generator | 71    | Excelente |
-| base64               | 54    | Excelente |
-| json-formatter       | 61    | Excelente |
-| dto-matic            | 108   | Excelente |
-| code-review          | 55    | Excelente |
-| tailwind-sorter      | 53    | Muy bueno |
-| http-status-finder   | 72    | Excelente |
-| prompt-analyzer      | 43    | Muy bueno |
-| cost-calculator      | 45    | Muy bueno |
-| token-visualizer     | 40    | Muy bueno |
-| context-manager      | 39    | Muy bueno |
-| tool-recommendations | 22    | Bueno     |
-| smart-navigation     | 18    | Bueno     |
-| + 5 component tests  | 55    | Bueno     |
-| + 4 integration tests| 38    | Bueno     |
-| + 1 domain test      | 4     | Basico    |
-| **E2E (Playwright)** | 20 specs | 15 tools + navigation + settings + accessibility (axe-core WCAG AA) |
+| Area                        | Tests | Archivos |
+| --------------------------- | ----- | -------- |
+| **Application logic (CORE)**| 1243  | 19       |
+| regex-humanizer             | 150   |          |
+| uuid-generator              | 112   |          |
+| cron-builder                | 111   |          |
+| dto-matic                   | 108   |          |
+| tool-recommendations        | 101   |          |
+| json-formatter              | 96    |          |
+| git-commit-generator        | 79    |          |
+| http-status-finder          | 72    |          |
+| variable-name-wizard        | 54    |          |
+| base64                      | 54    |          |
+| tailwind-sorter             | 53    |          |
+| context-manager             | 51    |          |
+| cost-calculator             | 48    |          |
+| prompt-analyzer             | 41    |          |
+| token-visualizer            | 37    |          |
+| code-review                 | 29    |          |
+| + prototype-pollution, naming-utils, settings-export | 47 | |
+| **Component tests**         | 95    | 11       |
+| **Infrastructure tests**    | 55    | 8        |
+| **API tests**               | 45    | 5        |
+| **Integration tests**       | 28    | 2        |
+| **Total**                   | **1466** | **45** |
+| **E2E (Playwright)**        | 20 specs | 15 tools + navigation + settings + accessibility (axe-core WCAG AA) + command-palette + settings-export |
 
 ### 5.3 Tipos de Tests Implementados
 
@@ -542,7 +548,7 @@ Build:         OK (35 rutas generadas)
 | Validation     | Zod                   | 4.3          | Schema validation for API inputs           |
 | Testing        | Vitest                | 4.0          | Fast, compatible con Testing Library       |
 | Linting        | ESLint                | 9.x          | Flat config                                |
-| Error Tracking | Sentry                | 10.38        | Client + Server + Edge                     |
+| Error Tracking | Sentry                | 10.40        | Client + Server + Edge                     |
 | CI/CD          | GitHub Actions        | -            | 10 jobs (quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse) |
 | Hosting        | Vercel                | -            | Edge Network, ISR, preview URLs            |
 
@@ -622,15 +628,15 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | -------------------------- | ------------------ |
 | Herramientas               | 15                 |
 | Tests unitarios            | 1466               |
-| Tests E2E (Playwright)     | 20 specs           |
+| Tests E2E (Playwright)     | 20 specs (70 tests)|
 | Archivos de test           | 45 unit + 20 E2E   |
-| Archivos fuente (.ts/.tsx) | 150+               |
+| Archivos fuente (.ts/.tsx) | 208                |
 | Componentes React          | 25+                |
 | Custom hooks               | 22+                |
 | Paginas (routes)           | 35                 |
-| Claves i18n                | ~1650 (x2 idiomas) |
+| Claves i18n                | 1656 (x2 idiomas)  |
 | Jobs CI/CD                 | 10                 |
-| Commits                    | 150+               |
+| Commits                    | 174+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
 | Dependencias produccion    | 21                 |
 
@@ -659,7 +665,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 - Skeletons de carga ✓
 - TypeScript strict mode ✓
 - Dark/Light mode con deteccion automatica ✓
-- i18n completo (EN/ES, ~1650 claves por idioma) ✓
+- i18n completo (EN/ES, ~1656 claves por idioma) ✓
 - Tests unitarios (1466 passing, 45 archivos) ✓
 - Tests E2E con Playwright (20 specs, 15 tools + a11y) ✓
 - CI/CD pipeline (10 jobs) ✓
@@ -685,18 +691,30 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 
 ---
 
-## 8.5 Sprint Final de Pulido (v4.9.0)
+## 8.5 Sprints Finales (v4.9.0 — v4.14.0)
 
-Sprint autonomo de 8 tareas para la entrega del TFM:
+### Sprint de Pulido (v4.9.0)
 
-1. **Cross-tool Smart Suggestions:** Auditoria de los 15 flujos de recomendacion. Anadidas 2 reglas faltantes: Code Review → Git Commit Generator, Regex Humanizer → Prompt Analyzer
-2. **Empty & edge case states:** Boton deshabilitado en Base64 sin input. Card de error AI standalone en Code Review
-3. **Accesibilidad:** `aria-label` en Modal.Dialog del Command Palette. 19/19 paginas pasan axe-core WCAG AA
-4. **Mobile responsiveness:** Grids `grid-cols-3` → `grid-cols-1 sm:grid-cols-3` en Tailwind Sorter y Prompt Analyzer
-5. **API Cost Calculator:** Indicador "cached prices" cuando los datos live no estan disponibles. Modelos Claude 4.x (Opus 4.6, Sonnet 4.6, Haiku 4.5) anadidos
-6. **PWA & offline:** Verificado manifest.ts, service worker, install prompt. Build 35 rutas, 0 warnings
-7. **UX polish:** Timestamps relativos (`formatRelativeTime`) en historial, localizados EN/ES. Metadata SEO verificada en las 15 herramientas
-8. **i18n completeness:** ~1650 claves en ambos idiomas, paridad perfecta. 0 strings hardcodeadas
+Sprint autonomo de 8 tareas:
+
+1. **Cross-tool Smart Suggestions:** Auditoria de los 15 flujos de recomendacion. 2 reglas faltantes anadidas
+2. **Empty & edge case states:** Boton deshabilitado en Base64 sin input. Card de error AI standalone
+3. **Accesibilidad:** `aria-label` en Modal.Dialog. 19/19 paginas pasan axe-core WCAG AA
+4. **Mobile responsiveness:** Grids adaptivos en Tailwind Sorter y Prompt Analyzer
+5. **API Cost Calculator:** Indicador "cached prices". Modelos Claude 4.x anadidos
+6. **PWA & offline:** manifest.ts, service worker, install prompt verificados
+7. **UX polish:** Timestamps relativos localizados EN/ES. SEO verificado en 15 herramientas
+8. **i18n completeness:** Paridad perfecta ambos idiomas. 0 strings hardcodeadas
+
+### Auditorias de Seguridad y Calidad (v4.10.0 — v4.14.0)
+
+Tres auditorias exhaustivas con agentes especializados (security, quality, performance):
+
+- **Auditoria 1 (v4.12.0):** 19 fixes — BYOK bypass, TOCTOU race, error sanitization, dependency flow enforcement
+- **Auditoria 2 (v4.13.0):** 24 fixes — prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, `crypto.getRandomValues()`
+- **Auditoria 3 (v4.14.0):** 25 fixes — prompt sandboxing (`<user_input>` XML delimiters), storage shape validation, `useMemo`/`useCallback` optimizations, `Set`/`Map` caching, input size caps
+
+**Resultado acumulado:** 68 fixes en 72 archivos. Estado final: 0 vulnerabilidades, 0 lint errors, 0 type errors, 1466 tests passing
 
 ---
 
@@ -708,7 +726,7 @@ Sprint autonomo de 8 tareas para la entrega del TFM:
 2. **Arquitectura ejemplar:** Clean Architecture con patron 5-capas replicado sin excepciones en las 15 herramientas
 3. **Performance maxima:** Lighthouse 100/100/100/100, Server Components, ISR
 4. **Testing robusto:** 1466 tests unitarios + 20 E2E specs + accessibility audit (axe-core WCAG AAA), coverage per-file
-5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner, exhaustive 4-layer security audit (29 fixes across 24 files: prototype pollution, XML injection, ReDoS, CSV injection, AbortController timeouts, crypto.getRandomValues)
+5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner. Tres auditorias exhaustivas con 73 fixes totales: prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, crypto.getRandomValues, prompt sandboxing, storage validation
 6. **Developer Experience:** TypeScript strict, ESLint + security plugin, CI/CD con 10 quality gates
 7. **UX avanzada:** PWA instalable, Command Palette (Cmd+K), MagicInput, Export/Import, dark/light mode, WCAG AAA
 8. **IA opcional:** 4 proveedores con fallback automatico, BYOK, rate limiting IP-based
@@ -822,10 +840,9 @@ https://github.com/albertoguinda/devflow-ai
 Archivos clave:
 
 - `lib/application/*.ts` - Logica pura de las 15 herramientas
-- `hooks/use-*.ts` - 20 custom hooks
+- `hooks/use-*.ts` - 22+ custom hooks
 - `app/(dashboard)/tools/*/page.tsx` - UI de cada herramienta
-- `tests/unit/application/*.test.ts` - Suite de 1466 tests (45 archivos)
-- `tests/e2e/*.spec.ts` - 20 Playwright E2E specs (15 tools + accessibility WCAG AAA + navigation + settings + command-palette + settings-export)
+- `tests/` - Suite de 1466 tests (45 archivos unit/component/integration + 20 E2E specs)
 
 ### Anexo C: Demo en Produccion
 

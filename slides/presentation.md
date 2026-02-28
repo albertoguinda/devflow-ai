@@ -107,7 +107,7 @@ Los developers usan **10+ herramientas fragmentadas** para tareas cotidianas
 <div class="p-2 bg-green-500/10 rounded">**Code Review** — Smells, complejidad, seguridad</div>
 <div class="p-2 bg-amber-500/10 rounded">**Cost Calculator** — 10+ modelos, Claude 4.x</div>
 <div class="p-2 bg-indigo-500/10 rounded">**Base64** — URL-safe, data URL, Unicode</div>
-<div class="p-2 bg-teal-500/10 rounded">**UUID Generator** — v1, v4, v7, bulk 1000</div>
+<div class="p-2 bg-teal-500/10 rounded">**UUID Generator** — v1-v5, v7, bulk 1000</div>
 <div class="p-2 bg-lime-500/10 rounded">**DTO-Matic** — JSON → TS + Zod</div>
 <div class="p-2 bg-orange-500/10 rounded">**Git Commit** — Convencional + emojis</div>
 <div class="p-2 bg-violet-500/10 rounded">**Cron Builder** — Visual + calendario</div>
@@ -198,7 +198,7 @@ Rate limiter: 10 RPM / 50 RPM BYOK
 </div>
 
 <div class="mt-6 text-center">
-  <strong>18 deps produccion</strong> &middot; TypeScript maximum strict (15+ flags) &middot; Zero <code>any</code>
+  <strong>21 deps produccion</strong> &middot; TypeScript maximum strict (15+ flags) &middot; Zero <code>any</code>
 </div>
 
 ---
@@ -273,11 +273,11 @@ Duration: ~50s
 ```
 
 **Top herramientas:**
-- UUID Generator: 89 tests
-- Regex Humanizer: 83 tests
-- Cron Builder: 75 tests
-- Variable Name Wizard: 74 tests
-- Git Commit Generator: 71 tests
+- Regex Humanizer: 150 tests
+- UUID Generator: 112 tests
+- Cron Builder: 111 tests
+- DTO-Matic: 108 tests
+- Tool Recommendations: 101 tests
 
 </div>
 </div>
@@ -332,7 +332,7 @@ Duration: ~50s
 
 ### Sistema custom (sin i18next)
 
-- **~1650 claves** por idioma (EN/ES)
+- **1656 claves** por idioma (EN/ES)
 - Hook `useTranslation()` con interpolacion
 - Cambio instantaneo via Zustand
 - Paridad perfecta verificada
@@ -431,7 +431,7 @@ const { t } = useTranslation();
 </div>
 
 <div class="p-4 bg-amber-500/10 rounded-lg text-center">
-  <div class="text-4xl font-bold text-amber-400">~1650</div>
+  <div class="text-4xl font-bold text-amber-400">1656</div>
   <div>Claves i18n (x2)</div>
 </div>
 
@@ -467,7 +467,7 @@ const { t } = useTranslation();
 5. **Seguridad enterprise** — SAST, CSP, rate limiting
 6. **UX avanzada** — PWA, Cmd+K, MagicInput
 7. **IA opcional** — 4 proveedores, BYOK, fallback
-8. **i18n completo** — ~1650 claves EN/ES
+8. **i18n completo** — 1656 claves EN/ES
 
 </div>
 <div>
@@ -479,7 +479,7 @@ const { t } = useTranslation();
 - **TypeScript strict** previene categorias de bugs
 - **100/80/0** es mas sostenible que 100% global
 - **Claude Code** como pair programmer acelera significativamente
-- **Local-first** es ventaja competitiva real
+- **3 auditorias** (68 fixes) llevan a 0 vulnerabilidades
 
 ### Trabajo futuro
 
