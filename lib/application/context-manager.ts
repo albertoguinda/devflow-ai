@@ -256,14 +256,16 @@ export function generateTree(documents: ContextDocument[]): string {
     });
   });
 
-  function render(obj: TreeNode, indent: string = ""): string {
+  const MAX_DEPTH = 20;
+  function render(obj: TreeNode, indent: string = "", depth: number = 0): string {
+    if (depth >= MAX_DEPTH) return `${indent}└── ...\n`;
     let result = "";
     const keys = Object.keys(obj);
     keys.forEach((key, index) => {
       const isLast = index === keys.length - 1;
       result += `${indent}${isLast ? "└── " : "├── "}${key}\n`;
       const child = obj[key];
-      if (child) result += render(child, indent + (isLast ? "    " : "│   "));
+      if (child) result += render(child, indent + (isLast ? "    " : "│   "), depth + 1);
     });
     return result;
   }
@@ -283,7 +285,7 @@ export function exportForAI(window: ContextWindow, options: { stripComments?: bo
         }
         return `<file path="${escapeXml(doc.filePath || doc.title)}" type="${escapeXml(doc.type)}">
 ${doc.instructions ? `<instructions>${escapeXml(doc.instructions)}</instructions>\n` : ""}<content>
-${content}
+${escapeXml(content)}
 </content>
 </file>`;
       }
@@ -355,4 +357,16 @@ ${doc.content}
 ---
 
 ${docs}`;
+}
+
+const CODE_EXTS = new Set(["ts", "tsx", "js", "jsx", "py", "java", "go", "rs", "c", "cpp", "h", "cs", "rb", "php", "swift", "kt", "vue", "svelte", "css", "scss", "html"]);
+const DOC_EXTS = new Set(["md", "mdx", "txt", "rst", "adoc"]);
+const API_EXTS = new Set(["json", "yaml", "yml", "graphql", "proto", "openapi"]);
+
+export function detectDocType(filename: string): DocumentType {
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "";
+  if (CODE_EXTS.has(ext)) return "code";
+  if (DOC_EXTS.has(ext)) return "documentation";
+  if (API_EXTS.has(ext)) return "api";
+  return "notes";
 }

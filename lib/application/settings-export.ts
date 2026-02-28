@@ -72,7 +72,7 @@ export function validateImport(data: unknown): { valid: boolean; error?: string;
     valid: true,
     data: {
       version: obj["version"] as string,
-      exportedAt: (obj["exportedAt"] as string) ?? new Date().toISOString(),
+      exportedAt: typeof obj["exportedAt"] === "string" ? obj["exportedAt"] : new Date().toISOString(),
       appName: "devflow-ai",
       settings: cleanSettings,
     },

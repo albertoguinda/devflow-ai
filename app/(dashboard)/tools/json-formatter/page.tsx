@@ -177,8 +177,8 @@ export default function JsonFormatterPage() {
 
   const paths = useMemo(() => (inputValidation.isValid ? getPaths() : []), [inputValidation.isValid, getPaths]);
   const tsOutput = useMemo(() => (inputValidation.isValid ? toTypeScript("Root") : ""), [inputValidation.isValid, toTypeScript]);
-  const isEqual = activeTab === "compare" && compareInput ? compare() : null;
-  const diffResult: JsonDiffResult | null = activeTab === "compare" && compareInput && input ? getDiff() : null;
+  const isEqual = useMemo(() => (activeTab === "compare" && compareInput ? compare() : null), [activeTab, compareInput, compare]);
+  const diffResult = useMemo<JsonDiffResult | null>(() => (activeTab === "compare" && compareInput && input ? getDiff() : null), [activeTab, compareInput, input, getDiff]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

@@ -73,13 +73,30 @@ const LANGUAGE_PATTERNS: Record<SupportedLanguage, Pattern[]> = {
   ]
 };
 
-function findLineNumber(code: string, index: number): number {
-  return code.slice(0, index).split("\n").length;
+/** Build sorted array of newline offsets for O(log n) line lookup */
+function buildLineOffsets(code: string): number[] {
+  const offsets: number[] = [0];
+  for (let i = 0; i < code.length; i++) {
+    if (code[i] === "\n") offsets.push(i + 1);
+  }
+  return offsets;
+}
+
+/** Binary search for line number given a character index */
+function findLineNumber(offsets: number[], index: number): number {
+  let lo = 0, hi = offsets.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >>> 1;
+    if ((offsets[mid] ?? 0) <= index) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return lo; // 1-based line number
 }
 
 export function detectIssues(code: string, language: SupportedLanguage): CodeIssue[] {
   const issues: CodeIssue[] = [];
   const patterns = [...COMMON_PATTERNS, ...(LANGUAGE_PATTERNS[language] ?? [])];
+  const lineOffsets = buildLineOffsets(code);
 
   for (const patternDef of patterns) {
     // eslint-disable-next-line security/detect-non-literal-regexp -- predefined COMMON_PATTERNS, not user input
@@ -88,7 +105,7 @@ export function detectIssues(code: string, language: SupportedLanguage): CodeIss
 
     while ((match = regex.exec(code)) !== null) {
       issues.push({
-        line: findLineNumber(code, match.index),
+        line: findLineNumber(lineOffsets, match.index),
         severity: patternDef.severity,
         category: patternDef.category,
         message: patternDef.message,

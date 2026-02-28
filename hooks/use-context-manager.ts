@@ -13,7 +13,7 @@ import {
   searchDocuments,
 } from "@/lib/application/context-manager";
 // Re-export for pages (dependency flow: Page → Hook → lib/application)
-export { MODEL_PRESETS } from "@/lib/application/context-manager";
+export { MODEL_PRESETS, detectDocType } from "@/lib/application/context-manager";
 import type {
   ContextWindow,
   DocumentType,

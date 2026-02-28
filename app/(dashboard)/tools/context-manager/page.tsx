@@ -40,7 +40,7 @@ import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";
 import { formatCost } from "@/hooks/use-cost-calculator";
-import { MODEL_PRESETS } from "@/hooks/use-context-manager";
+import { MODEL_PRESETS, detectDocType } from "@/hooks/use-context-manager";
 import { AI_MODELS } from "@/config/ai-models";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
@@ -110,17 +110,6 @@ export default function ContextManagerPage() {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
-
-  const detectDocType = (filename: string): DocumentType => {
-    const ext = filename.split(".").pop()?.toLowerCase() ?? "";
-    const codeExts = ["ts", "tsx", "js", "jsx", "py", "java", "go", "rs", "c", "cpp", "h", "cs", "rb", "php", "swift", "kt", "vue", "svelte", "css", "scss", "html"];
-    const docExts = ["md", "mdx", "txt", "rst", "adoc"];
-    const apiExts = ["json", "yaml", "yml", "graphql", "proto", "openapi"];
-    if (codeExts.includes(ext)) return "code";
-    if (docExts.includes(ext)) return "documentation";
-    if (apiExts.includes(ext)) return "api";
-    return "notes";
-  };
 
   // Ingest handler — creates window if needed, returns target ID
   const ensureWindow = useCallback((): string => {

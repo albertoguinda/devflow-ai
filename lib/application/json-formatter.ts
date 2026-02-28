@@ -48,7 +48,7 @@ export function validateJson(input: string): { isValid: boolean; error?: JsonVal
 /**
  * Attempts to fix common JSON syntax errors
  */
-const MAX_FIX_LENGTH = 50_000;
+const MAX_FIX_LENGTH = 20_000;
 
 export function fixJson(input: string): string {
   let fixed = input.trim();
@@ -133,6 +133,14 @@ function escapeYamlString(str: string): string {
  * Basic JSON to XML conversion
  */
 export function jsonToXml(obj: unknown, rootName = "root"): string {
+  function escapeXmlText(text: string): string {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  }
   function toXml(val: unknown, name: string): string {
     if (val === null) return `<${name}/>`;
     if (Array.isArray(val)) {
@@ -144,7 +152,7 @@ export function jsonToXml(obj: unknown, rootName = "root"): string {
         .join("");
       return `<${name}>${children}</${name}>`;
     }
-    return `<${name}>${val}</${name}>`;
+    return `<${name}>${escapeXmlText(String(val))}</${name}>`;
   }
   return `<?xml version="1.0" encoding="UTF-8"?>\n${toXml(obj, rootName)}`;
 }

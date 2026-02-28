@@ -48,10 +48,13 @@ export function parseJson(jsonString: string): ParsedJson {
   throw new Error("JSON must be an object or an array of objects");
 }
 
+const DANGEROUS_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
 function extractFields(obj: Record<string, unknown>): JsonField[] {
   const fields: JsonField[] = [];
 
   for (const [key, value] of Object.entries(obj)) {
+    if (DANGEROUS_KEYS.has(key)) continue;
     fields.push(analyzeValue(key, value));
   }
 

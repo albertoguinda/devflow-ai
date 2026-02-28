@@ -49,11 +49,11 @@ export default function TokenVisualizerPage() {
   const { navigateTo } = useSmartNavigation();
   const [isCompareMode, setIsCompareMode] = useState(false);
 
-  const PROVIDERS = [
-    { id: "openai", label: t("tokenViz.modelOpenAI"), color: "text-emerald-500 dark:text-emerald-400" },
-    { id: "anthropic", label: t("tokenViz.modelAnthropic"), color: "text-orange-500 dark:text-orange-400" },
-    { id: "llama", label: t("tokenViz.modelLlama"), color: "text-blue-500 dark:text-blue-400" },
-  ] as const;
+  const PROVIDERS = useMemo(() => [
+    { id: "openai" as const, label: t("tokenViz.modelOpenAI"), color: "text-emerald-500 dark:text-emerald-400" },
+    { id: "anthropic" as const, label: t("tokenViz.modelAnthropic"), color: "text-orange-500 dark:text-orange-400" },
+    { id: "llama" as const, label: t("tokenViz.modelLlama"), color: "text-blue-500 dark:text-blue-400" },
+  ], [t]);
 
   const estimatedCost = useMemo(() => {
     if (!visualization) return null;

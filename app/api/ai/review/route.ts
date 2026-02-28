@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     return successResponse(result);
   } catch (error) {
     // Log full error server-side; return generic message to client
-    console.error("[review] AI call failed:", error);
+    console.error("[review] AI call failed:", error instanceof Error ? error.message : "Unknown error");
     return errorResponse("AI request failed. Please try again.", 502);
   }
 }
@@ -68,7 +68,7 @@ function parseReviewResponse(text: string): AIReviewResult {
   try {
     raw = JSON.parse(cleaned);
   } catch {
-    console.error("[review] AI returned malformed JSON:", cleaned.slice(0, 200));
+    console.error("[review] AI returned malformed JSON (length:", cleaned.length, ")");
     throw new Error("AI returned an unexpected response format");
   }
 

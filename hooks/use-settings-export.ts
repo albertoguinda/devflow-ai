@@ -44,6 +44,11 @@ export function useSettingsExport(): UseSettingsExportReturn {
     setIsImporting(true);
     setLastResult(null);
     try {
+      const MAX_IMPORT_SIZE = 1024 * 1024; // 1 MB
+      if (file.size > MAX_IMPORT_SIZE) {
+        setLastResult({ type: "error", message: t("settings.importFileTooLarge") });
+        return;
+      }
       const text = await file.text();
       const parsed = JSON.parse(text);
       const validation = validateImport(parsed);

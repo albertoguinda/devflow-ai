@@ -689,9 +689,9 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                       onPress={() => refineWithAI(result.prompt, goal).catch(() => {
                         addToast(t("ai.unavailable"), "info");
                       })}
-                      className="capitalize text-xs"
+                      className="text-xs"
                     >
-                      {goal}
+                      {t(`promptAnalyzer.goal.${goal}`)}
                     </Button>
                   ))}
                 </div>

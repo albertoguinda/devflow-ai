@@ -217,8 +217,8 @@ export function processBase64(
       output = decodeBase64(input, config);
     }
 
-    const inputBytes = new Blob([input]).size;
-    const outputBytes = new Blob([output]).size;
+    const inputBytes = new TextEncoder().encode(input).byteLength;
+    const outputBytes = new TextEncoder().encode(output).byteLength;
     const byteView = getByteView(mode === "encode" ? input : output, mode === "decode");
 
     return {
@@ -239,7 +239,7 @@ export function processBase64(
     return {
       id: crypto.randomUUID(),
       input, output: "", mode, isValid: false, error: (e as Error).message,
-      stats: { inputLength: input.length, outputLength: 0, inputBytes: new Blob([input]).size, outputBytes: 0, compressionRatio: 0 },
+      stats: { inputLength: input.length, outputLength: 0, inputBytes: new TextEncoder().encode(input).byteLength, outputBytes: 0, compressionRatio: 0 },
       timestamp: new Date().toISOString(),
     };
   }

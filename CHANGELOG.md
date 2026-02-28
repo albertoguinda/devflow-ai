@@ -40,6 +40,38 @@ Exhaustive audit with 3 specialized agents. ~25 fixes across security (5), code 
 - `lib/utils/download.ts` — Shared `downloadBlob()` utility
 - 12 new i18n keys in both `en.json` and `es.json` (settings export, code review tooltips, base64 errors)
 
+### Second Audit Pass — Deep Security & Performance
+
+Follow-up exhaustive audit with 3 specialized agents (security, code review, performance). ~20 additional fixes.
+
+#### Security
+- **Prompt Analyzer** — Fixed ReDoS vulnerability in security-patterns.ts: replaced backtracking `([a-z]\s+){5,50}` with non-backtracking linear pattern
+- **Context Manager** — XML injection in `exportForAI`: content now escaped with `escapeXml()` (was only escaping attributes)
+- **UUID Generator** — Replaced `Math.random()` with `crypto.getRandomValues()` in UUID v1 generation (clock sequence + node)
+- **HTTP Status Finder** — Fixed uncleared setTimeout in `runMockTest` (memory leak); replaced `Math.random()` with `crypto.getRandomValues()`
+- **JSON Formatter** — XSS fix in `jsonToXml`: all text content now XML-escaped before interpolation
+- **DTO-Matic** — Prototype pollution guard in `extractFields`: dangerous keys (`__proto__`, `constructor`, `prototype`) filtered
+- **AI Routes** — Log sanitization: removed AI response content from server console.error (data leakage risk); error objects stripped to message only
+- **Tokenize Route** — Early input size guard (50K chars) before BPE encoding to prevent memory exhaustion
+- **Pricing Service** — Fetch timeout (10s) and response size limit (10 MB) for external LiteLLM pricing data
+- **Settings Import** — File size limit (1 MB) to prevent large file denial of service
+- **Settings Import** — Fixed `exportedAt` type confusion: explicit `typeof` check instead of unsafe `as string` cast
+
+#### Performance
+- **Code Review** — `findLineNumber` rewritten from O(n) per call to O(log n) with precomputed line offsets + binary search
+- **JSON Formatter** — `compare()` and `getDiff()` results now memoized with `useMemo` (were recalculated every render)
+- **Base64** — Replaced `new Blob([]).size` with `TextEncoder.encode().byteLength` (sync, no GC pressure)
+- **Token Visualizer** — `PROVIDERS` array memoized to prevent re-creation on each render
+- **Variable Name Wizard** — `LANGUAGES` constant moved outside component to module scope
+- **Context Manager** — `generateTree` depth limit (20) to prevent stack overflow on deeply nested paths
+- **JSON Formatter** — `fixJson` max input reduced from 50K to 20K chars for tighter ReDoS protection
+- **Regex Humanizer** — Digit count bounded to [1, 100] range in `generateRegex`
+
+#### Changed
+- **Architecture** — `detectDocType` extracted from page component to `lib/application/context-manager.ts` (pure logic), re-exported through hook
+- **i18n** — Prompt Analyzer refinement goal buttons (`clarity`, `specificity`, `conciseness`) now use translation keys
+- 4 new i18n keys in both `en.json` and `es.json` (prompt goals, file size limit)
+
 ## [4.13.0] - 2026-02-27
 
 ### 15-Tool Feature Iteration

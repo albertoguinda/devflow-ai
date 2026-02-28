@@ -44,6 +44,14 @@ import { cn } from "@/lib/utils";
 import { convertToAll, expandAbbreviations, abbreviateName } from "@/hooks/use-variable-name-wizard";
 import type { NameSuggestion, VariableType, WizardConfig, NamingConvention } from "@/types/variable-name-wizard";
 
+const LANGUAGES = [
+  { id: "typescript", label: "TypeScript", icon: Globe },
+  { id: "python", label: "Python", icon: Code2 },
+  { id: "java", label: "Java", icon: Box },
+  { id: "go", label: "Go", icon: Zap },
+  { id: "csharp", label: "C# .NET", icon: Layers },
+] as const;
+
 export default function VariableNameWizardPage() {
   const { t } = useTranslation();
   const {
@@ -132,14 +140,6 @@ export default function VariableNameWizardPage() {
         return String(suggestion[key as keyof typeof suggestion] ?? "");
     }
   };
-
-  const LANGUAGES = [
-    { id: "typescript", label: "TypeScript", icon: Globe },
-    { id: "python", label: "Python", icon: Code2 },
-    { id: "java", label: "Java", icon: Box },
-    { id: "go", label: "Go", icon: Zap },
-    { id: "csharp", label: "C# .NET", icon: Layers },
-  ];
 
   const TYPE_OPTIONS: { id: VariableType; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { id: "variable", label: t("varName.typeVariable"), icon: Code2 },

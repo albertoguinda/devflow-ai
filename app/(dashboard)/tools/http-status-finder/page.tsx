@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import {
   Chip,
   Input,
@@ -73,6 +73,7 @@ export default function HttpStatusFinderPage() {
   }, [searchInput, setQuery]);
   const [testResponse, setTestResult] = useState<{ headers: Record<string, string>; time: number; ok: boolean } | null>(null);
   const [isTesting, setIsTesting] = useState(false);
+  const mockTestTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const statusColumns: ColumnConfig[] = [
     { name: t("table.colCode"), uid: "code", sortable: true },
@@ -102,10 +103,14 @@ export default function HttpStatusFinderPage() {
   }, []);
 
   const runMockTest = (code: number) => {
+    if (mockTestTimerRef.current) clearTimeout(mockTestTimerRef.current);
     setIsTesting(true);
     const start = Date.now();
+    const rng = new Uint8Array(1);
+    crypto.getRandomValues(rng);
+    const delay = 150 + ((rng[0] ?? 0) / 255) * 200;
     // Simulate response using local data (avoids CORS issues with external APIs)
-    setTimeout(() => {
+    mockTestTimerRef.current = setTimeout(() => {
       const ok = code >= 200 && code < 400;
       const headers: Record<string, string> = {
         "content-type": "application/json; charset=utf-8",
@@ -118,7 +123,8 @@ export default function HttpStatusFinderPage() {
       };
       setTestResult({ headers, time: Date.now() - start, ok });
       setIsTesting(false);
-    }, 150 + Math.random() * 200);
+      mockTestTimerRef.current = null;
+    }, delay);
   };
 
   const displayCodes = useMemo(() => 

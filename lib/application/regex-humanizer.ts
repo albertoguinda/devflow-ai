@@ -946,15 +946,15 @@ export function generateRegex(description: string, locale: RegexLocale = "en"): 
   const digitMatchEs = desc.match(kw.digitsEs);
   const digitMatch = digitMatchEn ?? digitMatchEs;
   if (digitMatch && digitMatch[1]) {
-    const count = digitMatch[1];
+    const countNum = Math.max(1, Math.min(parseInt(digitMatch[1]) || 1, 100));
     const startMatchEn = desc.match(kw.startingWith);
     const startMatchEs = desc.match(kw.startingWithEs);
     const startMatch = startMatchEn ?? startMatchEs;
     if (startMatch && startMatch[1]) {
       const starts = startMatch[1].replace(/\s/g, "").split(",").join("");
-      return `^[${starts}]\\d{${parseInt(count) - 1}}$`;
+      return `^[${starts}]\\d{${countNum - 1}}$`;
     }
-    return `^\\d{${count}}$`;
+    return `^\\d{${countNum}}$`;
   }
 
   // Parse letter patterns

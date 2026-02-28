@@ -13,9 +13,18 @@ export interface LiteLLMModel {
 
 export async function fetchLatestPrices(): Promise<AIModel[]> {
   try {
-    const response = await fetch(LITELLM_URL);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10_000);
+    const response = await fetch(LITELLM_URL, { signal: controller.signal });
+    clearTimeout(timeout);
     if (!response.ok) throw new Error("Failed to fetch prices");
-    
+
+    const MAX_RESPONSE_SIZE = 10 * 1024 * 1024; // 10 MB
+    const contentLength = response.headers?.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > MAX_RESPONSE_SIZE) {
+      throw new Error("Pricing response too large");
+    }
+
     const data: Record<string, LiteLLMModel> = await response.json();
     const models: AIModel[] = [];
 

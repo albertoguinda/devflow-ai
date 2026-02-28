@@ -87,8 +87,8 @@ const INJECTION_PATTERNS: {
     description: "Potential tracking pixel or exfiltration via Markdown link",
   },
   {
-    // eslint-disable-next-line security/detect-unsafe-regex -- bounded repetition for obfuscation detection
-    pattern: /\b([a-z]\s+){5,50}/i,
+    // Detect suspicious letter-space patterns (payload splitting). Uses non-backtracking \s match.
+    pattern: /\b[a-z]\s+[a-z]\s+[a-z]\s+[a-z]\s+[a-z]\s/i,
     type: "prompt_injection",
     severity: "warning",
     description: "Suspicious spacing detected (potential payload splitting)",

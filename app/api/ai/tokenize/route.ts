@@ -25,6 +25,15 @@ export async function POST(request: NextRequest) {
   if ("error" in parsed) return parsed.error;
   const { text, model } = parsed.data;
 
+  // Early size guard — reject obviously huge inputs before allocating BPE arrays
+  const MAX_INPUT_CHARS = 50_000;
+  if (text.length > MAX_INPUT_CHARS) {
+    return errorResponse(
+      `Input is ${text.length} characters; maximum for tokenization is ${MAX_INPUT_CHARS}.`,
+      400,
+    );
+  }
+
   try {
     const encoding = getEncodingForModel(model);
     const tokens = encoding.encode(text);
@@ -60,7 +69,7 @@ export async function POST(request: NextRequest) {
 
     return successResponse(result);
   } catch (error) {
-    console.error("[tokenize] Tokenization failed:", error);
+    console.error("[tokenize] Tokenization failed:", error instanceof Error ? error.message : "Unknown error");
     return errorResponse("Tokenization failed. Please try again.", 500);
   }
 }
