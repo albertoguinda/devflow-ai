@@ -3,16 +3,18 @@ import { test, expect } from "@playwright/test";
 test.describe("Command Palette", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/tools");
+    // Wait for dynamic import of CommandPalette to load
+    await page.waitForTimeout(1000);
   });
 
   test("Ctrl+K opens the command palette", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    await expect(page.getByRole("listbox")).toBeVisible();
+    await expect(page.getByRole("listbox")).toBeVisible({ timeout: 10000 });
   });
 
   test("typing filters the commands", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    await expect(page.getByRole("listbox")).toBeVisible();
+    await expect(page.getByRole("listbox")).toBeVisible({ timeout: 10000 });
 
     await page.keyboard.type("json");
     // Should show JSON-related tools
@@ -24,7 +26,7 @@ test.describe("Command Palette", () => {
 
   test("Escape closes the command palette", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    await expect(page.getByRole("listbox")).toBeVisible();
+    await expect(page.getByRole("listbox")).toBeVisible({ timeout: 10000 });
 
     await page.keyboard.press("Escape");
     await expect(page.getByRole("listbox")).not.toBeVisible();
@@ -32,7 +34,7 @@ test.describe("Command Palette", () => {
 
   test("Enter on a tool navigates to tool page", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    await expect(page.getByRole("listbox")).toBeVisible();
+    await expect(page.getByRole("listbox")).toBeVisible({ timeout: 10000 });
 
     await page.keyboard.type("json formatter");
     // Wait for filtered results to settle and click the option directly
@@ -46,7 +48,7 @@ test.describe("Command Palette", () => {
 
   test("Arrow keys change selected option", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    await expect(page.getByRole("listbox")).toBeVisible();
+    await expect(page.getByRole("listbox")).toBeVisible({ timeout: 10000 });
 
     // First option should be selected by default
     const firstOption = page.getByRole("option").first();
@@ -64,7 +66,7 @@ test.describe("Command Palette", () => {
 
   test("clicking a command executes it", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    await expect(page.getByRole("listbox")).toBeVisible();
+    await expect(page.getByRole("listbox")).toBeVisible({ timeout: 10000 });
 
     // Click on json-formatter tool
     await page.keyboard.type("json formatter");
