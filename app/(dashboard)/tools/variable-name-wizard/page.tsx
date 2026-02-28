@@ -85,12 +85,12 @@ export default function VariableNameWizardPage() {
     });
   }, [batchInput]);
 
-  const suggestionColumns: ColumnConfig[] = [
+  const suggestionColumns: ColumnConfig[] = useMemo(() => [
     { name: t("table.colName"), uid: "name", sortable: true },
     { name: t("table.colQuality"), uid: "score", sortable: true },
     { name: t("table.colAudit"), uid: "audit" },
     { name: t("table.colActions"), uid: "actions" },
-  ];
+  ], [t]);
 
   const renderSuggestionCell = (suggestion: NameSuggestion, columnKey: React.Key) => {
     const key = columnKey.toString();

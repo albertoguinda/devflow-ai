@@ -416,19 +416,29 @@ function categorizeClasses(classes: string[]): Map<TailwindCategory, string[]> {
   return categorized;
 }
 
+// Cache category lookups by base class to avoid repeated regex matching
+const categoryCache = new Map<string, TailwindCategory>();
+
 function getCategory(className: string): TailwindCategory {
   // Strip variant prefixes to get base class
   const baseClass = getBaseClass(className);
 
+  const cached = categoryCache.get(baseClass);
+  if (cached !== undefined) return cached;
+
+  let result: TailwindCategory = "other";
   for (const [category, patterns] of Object.entries(CATEGORY_PATTERNS)) {
     for (const pattern of patterns) {
       if (pattern.test(baseClass)) {
-        return category as TailwindCategory;
+        result = category as TailwindCategory;
+        categoryCache.set(baseClass, result);
+        return result;
       }
     }
   }
 
-  return "other";
+  categoryCache.set(baseClass, result);
+  return result;
 }
 
 function getBaseClass(className: string): string {

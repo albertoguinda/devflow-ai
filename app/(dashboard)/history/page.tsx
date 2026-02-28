@@ -18,15 +18,11 @@ interface HistoryItem {
 
 const TOOL_STORAGE_KEYS: { key: string; slug: string; summaryField: string }[] = [
   { key: "devflow-analysis-history", slug: "prompt-analyzer", summaryField: "prompt" },
-  { key: "devflow-code-review-history", slug: "code-review", summaryField: "code" },
-  { key: "devflow-cost-calculator-history", slug: "cost-calculator", summaryField: "model" },
-  { key: "devflow-token-visualizer-history", slug: "token-visualizer", summaryField: "text" },
-  { key: "devflow-context-manager-history", slug: "context-manager", summaryField: "name" },
+  { key: "devflow-code-review-history", slug: "code-review", summaryField: "input" },
   { key: "devflow-regex-humanizer-history", slug: "regex-humanizer", summaryField: "input" },
-  { key: "devflow-dto-matic-history", slug: "dto-matic", summaryField: "input" },
-  { key: "devflow-cron-builder-history", slug: "cron-builder", summaryField: "expression" },
+  { key: "devflow-dto-matic-history", slug: "dto-matic", summaryField: "rootName" },
+  { key: "devflow-cron-history", slug: "cron-builder", summaryField: "expression" },
   { key: "devflow-tailwind-sorter-history", slug: "tailwind-sorter", summaryField: "input" },
-  { key: "devflow-variable-name-wizard-history", slug: "variable-name-wizard", summaryField: "input" },
   { key: "devflow-json-formatter-history", slug: "json-formatter", summaryField: "input" },
   { key: "devflow-base64-history", slug: "base64", summaryField: "input" },
   { key: "devflow-uuid-generator-history", slug: "uuid-generator", summaryField: "version" },

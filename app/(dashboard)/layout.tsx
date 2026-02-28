@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
 import Script from "next/script";
@@ -68,13 +68,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     };
   }, [sidebarOpen]);
 
-  const NAV_ITEMS = [
+  const NAV_ITEMS = useMemo(() => [
     { href: "/tools", label: t("sidebar.tools"), icon: Wrench },
     { href: "/docs", label: t("sidebar.docs"), icon: BookOpen },
     { href: "/favorites", label: t("sidebar.favorites"), icon: Heart },
     { href: "/history", label: t("sidebar.history"), icon: Clock },
     { href: "/settings", label: t("sidebar.settings"), icon: Settings },
-  ] as const;
+  ] as const, [t]);
 
   const sidebarContent = (
     <>

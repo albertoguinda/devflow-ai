@@ -75,12 +75,12 @@ export default function HttpStatusFinderPage() {
   const [isTesting, setIsTesting] = useState(false);
   const mockTestTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const statusColumns: ColumnConfig[] = [
+  const statusColumns: ColumnConfig[] = useMemo(() => [
     { name: t("table.colCode"), uid: "code", sortable: true },
     { name: t("table.colName"), uid: "name", sortable: true },
     { name: t("table.colCategory"), uid: "category", sortable: true },
     { name: t("table.colDescription"), uid: "description" },
-  ];
+  ], [t]);
 
   const renderStatusCell = useCallback((status: HttpStatusCode, columnKey: React.Key) => {
     const key = columnKey.toString();
@@ -269,11 +269,11 @@ export default function HttpStatusFinderPage() {
                   </div>
                   <div className="mt-8 pt-6 border-t border-divider flex gap-3">
                     {selectedCode.rfcLink && (
-                      <Button size="sm" variant="outline" className="font-bold flex-1" onPress={() => window.open(selectedCode.rfcLink, "_blank")}>
+                      <Button size="sm" variant="outline" className="font-bold flex-1" onPress={() => window.open(selectedCode.rfcLink, "_blank", "noopener,noreferrer")}>
                         <ExternalLink className="size-3.5 mr-2" /> {t("httpStatus.rfcDocs")}
                       </Button>
                     )}
-                    <Button size="sm" variant="outline" className="font-bold flex-1" onPress={() => window.open(`https://http.cat/${selectedCode.code}`, "_blank")}>
+                    <Button size="sm" variant="outline" className="font-bold flex-1" onPress={() => window.open(`https://http.cat/${selectedCode.code}`, "_blank", "noopener,noreferrer")}>
                       🐱 {t("httpStatus.httpCat")}
                     </Button>
                   </div>

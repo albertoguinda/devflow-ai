@@ -72,6 +72,42 @@ Follow-up exhaustive audit with 3 specialized agents (security, code review, per
 - **i18n** — Prompt Analyzer refinement goal buttons (`clarity`, `specificity`, `conciseness`) now use translation keys
 - 4 new i18n keys in both `en.json` and `es.json` (prompt goals, file size limit)
 
+### Third Audit Pass — Zero Technical Debt
+
+Final comprehensive audit with 3 agents (security, quality, performance). ~25 fixes across 18 files.
+
+#### Security
+- **Layout** — JSON-LD XSS hardening: `safeJsonLd()` escapes `<`, `>`, `&` as Unicode in `dangerouslySetInnerHTML`
+- **DTO-Matic** — Replaced `Math.random()` UUID mock with `crypto.randomUUID()`
+- **HTTP Status Finder** — Added `noopener,noreferrer` to all `window.open()` calls (tabnabbing prevention)
+- **AI Response Schemas** — Added `.max()` length caps on all string fields (message: 2K, refactoredCode: 100K, value: 5K, refinedPrompt: 15K)
+- **Locale Cookie** — Conditional `Secure` flag based on protocol (HTTPS only)
+- **Pricing Service** — Error sanitization: generic error message on re-throw instead of leaking raw error content
+- **AI Routes** — Prompt injection mitigation: `<user_input>` XML delimiters wrap all user-supplied content in review, suggest, and refine routes
+
+#### Fixed
+- **History Page** — Fixed cron-builder storage key mismatch (`devflow-cron-builder-history` → `devflow-cron-history`)
+- **History Page** — Fixed code-review `summaryField` (`"code"` → `"input"`)
+- **History Page** — Fixed dto-matic `summaryField` (`"input"` → `"rootName"`)
+- **History Page** — Removed 4 dead entries (cost-calculator, token-visualizer, context-manager, variable-name-wizard) that don't use `useToolHistory`
+- **JSON Formatter** — `fixJson` single-quote conversion now escapes inner double quotes (was producing invalid JSON)
+- **Tool History** — `loadFromStorage` now validates parsed value is array before returning (shape validation)
+- **DTO-Matic** — `sqlSnakeCase` now strips leading/trailing underscores and falls back to `"unnamed"` for empty results
+
+#### Performance
+- **HTTP Status Finder** — `isValidStatusCode` changed from `Array.some()` O(n) to `Set.has()` O(1)
+- **HTTP Status Finder** — Pre-computed lowercased search index (avoids 441+ `.toLowerCase()` allocations per search)
+- **Tailwind Sorter** — Category cache (`Map`) for `getCategory()` regex matching (avoids re-testing all patterns for repeated classes)
+- **Column Memoization** — `statusColumns`, `suggestionColumns`, `columns`, `FEATURE_OPTIONS`, `NAV_ITEMS` wrapped in `useMemo([t])`
+- **Cost Calculator** — `filteredResults` memoized separately from inline JSX; `toggleFeature` wrapped in `useCallback`
+- **Cost Calculator** — Modal IIFE extracted to `CostDetailBody` component (eliminates re-computation on parent render)
+- **Cost Calculator** — `syncPrices` stabilized with `useCallback` (was creating new function ref per render)
+- **Dashboard Layout** — `NAV_ITEMS` memoized with `useMemo([t])`
+
+#### Changed
+- **Dependencies** — `serialize-javascript` override to `>=7.0.3` (fixes GHSA-5c6j-r48x-rmvq)
+- **Tool Recommendations** — `detectDataTypes` 50K char length guard to prevent expensive regex on huge inputs
+
 ## [4.13.0] - 2026-02-27
 
 ### 15-Tool Feature Iteration

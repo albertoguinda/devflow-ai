@@ -7,12 +7,16 @@ import type {
 /**
  * Detect data types present in a text string.
  */
+const MAX_DETECT_LENGTH = 50_000;
+
 export function detectDataTypes(text: string): DetectedDataType[] {
   if (!text.trim()) return [];
+  // Guard against very long inputs — only analyze the first 50K chars
+  const safe = text.length > MAX_DETECT_LENGTH ? text.slice(0, MAX_DETECT_LENGTH) : text;
   const types: DetectedDataType[] = [];
 
   // JSON detection
-  const trimmed = text.trim();
+  const trimmed = safe.trim();
   if (
     (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
     (trimmed.startsWith("[") && trimmed.endsWith("]"))
@@ -27,16 +31,16 @@ export function detectDataTypes(text: string): DetectedDataType[] {
 
   // Code detection (common patterns)
   if (
-    /\b(function|const|let|var|import|export|class|interface|type)\b/.test(text)
+    /\b(function|const|let|var|import|export|class|interface|type)\b/.test(safe)
   ) {
     types.push("code");
   }
 
   // Prompt detection (natural language with instructions)
   if (
-    text.length > 50 &&
+    safe.length > 50 &&
     /\b(write|create|generate|explain|describe|analyze|help|please|can you)\b/i.test(
-      text
+      safe
     )
   ) {
     types.push("prompt");
@@ -44,7 +48,7 @@ export function detectDataTypes(text: string): DetectedDataType[] {
 
   // Base64 detection
   if (
-    text.length > 20 &&
+    safe.length > 20 &&
     /^[A-Za-z0-9+/=\s]+$/.test(trimmed) &&
     trimmed.replace(/\s/g, "").length % 4 === 0
   ) {
@@ -58,7 +62,7 @@ export function detectDataTypes(text: string): DetectedDataType[] {
 
   // UUID
   if (
-    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.test(text)
+    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.test(safe)
   ) {
     types.push("uuid");
   }
@@ -69,7 +73,7 @@ export function detectDataTypes(text: string): DetectedDataType[] {
   }
 
   // CSS/Tailwind classes
-  if (/\b(bg-|text-|flex|grid|p-|m-|rounded|shadow|border)\b/.test(text)) {
+  if (/\b(bg-|text-|flex|grid|p-|m-|rounded|shadow|border)\b/.test(safe)) {
     types.push("css-classes");
   }
 

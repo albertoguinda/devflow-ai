@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     return errorResponse("AI is not configured on this server", 503);
   }
 
-  const userPrompt = `Goal: ${goal}\n\nPrompt to refine:\n${prompt}`;
+  const userPrompt = `Goal: ${goal}\n\nPrompt to refine:\n<user_input>\n${prompt}\n</user_input>`;
 
   try {
     const response = await provider.generateText(

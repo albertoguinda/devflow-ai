@@ -53,8 +53,8 @@ export async function fetchLatestPrices(): Promise<AIModel[]> {
 
     return models;
   } catch (error) {
-    console.error("Error syncing prices:", error);
-    throw error;
+    console.error("Error syncing prices:", error instanceof Error ? error.message : "Unknown error");
+    throw new Error("Failed to fetch latest AI pricing");
   }
 }
 

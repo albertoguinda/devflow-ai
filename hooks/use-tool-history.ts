@@ -17,7 +17,11 @@ function loadFromStorage<T>(key: string): T[] {
   if (typeof window === "undefined") return [];
   try {
     const stored = localStorage.getItem(key);
-    return stored ? (JSON.parse(stored) as T[]) : [];
+    if (!stored) return [];
+    const parsed: unknown = JSON.parse(stored);
+    // Validate shape: must be an array
+    if (!Array.isArray(parsed)) return [];
+    return parsed as T[];
   } catch {
     return [];
   }

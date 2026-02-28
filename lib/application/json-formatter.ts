@@ -56,8 +56,10 @@ export function fixJson(input: string): string {
   // Skip auto-fix for very large inputs to avoid ReDoS risk
   if (fixed.length > MAX_FIX_LENGTH) return fixed;
 
-  // 1. Replace single quotes with double quotes (handles escaped quotes)
-  fixed = fixed.replace(/'((?:[^'\\]|\\.)*)'/g, '"$1"');
+  // 1. Replace single quotes with double quotes (escape inner double quotes first)
+  fixed = fixed.replace(/'((?:[^'\\]|\\.)*)'/g, (_match, content: string) => {
+    return `"${content.replace(/"/g, '\\"')}"`;
+  });
 
   // 2. Remove trailing commas
   fixed = fixed.replace(/,\s*([}\]])/g, "$1");

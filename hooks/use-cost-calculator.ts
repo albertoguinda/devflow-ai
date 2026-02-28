@@ -111,7 +111,7 @@ export function useCostCalculator() {
     isSyncing: isValidating,
     isUsingFallback,
     lastSync,
-    syncPrices: () => mutate(),
+    syncPrices: useCallback(() => { void mutate(); }, [mutate]),
     models
   };
 }

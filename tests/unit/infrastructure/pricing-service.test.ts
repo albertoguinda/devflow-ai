@@ -181,7 +181,7 @@ describe("PricingService — fetchLatestPrices", () => {
       }),
     );
 
-    await expect(fetchLatestPrices()).rejects.toThrow("Failed to fetch prices");
+    await expect(fetchLatestPrices()).rejects.toThrow("Failed to fetch latest AI pricing");
   });
 
   it("should set contextWindow to 0 for model without max_tokens", async () => {

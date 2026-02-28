@@ -383,6 +383,34 @@ export function searchByCode(code: number, locale: Locale = "en"): HttpStatusCod
   return getStatusCodes(locale).find((s) => s.code === code) ?? null;
 }
 
+// Pre-computed lowercased search fields per index (built lazily, once)
+interface SearchEntry {
+  nameLower: string;
+  enDescLower: string;
+  enWhenLower: string;
+  esDescLower: string;
+  esWhenLower: string;
+}
+
+let searchIndex: SearchEntry[] | null = null;
+
+function getSearchIndex(): SearchEntry[] {
+  if (searchIndex) return searchIndex;
+  const enCodes = getStatusCodes("en");
+  const esCodes = getStatusCodes("es");
+  searchIndex = enCodes.map((en, i) => {
+    const es = esCodes[i];
+    return {
+      nameLower: en.name.toLowerCase(),
+      enDescLower: en.description.toLowerCase(),
+      enWhenLower: en.whenToUse.toLowerCase(),
+      esDescLower: es?.description.toLowerCase() ?? "",
+      esWhenLower: es?.whenToUse.toLowerCase() ?? "",
+    };
+  });
+  return searchIndex;
+}
+
 /**
  * Search by keyword in name, description and whenToUse
  */
@@ -391,31 +419,25 @@ export function searchByKeyword(query: string, locale: Locale = "en"): HttpStatu
 
   const lower = query.toLowerCase();
   const codes = getStatusCodes(locale);
+  const index = getSearchIndex();
 
-  // Search across both locales so users can find results regardless of input language
-  const enCodes = getStatusCodes("en");
-  const esCodes = getStatusCodes("es");
-
-  const matchingIndices = new Set<number>();
+  const matchingIndices: number[] = [];
 
   for (let i = 0; i < codes.length; i++) {
-    const en = enCodes[i];
-    const es = esCodes[i];
-    const current = codes[i];
+    const entry = index[i];
+    if (!entry) continue;
     if (
-      current?.name.toLowerCase().includes(lower) ||
-      current?.description.toLowerCase().includes(lower) ||
-      current?.whenToUse.toLowerCase().includes(lower) ||
-      en?.description.toLowerCase().includes(lower) ||
-      en?.whenToUse.toLowerCase().includes(lower) ||
-      es?.description.toLowerCase().includes(lower) ||
-      es?.whenToUse.toLowerCase().includes(lower)
+      entry.nameLower.includes(lower) ||
+      entry.enDescLower.includes(lower) ||
+      entry.enWhenLower.includes(lower) ||
+      entry.esDescLower.includes(lower) ||
+      entry.esWhenLower.includes(lower)
     ) {
-      matchingIndices.add(i);
+      matchingIndices.push(i);
     }
   }
 
-  return [...matchingIndices].map((i) => codes[i]!);
+  return matchingIndices.map((i) => codes[i]!);
 }
 
 /**
@@ -432,11 +454,14 @@ export function getCommonCodes(locale: Locale = "en"): HttpStatusCode[] {
   return getStatusCodes(locale).filter((s) => s.isCommon);
 }
 
+// Pre-built Set for O(1) validity checks
+const VALID_STATUS_CODES = new Set(STATUS_CODES_BASE.map((s) => s.code));
+
 /**
  * Check if a code is a known HTTP status code
  */
 export function isValidStatusCode(code: number): boolean {
-  return STATUS_CODES_BASE.some((s) => s.code === code);
+  return VALID_STATUS_CODES.has(code);
 }
 
 /**

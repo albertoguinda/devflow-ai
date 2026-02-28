@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   }
 
   // 5. Build prompt
-  const userPrompt = `Language: ${language}\n\nCode:\n\`\`\`${language}\n${code}\n\`\`\``;
+  const userPrompt = `Language: ${language}\n\nCode:\n<user_input>\n\`\`\`${language}\n${code}\n\`\`\`\n</user_input>`;
 
   try {
     // 6. Call AI

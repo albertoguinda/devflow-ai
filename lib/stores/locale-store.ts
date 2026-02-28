@@ -14,7 +14,8 @@ export const useLocaleStore = create<LocaleState>()(
       locale: "en",
       setLocale: (locale) => {
         if (typeof document !== "undefined") {
-          document.cookie = `devflow-locale=${locale};path=/;max-age=31536000;SameSite=Lax`;
+          const secure = window.location.protocol === "https:" ? ";Secure" : "";
+          document.cookie = `devflow-locale=${locale};path=/;max-age=31536000;SameSite=Lax${secure}`;
         }
         set({ locale });
       },

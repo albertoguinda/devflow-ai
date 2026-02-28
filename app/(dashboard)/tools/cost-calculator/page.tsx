@@ -46,6 +46,95 @@ const CURRENCIES: { value: Currency; label: string; symbol: string }[] = [
   { value: "GBP", label: "GBP (£)", symbol: "£" },
 ];
 
+function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, currency, t }: {
+  detailModel: CostCalculation;
+  cheapestId: string | undefined;
+  bestValueId: string | null | undefined;
+  dailyRequests: number;
+  currency: Currency;
+  t: (key: string, params?: Record<string, string>) => string;
+}) {
+  const provider = PROVIDER_LABELS[detailModel.model.provider];
+  const isCheapest = detailModel.model.id === cheapestId;
+  const isBestValue = detailModel.model.id === bestValueId;
+  const monthlyCostModel = detailModel.totalCost * dailyRequests * 30;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-xs font-mono text-muted-foreground">{detailModel.model.id}</span>
+        {isCheapest && (
+          <Chip size="sm" variant="primary" className="bg-success/20 text-success text-xs">
+            {t("costCalc.cheapestLabel")}
+          </Chip>
+        )}
+        {isBestValue && (
+          <Chip size="sm" variant="primary" className="bg-secondary/20 text-secondary text-xs">
+            {t("costCalc.bestValueLabel")}
+          </Chip>
+        )}
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-muted-foreground">{t("costCalc.colProvider")}</span>
+        <Chip variant="primary" size="sm" className={cn("capitalize font-bold h-6", provider?.color)}>
+          <span className="mr-1">{provider?.emoji}</span>
+          {provider?.label}
+        </Chip>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-lg bg-muted/50 p-3">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+            <Zap className="size-3" />
+            {t("costCalc.detailInputPrice")}
+          </div>
+          <p className="font-bold text-lg">${detailModel.model.inputPricePerMToken.toFixed(2)}</p>
+          <p className="text-[10px] text-muted-foreground">{t("costCalc.detailMTokens")}</p>
+        </div>
+        <div className="rounded-lg bg-muted/50 p-3">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+            <Zap className="size-3" />
+            {t("costCalc.detailOutputPrice")}
+          </div>
+          <p className="font-bold text-lg">${detailModel.model.outputPricePerMToken.toFixed(2)}</p>
+          <p className="text-[10px] text-muted-foreground">{t("costCalc.detailMTokens")}</p>
+        </div>
+      </div>
+      <div className="space-y-2 text-sm">
+        <div className="flex items-center justify-between py-1.5 border-b border-border/50">
+          <span className="text-muted-foreground">{t("costCalc.detailContext")}</span>
+          <span className="font-mono font-bold">{detailModel.model.contextWindow.toLocaleString()} {t("costCalc.detailTokens")}</span>
+        </div>
+        <div className="flex items-center justify-between py-1.5 border-b border-border/50">
+          <span className="text-muted-foreground">{t("costCalc.detailMaxOutput")}</span>
+          <span className="font-mono font-bold">{detailModel.model.maxOutput.toLocaleString()} {t("costCalc.detailTokens")}</span>
+        </div>
+        {detailModel.model.benchmarkScore !== undefined && (
+          <div className="flex items-center justify-between py-1.5 border-b border-border/50">
+            <span className="text-muted-foreground flex items-center gap-1.5">
+              <BarChart3 className="size-3" />
+              {t("costCalc.detailBenchmark")}
+            </span>
+            <span className="font-bold">{detailModel.model.benchmarkScore}%</span>
+          </div>
+        )}
+      </div>
+      <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm text-muted-foreground">{t("costCalc.detailPerRequest")}</span>
+          <span className="font-bold text-primary">{formatCost(detailModel.totalCost, currency)}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">{t("costCalc.detailMonthly")}</span>
+          <span className="font-bold text-xl text-primary">{formatCost(monthlyCostModel, currency)}</span>
+        </div>
+        <p className="text-[10px] text-muted-foreground mt-1">
+          {t("costCalc.reqPerDay", { count: dailyRequests.toLocaleString() })}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function CostCalculatorPage() {
   const { t } = useTranslation();
   const [currency, setCurrency] = useState<Currency>("USD");
@@ -72,18 +161,24 @@ export default function CostCalculatorPage() {
   const [detailModel, setDetailModel] = useState<CostCalculation | null>(null);
   const [featureFilters, setFeatureFilters] = useState<string[]>([]);
 
-  const FEATURE_OPTIONS = [
+  const FEATURE_OPTIONS = useMemo(() => [
     { id: "vision", label: t("costCalc.featureVision") },
     { id: "json_mode", label: t("costCalc.featureJsonMode") },
     { id: "function_calling", label: t("costCalc.featureFnCalling") },
     { id: "streaming", label: t("costCalc.featureStreaming") },
-  ];
+  ], [t]);
 
-  const toggleFeature = (feature: string) => {
+  const toggleFeature = useCallback((feature: string) => {
     setFeatureFilters((prev) =>
       prev.includes(feature) ? prev.filter((f) => f !== feature) : [...prev, feature]
     );
-  };
+  }, []);
+
+  const filteredResults = useMemo(() => {
+    if (!comparison) return [];
+    if (featureFilters.length === 0) return comparison.results;
+    return comparison.results.filter((r) => featureFilters.every((f) => r.model.features?.includes(f)));
+  }, [comparison, featureFilters]);
 
   const providerOptions = useMemo(() =>
     Object.entries(PROVIDER_LABELS).map(([uid, p]) => ({ uid, name: `${p.emoji} ${p.label}` })),
@@ -96,13 +191,13 @@ export default function CostCalculatorPage() {
     return [...comparison.results].sort((a, b) => (b.valueScore ?? 0) - (a.valueScore ?? 0))[0]?.model.id;
   }, [comparison]);
 
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = useMemo(() => [
     { name: t("costCalc.colModel"), uid: "model", sortable: true },
     { name: t("costCalc.colProvider"), uid: "provider", sortable: true },
     { name: t("costCalc.colTotalCost"), uid: "totalCost", sortable: true },
     { name: t("costCalc.colValueScore"), uid: "value", sortable: true },
     { name: t("costCalc.colActions"), uid: "actions" },
-  ];
+  ], [t]);
 
   const renderCell = useCallback((result: CostCalculation, columnKey: React.Key) => {
     const provider = PROVIDER_LABELS[result.model.provider];
@@ -488,7 +583,7 @@ export default function CostCalculatorPage() {
             {comparison ? (
               <DataTable
                 columns={columns}
-                data={featureFilters.length > 0 ? comparison.results.filter((r) => featureFilters.every((f) => r.model.features?.includes(f))) : comparison.results}
+                data={filteredResults}
                 filterField="model.displayName"
                 statusOptions={providerOptions}
                 statusFilterField="model.provider"
@@ -524,130 +619,48 @@ export default function CostCalculatorPage() {
       </Card>
 
       {/* Detail Modal */}
-      {(() => {
-        const provider = detailModel ? PROVIDER_LABELS[detailModel.model.provider] : null;
-        const isCheapest = detailModel?.model.id === cheapestId;
-        const isBestValue = detailModel?.model.id === bestValueId;
-        const monthlyCostModel = detailModel ? detailModel.totalCost * dailyRequests * 30 : 0;
-
-        return (
-          <Modal.Backdrop isOpen={!!detailModel} onOpenChange={(open) => { if (!open) setDetailModel(null); }}>
-            <Modal.Container>
-              <Modal.Dialog className="sm:max-w-lg">
-                <Modal.CloseTrigger />
-                <Modal.Header>
-                  <Modal.Icon className="bg-primary/10 text-primary">
-                    <Cpu className="size-5" />
-                  </Modal.Icon>
-                  <Modal.Heading>{detailModel?.model.displayName ?? ""}</Modal.Heading>
-                </Modal.Header>
-                <Modal.Body>
-                  {detailModel && (
-                    <div className="space-y-4">
-                      {/* Badges */}
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-mono text-muted-foreground">{detailModel.model.id}</span>
-                        {isCheapest && (
-                          <Chip size="sm" variant="primary" className="bg-success/20 text-success text-xs">
-                            {t("costCalc.cheapestLabel")}
-                          </Chip>
-                        )}
-                        {isBestValue && (
-                          <Chip size="sm" variant="primary" className="bg-secondary/20 text-secondary text-xs">
-                            {t("costCalc.bestValueLabel")}
-                          </Chip>
-                        )}
-                      </div>
-
-                      {/* Provider */}
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">{t("costCalc.colProvider")}</span>
-                        <Chip variant="primary" size="sm" className={cn("capitalize font-bold h-6", provider?.color)}>
-                          <span className="mr-1">{provider?.emoji}</span>
-                          {provider?.label}
-                        </Chip>
-                      </div>
-
-                      {/* Pricing Grid */}
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="rounded-lg bg-muted/50 p-3">
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                            <Zap className="size-3" />
-                            {t("costCalc.detailInputPrice")}
-                          </div>
-                          <p className="font-bold text-lg">${detailModel.model.inputPricePerMToken.toFixed(2)}</p>
-                          <p className="text-[10px] text-muted-foreground">{t("costCalc.detailMTokens")}</p>
-                        </div>
-                        <div className="rounded-lg bg-muted/50 p-3">
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                            <Zap className="size-3" />
-                            {t("costCalc.detailOutputPrice")}
-                          </div>
-                          <p className="font-bold text-lg">${detailModel.model.outputPricePerMToken.toFixed(2)}</p>
-                          <p className="text-[10px] text-muted-foreground">{t("costCalc.detailMTokens")}</p>
-                        </div>
-                      </div>
-
-                      {/* Stats */}
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center justify-between py-1.5 border-b border-border/50">
-                          <span className="text-muted-foreground">{t("costCalc.detailContext")}</span>
-                          <span className="font-mono font-bold">{detailModel.model.contextWindow.toLocaleString()} {t("costCalc.detailTokens")}</span>
-                        </div>
-                        <div className="flex items-center justify-between py-1.5 border-b border-border/50">
-                          <span className="text-muted-foreground">{t("costCalc.detailMaxOutput")}</span>
-                          <span className="font-mono font-bold">{detailModel.model.maxOutput.toLocaleString()} {t("costCalc.detailTokens")}</span>
-                        </div>
-                        {detailModel.model.benchmarkScore !== undefined && (
-                          <div className="flex items-center justify-between py-1.5 border-b border-border/50">
-                            <span className="text-muted-foreground flex items-center gap-1.5">
-                              <BarChart3 className="size-3" />
-                              {t("costCalc.detailBenchmark")}
-                            </span>
-                            <span className="font-bold">{detailModel.model.benchmarkScore}%</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Cost Summary */}
-                      <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-muted-foreground">{t("costCalc.detailPerRequest")}</span>
-                          <span className="font-bold text-primary">{formatCost(detailModel.totalCost, currency)}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">{t("costCalc.detailMonthly")}</span>
-                          <span className="font-bold text-xl text-primary">{formatCost(monthlyCostModel, currency)}</span>
-                        </div>
-                        <p className="text-[10px] text-muted-foreground mt-1">
-                          {t("costCalc.reqPerDay", { count: dailyRequests.toLocaleString() })}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="ghost" slot="close">
-                    {t("costCalc.close")}
-                  </Button>
-                  <CopyButton
-                    text={detailModel ? JSON.stringify({
-                      model: detailModel.model.id,
-                      provider: detailModel.model.provider,
-                      inputTokens,
-                      outputTokens,
-                      dailyRequests,
-                      totalCost: detailModel.totalCost,
-                      monthlyCost: monthlyCostModel,
-                    }, null, 2) : ""}
-                    label={t("costCalc.copyConfig")}
-                  />
-                </Modal.Footer>
-              </Modal.Dialog>
-            </Modal.Container>
-          </Modal.Backdrop>
-        );
-      })()}
+      <Modal.Backdrop isOpen={!!detailModel} onOpenChange={(open) => { if (!open) setDetailModel(null); }}>
+        <Modal.Container>
+          <Modal.Dialog className="sm:max-w-lg">
+            <Modal.CloseTrigger />
+            <Modal.Header>
+              <Modal.Icon className="bg-primary/10 text-primary">
+                <Cpu className="size-5" />
+              </Modal.Icon>
+              <Modal.Heading>{detailModel?.model.displayName ?? ""}</Modal.Heading>
+            </Modal.Header>
+            <Modal.Body>
+              {detailModel && (
+                <CostDetailBody
+                  detailModel={detailModel}
+                  cheapestId={cheapestId}
+                  bestValueId={bestValueId}
+                  dailyRequests={dailyRequests}
+                  currency={currency}
+                  t={t}
+                />
+              )}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="ghost" slot="close">
+                {t("costCalc.close")}
+              </Button>
+              <CopyButton
+                text={detailModel ? JSON.stringify({
+                  model: detailModel.model.id,
+                  provider: detailModel.model.provider,
+                  inputTokens,
+                  outputTokens,
+                  dailyRequests,
+                  totalCost: detailModel.totalCost,
+                  monthlyCost: detailModel.totalCost * dailyRequests * 30,
+                }, null, 2) : ""}
+                label={t("costCalc.copyConfig")}
+              />
+            </Modal.Footer>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
     </div>
   );
 }

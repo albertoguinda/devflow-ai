@@ -720,7 +720,9 @@ function sqlSnakeCase(name: string): string {
     .replace(/([A-Z])/g, "_$1")
     .toLowerCase()
     .replace(/^_/, "")
-    .replace(/[^a-z0-9_]/g, "_");
+    .replace(/[^a-z0-9_]/g, "_")
+    .replace(/^_+|_+$/g, "")
+    || "unnamed";
 }
 
 function generateInterface(
@@ -1283,7 +1285,7 @@ function generateValue(field: JsonField): unknown {
   const name = field.name.toLowerCase();
   
   if (field.semanticType === "uuid" || name.includes("id") || name.includes("uuid")) {
-    return "550e8400-e29b-41d4-a716-44665544" + Math.floor(Math.random() * 10000).toString().padStart(4, "0");
+    return crypto.randomUUID();
   }
   
   if (field.semanticType === "email" || name.includes("email")) {

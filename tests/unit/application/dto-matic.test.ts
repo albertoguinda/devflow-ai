@@ -1006,7 +1006,7 @@ describe("DTO-Matic", () => {
       const parsed = parseJson('{"userId": "550e8400-e29b-41d4-a716-446655440000"}');
       const mock = generateMockData(parsed.fields) as Record<string, unknown>;
       expect(typeof mock["userId"]).toBe("string");
-      expect(String(mock["userId"])).toMatch(/^550e8400/);
+      expect(String(mock["userId"])).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
     });
 
     it("should generate emails for email fields", () => {

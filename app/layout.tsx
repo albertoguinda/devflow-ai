@@ -93,6 +93,11 @@ export const viewport: Viewport = {
   ],
 };
 
+/** Serialize JSON-LD safely — escapes </script> injection vectors */
+function safeJsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
+}
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -131,11 +136,11 @@ export default function RootLayout({
         <meta name="philosophy" content="Para vosotros, developers" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(softwareJsonLd) }}
         />
       </head>
       <body
