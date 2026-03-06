@@ -311,7 +311,7 @@ export default function TokenVisualizerPage() {
                         className="p-4 border-2 border-transparent hover:border-primary/20 transition-all cursor-pointer"
                         onClick={() => { setProvider(p); setIsCompareMode(false); }}
                         onKeyDown={(e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setProvider(p); setIsCompareMode(false); } }}
-                        aria-label={`${info?.label}: ${r.totalTokens} tokens`}
+                        aria-label={`${info?.label}: ${r.totalTokens} ${t("tokenViz.tokensUnit")}`}
                       >
                         <div className="flex justify-between items-start mb-3">
                           <span className={cn("text-xs font-black uppercase", info?.color)}>{info?.label}</span>

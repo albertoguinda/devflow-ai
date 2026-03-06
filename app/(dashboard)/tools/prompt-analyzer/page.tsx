@@ -484,7 +484,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                       <><MinusIcon className="size-3 text-muted-foreground" /><span className="font-bold text-muted-foreground">0</span></>
                     )}
                     <span className="text-muted-foreground">{t("promptAnalyzer.vsHistory")}</span>
-                    <Button variant="ghost" size="sm" isIconOnly onPress={() => setCompareItem(null)} aria-label={t("common.clear")}>
+                    <Button variant="ghost" size="sm" isIconOnly onPress={() => setCompareItem(null)} aria-label={t("common.clear")} className="min-h-11 min-w-11">
                       <XCircle className="size-3" />
                     </Button>
                   </div>
@@ -504,7 +504,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                   <h2 className="text-xl font-bold tracking-tight text-foreground">
                     {t("promptAnalyzer.analysisComplete")}
                   </h2>
-                  <Button variant="ghost" size="sm" isIconOnly onPress={handleExport} aria-label={t("promptAnalyzer.exportReport")}>
+                  <Button variant="ghost" size="sm" isIconOnly onPress={handleExport} aria-label={t("promptAnalyzer.exportReport")} className="min-h-11 min-w-11">
                     <Download className="size-4" />
                   </Button>
                 </div>

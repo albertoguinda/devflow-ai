@@ -5,6 +5,26 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.1] - 2026-03-06
+
+### i18n, Touch Targets & Button Spacing Polish
+
+Final polish pass: eliminated 10 hardcoded strings across 4 tool pages, improved touch targets on 2 remaining icon buttons, and fixed button spacing in Cost Calculator.
+
+#### Fixed
+- **Prompt Analyzer** — 2 icon-only buttons (clear compare, export report) now have min-h-11/min-w-11 (44px WCAG touch targets)
+- **Cost Calculator** — Currency button group gap changed from gap-1 (4px) to gap-2 (8px) for better touch spacing
+
+#### Changed
+- **i18n hardcoded strings** — 10 user-visible strings replaced with `t()` calls across 4 files:
+  - Regex Humanizer: "Match N", "Index: N", "N Tokens", "N Groups"
+  - Base64: "HEX", "BIN" legend labels
+  - Context Manager: "N docs · N tok" sidebar stats, "N tokens" chip
+  - Token Visualizer: "tokens" in aria-label
+- 9 new i18n keys added to both EN and ES locales (1658 → 1667 total, full parity)
+
+---
+
 ## [4.15.0] - 2026-03-06
 
 ### Pixel-Perfect & Responsive Audit — 11 Fixes in 4 Phases
@@ -31,7 +51,7 @@ Comprehensive responsive audit addressing mobile layout breaks at 375px, perform
 - **GSAP dynamic import** — Replaced static `import gsap from "gsap"` with `import("gsap").then()` in all 5 hooks (~60KB removed from main bundle); `prefersReducedMotion` fallback uses direct CSS instead of GSAP
 
 #### Added
-- 2 new i18n keys (`settings.importPartial`) in both EN and ES locales (1658 total)
+- 2 new i18n keys (`settings.importPartial`) in both EN and ES locales
 
 ---
 

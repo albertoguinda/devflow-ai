@@ -1629,6 +1629,8 @@
   "base64.error.INVALID_BASE64_CHARS": "Caracteres Base64 inv\u00e1lidos",
   "base64.error.INVALID_BASE64_LENGTH": "Longitud Base64 inv\u00e1lida",
   "base64.error.INVALID_BASE64_ENCODING": "Codificaci\u00f3n Base64 inv\u00e1lida",
+  "base64.hexLabel": "HEX",
+  "base64.binLabel": "BIN",
 
   "uuid.v3Label": "v3 (MD5)",
   "uuid.v3DescShort": "Determinista MD5",
@@ -1640,6 +1642,10 @@
   "uuid.deterministicNote": "Mismo namespace + nombre siempre produce el mismo UUID",
 
   "regex.flavorLabel": "Sabor de regex",
+  "regex.matchN": "Coincidencia {n}",
+  "regex.indexLabel": "Indice: {index}",
+  "regex.tokensCount": "{count} Tokens",
+  "regex.groupsCount": "{count} Grupos",
 
   "varName.abbreviationsTab": "Abreviaciones",
   "varName.abbreviationsTitle": "Expandir y Abreviar",
@@ -1659,6 +1665,7 @@
   "codeReview.refactoredCode": "Refactorizado",
 
   "tokenViz.inputCost": "coste de entrada",
+  "tokenViz.tokensUnit": "tokens",
 
   "costCalc.filterFeatures": "Capacidades",
   "costCalc.featureVision": "Vision",
@@ -1666,5 +1673,7 @@
   "costCalc.featureFnCalling": "Llamada a Funciones",
   "costCalc.featureStreaming": "Streaming",
 
-  "ctxMgr.searchDocs": "Buscar documentos..."
+  "ctxMgr.searchDocs": "Buscar documentos...",
+  "ctxMgr.docsAndTokens": "{docs} docs · {tokens} tok",
+  "ctxMgr.tokensUnit": "tokens"
 }

@@ -361,8 +361,8 @@ export default function RegexHumanizerPage() {
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2 pt-2">
-                      <StatusBadge variant="info">{explanation.tokens.length} Tokens</StatusBadge>
-                      <StatusBadge variant="purple">{explanation.groups.length} Groups</StatusBadge>
+                      <StatusBadge variant="info">{t("regex.tokensCount", { count: explanation.tokens.length })}</StatusBadge>
+                      <StatusBadge variant="purple">{t("regex.groupsCount", { count: explanation.groups.length })}</StatusBadge>
                       {explanation.commonPattern && (
                         <StatusBadge variant="success">{explanation.commonPattern}</StatusBadge>
                       )}
@@ -507,8 +507,8 @@ export default function RegexHumanizerPage() {
                               {testResult.allMatches.map((m, i) => (
                                 <div key={i} className="p-3 text-xs flex flex-col gap-2">
                                   <div className="flex justify-between">
-                                    <span className="font-mono bg-primary/10 text-primary px-1.5 rounded">Match {i + 1}</span>
-                                    <span className="text-muted-foreground italic">Index: {m.index}</span>
+                                    <span className="font-mono bg-primary/10 text-primary px-1.5 rounded">{t("regex.matchN", { n: i + 1 })}</span>
+                                    <span className="text-muted-foreground italic">{t("regex.indexLabel", { index: m.index })}</span>
                                   </div>
                                   <p className="font-mono break-all font-bold">&quot;{m.match}&quot;</p>
                                   {Object.keys(m.groups).length > 0 && (

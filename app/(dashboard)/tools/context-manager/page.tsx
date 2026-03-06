@@ -364,7 +364,7 @@ export default function ContextManagerPage() {
                   aria-pressed={activeWindowId === w.id}
                 >
                   <span className="text-xs font-bold truncate">{w.name}</span>
-                  <span className="text-xs opacity-60">{w.documents.length} docs · {w.totalTokens.toLocaleString()} tok</span>
+                  <span className="text-xs opacity-60">{t("ctxMgr.docsAndTokens", { docs: w.documents.length, tokens: w.totalTokens.toLocaleString() })}</span>
                 </button>
                 <Button
                   isIconOnly
@@ -907,7 +907,7 @@ export default function ContextManagerPage() {
                   <div className="flex flex-wrap gap-2 text-xs">
                     <Chip size="sm" variant="primary">{previewDoc.type}</Chip>
                     <Chip size="sm" variant="secondary">{previewDoc.priority}</Chip>
-                    <Chip size="sm" variant="secondary">{previewDoc.tokenCount.toLocaleString()} tokens</Chip>
+                    <Chip size="sm" variant="secondary">{previewDoc.tokenCount.toLocaleString()} {t("ctxMgr.tokensUnit")}</Chip>
                     {previewDoc.filePath && <Chip size="sm" variant="secondary" className="font-mono">{previewDoc.filePath}</Chip>}
                   </div>
                   {previewDoc.instructions && (

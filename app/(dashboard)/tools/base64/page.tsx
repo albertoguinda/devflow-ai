@@ -385,8 +385,8 @@ export default function Base64Page() {
                       <span className="text-xs font-black uppercase tracking-widest">{t("base64.byteAnalysis")}</span>
                     </div>
                     <div className="flex gap-4">
-                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-primary" /><span className="text-xs font-black uppercase opacity-60">HEX</span></div>
-                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-secondary" /><span className="text-xs font-black uppercase opacity-60">BIN</span></div>
+                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-primary" /><span className="text-xs font-black uppercase opacity-60">{t("base64.hexLabel")}</span></div>
+                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-secondary" /><span className="text-xs font-black uppercase opacity-60">{t("base64.binLabel")}</span></div>
                     </div>
                   </div>
                   <div className="flex-1 overflow-auto">

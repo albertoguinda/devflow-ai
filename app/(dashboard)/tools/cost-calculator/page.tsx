@@ -444,7 +444,7 @@ export default function CostCalculatorPage() {
               <p className="text-sm opacity-80 uppercase tracking-wider font-semibold">
                 {t("costCalc.estimatedMonthlyCost")}
               </p>
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 {CURRENCIES.map((c) => (
                   <Button
                     key={c.value}
