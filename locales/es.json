@@ -74,6 +74,7 @@
   "settings.exportSuccess": "Exportadas {count} configuraciones",
   "settings.exportFailed": "Error al exportar",
   "settings.importSuccess": "Importadas {count} configuraciones. Recarga para aplicar.",
+  "settings.importPartial": "Importadas {count} configuraciones pero {errors} fallaron (¿almacenamiento lleno?). Recarga para aplicar.",
   "settings.importFailed": "Error al importar",
   "settings.importFileTooLarge": "Archivo demasiado grande (máx. 1 MB)",
   "history.title": "Historial",

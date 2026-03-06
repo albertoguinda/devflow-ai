@@ -81,9 +81,9 @@ export default function Base64Page() {
   const renderByteCell = useCallback((item: { id: number; offset: string; hex: string; binary: string | undefined; decimal: number | undefined }, columnKey: React.Key) => {
     const key = columnKey.toString() as keyof typeof item;
     switch (key) {
-      case "offset": return <span className="font-mono text-[10px] text-muted-foreground">0x{item.offset}</span>;
+      case "offset": return <span className="font-mono text-xs text-muted-foreground">0x{item.offset}</span>;
       case "hex": return <span className="font-mono text-xs font-black text-primary">{item.hex}</span>;
-      case "binary": return <span className="font-mono text-[10px] opacity-60">{item.binary}</span>;
+      case "binary": return <span className="font-mono text-xs opacity-60">{item.binary}</span>;
       case "decimal": return <span className="font-mono text-xs">{item.decimal}</span>;
       default: return String(item[key]);
     }
@@ -131,7 +131,7 @@ export default function Base64Page() {
                 <Button size="sm" aria-pressed={mode === "encode"} variant={mode === "encode" ? "primary" : "ghost"} onPress={() => setMode("encode")} className="font-bold h-8">{t("base64.encodeBtn")}</Button>
                 <Button size="sm" aria-pressed={mode === "decode"} variant={mode === "decode" ? "primary" : "ghost"} onPress={() => setMode("decode")} className="font-bold h-8">{t("base64.decodeBtn")}</Button>
               </div>
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 <Button size="sm" variant="ghost" onPress={() => {
                   const fileInput = document.createElement("input");
                   fileInput.type = "file";
@@ -154,7 +154,7 @@ export default function Base64Page() {
                   fileInput.click();
                 }} aria-label={t("base64.uploadFile")}><Upload className="size-3.5 mr-1" />{t("base64.uploadFile")}</Button>
                 <Button size="sm" variant="ghost" className="min-h-[24px]" onPress={() => loadExample("json")}>{t("base64.exampleBtn")}</Button>
-                <Button size="sm" variant="ghost" onPress={() => setInput("")} isIconOnly aria-label={t("common.clearInput")}><Trash2 className="size-3.5 text-danger" /></Button>
+                <Button size="sm" variant="ghost" onPress={() => setInput("")} isIconOnly aria-label={t("common.clearInput")} className="min-h-11 min-w-11"><Trash2 className="size-3.5 text-danger" /></Button>
               </div>
             </div>
 
@@ -173,7 +173,7 @@ export default function Base64Page() {
             />
 
             <div className="mt-6 space-y-4 pt-4 border-t border-divider">
-              <div className="flex items-center gap-2 text-[10px] font-black uppercase text-muted-foreground tracking-widest">
+              <div className="flex items-center gap-2 text-xs font-black uppercase text-muted-foreground tracking-widest">
                 <Settings2 className="size-3" /> {t("base64.configTitle")}
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -194,11 +194,11 @@ export default function Base64Page() {
               </h3>
               <div className="space-y-6">
                 <div className="flex justify-between items-end">
-                  <span className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("base64.outputSize")}</span>
+                  <span className="text-xs font-bold uppercase text-muted-foreground/60">{t("base64.outputSize")}</span>
                   <span className="text-2xl font-black text-cyan-500 dark:text-cyan-400">{t("base64.bytes", { count: result.stats.outputBytes })}</span>
                 </div>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-[9px] font-black uppercase text-muted-foreground/60">
+                  <div className="flex justify-between text-xs font-black uppercase text-muted-foreground/60">
                     <span>{t("base64.byteOverhead")}</span>
                     <span>{Math.round(result.stats.compressionRatio * 100)}%</span>
                   </div>
@@ -244,7 +244,7 @@ export default function Base64Page() {
                   {aiResult.suggestions.map((s, i) => (
                     <div key={i} className="p-3 bg-background/80 rounded-xl border border-violet-500/10 dark:border-violet-500/20">
                       <p className="text-xs font-medium leading-relaxed">{s.value}</p>
-                      <p className="text-[10px] text-muted-foreground mt-2 italic">{s.reasoning}</p>
+                      <p className="text-xs text-muted-foreground mt-2 italic">{s.reasoning}</p>
                     </div>
                   ))}
                 </div>
@@ -290,10 +290,10 @@ export default function Base64Page() {
 
             <div className="animate-in fade-in slide-in-from-right-4 duration-500">
               <Tabs.Panel id="text">
-                <Card className="p-0 border-divider shadow-xl overflow-hidden h-[600px] flex flex-col">
+                <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[600px] flex flex-col">
                   <div className="p-4 border-b border-divider flex justify-between items-center bg-muted/20">
-                    <span className="text-[10px] font-black opacity-40 uppercase tracking-widest">{t("base64.rawPayload")}</span>
-                    <span className="text-[9px] font-mono opacity-30">{t("base64.characters", { count: result?.stats.outputLength || 0 })}</span>
+                    <span className="text-xs font-black opacity-40 uppercase tracking-widest">{t("base64.rawPayload")}</span>
+                    <span className="text-xs font-mono opacity-30">{t("base64.characters", { count: result?.stats.outputLength || 0 })}</span>
                   </div>
                   {result?.output ? (
                     <pre className="p-8 font-mono text-[11px] leading-relaxed overflow-auto flex-1 bg-background break-all">
@@ -310,20 +310,20 @@ export default function Base64Page() {
               </Tabs.Panel>
 
               <Tabs.Panel id="preview">
-                <div className="space-y-6 h-[600px] overflow-auto pr-2 scrollbar-hide">
+                <div className="space-y-6 h-[400px] sm:h-[600px] overflow-auto pr-2 scrollbar-hide">
                   {result?.detectedType === "jwt" && jwtParts && (
                     <div className="grid gap-4">
                       <Card className="p-6 border-blue-500/20 dark:border-blue-500/30 bg-blue-500/5 dark:bg-blue-500/10">
-                        <p className="text-[10px] font-black text-blue-500 dark:text-blue-400 uppercase mb-3 tracking-widest">{t("base64.jwtHeader")}</p>
+                        <p className="text-xs font-black text-blue-500 dark:text-blue-400 uppercase mb-3 tracking-widest">{t("base64.jwtHeader")}</p>
                         <pre className="text-xs font-mono text-blue-700 dark:text-blue-300">{jwtParts.header}</pre>
                       </Card>
                       <Card className="p-6 border-purple-500/20 dark:border-purple-500/30 bg-purple-500/5 dark:bg-purple-500/10">
-                        <p className="text-[10px] font-black text-purple-500 dark:text-purple-400 uppercase mb-3 tracking-widest">{t("base64.jwtPayload")}</p>
+                        <p className="text-xs font-black text-purple-500 dark:text-purple-400 uppercase mb-3 tracking-widest">{t("base64.jwtPayload")}</p>
                         <pre className="text-xs font-mono text-purple-700 dark:text-purple-300">{jwtParts.payload}</pre>
                       </Card>
                       <Card className="p-6 border-divider bg-muted/5">
-                        <p className="text-[10px] font-black text-muted-foreground uppercase mb-3 tracking-widest">{t("base64.jwtSignature")}</p>
-                        <p className="text-[10px] font-mono break-all opacity-40 leading-relaxed">{jwtParts.signature}</p>
+                        <p className="text-xs font-black text-muted-foreground uppercase mb-3 tracking-widest">{t("base64.jwtSignature")}</p>
+                        <p className="text-xs font-mono break-all opacity-40 leading-relaxed">{jwtParts.signature}</p>
                       </Card>
                     </div>
                   )}
@@ -378,15 +378,15 @@ export default function Base64Page() {
               </Tabs.Panel>
 
               <Tabs.Panel id="inspector">
-                <Card className="p-0 overflow-hidden shadow-xl border-divider h-[600px] flex flex-col">
+                <Card className="p-0 overflow-hidden shadow-xl border-divider h-[400px] sm:h-[600px] flex flex-col">
                   <div className="p-4 border-b border-divider bg-muted/20 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Cpu className="size-4 text-primary" />
                       <span className="text-xs font-black uppercase tracking-widest">{t("base64.byteAnalysis")}</span>
                     </div>
                     <div className="flex gap-4">
-                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-primary" /><span className="text-[9px] font-black uppercase opacity-60">HEX</span></div>
-                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-secondary" /><span className="text-[9px] font-black uppercase opacity-60">BIN</span></div>
+                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-primary" /><span className="text-xs font-black uppercase opacity-60">HEX</span></div>
+                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-secondary" /><span className="text-xs font-black uppercase opacity-60">BIN</span></div>
                     </div>
                   </div>
                   <div className="flex-1 overflow-auto">
@@ -403,10 +403,10 @@ export default function Base64Page() {
               </Tabs.Panel>
 
               <Tabs.Panel id="batch">
-                <Card className="p-0 overflow-hidden shadow-xl border-divider h-[600px] flex flex-col">
+                <Card className="p-0 overflow-hidden shadow-xl border-divider h-[400px] sm:h-[600px] flex flex-col">
                   <div className="p-4 border-b border-divider bg-muted/20 flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase tracking-widest opacity-40">{t("base64.batchTitle")}</span>
-                    <span className="text-[9px] font-mono opacity-30">{t("base64.batchHint")}</span>
+                    <span className="text-xs font-black uppercase tracking-widest opacity-40">{t("base64.batchTitle")}</span>
+                    <span className="text-xs font-mono opacity-30">{t("base64.batchHint")}</span>
                   </div>
                   <div className="p-4 space-y-4 flex-1 overflow-auto">
                     <TextArea
@@ -426,7 +426,7 @@ export default function Base64Page() {
                     </Button>
                     {batchResults.length > 0 && (
                       <div className="space-y-2">
-                        <div className="flex gap-3 text-[10px] font-bold">
+                        <div className="flex gap-3 text-xs font-bold">
                           <span className="text-emerald-600 dark:text-emerald-400">{batchResults.filter(r => r.status === "success").length} {t("base64.batchSuccess")}</span>
                           <span className="text-red-600 dark:text-red-400">{batchResults.filter(r => r.status === "error").length} {t("base64.batchErrors")}</span>
                         </div>

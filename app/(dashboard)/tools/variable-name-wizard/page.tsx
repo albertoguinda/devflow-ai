@@ -99,7 +99,7 @@ export default function VariableNameWizardPage() {
         return (
           <div className="flex flex-col gap-0.5">
             <span className="font-mono text-sm font-black text-primary">{suggestion.name}</span>
-            <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-tighter">
+            <span className="text-xs text-muted-foreground uppercase font-bold tracking-tighter">
               {suggestion.convention}
             </span>
           </div>
@@ -116,7 +116,7 @@ export default function VariableNameWizardPage() {
                 style={{ width: `${suggestion.score}%` }}
               />
             </div>
-            <span className="text-[10px] font-black">{suggestion.score}%</span>
+            <span className="text-xs font-black">{suggestion.score}%</span>
           </div>
         );
       case "audit":
@@ -130,7 +130,7 @@ export default function VariableNameWizardPage() {
               audit?.status === "good" ? "text-emerald-500 dark:text-emerald-400" : audit?.status === "warning" ? "text-amber-500 dark:text-amber-400" : "text-danger"
             )} />
             {audit?.findings?.length ? (
-              <span className="text-[9px] text-muted-foreground max-w-[120px] truncate">{audit.findings[0]}</span>
+              <span className="text-xs text-muted-foreground max-w-[120px] truncate">{audit.findings[0]}</span>
             ) : null}
           </div>
         );
@@ -182,7 +182,7 @@ export default function VariableNameWizardPage() {
 
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("varName.contextDescLabel")}</label>
+                <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("varName.contextDescLabel")}</label>
                 <TextArea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -199,7 +199,7 @@ export default function VariableNameWizardPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("varName.targetLang")}</label>
+                <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("varName.targetLang")}</label>
                 <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label={t("varName.targetLang")}>
                   {LANGUAGES.map(lang => (
                     <Button
@@ -217,7 +217,7 @@ export default function VariableNameWizardPage() {
                       )}
                     >
                       <lang.icon className="size-3" aria-hidden="true" />
-                      <span className="text-[10px] font-bold uppercase">{lang.label.split(" ")[0]}</span>
+                      <span className="text-xs font-bold uppercase">{lang.label.split(" ")[0]}</span>
                     </Button>
                   ))}
                 </div>
@@ -230,7 +230,7 @@ export default function VariableNameWizardPage() {
                   className="w-full"
                   aria-label={t("varName.variableType")}
                 >
-                  <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("varName.variableType")}</Label>
+                  <Label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("varName.variableType")}</Label>
                   <Select.Trigger className="h-10 rounded-xl border border-divider bg-background px-3 text-xs font-bold uppercase">
                     <Select.Value />
                     <Select.Indicator />
@@ -281,21 +281,21 @@ export default function VariableNameWizardPage() {
               <div className="space-y-6">
                 <div className="flex justify-around items-center">
                   <div className="text-center">
-                    <p className="text-[10px] font-bold uppercase text-muted-foreground/60 mb-1">{t("varName.clarityLabel")}</p>
+                    <p className="text-xs font-bold uppercase text-muted-foreground/60 mb-1">{t("varName.clarityLabel")}</p>
                     <p className={cn("text-xl font-black", (generationResult.suggestions[0]?.score ?? 0) >= 80 ? "text-emerald-600 dark:text-emerald-400" : (generationResult.suggestions[0]?.score ?? 0) >= 50 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400")}>
                       {(generationResult.suggestions[0]?.score ?? 0) >= 80 ? t("varName.highLabel") : (generationResult.suggestions[0]?.score ?? 0) >= 50 ? t("varName.mediumLabel") : t("varName.lowLabel")}
                     </p>
                   </div>
                   <div className="size-px h-8 bg-default-200" />
                   <div className="text-center">
-                    <p className="text-[10px] font-bold uppercase text-muted-foreground/60 mb-1">{t("varName.avgScore")}</p>
+                    <p className="text-xs font-bold uppercase text-muted-foreground/60 mb-1">{t("varName.avgScore")}</p>
                     <p className="text-xl font-black text-blue-500 dark:text-blue-400">
                       {Math.round(generationResult.suggestions.reduce((sum, s) => sum + s.score, 0) / generationResult.suggestions.length)}%
                     </p>
                   </div>
                 </div>
                 <div className="p-4 bg-muted/50 rounded-2xl border border-default-200">
-                  <p className="text-[10px] text-primary font-bold mb-2 uppercase">{t("varName.proTip")}</p>
+                  <p className="text-xs text-primary font-bold mb-2 uppercase">{t("varName.proTip")}</p>
                   <p className="text-xs text-muted-foreground leading-relaxed italic">
                     {t("varName.proTipQuote")}
                   </p>
@@ -328,7 +328,7 @@ export default function VariableNameWizardPage() {
                     <Card className="p-6 border-emerald-500/20 bg-emerald-500/5">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase mb-1">{t("varName.recommendedChoice")}</p>
+                          <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase mb-1">{t("varName.recommendedChoice")}</p>
                           <h4 className="text-xl font-black font-mono">{generationResult.suggestions[0]?.name}</h4>
                         </div>
                         <StatusBadge variant="success">{t("varName.bestMatch")}</StatusBadge>
@@ -341,7 +341,7 @@ export default function VariableNameWizardPage() {
                     <Card className="p-6 border-blue-500/20 bg-blue-500/5">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase mb-1">{t("varName.namingScoreLabel")}</p>
+                          <p className="text-xs font-black text-blue-600 dark:text-blue-400 uppercase mb-1">{t("varName.namingScoreLabel")}</p>
                           <h4 className="text-2xl font-black">{generationResult.suggestions[0]?.score}/100</h4>
                         </div>
                         <div className="p-2 bg-blue-500/20 rounded-full text-blue-600 dark:text-blue-400"><Star className="size-5 fill-current" /></div>
@@ -389,7 +389,7 @@ export default function VariableNameWizardPage() {
                             <div key={i} className="flex items-center justify-between p-3 bg-background/50 rounded-lg border border-violet-500/10">
                               <div className="flex flex-col gap-0.5">
                                 <span className="font-mono text-sm font-black text-violet-600 dark:text-violet-400">{s.value}</span>
-                                <span className="text-[10px] text-muted-foreground">{s.reasoning}</span>
+                                <span className="text-xs text-muted-foreground">{s.reasoning}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <span className="text-xs font-bold">{s.score}%</span>
@@ -412,7 +412,7 @@ export default function VariableNameWizardPage() {
                   )}
                 </div>
               ) : (
-                <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[500px]">
+                <Card className="p-8 sm:p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[300px] sm:h-[500px]">
                   <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
                     <Wand2 className="size-12 text-muted-foreground/30" />
                   </div>
@@ -434,7 +434,7 @@ export default function VariableNameWizardPage() {
                           <Fingerprint className="size-16" />
                         </div>
                         <div className="flex justify-between items-start mb-3">
-                          <span className="text-[10px] font-black uppercase text-muted-foreground tracking-tighter">
+                          <span className="text-xs font-black uppercase text-muted-foreground tracking-tighter">
                             {convention}
                           </span>
                           <CopyButton text={value as string} size="sm" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -444,7 +444,7 @@ export default function VariableNameWizardPage() {
                     ))}
                   </div>
                 ) : (
-                  <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[300px]">
+                  <Card className="p-8 sm:p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[200px] sm:h-[300px]">
                     <div className="size-16 bg-muted rounded-full flex items-center justify-center mb-4">
                       <Wand2 className="size-8 text-muted-foreground/30" />
                     </div>
@@ -476,7 +476,7 @@ export default function VariableNameWizardPage() {
                         variant={batchTarget === c ? "primary" : "ghost"}
                         onPress={() => setBatchTarget(c)}
                         className={cn(
-                          "text-[10px] font-bold",
+                          "text-xs font-bold",
                           batchTarget === c ? "bg-violet-500 border-violet-500" : "bg-muted/30"
                         )}
                       >
@@ -535,14 +535,14 @@ export default function VariableNameWizardPage() {
                     <div className="mt-4 grid gap-4 sm:grid-cols-2">
                       <Card className="p-5 border-emerald-500/20 bg-emerald-500/5">
                         <div className="flex justify-between items-start mb-2">
-                          <span className="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-widest">{t("varName.expandedLabel")}</span>
+                          <span className="text-xs font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-widest">{t("varName.expandedLabel")}</span>
                           <CopyButton text={abbrExpanded} size="sm" variant="ghost" />
                         </div>
                         <p className="font-mono text-sm font-bold text-emerald-700 dark:text-emerald-300">{abbrExpanded}</p>
                       </Card>
                       <Card className="p-5 border-amber-500/20 bg-amber-500/5">
                         <div className="flex justify-between items-start mb-2">
-                          <span className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400 tracking-widest">{t("varName.abbreviatedLabel")}</span>
+                          <span className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 tracking-widest">{t("varName.abbreviatedLabel")}</span>
                           <CopyButton text={abbrShortened} size="sm" variant="ghost" />
                         </div>
                         <p className="font-mono text-sm font-bold text-amber-700 dark:text-amber-300">{abbrShortened}</p>

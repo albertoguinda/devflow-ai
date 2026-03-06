@@ -136,7 +136,7 @@ export default function UuidGeneratorPage() {
               <Tabs.Panel id="generate">
                 <div className="space-y-6 mt-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.versionLabel")}</label>
+                    <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.versionLabel")}</label>
                     <div className="grid gap-2" role="radiogroup" aria-label={t("uuid.versionLabel")}>
                       {VERSIONS.map((v) => (
                         <Button
@@ -152,7 +152,7 @@ export default function UuidGeneratorPage() {
                           )}
                         >
                           <span className="text-xs font-bold">{v.label}</span>
-                          <span className="text-[10px] opacity-60">{v.desc}</span>
+                          <span className="text-xs opacity-60">{v.desc}</span>
                         </Button>
                       ))}
                     </div>
@@ -161,7 +161,7 @@ export default function UuidGeneratorPage() {
                   {(config.version === "v3" || config.version === "v5") ? (
                     <div className="space-y-4 p-4 bg-primary/5 border border-primary/20 rounded-xl">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.namespaceLabel")}</label>
+                        <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.namespaceLabel")}</label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                           {NAMESPACE_OPTIONS.map((ns) => (
                             <Button
@@ -170,7 +170,7 @@ export default function UuidGeneratorPage() {
                               aria-pressed={namespace === ns.id}
                               variant={namespace === ns.id ? "primary" : "ghost"}
                               onPress={() => setNamespace(ns.id)}
-                              className="text-[10px] font-bold"
+                              className="text-xs font-bold"
                             >
                               {ns.label}
                             </Button>
@@ -178,7 +178,7 @@ export default function UuidGeneratorPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.nameLabel")}</label>
+                        <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.nameLabel")}</label>
                         <Input
                           variant="primary"
                           placeholder={t("uuid.namePlaceholder")}
@@ -186,11 +186,11 @@ export default function UuidGeneratorPage() {
                           onChange={(e) => setNamespaceName(e.target.value)}
                         />
                       </div>
-                      <p className="text-[9px] text-muted-foreground italic">{t("uuid.deterministicNote")}</p>
+                      <p className="text-xs text-muted-foreground italic">{t("uuid.deterministicNote")}</p>
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.customPrefix")}</label>
+                      <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.customPrefix")}</label>
                       <Input
                         variant="primary"
                         placeholder={t("uuid.placeholderHexPrefix")}
@@ -205,7 +205,7 @@ export default function UuidGeneratorPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.quantityLabel")}</label>
+                      <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.quantityLabel")}</label>
                       <Input
                         type="number"
                         min={1}
@@ -223,7 +223,7 @@ export default function UuidGeneratorPage() {
                         className="w-full"
                         aria-label={t("uuid.formatLabelShort")}
                       >
-                        <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.formatLabelShort")}</Label>
+                        <Label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.formatLabelShort")}</Label>
                         <Select.Trigger className="h-10 rounded-xl border-2 border-divider bg-background px-3 text-sm">
                           <Select.Value />
                           <Select.Indicator />
@@ -255,7 +255,7 @@ export default function UuidGeneratorPage() {
               <Tabs.Panel id="analyze">
                 <div className="space-y-6 mt-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.uuidToInspect")}</label>
+                    <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("uuid.uuidToInspect")}</label>
                     <TextArea
                       value={analyzeInput}
                       onChange={(e) => setAnalyzeInput(e.target.value)}
@@ -292,12 +292,12 @@ export default function UuidGeneratorPage() {
               value={collisionInput}
               onChange={(e) => setCollisionInput(e.target.value)}
               placeholder={t("uuid.collisionPlaceholder")}
-              className="h-24 w-full resize-none rounded-xl border border-divider bg-background p-3 font-mono text-[10px] focus:ring-2 focus:ring-amber-500/20 dark:focus:ring-amber-400/30 shadow-inner mb-3"
+              className="h-24 w-full resize-none rounded-xl border border-divider bg-background p-3 font-mono text-xs focus:ring-2 focus:ring-amber-500/20 dark:focus:ring-amber-400/30 shadow-inner mb-3"
               aria-label={t("uuid.collisionChecker")}
             />
             {collisionResult && (
               <div className="space-y-2">
-                <div className="flex gap-4 text-[10px] font-bold">
+                <div className="flex gap-4 text-xs font-bold">
                   <span>{t("uuid.totalLabel")}: {collisionResult.total}</span>
                   <span className="text-emerald-600 dark:text-emerald-400">{t("uuid.uniqueLabel")}: {collisionResult.unique}</span>
                   <span className={collisionResult.duplicates.length > 0 ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400"}>
@@ -305,7 +305,7 @@ export default function UuidGeneratorPage() {
                   </span>
                 </div>
                 {collisionResult.duplicates.map(([uuid, lines]) => (
-                  <div key={uuid} className="p-2 bg-red-500/10 border border-red-500/20 rounded-lg text-[10px]">
+                  <div key={uuid} className="p-2 bg-red-500/10 border border-red-500/20 rounded-lg text-xs">
                     <span className="font-mono text-red-600 dark:text-red-400 font-bold">{uuid}</span>
                     <span className="text-muted-foreground ml-2">{t("uuid.onLines")} {lines.join(", ")}</span>
                   </div>
@@ -321,14 +321,14 @@ export default function UuidGeneratorPage() {
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-end">
-                  <span className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("uuid.probabilityLabel")}</span>
+                  <span className="text-xs font-bold uppercase text-muted-foreground/60">{t("uuid.probabilityLabel")}</span>
                   <span className="text-sm font-black text-emerald-500 dark:text-emerald-400">{result.collisionStats?.probability}</span>
                 </div>
                 <div className="flex justify-between items-end">
-                  <span className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("uuid.uniquenessLabel")}</span>
+                  <span className="text-xs font-bold uppercase text-muted-foreground/60">{t("uuid.uniquenessLabel")}</span>
                   <span className="text-sm font-black text-blue-500 dark:text-blue-400">{t("uuid.guaranteed")}</span>
                 </div>
-                <div className="p-3 bg-muted/50 rounded-xl border border-default-200 text-[10px] text-muted-foreground italic">
+                <div className="p-3 bg-muted/50 rounded-xl border border-default-200 text-xs text-muted-foreground italic">
                   {t("uuid.collisionNote")}
                 </div>
               </div>
@@ -371,7 +371,7 @@ export default function UuidGeneratorPage() {
                 </div>
               </div>
 
-              <Card className="p-0 border-divider shadow-xl overflow-hidden h-[600px] flex flex-col bg-background relative">
+              <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[600px] flex flex-col bg-background relative">
                 <div className="absolute top-0 left-0 w-1 bg-primary h-full opacity-50" />
                 <pre className="p-8 font-mono text-sm leading-relaxed overflow-auto flex-1 text-foreground/80 scrollbar-hide">
                   {exportedContent}
@@ -383,15 +383,15 @@ export default function UuidGeneratorPage() {
               {/* Analysis Overview Cards */}
               <div className="grid gap-4 sm:grid-cols-3">
                 <Card className="p-6 text-center border-b-4 border-b-primary rounded-b-none">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase mb-1">{t("uuid.versionLabel")}</p>
+                  <p className="text-xs font-black text-muted-foreground uppercase mb-1">{t("uuid.versionLabel")}</p>
                   <p className="text-3xl font-black text-primary">v{analysis.version}</p>
                 </Card>
                 <Card className="p-6 text-center border-b-4 border-b-secondary rounded-b-none">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase mb-1">{t("uuid.entropyLabel")}</p>
+                  <p className="text-xs font-black text-muted-foreground uppercase mb-1">{t("uuid.entropyLabel")}</p>
                   <p className="text-3xl font-black text-secondary">{analysis.entropyScore}%</p>
                 </Card>
                 <Card className="p-6 text-center border-b-4 border-b-emerald-500 rounded-b-none">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase mb-1">{t("uuid.statusLabel")}</p>
+                  <p className="text-xs font-black text-muted-foreground uppercase mb-1">{t("uuid.statusLabel")}</p>
                   <div className="flex justify-center pt-1">
                     <StatusBadge variant={analysis.isValid ? "success" : "error"}>
                       {analysis.isValid ? t("uuid.secure") : t("uuid.corrupt")}
@@ -405,7 +405,7 @@ export default function UuidGeneratorPage() {
                 <h3 className="text-xs font-black uppercase text-muted-foreground mb-8 flex items-center gap-2 tracking-widest">
                   <Binary className="size-4 text-primary" /> {t("uuid.binaryPayload")}
                 </h3>
-                <div className="flex flex-wrap gap-1 font-mono text-[9px] leading-none mb-10">
+                <div className="flex flex-wrap gap-1 font-mono text-xs leading-none mb-10">
                   {analysis.binaryView?.map((part, i) => (
                     <span key={i} title={part.label}>
                       <div className={cn("flex flex-wrap gap-0.5 p-1 rounded transition-colors hover:bg-muted cursor-help", part.color)}>
@@ -424,8 +424,8 @@ export default function UuidGeneratorPage() {
                     <div key={i} className="flex items-center gap-3">
                       <div className={cn("size-2 rounded-full", part.color.replace('text-', 'bg-'))} />
                       <div className="flex flex-col">
-                        <span className="text-[10px] font-black uppercase tracking-tighter opacity-40">{part.label}</span>
-                        <span className="text-[10px] font-mono font-bold">{part.bits.length} bits</span>
+                        <span className="text-xs font-black uppercase tracking-tighter opacity-40">{part.label}</span>
+                        <span className="text-xs font-mono font-bold">{part.bits.length} bits</span>
                       </div>
                     </div>
                   ))}
@@ -460,7 +460,7 @@ export default function UuidGeneratorPage() {
               </Card>
             </div>
           ) : (
-            <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[600px]">
+            <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[400px] sm:h-[600px]">
               <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
                 <Fingerprint className="size-12 text-muted-foreground/30" />
               </div>

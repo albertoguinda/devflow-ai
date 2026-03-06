@@ -238,7 +238,7 @@ export default function ContextManagerPage() {
             <div className="flex flex-col min-w-0">
               <span className="font-bold text-xs truncate group-hover/title:text-primary transition-colors">{highlightMatch(doc.title, searchQuery)}</span>
               {doc.filePath && doc.filePath !== doc.title && (
-                <span className="text-[10px] text-muted-foreground font-mono truncate">{highlightMatch(doc.filePath, searchQuery)}</span>
+                <span className="text-xs text-muted-foreground font-mono truncate">{highlightMatch(doc.filePath, searchQuery)}</span>
               )}
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function ContextManagerPage() {
             <div className="h-1.5 w-12 bg-muted rounded-full overflow-hidden">
               <div className="h-full bg-primary rounded-full" style={{ width: `${pct}%` }} />
             </div>
-            <span className="text-[10px] text-muted-foreground">{pct}%</span>
+            <span className="text-xs text-muted-foreground">{pct}%</span>
           </div>
         );
       }
@@ -271,7 +271,7 @@ export default function ContextManagerPage() {
         );
       case "actions":
         return (
-          <Button isIconOnly size="sm" variant="ghost" onPress={() => setDeleteConfirm({ type: "document", id: doc.id, name: doc.title })} aria-label={t("ctxMgr.removeDocLabel2")}>
+          <Button isIconOnly size="sm" variant="ghost" onPress={() => setDeleteConfirm({ type: "document", id: doc.id, name: doc.title })} aria-label={t("ctxMgr.removeDocLabel2")} className="min-h-11 min-w-11">
             <Trash2 className="size-3.5 text-danger" />
           </Button>
         );
@@ -340,7 +340,7 @@ export default function ContextManagerPage() {
           </div>
 
           <div className="space-y-1.5 overflow-auto max-h-[600px] pr-1 scrollbar-hide">
-            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2">{t("ctxMgr.projectContexts")}</p>
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-2">{t("ctxMgr.projectContexts")}</p>
             {windows.length === 0 && (
               <p className="text-xs text-muted-foreground/50 px-2 py-4 text-center italic">
                 {t("ctxMgr.noWindowsHint")}
@@ -364,7 +364,7 @@ export default function ContextManagerPage() {
                   aria-pressed={activeWindowId === w.id}
                 >
                   <span className="text-xs font-bold truncate">{w.name}</span>
-                  <span className="text-[10px] opacity-60">{w.documents.length} docs · {w.totalTokens.toLocaleString()} tok</span>
+                  <span className="text-xs opacity-60">{w.documents.length} docs · {w.totalTokens.toLocaleString()} tok</span>
                 </button>
                 <Button
                   isIconOnly
@@ -437,7 +437,7 @@ export default function ContextManagerPage() {
                       activeWindow.utilizationPercentage > 90 ? "text-red-500" : activeWindow.utilizationPercentage > 60 ? "text-amber-500" : "text-emerald-500"
                     )}>{activeWindow.utilizationPercentage}%</span>
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-[10px] text-muted-foreground font-mono leading-none">
+                      <span className="text-xs text-muted-foreground font-mono leading-none">
                         {activeWindow.totalTokens.toLocaleString()} / {activeWindow.maxTokens.toLocaleString()}
                       </span>
                       <div className="h-1 w-20 bg-muted rounded-full overflow-hidden">
@@ -452,10 +452,10 @@ export default function ContextManagerPage() {
                     </div>
                     {/* Utilization warning chips */}
                     {activeWindow.utilizationPercentage > 100 && (
-                      <Chip size="sm" variant="soft" color="danger" className="text-[10px] font-bold">{t("ctxMgr.overLimit")}</Chip>
+                      <Chip size="sm" variant="soft" color="danger" className="text-xs font-bold">{t("ctxMgr.overLimit")}</Chip>
                     )}
                     {activeWindow.utilizationPercentage > 80 && activeWindow.utilizationPercentage <= 100 && (
-                      <Chip size="sm" variant="soft" color="warning" className="text-[10px] font-bold">{t("ctxMgr.nearLimit")}</Chip>
+                      <Chip size="sm" variant="soft" color="warning" className="text-xs font-bold">{t("ctxMgr.nearLimit")}</Chip>
                     )}
                   </div>
 
@@ -471,7 +471,7 @@ export default function ContextManagerPage() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="text-[10px] font-bold text-primary px-1 h-5"
+                      className="text-xs font-bold text-primary px-1 h-5"
                       onPress={() => {
                         const fullContent = activeWindow.documents.map(d => `--- ${d.title} ---\n${d.content}`).join("\n\n");
                         navigateTo("token-visualizer", fullContent);
@@ -490,7 +490,7 @@ export default function ContextManagerPage() {
                       isSelected={stripComments}
                       onChange={() => setStripComments(!stripComments)}
                     >
-                      <span className="text-[10px] font-bold text-muted-foreground">{t("ctxMgr.stripComments")}</span>
+                      <span className="text-xs font-bold text-muted-foreground">{t("ctxMgr.stripComments")}</span>
                     </Checkbox>
                     <Button
                       variant="ghost"
@@ -513,7 +513,7 @@ export default function ContextManagerPage() {
               <div className="grid gap-5 lg:grid-cols-12">
                 {/* Visual Tree — compact */}
                 <Card className="p-4 lg:col-span-3 bg-muted/10">
-                  <h3 className="text-[10px] font-black uppercase text-muted-foreground mb-3 flex items-center gap-1.5 tracking-widest">
+                  <h3 className="text-xs font-black uppercase text-muted-foreground mb-3 flex items-center gap-1.5 tracking-widest">
                     <FolderTree className="size-3 text-primary" /> {t("ctxMgr.projectHierarchy")}
                   </h3>
                   {activeWindow.documents.length > 0 ? (
@@ -535,7 +535,7 @@ export default function ContextManagerPage() {
                         aria-label={t("ctxMgr.uploadFile")}
                       >
                         <Plus className="size-3 text-muted-foreground/40 group-hover:text-primary transition-colors" />
-                        <span className="text-[10px] text-muted-foreground/40 group-hover:text-primary font-bold transition-colors">
+                        <span className="text-xs text-muted-foreground/40 group-hover:text-primary font-bold transition-colors">
                           {t("ctxMgr.addMoreFiles")}
                         </span>
                       </div>
@@ -550,8 +550,8 @@ export default function ContextManagerPage() {
                       aria-label={t("ctxMgr.dropFilesHere")}
                     >
                       <Upload className="size-5 mb-1.5 text-muted-foreground/40 group-hover:text-primary transition-colors" />
-                      <p className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors">{t("ctxMgr.dropOrBrowse")}</p>
-                      <p className="text-[10px] text-muted-foreground/60">{t("ctxMgr.dropOrBrowseHint")}</p>
+                      <p className="text-xs font-bold text-muted-foreground group-hover:text-primary transition-colors">{t("ctxMgr.dropOrBrowse")}</p>
+                      <p className="text-xs text-muted-foreground/60">{t("ctxMgr.dropOrBrowseHint")}</p>
                     </div>
                   )}
                 </Card>
@@ -563,7 +563,7 @@ export default function ContextManagerPage() {
                       <FileText className="size-3.5 text-primary" />
                       {t("ctxMgr.contextUnits")}
                       {activeWindow.documents.length > 0 && (
-                        <Chip size="sm" variant="primary" className="text-[10px] font-bold">{activeWindow.documents.length}</Chip>
+                        <Chip size="sm" variant="primary" className="text-xs font-bold">{activeWindow.documents.length}</Chip>
                       )}
                     </h3>
                     <div className="flex items-center gap-1.5">
@@ -638,7 +638,7 @@ export default function ContextManagerPage() {
                       </div>
                       <div>
                         <h3 className="text-sm font-black text-violet-600 dark:text-violet-400">{t("ctxMgr.aiAdvisor")}</h3>
-                        <p className="text-[10px] text-muted-foreground">{t("ctxMgr.aiAdvisorDesc")}</p>
+                        <p className="text-xs text-muted-foreground">{t("ctxMgr.aiAdvisorDesc")}</p>
                       </div>
                     </div>
                     <Button
@@ -670,12 +670,12 @@ export default function ContextManagerPage() {
                       {aiResult.suggestions.map((s, i) => (
                         <div key={i} className="p-3 bg-background/80 rounded-lg border border-violet-500/10">
                           <div className="flex items-center justify-between mb-1.5">
-                            <span className="text-[10px] font-bold text-violet-500 uppercase tracking-wider">{t("ctxMgr.aiInsight")} #{i + 1}</span>
-                            <Chip size="sm" variant="soft" className="text-[10px] font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400">{s.score}/100</Chip>
+                            <span className="text-xs font-bold text-violet-500 uppercase tracking-wider">{t("ctxMgr.aiInsight")} #{i + 1}</span>
+                            <Chip size="sm" variant="soft" className="text-xs font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400">{s.score}/100</Chip>
                           </div>
                           <p className="text-xs text-foreground/90 leading-relaxed mb-1.5">{s.value}</p>
                           {s.reasoning && (
-                            <p className="text-[10px] text-muted-foreground italic leading-relaxed">{s.reasoning}</p>
+                            <p className="text-xs text-muted-foreground italic leading-relaxed">{s.reasoning}</p>
                           )}
                         </div>
                       ))}
@@ -695,7 +695,7 @@ export default function ContextManagerPage() {
             </>
           ) : (
             /* Empty state — redesigned with value proposition */
-            <Card className="p-12 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center min-h-[500px]">
+            <Card className="p-6 sm:p-12 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center min-h-[300px] sm:min-h-[500px]">
               <div className="size-20 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-full flex items-center justify-center mb-6">
                 <BookOpen className="size-10 text-blue-500/50" />
               </div>
@@ -718,7 +718,7 @@ export default function ContextManagerPage() {
                       <step.icon className="size-5 text-primary" />
                     </div>
                     <span className="text-xs font-black uppercase text-foreground/70">{step.label}</span>
-                    <span className="text-[10px] text-muted-foreground leading-tight">{step.desc}</span>
+                    <span className="text-xs text-muted-foreground leading-tight">{step.desc}</span>
                   </div>
                 ))}
               </div>
@@ -804,7 +804,7 @@ export default function ContextManagerPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Select value={docType} onChange={(value) => { if (value) setDocType(value as DocumentType); }} className="w-full" aria-label={t("ctxMgr.documentTypeLabel")}>
-                      <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.documentTypeLabel")}</Label>
+                      <Label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.documentTypeLabel")}</Label>
                       <Select.Trigger className="h-10 rounded-xl border-2 border-divider bg-background px-3 text-sm">
                         <Select.Value /><Select.Indicator />
                       </Select.Trigger>
@@ -820,7 +820,7 @@ export default function ContextManagerPage() {
                   </div>
                   <div className="space-y-1">
                     <Select value={docPriority} onChange={(value) => { if (value) setDocPriority(value as Priority); }} className="w-full" aria-label={t("ctxMgr.priorityLabel")}>
-                      <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.priorityLabel")}</Label>
+                      <Label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.priorityLabel")}</Label>
                       <Select.Trigger className="h-10 rounded-xl border-2 border-divider bg-background px-3 text-sm">
                         <Select.Value /><Select.Indicator />
                       </Select.Trigger>
@@ -837,7 +837,7 @@ export default function ContextManagerPage() {
 
                 {/* Instructions field */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.instructionsLabel")}</label>
+                  <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.instructionsLabel")}</label>
                   <Input
                     placeholder={t("ctxMgr.instructionsPlaceholder")}
                     value={docInstructions}
@@ -848,7 +848,7 @@ export default function ContextManagerPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.contentLabel")}</label>
+                  <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("ctxMgr.contentLabel")}</label>
                   <TextArea
                     value={docContent}
                     onChange={(e) => setDocContent(e.target.value)}

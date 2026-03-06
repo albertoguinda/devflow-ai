@@ -1,11 +1,35 @@
-# TODO — DevFlow AI v4.14.0
+# TODO — DevFlow AI v4.15.0
 
-> Last updated: 2026-02-28
-> Context: Project finalized. 3 exhaustive audits completed (68 fixes). 1466 tests, 45 files, 1656 i18n keys, 0 vulnerabilities.
+> Last updated: 2026-03-06
+> Context: Project finalized. 4 exhaustive audits completed (79 fixes). 1466 tests, 45 files, 1658 i18n keys, 0 vulnerabilities.
 
 ---
 
-## Completed in This Session (2026-02-28)
+## Completed in This Session (2026-03-06)
+
+### Pixel-Perfect & Responsive Audit — 11 Fixes in 4 Phases
+- [x] **ToolHeader** — Responsive wrap at 375px (flex-col/sm:flex-row, min-w-0, responsive font sizes)
+- [x] **HTTP Status Finder** — Card overflow on mobile (responsive padding, gap, icon size, title size)
+- [x] **Fixed heights → responsive** — 16 Cards across 8 tools (h-[400px] sm:h-[600px])
+- [x] **JSON Formatter** — Stats grid stacks on mobile (grid-cols-1 sm:grid-cols-2)
+- [x] **GSAP dynamic import** — Static import replaced with import("gsap").then() in 5 hooks (~60KB bundle savings)
+- [x] **text-[9px]/text-[10px] → text-xs** — 216 instances across 16 files for WCAG legibility
+- [x] **Touch targets 44px** — 10 icon-only buttons with min-h-11 min-w-11
+- [x] **Button group gaps** — 8 groups from gap-1 to gap-2
+- [x] **Debounce 300→150ms** — Token Visualizer and HTTP Status Finder search
+- [x] **StatusBadge contrast AAA** — Text colors -800 → -900 for 7:1 ratio
+- [x] **localStorage try/catch** — importSettings handles QuotaExceededError with partial error reporting
+- [x] 2 new i18n keys (settings.importPartial) in EN + ES (1658 total)
+
+### Verification
+- [x] TypeScript: 0 errors (strict mode)
+- [x] ESLint: 0 errors, 0 warnings
+- [x] Unit tests: 45 files, 1465+ passing (1 pre-existing flaky dto-matic mock test)
+- [x] Build: successful
+
+---
+
+## Completed in Previous Session (2026-02-28)
 
 ### E2E Stability — 12 Flaky Tests Fixed (7 spec files)
 - [x] command-palette — removed `waitForTimeout(200)`, click options instead of Enter (SearchField intercepts keydown)
@@ -266,14 +290,14 @@ When resuming work:
 3. **End of session**: Update CHANGELOG.md, commit, push, verify CI on GitHub
 
 ### Quick Context
-- **Version**: 4.14.0 (current)
+- **Version**: 4.15.0 (current)
 - **Tests**: 45 files, 1466 passing
 - **Coverage**: 95.88% stmts, 88.62% branches, 93.56% funcs, 96.46% lines — all per-file thresholds pass
 - **ESLint**: 0 errors, 0 warnings
 - **TypeScript**: 0 errors (strict mode, zero `any`)
-- **i18n**: 1656 keys in both locales (perfect parity)
+- **i18n**: 1658 keys in both locales (perfect parity)
 - **Vulnerabilities**: 0
 - **Sentry**: 10.40.0, disabled by default (set `NEXT_PUBLIC_SENTRY_DSN` to activate)
 - **CI**: 10 jobs (quality, security, dep-review, build, a11y, e2e, codeql, semgrep, lighthouse, release)
-- **Source files**: 208 (.ts/.tsx)
-- **Commits**: 176+
+- **Source files**: 228 (.ts/.tsx)
+- **Commits**: 178+

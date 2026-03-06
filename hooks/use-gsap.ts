@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
 
 function prefersReducedMotion(): boolean {
   return typeof window !== "undefined" &&
@@ -16,21 +15,26 @@ export function useFadeIn(delay = 0) {
     if (!ref.current) return;
 
     if (prefersReducedMotion()) {
-      gsap.set(ref.current, { opacity: 1 });
+      ref.current.style.opacity = "1";
       return;
     }
 
-    const tween = gsap.fromTo(
-      ref.current,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.6,
-        delay,
-        ease: "power2.out",
-      }
-    );
-    return () => { tween.kill(); };
+    let tween: { kill: () => void } | undefined;
+
+    import("gsap").then(({ default: gsap }) => {
+      if (!ref.current) return;
+      tween = gsap.fromTo(
+        ref.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.6,
+          delay,
+          ease: "power2.out",
+        }
+      );
+    });
+    return () => { tween?.kill(); };
   }, [delay]);
 
   return ref;
@@ -52,22 +56,29 @@ export function useStaggerIn(childSelector = ":scope > *", delay = 0) {
     if (elements.length === 0) return;
 
     if (prefersReducedMotion()) {
-      gsap.set(elements, { opacity: 1 });
+      Array.from(elements).forEach((el) => {
+        (el as HTMLElement).style.opacity = "1";
+      });
       return;
     }
 
-    const tween = gsap.fromTo(
-      elements,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.5,
-        stagger: 0.1,
-        delay,
-        ease: "power2.out",
-      }
-    );
-    return () => { tween.kill(); };
+    let tween: { kill: () => void } | undefined;
+
+    import("gsap").then(({ default: gsap }) => {
+      if (!ref.current) return;
+      tween = gsap.fromTo(
+        elements,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          delay,
+          ease: "power2.out",
+        }
+      );
+    });
+    return () => { tween?.kill(); };
   }, [childSelector, delay]);
 
   return ref;
@@ -81,7 +92,7 @@ export function useScrollReveal() {
     if (!ref.current) return;
 
     if (prefersReducedMotion()) {
-      gsap.set(ref.current, { opacity: 1 });
+      ref.current.style.opacity = "1";
       return;
     }
 
@@ -89,11 +100,13 @@ export function useScrollReveal() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            gsap.fromTo(
-              entry.target,
-              { opacity: 0 },
-              { opacity: 1, duration: 0.7, ease: "power2.out" }
-            );
+            import("gsap").then(({ default: gsap }) => {
+              gsap.fromTo(
+                entry.target,
+                { opacity: 0 },
+                { opacity: 1, duration: 0.7, ease: "power2.out" }
+              );
+            });
             observer.unobserve(entry.target);
           }
         });
@@ -119,18 +132,23 @@ export function usePulse(trigger: boolean) {
       return;
     }
 
-    const tween = gsap.fromTo(
-      ref.current,
-      { scale: 1 },
-      {
-        scale: 1.1,
-        duration: 0.3,
-        ease: "power2.out",
-        yoyo: true,
-        repeat: 1,
-      }
-    );
-    return () => { tween.kill(); };
+    let tween: { kill: () => void } | undefined;
+
+    import("gsap").then(({ default: gsap }) => {
+      if (!ref.current) return;
+      tween = gsap.fromTo(
+        ref.current,
+        { scale: 1 },
+        {
+          scale: 1.1,
+          duration: 0.3,
+          ease: "power2.out",
+          yoyo: true,
+          repeat: 1,
+        }
+      );
+    });
+    return () => { tween?.kill(); };
   }, [trigger]);
 
   return ref;
@@ -148,18 +166,23 @@ export function useCounter(target: number, duration = 1.5) {
       return;
     }
 
-    const obj = { value: 0 };
-    const tween = gsap.to(obj, {
-      value: target,
-      duration,
-      ease: "power2.out",
-      onUpdate: () => {
-        if (ref.current) {
-          ref.current.textContent = Math.round(obj.value).toLocaleString();
-        }
-      },
+    let tween: { kill: () => void } | undefined;
+
+    import("gsap").then(({ default: gsap }) => {
+      if (!ref.current) return;
+      const obj = { value: 0 };
+      tween = gsap.to(obj, {
+        value: target,
+        duration,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (ref.current) {
+            ref.current.textContent = Math.round(obj.value).toLocaleString();
+          }
+        },
+      });
     });
-    return () => { tween.kill(); };
+    return () => { tween?.kill(); };
   }, [target, duration]);
 
   return ref;

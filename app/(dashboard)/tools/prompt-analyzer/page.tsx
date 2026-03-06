@@ -195,9 +195,9 @@ function AnatomyRadar({ dimensions, compareDimensions, axisLabels }: { dimension
       {/* Tooltip */}
       {hoveredDim && (
         <div className="absolute bottom-0 left-1 right-1 p-2 bg-background/95 backdrop-blur-sm border border-divider rounded-lg shadow-lg text-center animate-in fade-in duration-150">
-          <p className="text-[10px] font-black uppercase text-primary">{axisLabels[hoveredDim.id]} — {hoveredDim.score}/100</p>
+          <p className="text-xs font-black uppercase text-primary">{axisLabels[hoveredDim.id]} — {hoveredDim.score}/100</p>
           {hoveredDim.score < 60 && (
-            <p className="text-[9px] text-amber-600 dark:text-amber-400 mt-0.5">{COACHING_TIPS[hoveredDim.id][locale]}</p>
+            <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">{COACHING_TIPS[hoveredDim.id][locale]}</p>
           )}
         </div>
       )}
@@ -420,7 +420,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                       {new Date(item.analyzedAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="flex gap-1">
+                  <div className="flex gap-2">
                     <Button
                       size="sm"
                       variant="ghost"
@@ -603,8 +603,8 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                               const dd = scoreDelta.dimensions.find((d) => d.id === dim.id);
                               if (!dd || dd.delta === 0) return null;
                               return dd.delta > 0
-                                ? <span className="ml-1 text-[10px] font-bold text-emerald-500">+{dd.delta}</span>
-                                : <span className="ml-1 text-[10px] font-bold text-red-500">{dd.delta}</span>;
+                                ? <span className="ml-1 text-xs font-bold text-emerald-500">+{dd.delta}</span>
+                                : <span className="ml-1 text-xs font-bold text-red-500">{dd.delta}</span>;
                             })()}
                           </div>
                         </div>
@@ -721,7 +721,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                   </div>
                   {aiRefineResult.changelog.length > 0 && (
                     <div className="mt-2">
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">{t("ai.changesMade")}</p>
+                      <p className="text-xs font-bold text-muted-foreground uppercase mb-1">{t("ai.changesMade")}</p>
                       <ul className="space-y-1">
                         {aiRefineResult.changelog.map((change, i) => (
                           <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">

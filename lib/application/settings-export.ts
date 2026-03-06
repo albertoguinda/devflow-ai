@@ -84,17 +84,22 @@ export function validateImport(data: unknown): { valid: boolean; error?: string;
  */
 const MAX_VALUE_LENGTH = 1_000_000; // 1MB per key
 
-export function importSettings(exportData: SettingsExport): { imported: number } {
+export function importSettings(exportData: SettingsExport): { imported: number; errors: string[] } {
   let imported = 0;
+  const errors: string[] = [];
 
   for (const [key, value] of Object.entries(exportData.settings)) {
     if (key.startsWith(APP_PREFIX) && value.length <= MAX_VALUE_LENGTH) {
-      localStorage.setItem(key, value);
-      imported++;
+      try {
+        localStorage.setItem(key, value);
+        imported++;
+      } catch {
+        errors.push(key);
+      }
     }
   }
 
-  return { imported };
+  return { imported, errors };
 }
 
 /**

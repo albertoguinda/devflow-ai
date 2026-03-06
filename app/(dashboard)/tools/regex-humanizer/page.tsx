@@ -171,7 +171,7 @@ export default function RegexHumanizerPage() {
                   )}
                 </div>
                 <div className="space-y-1.5">
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{t("regex.flavorLabel")}</p>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t("regex.flavorLabel")}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {(["javascript", "python", "go", "pcre", "rust"] as RegexFlavor[]).map((f) => (
                       <Button
@@ -180,7 +180,7 @@ export default function RegexHumanizerPage() {
                         aria-pressed={flavor === f}
                         variant={flavor === f ? "primary" : "ghost"}
                         onPress={() => setFlavor(f)}
-                        className="px-2.5 text-[10px] font-bold capitalize"
+                        className="px-2.5 text-xs font-bold capitalize"
                       >
                         {f === "pcre" ? "PCRE" : f}
                       </Button>
@@ -188,7 +188,7 @@ export default function RegexHumanizerPage() {
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{t("regex.presets")}</p>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t("regex.presets")}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {commonPatterns.slice(0, 8).map((cp) => (
                       <Button
@@ -286,7 +286,7 @@ export default function RegexHumanizerPage() {
 
           {/* Quick Cheat Sheet */}
           <div className="mt-auto border-t border-divider pt-4">
-            <h4 className="text-[10px] font-bold text-muted-foreground uppercase mb-3">{t("regex.quickRef")}</h4>
+            <h4 className="text-xs font-bold text-muted-foreground uppercase mb-3">{t("regex.quickRef")}</h4>
             <div className="grid grid-cols-2 gap-2">
               {[
                 { s: "\\d", d: "Digit" }, { s: "\\w", d: "Word" },
@@ -301,7 +301,7 @@ export default function RegexHumanizerPage() {
                     setPattern(pattern + ref.s);
                     setActiveTab("explain");
                   }}
-                  className="flex justify-between items-center px-2 h-auto py-1 bg-muted/30 text-[10px] font-mono"
+                  className="flex justify-between items-center px-2 h-auto py-1 bg-muted/30 text-xs font-mono"
                 >
                   <span className="text-primary font-bold">{ref.s}</span>
                   <span className="opacity-60">{ref.d}</span>
@@ -318,7 +318,7 @@ export default function RegexHumanizerPage() {
               {/* Safety & Overview */}
               <div className="grid gap-4 sm:grid-cols-3">
                 <Card className="p-6 col-span-1 flex flex-col items-center justify-center text-center">
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase mb-3">{t("regex.safetyScoreLabel")}</p>
+                  <p className="text-xs font-bold text-muted-foreground uppercase mb-3">{t("regex.safetyScoreLabel")}</p>
                   <div className="relative mb-2">
                     <svg className="size-20 transform -rotate-90">
                       <circle cx="40" cy="40" r="32" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-muted" />
@@ -427,7 +427,7 @@ export default function RegexHumanizerPage() {
                                 <div key={i} className="p-3 bg-background/80 rounded-lg border border-violet-500/10">
                                   <p className="text-xs text-foreground/90 leading-relaxed">{s.value}</p>
                                   {s.reasoning && (
-                                    <p className="text-[10px] text-muted-foreground italic mt-1.5">{s.reasoning}</p>
+                                    <p className="text-xs text-muted-foreground italic mt-1.5">{s.reasoning}</p>
                                   )}
                                 </div>
                               ))}
@@ -453,7 +453,7 @@ export default function RegexHumanizerPage() {
                   <Tabs.Panel id="test">
                     <div className="p-6 space-y-4">
                       <div className="flex flex-col gap-2">
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase">{t("regex.sampleText")}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase">{t("regex.sampleText")}</p>
                         <TextArea
                           value={testText}
                           onChange={(e) => setTestText(e.target.value)}

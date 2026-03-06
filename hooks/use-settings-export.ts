@@ -59,7 +59,11 @@ export function useSettingsExport(): UseSettingsExportReturn {
       }
 
       const result = importSettings(validation.data);
-      setLastResult({ type: "success", message: t("settings.importSuccess", { count: String(result.imported) }) });
+      if (result.errors.length > 0) {
+        setLastResult({ type: "error", message: t("settings.importPartial", { count: String(result.imported), errors: String(result.errors.length) }) });
+      } else {
+        setLastResult({ type: "success", message: t("settings.importSuccess", { count: String(result.imported) }) });
+      }
     } catch (e) {
       setLastResult({ type: "error", message: e instanceof Error ? e.message : t("settings.importFailed") });
     } finally {

@@ -101,9 +101,9 @@ export default function DtoMaticPage() {
                 <FileJson className="size-4 text-primary" />
                 {t("dtoMatic.payloadSource")}
               </h3>
-              <div className="flex gap-1">
-                <Button isIconOnly size="sm" variant="ghost" onPress={loadExample} aria-label={t("dtoMatic.ariaLoadExample")}><Wand2 className="size-3.5" /></Button>
-                <Button isIconOnly size="sm" variant="ghost" onPress={formatInput} aria-label={t("dtoMatic.ariaFormatJson")}><Braces className="size-3.5" /></Button>
+              <div className="flex gap-2">
+                <Button isIconOnly size="sm" variant="ghost" onPress={loadExample} aria-label={t("dtoMatic.ariaLoadExample")} className="min-h-11 min-w-11"><Wand2 className="size-3.5" /></Button>
+                <Button isIconOnly size="sm" variant="ghost" onPress={formatInput} aria-label={t("dtoMatic.ariaFormatJson")} className="min-h-11 min-w-11"><Braces className="size-3.5" /></Button>
               </div>
             </div>
             
@@ -150,7 +150,7 @@ export default function DtoMaticPage() {
             </h3>
             <div className="space-y-5">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("dtoMatic.rootNameLabel")}</label>
+                <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("dtoMatic.rootNameLabel")}</label>
                 <Input 
                   variant="primary"
                   value={config.rootName} 
@@ -161,7 +161,7 @@ export default function DtoMaticPage() {
               </div>
               
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("dtoMatic.targetStack")}</label>
+                <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("dtoMatic.targetStack")}</label>
                 <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label={t("dtoMatic.targetStack")}>
                   {[
                     { val: "typescript", label: "TypeScript" },
@@ -186,7 +186,7 @@ export default function DtoMaticPage() {
               </div>
 
               <div className="space-y-1.5 pt-2 border-t border-divider">
-                <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">{t("dtoMatic.outputModeLabel")}</label>
+                <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("dtoMatic.outputModeLabel")}</label>
                 <div className="flex gap-2" role="radiogroup" aria-label={t("dtoMatic.outputModeLabel")}>
                   {([
                     { val: "clean-arch" as const, label: t("dtoMatic.cleanArch") },
@@ -206,7 +206,7 @@ export default function DtoMaticPage() {
                     </Button>
                   ))}
                 </div>
-                <p className="text-[10px] text-muted-foreground/70 ml-1 mt-1">
+                <p className="text-xs text-muted-foreground/70 ml-1 mt-1">
                   {config.mode === "clean-arch" && t("dtoMatic.cleanArchDescLong")}
                   {config.mode === "zod" && t("dtoMatic.zodDescLong")}
                   {config.mode === "quick" && t("dtoMatic.quickDescLong")}
@@ -223,19 +223,19 @@ export default function DtoMaticPage() {
               {/* Quick Stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <Card className="p-4 bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 dark:border-green-500/10 text-center">
-                  <p className="text-[10px] font-black uppercase text-green-600 dark:text-green-400 mb-1">{t("dtoMatic.totalTypes")}</p>
+                  <p className="text-xs font-black uppercase text-green-600 dark:text-green-400 mb-1">{t("dtoMatic.totalTypes")}</p>
                   <p className="text-2xl font-black text-green-700 dark:text-green-400">{result.stats.totalTypes}</p>
                 </Card>
                 <Card className="p-4 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 dark:border-blue-500/10 text-center">
-                  <p className="text-[10px] font-black uppercase text-blue-600 dark:text-blue-400 mb-1">{t("dtoMatic.nestedObjects")}</p>
+                  <p className="text-xs font-black uppercase text-blue-600 dark:text-blue-400 mb-1">{t("dtoMatic.nestedObjects")}</p>
                   <p className="text-2xl font-black text-blue-700 dark:text-blue-400">{result.stats.nestedObjects}</p>
                 </Card>
                 <Card className="p-4 bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 dark:border-amber-500/10 text-center">
-                  <p className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400 mb-1">{t("dtoMatic.arraysLabel")}</p>
+                  <p className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 mb-1">{t("dtoMatic.arraysLabel")}</p>
                   <p className="text-2xl font-black text-amber-700 dark:text-amber-400">{result.stats.arrays}</p>
                 </Card>
                 <Card className="p-4 bg-gradient-to-br from-purple-500/10 to-violet-500/10 border border-purple-500/20 dark:border-purple-500/10 text-center">
-                  <p className="text-[10px] font-black uppercase text-purple-600 dark:text-purple-400 mb-1">{t("dtoMatic.filesLabel")}</p>
+                  <p className="text-xs font-black uppercase text-purple-600 dark:text-purple-400 mb-1">{t("dtoMatic.filesLabel")}</p>
                   <p className="text-2xl font-black text-purple-700 dark:text-purple-400">{result.files.length}</p>
                 </Card>
               </div>
@@ -270,11 +270,11 @@ export default function DtoMaticPage() {
                       {aiResult.suggestions.map((s, i) => (
                         <div key={i} className="p-4 bg-background/80 rounded-xl border border-violet-500/10">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[10px] font-black uppercase text-violet-500">{t("dtoMatic.aiSuggestion")} #{i + 1}</span>
-                            <span className="text-[10px] font-bold text-violet-400">{s.score}/100</span>
+                            <span className="text-xs font-black uppercase text-violet-500">{t("dtoMatic.aiSuggestion")} #{i + 1}</span>
+                            <span className="text-xs font-bold text-violet-400">{s.score}/100</span>
                           </div>
                           <p className="text-xs font-medium leading-relaxed">{s.value}</p>
-                          <p className="text-[10px] text-muted-foreground mt-2 italic">{s.reasoning}</p>
+                          <p className="text-xs text-muted-foreground mt-2 italic">{s.reasoning}</p>
                         </div>
                       ))}
                     </div>
@@ -349,7 +349,7 @@ export default function DtoMaticPage() {
                 </div>
 
                 <Tabs.Panel id="code">
-                  <div className="grid gap-6 lg:grid-cols-12 h-[600px]">
+                  <div className="grid gap-6 lg:grid-cols-12 h-[400px] sm:h-[600px]">
                     <div className="lg:col-span-4 flex flex-col gap-4 h-full">
                       <div className="flex flex-col gap-1.5 overflow-y-auto max-h-[560px] pr-1">
                         {result.files.map((file) => {
@@ -378,9 +378,9 @@ export default function DtoMaticPage() {
                               <FileCode className={cn("size-4 shrink-0", isActive ? "text-primary" : "text-muted-foreground")} />
                               <div className="min-w-0 flex-1">
                                 <span className={cn("text-sm font-medium block truncate", isActive && "text-primary font-bold")}>{file.name}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase">{file.language}</span>
+                                <span className="text-xs text-muted-foreground uppercase">{file.language}</span>
                               </div>
-                              <Chip size="sm" className={cn("capitalize text-[10px] font-bold shrink-0", typeColors[file.type] || "bg-muted text-muted-foreground")}>
+                              <Chip size="sm" className={cn("capitalize text-xs font-bold shrink-0", typeColors[file.type] || "bg-muted text-muted-foreground")}>
                                 {file.type}
                               </Chip>
                             </Button>
@@ -393,7 +393,7 @@ export default function DtoMaticPage() {
                       <Card className="h-full p-0 border-primary/20 shadow-lg overflow-hidden bg-muted/30 dark:bg-muted/50 flex flex-col border-none">
                         <div className="p-3 bg-muted/50 border-b border-divider flex justify-between items-center">
                           <span className="text-xs font-mono font-bold text-primary ml-2">{selectedFile?.name ?? t("dtoMatic.noFileSelected")}</span>
-                          <div className="flex gap-1">
+                          <div className="flex gap-2">
                             <Button
                               isIconOnly
                               size="sm"
@@ -420,7 +420,7 @@ export default function DtoMaticPage() {
                 </Tabs.Panel>
 
                 <Tabs.Panel id="mock">
-                  <Card className="p-0 overflow-hidden h-[600px] flex flex-col border-none">
+                  <Card className="p-0 overflow-hidden h-[400px] sm:h-[600px] flex flex-col border-none">
                     <div className="p-4 border-b border-divider flex justify-between items-center bg-muted/20">
                       <span className="text-xs font-bold text-secondary flex items-center gap-2 uppercase tracking-wider">
                         <Box className="size-4" /> {t("dtoMatic.generatedJsonResponse")}

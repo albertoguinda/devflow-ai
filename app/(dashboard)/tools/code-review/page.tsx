@@ -142,7 +142,7 @@ export default function CodeReviewPage() {
                 <Wand2 className="size-3" /> {issue.suggestion}
               </span>
             )}
-            <span className="text-[10px] uppercase font-bold opacity-40 mt-1">{issue.category}</span>
+            <span className="text-xs uppercase font-bold opacity-40 mt-1">{issue.category}</span>
           </div>
         );
       case "severity":
@@ -170,7 +170,7 @@ export default function CodeReviewPage() {
         return (
           <Dropdown>
             <Dropdown.Trigger>
-              <Button isIconOnly size="sm" variant="ghost" aria-label={t("codeReview.issueActions")}>
+              <Button isIconOnly size="sm" variant="ghost" aria-label={t("codeReview.issueActions")} className="min-h-11 min-w-11">
                 <MoreVertical className="size-4 text-default-300" />
               </Button>
             </Dropdown.Trigger>
@@ -326,7 +326,7 @@ export default function CodeReviewPage() {
                 <Card className="p-6 col-span-2">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.complexityTooltip")}>{t("codeReview.complexity")} ⓘ</p>
+                      <p className="text-xs font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.complexityTooltip")}>{t("codeReview.complexity")} ⓘ</p>
                       <p className="text-xl font-bold flex items-center gap-2">
                         {result.metrics.complexity}
                         <StatusBadge variant={result.metrics.complexity > 10 ? "warning" : "success"}>
@@ -335,7 +335,7 @@ export default function CodeReviewPage() {
                       </p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.maintainabilityTooltip")}>{t("codeReview.maintainability")} ⓘ</p>
+                      <p className="text-xs font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.maintainabilityTooltip")}>{t("codeReview.maintainability")} ⓘ</p>
                       <p className="text-xl font-bold text-emerald-500 dark:text-emerald-400">{result.metrics.maintainabilityIndex}%</p>
                     </div>
                   </div>
@@ -421,14 +421,14 @@ export default function CodeReviewPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-4">
                       <div className="text-center">
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase">{t("ai.score")}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase">{t("ai.score")}</p>
                         <p className={cn(
                           "text-2xl font-black",
                           aiResult.score >= 80 ? "text-emerald-500 dark:text-emerald-400" : aiResult.score >= 50 ? "text-amber-500 dark:text-amber-400" : "text-red-500 dark:text-red-400"
                         )}>{aiResult.score}</p>
                       </div>
                       <div className="flex-1">
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">{t("ai.suggestions")}</p>
+                        <p className="text-xs font-bold text-muted-foreground uppercase mb-1">{t("ai.suggestions")}</p>
                         <ul className="space-y-1">
                           {aiResult.suggestions.map((s, i) => (
                             <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
@@ -444,7 +444,7 @@ export default function CodeReviewPage() {
                         <p className="text-xs font-bold text-muted-foreground uppercase">{t("ai.detectedIssues")}</p>
                         {aiResult.issues.slice(0, 5).map((issue, i) => (
                           <div key={i} className="flex items-start gap-2 text-xs p-2 bg-background/50 rounded-lg border border-violet-500/10">
-                            <Chip size="sm" color={issue.severity === "critical" ? "danger" : issue.severity === "warning" ? "warning" : "default"} variant="soft" className="capitalize text-[10px] h-5">
+                            <Chip size="sm" color={issue.severity === "critical" ? "danger" : issue.severity === "warning" ? "warning" : "default"} variant="soft" className="capitalize text-xs h-5">
                               {issue.severity}
                             </Chip>
                             <div>
@@ -506,7 +506,7 @@ export default function CodeReviewPage() {
                   </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                     <div>
-                      <span className="text-[9px] font-black uppercase text-red-500 dark:text-red-400 tracking-widest mb-1 block">{t("codeReview.originalCode")}</span>
+                      <span className="text-xs font-black uppercase text-red-500 dark:text-red-400 tracking-widest mb-1 block">{t("codeReview.originalCode")}</span>
                       <pre className="rounded-xl border border-red-500/10 bg-red-500/5 p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] shadow-inner">
                         <code>{diffLines?.origLines.map((line, i) => {
                           const changed = diffLines.refLines[i] !== line;
@@ -515,7 +515,7 @@ export default function CodeReviewPage() {
                       </pre>
                     </div>
                     <div>
-                      <span className="text-[9px] font-black uppercase text-emerald-500 dark:text-emerald-400 tracking-widest mb-1 block">{t("codeReview.refactoredCode")}</span>
+                      <span className="text-xs font-black uppercase text-emerald-500 dark:text-emerald-400 tracking-widest mb-1 block">{t("codeReview.refactoredCode")}</span>
                       <pre className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] shadow-inner">
                         <code>{diffLines?.refLines.map((line, i) => {
                           const changed = diffLines.origLines[i] !== line;

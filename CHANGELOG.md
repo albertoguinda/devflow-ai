@@ -5,6 +5,36 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.0] - 2026-03-06
+
+### Pixel-Perfect & Responsive Audit — 11 Fixes in 4 Phases
+
+Comprehensive responsive audit addressing mobile layout breaks at 375px, performance optimization, WCAG AAA visual consistency, and code quality. 23 files modified, ~250 edits.
+
+#### Fixed
+- **ToolHeader** — Overflow at 375px: flex-col/sm:flex-row wrap, min-w-0 on text container, responsive font sizes
+- **HTTP Status Finder** — Card overflow on mobile: responsive padding (p-4 sm:p-10), gap, icon size (size-20 sm:size-32), title size
+- **JSON Formatter** — Stats grid hardcoded 2-col now stacks on mobile (grid-cols-1 sm:grid-cols-2)
+- **Fixed heights** — 16 Cards across 8 tools with hardcoded h-[600px]/h-[650px] now responsive (h-[400px] sm:h-[600px])
+- **Variable Name Wizard** — Empty state padding reduced on mobile (p-8 sm:p-20)
+- **Context Manager** — Empty state padding and min-height responsive
+- **StatusBadge** — WCAG AAA contrast: light mode text upgraded from -800 to -900 for 7:1 ratio
+- **Settings import** — `localStorage.setItem` wrapped in try/catch to handle `QuotaExceededError`; partial import errors now reported
+
+#### Changed
+- **text-[9px]/text-[10px] → text-xs** — 216 instances across 16 files upgraded to WCAG-compliant minimum 12px
+- **Touch targets** — 10 icon-only buttons now have min-h-11 min-w-11 (44px WCAG 2.2 AA minimum)
+- **Button group gaps** — 8 interactive button groups changed from gap-1 (4px) to gap-2 (8px)
+- **Debounce** — Token Visualizer and HTTP Status Finder search debounce reduced from 300ms to 150ms for snappier UX
+
+#### Performance
+- **GSAP dynamic import** — Replaced static `import gsap from "gsap"` with `import("gsap").then()` in all 5 hooks (~60KB removed from main bundle); `prefersReducedMotion` fallback uses direct CSS instead of GSAP
+
+#### Added
+- 2 new i18n keys (`settings.importPartial`) in both EN and ES locales (1658 total)
+
+---
+
 ## [4.14.0] - 2026-02-28
 
 ### Security, Quality & Performance Audit

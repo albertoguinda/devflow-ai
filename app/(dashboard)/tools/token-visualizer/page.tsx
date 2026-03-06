@@ -69,7 +69,7 @@ export default function TokenVisualizerPage() {
       if (input.trim()) {
         tokenize(input, provider, isCompareMode);
       }
-    }, 300);
+    }, 150);
     return () => clearTimeout(timer);
   }, [input, provider, isCompareMode, tokenize]);
 
@@ -108,6 +108,7 @@ export default function TokenVisualizerPage() {
                     variant={!isCompareMode ? "primary" : "ghost"}
                     onPress={() => setIsCompareMode(false)}
                     aria-label={t("tokenViz.singleProviderView")}
+                    className="min-h-11 min-w-11"
                   >
                     <ListIcon className="size-3.5" />
                   </Button>
@@ -117,6 +118,7 @@ export default function TokenVisualizerPage() {
                     variant={isCompareMode ? "primary" : "ghost"}
                     onPress={() => setIsCompareMode(true)}
                     aria-label={t("tokenViz.compareProviders")}
+                    className="min-h-11 min-w-11"
                   >
                     <LayoutGrid className="size-3.5" />
                   </Button>
@@ -182,7 +184,7 @@ export default function TokenVisualizerPage() {
           {/* Token Budget Bar */}
           {visualization && (
             <Card className="p-4">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">{t("tokenViz.contextBudget")}</p>
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">{t("tokenViz.contextBudget")}</p>
               {[
                 { label: "4K", max: 4096 },
                 { label: "8K", max: 8192 },
@@ -191,14 +193,14 @@ export default function TokenVisualizerPage() {
                 const pct = Math.min(100, (visualization.totalTokens / ctx.max) * 100);
                 return (
                   <div key={ctx.label} className="flex items-center gap-2 mb-1.5">
-                    <span className="text-[10px] font-bold text-muted-foreground w-8">{ctx.label}</span>
+                    <span className="text-xs font-bold text-muted-foreground w-8">{ctx.label}</span>
                     <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
                         className={cn("h-full rounded-full transition-all", pct > 90 ? "bg-red-500 dark:bg-red-400" : pct > 60 ? "bg-amber-500 dark:bg-amber-400" : "bg-emerald-500 dark:bg-emerald-400")}
                         style={{ width: `${pct}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-mono text-muted-foreground w-10 text-right">{pct.toFixed(0)}%</span>
+                    <span className="text-xs font-mono text-muted-foreground w-10 text-right">{pct.toFixed(0)}%</span>
                   </div>
                 );
               })}
@@ -213,7 +215,7 @@ export default function TokenVisualizerPage() {
                   <Bot className="size-3 text-violet-500" aria-hidden="true" /> {t("ai.realBPE")}
                 </h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{t("tokenViz.tokenizeWith")}</span>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{t("tokenViz.tokenizeWith")}</span>
                   {[
                     { id: "gpt-4o", label: "GPT-4o" },
                     { id: "gpt-4", label: "GPT-4" },
@@ -241,7 +243,7 @@ export default function TokenVisualizerPage() {
                   </div>
                   <div className="flex flex-wrap gap-1 p-3 bg-background/50 rounded-xl border border-violet-500/10 max-h-[150px] overflow-auto">
                     {realTokenResult.segments.map((s, i) => (
-                      <span key={`${s.tokenId}-${i}`} title={`Token ID: ${s.tokenId}`} className="px-1 py-0.5 rounded font-mono text-[10px] border bg-violet-500/10 border-violet-500/20 text-violet-600 dark:text-violet-400 cursor-default hover:scale-110 transition-transform">
+                      <span key={`${s.tokenId}-${i}`} title={`Token ID: ${s.tokenId}`} className="px-1 py-0.5 rounded font-mono text-xs border bg-violet-500/10 border-violet-500/20 text-violet-600 dark:text-violet-400 cursor-default hover:scale-110 transition-transform">
                         {s.text.replace(/ /g, "\u2423")}
                       </span>
                     ))}
@@ -268,7 +270,7 @@ export default function TokenVisualizerPage() {
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-end">
-                  <span className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("tokenViz.optimization")}</span>
+                  <span className="text-xs font-bold uppercase text-muted-foreground/60">{t("tokenViz.optimization")}</span>
                   <span className={cn("text-xl font-black", visualization.efficiencyScore > 80 ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400")}>
                     {visualization.efficiencyScore}%
                   </span>
@@ -283,7 +285,7 @@ export default function TokenVisualizerPage() {
                 </div>
                 {visualization.wasteCount > 0 && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-default-200">
-                    <p className="text-[10px] text-amber-600 dark:text-amber-300 font-bold mb-1 uppercase tracking-tighter">{t("tokenViz.wastedDetected")}</p>
+                    <p className="text-xs text-amber-600 dark:text-amber-300 font-bold mb-1 uppercase tracking-tighter">{t("tokenViz.wastedDetected")}</p>
                     <p className="text-xs text-muted-foreground italic">{t("tokenViz.wastedFound", { count: String(visualization.wasteCount) })}</p>
                   </div>
                 )}
@@ -312,7 +314,7 @@ export default function TokenVisualizerPage() {
                         aria-label={`${info?.label}: ${r.totalTokens} tokens`}
                       >
                         <div className="flex justify-between items-start mb-3">
-                          <span className={cn("text-[10px] font-black uppercase", info?.color)}>{info?.label}</span>
+                          <span className={cn("text-xs font-black uppercase", info?.color)}>{info?.label}</span>
                           <StatusBadge variant={r.efficiencyScore > 80 ? "success" : "warning"}>{r.totalTokens} t</StatusBadge>
                         </div>
                         <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
@@ -328,15 +330,15 @@ export default function TokenVisualizerPage() {
               )}
 
               {/* Token Cloud */}
-              <Card className="p-0 border-divider shadow-xl overflow-hidden h-[600px] flex flex-col">
+              <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[600px] flex flex-col">
                 <div className="p-4 border-b border-divider bg-muted/20 flex justify-between items-center">
                   <div className="flex items-center gap-4">
                     <StatusBadge variant="info">
                       <Timer className="size-3 mr-1" /> {visualization.totalTokens} {t("tokenViz.totalTokens")}
                     </StatusBadge>
-                    <span className="text-[10px] font-black opacity-40 uppercase">{visualization.input.length} {t("tokenViz.characters")}</span>
+                    <span className="text-xs font-black opacity-40 uppercase">{visualization.input.length} {t("tokenViz.characters")}</span>
                     {estimatedCost && (
-                      <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400" title={`${estimatedCost.modelName} ${t("tokenViz.inputCost")}`}>
+                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400" title={`${estimatedCost.modelName} ${t("tokenViz.inputCost")}`}>
                         ~${estimatedCost.cost < 0.01 ? estimatedCost.cost.toFixed(6) : estimatedCost.cost.toFixed(4)}
                       </span>
                     )}
@@ -356,7 +358,7 @@ export default function TokenVisualizerPage() {
                   </div>
                 </div>
                 <div className="p-4 border-t border-divider bg-muted/10">
-                  <p className="text-[10px] text-muted-foreground italic flex items-center gap-2">
+                  <p className="text-xs text-muted-foreground italic flex items-center gap-2">
                     <Info className="size-3" />
                     {t("tokenViz.tokenInfo")}
                   </p>

@@ -68,7 +68,7 @@ export default function HttpStatusFinderPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setQuery(searchInput);
-    }, 300);
+    }, 150);
     return () => clearTimeout(timer);
   }, [searchInput, setQuery]);
   const [testResponse, setTestResult] = useState<{ headers: Record<string, string>; time: number; ok: boolean } | null>(null);
@@ -94,7 +94,7 @@ export default function HttpStatusFinderPage() {
       case "name":
         return <span className="font-bold text-sm">{status.name}</span>;
       case "category":
-        return <span className="text-[10px] font-black uppercase opacity-60">{getCategoryInfo(status.category).label}</span>;
+        return <span className="text-xs font-black uppercase opacity-60">{getCategoryInfo(status.category).label}</span>;
       case "description":
         return <span className="text-xs text-muted-foreground line-clamp-1">{status.description}</span>;
       default:
@@ -142,8 +142,8 @@ export default function HttpStatusFinderPage() {
         actions={
           <div className="flex gap-2">
             <div className="flex bg-muted p-1 rounded-xl">
-              <Button isIconOnly size="sm" variant={activeView === "grid" ? "primary" : "ghost"} onPress={() => setActiveView("grid")} aria-label={t("httpStatus.ariaGridView")}><LayoutGrid className="size-3.5" /></Button>
-              <Button isIconOnly size="sm" variant={activeView === "table" ? "primary" : "ghost"} onPress={() => setActiveView("table")} aria-label={t("httpStatus.ariaTableView")}><List className="size-3.5" /></Button>
+              <Button isIconOnly size="sm" variant={activeView === "grid" ? "primary" : "ghost"} onPress={() => setActiveView("grid")} aria-label={t("httpStatus.ariaGridView")} className="min-h-11 min-w-11"><LayoutGrid className="size-3.5" /></Button>
+              <Button isIconOnly size="sm" variant={activeView === "table" ? "primary" : "ghost"} onPress={() => setActiveView("table")} aria-label={t("httpStatus.ariaTableView")} className="min-h-11 min-w-11"><List className="size-3.5" /></Button>
             </div>
             <Button variant="outline" size="sm" onPress={clearSearch} className="gap-2 font-bold">
               <RotateCcw className="size-4" /> {t("httpStatus.resetBtn")}
@@ -158,7 +158,7 @@ export default function HttpStatusFinderPage() {
         {/* Search & Selector Column */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="p-6">
-            <h3 className="font-bold flex items-center gap-2 mb-6 text-foreground/80 uppercase text-[10px] tracking-widest">
+            <h3 className="font-bold flex items-center gap-2 mb-6 text-foreground/80 uppercase text-xs tracking-widest">
               <Search className="size-4 text-primary" />
               {t("httpStatus.smartNavigator")}
             </h3>
@@ -178,7 +178,7 @@ export default function HttpStatusFinderPage() {
                   aria-label={t("httpStatus.filterCategory", { category: cat })}
                   variant={categoryFilter === cat ? "primary" : "ghost"}
                   onPress={() => setCategoryFilter(categoryFilter === cat ? null : cat as HttpStatusCategory)}
-                  className="text-[10px] font-black uppercase"
+                  className="text-xs font-black uppercase"
                 >
                   {cat}
                 </Button>
@@ -205,9 +205,9 @@ export default function HttpStatusFinderPage() {
                   onPress={() => setSearchInput(item.a)}
                   className="flex justify-between items-center bg-muted/50 p-3 h-auto rounded-xl border border-default-200 group hover:bg-muted w-full"
                 >
-                  <span className="text-[10px] font-bold text-foreground/80">{item.q}</span>
+                  <span className="text-xs font-bold text-foreground/80">{item.q}</span>
                   <ChevronRight className="size-3 text-muted-foreground/30 group-hover:translate-x-1 transition-transform" />
-                  <span className="text-[10px] font-black uppercase text-cyan-500 dark:text-cyan-400">{item.a}</span>
+                  <span className="text-xs font-black uppercase text-cyan-500 dark:text-cyan-400">{item.a}</span>
                 </Button>
               ))}
             </div>
@@ -219,36 +219,36 @@ export default function HttpStatusFinderPage() {
           {selectedCode ? (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
               {/* Header Card */}
-              <Card className="p-10 relative overflow-hidden">
+              <Card className="p-4 sm:p-10 relative overflow-hidden">
                 <div className={cn("absolute top-0 right-0 w-32 h-32 opacity-5 -mr-10 -mt-10 rounded-full", CATEGORY_COLORS[selectedCode.category].split(" ")[0])} />
                 <div className="flex flex-col sm:flex-row justify-between gap-8 relative z-10">
-                  <div className="flex items-center gap-8">
-                    <div className={cn("size-32 rounded-[2.5rem] flex items-center justify-center text-5xl font-black shadow-2xl transform hover:rotate-3 transition-transform", CATEGORY_COLORS[selectedCode.category])}>
+                  <div className="flex items-center gap-4 sm:gap-8">
+                    <div className={cn("size-20 sm:size-32 rounded-2xl sm:rounded-[2.5rem] flex items-center justify-center text-3xl sm:text-5xl font-black shadow-2xl transform hover:rotate-3 transition-transform shrink-0", CATEGORY_COLORS[selectedCode.category])}>
                       {selectedCode.code}
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
-                        <h2 className="text-4xl font-black tracking-tight">{selectedCode.name}</h2>
+                        <h2 className="text-2xl sm:text-4xl font-black tracking-tight">{selectedCode.name}</h2>
                         <CopyButton text={selectedCode.code.toString()} variant="ghost" size="sm" />
                       </div>
                       <div className="flex gap-2 items-center">
                         <StatusBadge variant="info">{getCategoryInfo(selectedCode.category).label.toUpperCase()}</StatusBadge>
-                        <span className="text-[10px] font-black opacity-30 uppercase tracking-widest">{t("httpStatus.rfcCompliant")}</span>
+                        <span className="text-xs font-black opacity-30 uppercase tracking-widest">{t("httpStatus.rfcCompliant")}</span>
                       </div>
                     </div>
                   </div>
                   <Button isIconOnly variant="ghost" onPress={() => setSelectedCode(null)} className="shadow-lg rounded-full h-10 w-10 min-w-0" aria-label={t("httpStatus.ariaClose")}><X className="size-5 text-danger" /></Button>
                 </div>
 
-                <div className="mt-12 grid gap-10 sm:grid-cols-2 border-t border-divider pt-10">
+                <div className="mt-6 sm:mt-12 grid gap-6 sm:gap-10 sm:grid-cols-2 border-t border-divider pt-6 sm:pt-10">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest flex items-center gap-2">
+                    <label className="text-xs font-black uppercase text-muted-foreground tracking-widest flex items-center gap-2">
                       <Info className="size-3" /> {t("httpStatus.descriptionHeader")}
                     </label>
                     <p className="text-sm font-medium leading-relaxed opacity-80">{selectedCode.description}</p>
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest flex items-center gap-2">
+                    <label className="text-xs font-black uppercase text-muted-foreground tracking-widest flex items-center gap-2">
                       <Activity className="size-3" /> {t("httpStatus.usageContext")}
                     </label>
                     <p className="text-sm font-medium leading-relaxed opacity-80">{selectedCode.whenToUse}</p>
@@ -264,7 +264,7 @@ export default function HttpStatusFinderPage() {
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedCode.relatedHeaders?.length ? selectedCode.relatedHeaders.map(h => (
-                      <Chip key={h} variant="primary" color="default" className="font-mono text-[10px] font-bold">{h}</Chip>
+                      <Chip key={h} variant="primary" color="default" className="font-mono text-xs font-bold">{h}</Chip>
                     )) : <p className="text-xs italic opacity-40">{t("httpStatus.noHeaders")}</p>}
                   </div>
                   <div className="mt-8 pt-6 border-t border-divider flex gap-3">
@@ -293,12 +293,12 @@ export default function HttpStatusFinderPage() {
                   {testResponse ? (
                     <div className="space-y-4 animate-in fade-in duration-500 relative z-10">
                       <div className="flex justify-between items-center px-1">
-                        <span className={cn("text-[10px] font-black uppercase px-2 py-0.5 rounded", testResponse.ok ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400")}>
+                        <span className={cn("text-xs font-black uppercase px-2 py-0.5 rounded", testResponse.ok ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400")}>
                           {testResponse.ok ? t("httpStatus.httpOk") : t("httpStatus.errorSignal")}
                         </span>
-                        <span className="text-[10px] font-mono text-muted-foreground/60">{testResponse.time}ms</span>
+                        <span className="text-xs font-mono text-muted-foreground/60">{testResponse.time}ms</span>
                       </div>
-                      <div className="p-4 bg-muted/80 dark:bg-muted rounded-2xl font-mono text-[10px] h-40 overflow-auto border border-default-200 scrollbar-hide">
+                      <div className="p-4 bg-muted/80 dark:bg-muted rounded-2xl font-mono text-xs h-40 overflow-auto border border-default-200 scrollbar-hide">
                         {Object.entries(testResponse.headers).map(([k, v]) => (
                           <div key={k} className="mb-1.5 flex gap-2">
                             <span className="text-muted-foreground/50 shrink-0 capitalize">{k}:</span>
@@ -309,7 +309,7 @@ export default function HttpStatusFinderPage() {
                     </div>
                   ) : (
                     <div className="h-40 flex flex-col items-center justify-center border-2 border-dashed border-default-200 rounded-2xl text-center p-6 relative z-10">
-                      <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest">{t("httpStatus.awaitingExecution")}</p>
+                      <p className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">{t("httpStatus.awaitingExecution")}</p>
                     </div>
                   )}
                 </Card>
@@ -327,10 +327,10 @@ export default function HttpStatusFinderPage() {
                     return Object.entries(snippets).map(([lang, code]) => (
                       <div key={lang} className="space-y-2 group">
                         <div className="flex justify-between items-center">
-                          <span className="text-[10px] font-black uppercase text-muted-foreground tracking-tighter group-hover:text-primary transition-colors">{lang}</span>
+                          <span className="text-xs font-black uppercase text-muted-foreground tracking-tighter group-hover:text-primary transition-colors">{lang}</span>
                           <CopyButton text={code} size="sm" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
-                        <pre className="p-4 bg-muted/30 rounded-2xl font-mono text-[10px] border border-divider overflow-x-auto h-40 scrollbar-hide">
+                        <pre className="p-4 bg-muted/30 rounded-2xl font-mono text-xs border border-divider overflow-x-auto h-40 scrollbar-hide">
                           <code>{code}</code>
                         </pre>
                       </div>
@@ -369,7 +369,7 @@ export default function HttpStatusFinderPage() {
                       {aiResult.suggestions.map((s, i) => (
                         <div key={i} className="p-4 bg-background/80 rounded-xl border border-violet-500/10 dark:border-violet-500/20">
                           <p className="text-sm font-medium leading-relaxed">{s.value}</p>
-                          <p className="text-[10px] text-muted-foreground mt-2 italic">{s.reasoning}</p>
+                          <p className="text-xs text-muted-foreground mt-2 italic">{s.reasoning}</p>
                         </div>
                       ))}
                     </div>
@@ -410,7 +410,7 @@ export default function HttpStatusFinderPage() {
                         </div>
                         <div className="min-w-0">
                           <h4 className="font-black text-sm truncate uppercase tracking-tight">{status.name}</h4>
-                          <p className="text-[9px] text-muted-foreground truncate font-bold opacity-60 uppercase">{getCategoryInfo(status.category).label}</p>
+                          <p className="text-xs text-muted-foreground truncate font-bold opacity-60 uppercase">{getCategoryInfo(status.category).label}</p>
                         </div>
                         <div className="absolute -bottom-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity"><Globe className="size-16" /></div>
                       </Card>

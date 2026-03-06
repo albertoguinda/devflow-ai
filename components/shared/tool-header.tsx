@@ -54,8 +54,8 @@ export function ToolHeader({
     return (
       <div>
         {breadcrumbNav}
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <div
               className={cn(
                 "flex size-12 items-center justify-center rounded-xl bg-gradient-to-br",
@@ -65,7 +65,7 @@ export function ToolHeader({
               <Icon className="size-6 text-white" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                 {title}
               </h1>
               <p className="text-sm text-muted-foreground">{description}</p>
@@ -80,9 +80,9 @@ export function ToolHeader({
   return (
     <div>
       {breadcrumbNav}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             {title}
           </h1>
           <p className="mt-1 text-muted-foreground">{description}</p>

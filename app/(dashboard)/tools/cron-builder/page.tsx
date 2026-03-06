@@ -53,7 +53,7 @@ function MiniCalendar({ executions }: { executions: NextExecution[] }) {
   return (
     <div className="grid grid-cols-7 gap-1">
       {dayLabels.map(d => (
-        <div key={d} className="text-[9px] font-bold text-center text-muted-foreground uppercase">{d}</div>
+        <div key={d} className="text-xs font-bold text-center text-muted-foreground uppercase">{d}</div>
       ))}
       {Array.from({ length: firstDayOfWeek }, (_, i) => (
         <div key={`e-${i}`} />
@@ -66,7 +66,7 @@ function MiniCalendar({ executions }: { executions: NextExecution[] }) {
           <div
             key={day}
             className={cn(
-              "text-center text-[10px] font-bold py-1 rounded-md transition-colors",
+              "text-center text-xs font-bold py-1 rounded-md transition-colors",
               isActive ? "bg-orange-500 text-white" : "text-muted-foreground",
               isToday && "ring-1 ring-primary"
             )}
@@ -147,7 +147,7 @@ export default function CronBuilderPage() {
         );
       case "relative":
         return (
-          <Chip size="sm" variant="primary" color="default" className="font-black text-[10px] uppercase">
+          <Chip size="sm" variant="primary" color="default" className="font-black text-xs uppercase">
             {exec.relative}
           </Chip>
         );
@@ -285,7 +285,7 @@ export default function CronBuilderPage() {
                     <p className="text-4xl font-black tracking-widest text-primary font-mono select-all">
                       {Object.values(expression).join(" ")}
                     </p>
-                    <div className="flex justify-center gap-4 mt-2 text-[10px] uppercase font-black text-muted-foreground tracking-tighter">
+                    <div className="flex justify-center gap-4 mt-2 text-xs uppercase font-black text-muted-foreground tracking-tighter">
                       <span>{t("cron.fieldMin")}</span><span>{t("cron.fieldHr")}</span><span>{t("cron.fieldDy")}</span><span>{t("cron.fieldMo")}</span><span>{t("cron.fieldWk")}</span>
                     </div>
                     <div className="absolute top-2 right-2">
@@ -356,13 +356,13 @@ export default function CronBuilderPage() {
                           placeholder={t("cron.fieldPlaceholder")}
                           aria-label={f.label}
                         />
-                        <span className="text-[10px] opacity-30 font-mono w-10" title={t("cron.validRange", { range: f.range })}>{f.range}</span>
+                        <span className="text-xs opacity-30 font-mono w-10" title={t("cron.validRange", { range: f.range })}>{f.range}</span>
                       </div>
                     ))}
                   </div>
 
                   <div className="pt-4 border-t border-divider">
-                    <p className="text-[10px] font-black uppercase text-muted-foreground mb-3 tracking-widest">{t("cron.commonPresets")}</p>
+                    <p className="text-xs font-black uppercase text-muted-foreground mb-3 tracking-widest">{t("cron.commonPresets")}</p>
                     <div className="grid grid-cols-3 gap-2" role="group" aria-label={t("cron.commonPresets")}>
                       {[
                         { name: t("cron.every1m"), exp: { minute: "*", hour: "*", dayOfMonth: "*", month: "*", dayOfWeek: "*" } },
@@ -377,7 +377,7 @@ export default function CronBuilderPage() {
                           size="sm"
                           variant="ghost"
                           onPress={() => setExpression(p.exp)}
-                          className="font-bold text-[10px] h-8"
+                          className="font-bold text-xs h-8"
                         >
                           {p.name}
                         </Button>
@@ -404,7 +404,7 @@ export default function CronBuilderPage() {
                         )}
                       >
                         <f.icon className="size-5" />
-                        <span className="text-[10px] font-bold uppercase text-center">{f.label.split(" ")[0]}</span>
+                        <span className="text-xs font-bold uppercase text-center">{f.label.split(" ")[0]}</span>
                       </Button>
                     ))}
                   </div>

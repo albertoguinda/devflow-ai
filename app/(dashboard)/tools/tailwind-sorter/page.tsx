@@ -76,7 +76,7 @@ export default function TailwindSorterPage() {
         return <span className="text-sm font-medium">{item.reason}</span>;
       case "severity":
         return (
-          <Chip size="sm" variant="soft" color={item.severity === "medium" ? "warning" : "default"} className="capitalize font-black text-[10px]">
+          <Chip size="sm" variant="soft" color={item.severity === "medium" ? "warning" : "default"} className="capitalize font-black text-xs">
             {item.severity}
           </Chip>
         );
@@ -112,9 +112,9 @@ export default function TailwindSorterPage() {
                 <ListFilter className="size-5" />
                 {t("tailwind.rawClasses")}
               </h3>
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 <Button size="sm" variant="ghost" onPress={() => loadExample("messy")}>{t("tailwind.example")}</Button>
-                <Button size="sm" variant="ghost" onPress={() => setInput("")} isIconOnly aria-label={t("common.clearInput")}><Trash2 className="size-3 text-danger" /></Button>
+                <Button size="sm" variant="ghost" onPress={() => setInput("")} isIconOnly aria-label={t("common.clearInput")} className="min-h-11 min-w-11"><Trash2 className="size-3 text-danger" /></Button>
               </div>
             </div>
             <TextArea
@@ -133,8 +133,8 @@ export default function TailwindSorterPage() {
             
             <div className="mt-6 space-y-4">
               <div className="flex items-center justify-between">
-                <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">{t("tailwind.sortingOptions")}</p>
-                {isSorting && <div className="flex items-center gap-1 text-primary animate-pulse"><Activity className="size-3" /><span className="text-[10px] font-black uppercase">{t("tailwind.optimizing")}</span></div>}
+                <p className="text-xs font-black uppercase text-muted-foreground tracking-widest">{t("tailwind.sortingOptions")}</p>
+                {isSorting && <div className="flex items-center gap-1 text-primary animate-pulse"><Activity className="size-3" /><span className="text-xs font-black uppercase">{t("tailwind.optimizing")}</span></div>}
               </div>
               <div className="grid grid-cols-2 gap-3" role="group" aria-label={t("tailwind.sortingOptions")}>
                 <Checkbox
@@ -166,7 +166,7 @@ export default function TailwindSorterPage() {
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
               <div className="flex flex-col items-center">
-                <span className="text-[9px] font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.lightPreview")}</span>
+                <span className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.lightPreview")}</span>
                 <div className="flex items-center justify-center p-4 sm:p-6 bg-white rounded-2xl border border-default-200 min-h-[120px] w-full">
                   <div className={cn("transition-all duration-500 p-4 rounded", result?.output || "bg-sky-500 text-white")}>
                     <span className="text-sm font-bold text-gray-900">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
@@ -174,7 +174,7 @@ export default function TailwindSorterPage() {
                 </div>
               </div>
               <div className="flex flex-col items-center">
-                <span className="text-[9px] font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.darkPreview")}</span>
+                <span className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.darkPreview")}</span>
                 <div className="flex items-center justify-center p-4 sm:p-6 bg-gray-900 rounded-2xl border border-gray-700 min-h-[120px] w-full dark">
                   <div className={cn("transition-all duration-500 p-4 rounded", result?.output || "bg-sky-500 text-white")}>
                     <span className="text-sm font-bold text-gray-100">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
@@ -182,7 +182,7 @@ export default function TailwindSorterPage() {
                 </div>
               </div>
             </div>
-            <p className="text-[10px] text-center mt-4 text-muted-foreground/60 italic relative z-10">{t("tailwind.sandboxNote")}</p>
+            <p className="text-xs text-center mt-4 text-muted-foreground/60 italic relative z-10">{t("tailwind.sandboxNote")}</p>
           </Card>
 
           {result && isAIEnabled && (
@@ -212,7 +212,7 @@ export default function TailwindSorterPage() {
                   {aiResult.suggestions.map((s, i) => (
                     <div key={i} className="p-3 bg-background/80 rounded-xl border border-violet-500/10">
                       <p className="text-xs font-medium leading-relaxed">{s.value}</p>
-                      <p className="text-[10px] text-muted-foreground mt-2 italic">{s.reasoning}</p>
+                      <p className="text-xs text-muted-foreground mt-2 italic">{s.reasoning}</p>
                     </div>
                   ))}
                 </div>
@@ -237,15 +237,15 @@ export default function TailwindSorterPage() {
               {/* Quick Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Card className="p-4 text-center border-b-4 border-b-sky-500 rounded-b-none">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase">{t("tailwind.classesLabel")}</p>
+                  <p className="text-xs font-black text-muted-foreground uppercase">{t("tailwind.classesLabel")}</p>
                   <p className="text-2xl font-black">{result.stats.uniqueClasses}</p>
                 </Card>
                 <Card className="p-4 text-center border-b-4 border-b-amber-500 rounded-b-none">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase">{t("tailwind.conflictsLabel")}</p>
+                  <p className="text-xs font-black text-muted-foreground uppercase">{t("tailwind.conflictsLabel")}</p>
                   <p className="text-2xl font-black text-amber-600 dark:text-amber-400">{result.conflicts.length}</p>
                 </Card>
                 <Card className="p-4 text-center border-b-4 border-b-emerald-500 rounded-b-none">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase">{t("tailwind.efficiencyLabel")}</p>
+                  <p className="text-xs font-black text-muted-foreground uppercase">{t("tailwind.efficiencyLabel")}</p>
                   <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                     {Math.round((result.stats.duplicatesRemoved / (result.stats.totalClasses || 1)) * 100)}%
                   </p>
@@ -329,14 +329,14 @@ export default function TailwindSorterPage() {
                     <div className="p-6 space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <p className="text-[10px] font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.beforeLabel")}</p>
+                          <p className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.beforeLabel")}</p>
                           <div className="p-3 bg-muted/30 rounded-xl border border-divider min-h-[100px]">
                             <div className="flex flex-wrap gap-1">
                               {input.trim().split(/\s+/).filter(Boolean).map((cls, i) => {
                                 const isRemoved = diffClasses.removed.includes(cls);
                                 return (
                                   <span key={i} className={cn(
-                                    "px-1.5 py-0.5 rounded font-mono text-[10px] border",
+                                    "px-1.5 py-0.5 rounded font-mono text-xs border",
                                     isRemoved ? "bg-red-500/20 border-red-500/40 text-red-600 dark:text-red-400 line-through" : "bg-muted border-divider text-foreground/70"
                                   )}>
                                     {cls}
@@ -347,11 +347,11 @@ export default function TailwindSorterPage() {
                           </div>
                         </div>
                         <div>
-                          <p className="text-[10px] font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.afterLabel")}</p>
+                          <p className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.afterLabel")}</p>
                           <div className="p-3 bg-muted/30 rounded-xl border border-divider min-h-[100px]">
                             <div className="flex flex-wrap gap-1">
                               {result?.output.trim().split(/\s+/).filter(Boolean).map((cls, i) => (
-                                <span key={i} className="px-1.5 py-0.5 rounded font-mono text-[10px] border bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+                                <span key={i} className="px-1.5 py-0.5 rounded font-mono text-xs border bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400">
                                   {cls}
                                 </span>
                               ))}
@@ -359,7 +359,7 @@ export default function TailwindSorterPage() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-4 text-[10px] font-bold">
+                      <div className="flex gap-4 text-xs font-bold">
                         <span className="text-red-600 dark:text-red-400">{diffClasses.removed.length} {t("tailwind.removedLabel")}</span>
                         <span className="text-emerald-600 dark:text-emerald-400">{diffClasses.kept.length} {t("tailwind.keptLabel")}</span>
                       </div>
@@ -371,16 +371,16 @@ export default function TailwindSorterPage() {
                       {Object.entries(result.breakpoints).map(([bp, classes]) => (
                         <div key={bp} className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-black uppercase tracking-widest w-8 text-primary">{bp}</span>
+                            <span className="text-xs font-black uppercase tracking-widest w-8 text-primary">{bp}</span>
                             <div className="h-1.5 flex-1 bg-muted rounded-full overflow-hidden">
                               <div className={cn("h-full bg-primary transition-all", classes.length > 0 ? "w-full" : "w-0")} />
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-1.5 pl-10">
                             {classes.length > 0 ? (
-                              classes.map((c, i) => <Chip key={i} size="sm" variant="soft" className="h-6 text-[10px] font-bold">{c}</Chip>)
+                              classes.map((c, i) => <Chip key={i} size="sm" variant="soft" className="h-6 text-xs font-bold">{c}</Chip>)
                             ) : (
-                              <span className="text-[10px] text-muted-foreground italic">{t("tailwind.noOverrides")}</span>
+                              <span className="text-xs text-muted-foreground italic">{t("tailwind.noOverrides")}</span>
                             )}
                           </div>
                         </div>

@@ -74,6 +74,7 @@
   "settings.exportSuccess": "Exported {count} settings",
   "settings.exportFailed": "Export failed",
   "settings.importSuccess": "Imported {count} settings. Reload to apply.",
+  "settings.importPartial": "Imported {count} settings but {errors} failed (storage full?). Reload to apply.",
   "settings.importFailed": "Import failed",
   "settings.importFileTooLarge": "File too large (max 1 MB)",
   "history.title": "History",

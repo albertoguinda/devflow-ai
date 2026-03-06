@@ -163,7 +163,7 @@ export default function JsonFormatterPage() {
         );
       case "type":
         return (
-          <Chip size="sm" variant="primary" className="capitalize text-[9px] font-black h-5">
+          <Chip size="sm" variant="primary" className="capitalize text-xs font-black h-5">
             {item.type}
           </Chip>
         );
@@ -207,7 +207,7 @@ export default function JsonFormatterPage() {
                 <Database className="size-4 text-primary" />
                 {t("jsonFmt.rawPayload")}
               </h3>
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 <Button size="sm" variant="ghost" onPress={() => loadExample("complex")}>{t("jsonFmt.example")}</Button>
                 <Button size="sm" variant="ghost" aria-label={t("jsonFmt.clearInput")} onPress={() => setInput("")}><Trash2 className="size-3.5 text-danger" /></Button>
               </div>
@@ -240,7 +240,7 @@ export default function JsonFormatterPage() {
 
             {!inputValidation.isValid && input && (
               <div className="mt-4 p-4 bg-danger/10 rounded-2xl border border-danger/20 space-y-3">
-                <div className="flex items-center gap-2 text-danger text-[10px] font-black uppercase tracking-widest">
+                <div className="flex items-center gap-2 text-danger text-xs font-black uppercase tracking-widest">
                   <AlertCircle className="size-4" />
                   {t("jsonFmt.syntaxFailure")}
                 </div>
@@ -276,7 +276,7 @@ export default function JsonFormatterPage() {
                 <Bot className="size-4 mr-2" /> {t("jsonFmt.aiAnalyzeBtn")}
               </Button>
             )}
-            <p className="text-[9px] text-muted-foreground text-center mt-2 font-medium">
+            <p className="text-xs text-muted-foreground text-center mt-2 font-medium">
               {t("jsonFmt.shortcutHint")}
             </p>
           </Card>
@@ -287,26 +287,26 @@ export default function JsonFormatterPage() {
               <Fingerprint className="size-3 text-orange-500 dark:text-orange-400" />
               {t("jsonFmt.fingerprint")}
             </h3>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("jsonFmt.uniqueKeys")}</p>
+                <p className="text-xs font-bold uppercase text-muted-foreground/60">{t("jsonFmt.uniqueKeys")}</p>
                 <p className="text-2xl font-black text-orange-500 dark:text-orange-400">{result?.stats.keys || 0}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("jsonFmt.depthLevel")}</p>
+                <p className="text-xs font-bold uppercase text-muted-foreground/60">{t("jsonFmt.depthLevel")}</p>
                 <p className="text-2xl font-black text-blue-500 dark:text-blue-400">{result?.stats.depth || 0}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("jsonFmt.byteSize")}</p>
+                <p className="text-xs font-bold uppercase text-muted-foreground/60">{t("jsonFmt.byteSize")}</p>
                 <p className="text-sm font-black uppercase">{((result?.stats.sizeBytes || 0) / 1024).toFixed(2)} KB</p>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase text-muted-foreground/60">{t("jsonFmt.nodeDensity")}</p>
+                <p className="text-xs font-bold uppercase text-muted-foreground/60">{t("jsonFmt.nodeDensity")}</p>
                 <p className="text-sm font-black uppercase">{result?.stats.values || 0} {t("jsonFmt.itemsUnit")}</p>
               </div>
             </div>
             <div className="mt-6 pt-6 border-t border-default-200 space-y-3">
-               <div className="flex justify-between text-[9px] font-black uppercase text-muted-foreground/60">
+               <div className="flex justify-between text-xs font-black uppercase text-muted-foreground/60">
                   <span>{t("jsonFmt.formattingEfficiency")}</span>
                   <span>{Math.round(((result?.stats.minifiedSize || 0) / (result?.stats.sizeBytes || 1)) * 100)}%</span>
                </div>
@@ -381,9 +381,9 @@ export default function JsonFormatterPage() {
 
             <div className="animate-in fade-in slide-in-from-right-4 duration-500">
               <Tabs.Panel id="output">
-                <Card className="p-0 border-divider shadow-xl overflow-hidden h-[650px] flex flex-col">
+                <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[650px] flex flex-col">
                 <div className="p-4 border-b border-divider flex justify-between items-center bg-muted/20">
-                  <div className="flex gap-1">
+                  <div className="flex gap-2">
                     {["format", "minify", "to-yaml", "to-xml", "to-csv"].map((m) => (
                       <Button
                         key={m}
@@ -391,7 +391,7 @@ export default function JsonFormatterPage() {
                         aria-pressed={mode === m}
                         variant={mode === m ? "primary" : "ghost"}
                         onPress={() => { setMode(m as JsonFormatMode); process(); }}
-                        className="h-8 px-3 text-[10px] font-black uppercase tracking-tighter"
+                        className="h-8 px-3 text-xs font-black uppercase tracking-tighter"
                       >
                         {m.includes("-") ? m.split("-")[1] : m}
                       </Button>
@@ -420,7 +420,7 @@ export default function JsonFormatterPage() {
               </Tabs.Panel>
 
               <Tabs.Panel id="paths">
-              <Card className="p-0 overflow-hidden shadow-xl border-divider min-h-[650px]">
+              <Card className="p-0 overflow-hidden shadow-xl border-divider min-h-[400px] sm:min-h-[650px]">
                 <div className="p-4 border-b border-divider bg-muted/20 flex items-center gap-2">
                   <Search className="size-4 text-primary" />
                   <span className="text-xs font-black uppercase tracking-widest">{t("jsonFmt.objectHierarchy")}</span>
@@ -437,9 +437,9 @@ export default function JsonFormatterPage() {
               </Tabs.Panel>
 
               <Tabs.Panel id="typescript">
-              <Card className="p-0 border-divider shadow-xl overflow-hidden h-[650px] flex flex-col border-none">
+              <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[650px] flex flex-col border-none">
                 <div className="p-4 border-b border-divider flex justify-between items-center bg-muted/20">
-                  <span className="text-[10px] font-black text-primary uppercase tracking-widest ml-2">{t("jsonFmt.tsDefinition")}</span>
+                  <span className="text-xs font-black text-primary uppercase tracking-widest ml-2">{t("jsonFmt.tsDefinition")}</span>
                   <CopyButton text={tsOutput} />
                 </div>
                 <div className="flex-1 bg-muted/30 dark:bg-muted/50 p-8 overflow-auto">
@@ -495,8 +495,8 @@ export default function JsonFormatterPage() {
                 {diffResult && !isEqual && (
                   <Card className="p-0 overflow-hidden shadow-xl border-divider">
                     <div className="p-3 border-b border-divider bg-muted/20 flex items-center justify-between">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{t("jsonFmt.lineDiff")}</span>
-                      <div className="flex gap-3 text-[10px] font-bold">
+                      <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t("jsonFmt.lineDiff")}</span>
+                      <div className="flex gap-3 text-xs font-bold">
                         <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400"><Plus className="size-3" aria-hidden="true" />{diffResult.addedCount}</span>
                         <span className="flex items-center gap-1 text-red-600 dark:text-red-400"><Minus className="size-3" aria-hidden="true" />{diffResult.removedCount}</span>
                       </div>

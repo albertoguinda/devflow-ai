@@ -88,7 +88,7 @@ function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, c
             {t("costCalc.detailInputPrice")}
           </div>
           <p className="font-bold text-lg">${detailModel.model.inputPricePerMToken.toFixed(2)}</p>
-          <p className="text-[10px] text-muted-foreground">{t("costCalc.detailMTokens")}</p>
+          <p className="text-xs text-muted-foreground">{t("costCalc.detailMTokens")}</p>
         </div>
         <div className="rounded-lg bg-muted/50 p-3">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
@@ -96,7 +96,7 @@ function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, c
             {t("costCalc.detailOutputPrice")}
           </div>
           <p className="font-bold text-lg">${detailModel.model.outputPricePerMToken.toFixed(2)}</p>
-          <p className="text-[10px] text-muted-foreground">{t("costCalc.detailMTokens")}</p>
+          <p className="text-xs text-muted-foreground">{t("costCalc.detailMTokens")}</p>
         </div>
       </div>
       <div className="space-y-2 text-sm">
@@ -127,7 +127,7 @@ function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, c
           <span className="text-sm text-muted-foreground">{t("costCalc.detailMonthly")}</span>
           <span className="font-bold text-xl text-primary">{formatCost(monthlyCostModel, currency)}</span>
         </div>
-        <p className="text-[10px] text-muted-foreground mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           {t("costCalc.reqPerDay", { count: dailyRequests.toLocaleString() })}
         </p>
       </div>
@@ -211,7 +211,7 @@ export default function CostCalculatorPage() {
           <div className="flex flex-col">
             <span className="font-bold text-sm">{result.model.displayName}</span>
             {result.model.id !== result.model.displayName && (
-              <span className="text-[10px] text-muted-foreground font-mono truncate max-w-[200px]">{result.model.id}</span>
+              <span className="text-xs text-muted-foreground font-mono truncate max-w-[200px]">{result.model.id}</span>
             )}
           </div>
         );
@@ -235,7 +235,7 @@ export default function CostCalculatorPage() {
               {formatCost(result.totalCost, currency)}
             </span>
             {isCheapest && (
-              <span className="text-[10px] text-success font-bold uppercase tracking-tighter flex items-center gap-0.5">
+              <span className="text-xs text-success font-bold uppercase tracking-tighter flex items-center gap-0.5">
                 <TrendingDown className="size-3" />
                 {t("costCalc.cheapestLabel")}
               </span>
@@ -251,7 +251,7 @@ export default function CostCalculatorPage() {
                 : <span className="text-muted-foreground/50">&mdash;</span>
               }
             </span>
-            {isBestValue && <span className="text-[10px] text-secondary font-bold uppercase tracking-tighter">{t("costCalc.bestValueLabel")}</span>}
+            {isBestValue && <span className="text-xs text-secondary font-bold uppercase tracking-tighter">{t("costCalc.bestValueLabel")}</span>}
           </div>
         );
       case "actions":
@@ -315,7 +315,7 @@ export default function CostCalculatorPage() {
         actions={
           <div className="flex items-center gap-2">
             {isUsingFallback && !isSyncing && (
-              <Chip size="sm" variant="soft" className="bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px]">
+              <Chip size="sm" variant="soft" className="bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs">
                 {t("costCalc.cachedPrices")}
               </Chip>
             )}
@@ -471,7 +471,7 @@ export default function CostCalculatorPage() {
             </div>
           </Card>
 
-          <div className="flex items-center justify-between px-2 text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
+          <div className="flex items-center justify-between px-2 text-xs text-muted-foreground uppercase tracking-widest font-bold">
             <div className="flex items-center gap-1">
               {lastSync ? <Cloud className="size-3 text-emerald-500 dark:text-emerald-400" /> : <CloudOff className="size-3 text-amber-500 dark:text-amber-400" />}
               <span>{t("costCalc.pricingService")} {lastSync ? t("costCalc.pricingOnline") : t("costCalc.pricingStatic")}</span>
@@ -508,11 +508,11 @@ export default function CostCalculatorPage() {
                   {aiResult.suggestions.map((s, i) => (
                     <div key={i} className="p-3 bg-background/80 rounded-xl border border-violet-500/10">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-black uppercase text-violet-500">{t("costCalc.aiStrategy")} #{i + 1}</span>
-                        <span className="text-[10px] font-bold text-violet-400">{s.score}/100</span>
+                        <span className="text-xs font-black uppercase text-violet-500">{t("costCalc.aiStrategy")} #{i + 1}</span>
+                        <span className="text-xs font-bold text-violet-400">{s.score}/100</span>
                       </div>
                       <p className="text-xs font-medium leading-relaxed">{s.value}</p>
-                      <p className="text-[10px] text-muted-foreground mt-2 italic">{s.reasoning}</p>
+                      <p className="text-xs text-muted-foreground mt-2 italic">{s.reasoning}</p>
                     </div>
                   ))}
                 </div>
@@ -565,7 +565,7 @@ export default function CostCalculatorPage() {
 
             {/* Feature Filters */}
             <div className="flex flex-wrap gap-1.5 mb-4">
-              <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest self-center mr-1">{t("costCalc.filterFeatures")}</span>
+              <span className="text-xs font-black uppercase text-muted-foreground tracking-widest self-center mr-1">{t("costCalc.filterFeatures")}</span>
               {FEATURE_OPTIONS.map((feat) => (
                 <Button
                   key={feat.id}
@@ -573,7 +573,7 @@ export default function CostCalculatorPage() {
                   aria-pressed={featureFilters.includes(feat.id)}
                   variant={featureFilters.includes(feat.id) ? "primary" : "ghost"}
                   onPress={() => toggleFeature(feat.id)}
-                  className="text-[10px] font-bold h-7 px-2.5"
+                  className="text-xs font-bold h-7 px-2.5"
                 >
                   {feat.label}
                 </Button>
@@ -613,7 +613,7 @@ export default function CostCalculatorPage() {
         <div className="h-[350px] w-full">
           <CostProjectionChart chartData={chartData} topModelNames={topModelNames} />
         </div>
-        <p className="text-[10px] text-muted-foreground mt-4 italic text-center">
+        <p className="text-xs text-muted-foreground mt-4 italic text-center">
           {t("costCalc.projectionNote")}
         </p>
       </Card>
