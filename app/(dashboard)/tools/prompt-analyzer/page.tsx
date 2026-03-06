@@ -248,6 +248,7 @@ export default function PromptAnalyzerPage() {
     };
   }, [result, compareItem]);
   const { refineWithAI, aiResult: aiRefineResult, isAILoading: isAIRefining, aiError } = useAIRefine();
+  const [refiningGoal, setRefiningGoal] = useState<string | null>(null);
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const { addToast } = useToast();
   const { navigateTo } = useSmartNavigation();
@@ -685,10 +686,14 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                       key={goal}
                       size="sm"
                       variant="outline"
-                      isLoading={isAIRefining}
-                      onPress={() => refineWithAI(result.prompt, goal).catch(() => {
-                        addToast(t("ai.unavailable"), "info");
-                      })}
+                      isLoading={isAIRefining && refiningGoal === goal}
+                      isDisabled={isAIRefining && refiningGoal !== goal}
+                      onPress={() => {
+                        setRefiningGoal(goal);
+                        refineWithAI(result.prompt, goal)
+                          .catch(() => addToast(t("ai.unavailable"), "info"))
+                          .finally(() => setRefiningGoal(null));
+                      }}
                       className="text-xs"
                     >
                       {t(`promptAnalyzer.goal.${goal}`)}
