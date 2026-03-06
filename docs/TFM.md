@@ -24,7 +24,7 @@ DevFlow AI es una plataforma open-source que centraliza **15 herramientas** esen
 - 20 E2E specs con Playwright (15 tools + settings + navigation + accessibility WCAG AAA)
 - Lighthouse score **100/100/100/100** en Desktop
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
-- Internacionalizacion completa (English/Castellano, **~1656 claves** por idioma)
+- Internacionalizacion completa (English/Castellano, **~1658 claves** por idioma)
 - **35 rutas** generadas (pages + API routes)
 - **10 CI jobs**: quality, security, dependency-review, build, e2e, a11y, CodeQL SAST, Semgrep SAST, Lighthouse, release
 - Command Palette (`Cmd+K`) para acceso rapido a cualquier herramienta
@@ -62,7 +62,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 - Lograr coverage estrategico 100/80/0 con enforcement per-file
 - Deploy en produccion con CI/CD completo (10 jobs: quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse)
 - Lighthouse score 100 en todas las metricas (Desktop)
-- Internacionalizacion completa (EN/ES, ~1656 claves por idioma)
+- Internacionalizacion completa (EN/ES, ~1658 claves por idioma)
 - Seguridad enterprise: CSP, HSTS, prototype pollution, SAST (CodeQL + Semgrep), harden-runner, eslint-plugin-security
 
 #### Objetivos de Producto
@@ -195,7 +195,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 
 **RF-18: Internacionalizacion**
 
-- ~1656 claves traducidas en English y Castellano
+- ~1658 claves traducidas en English y Castellano
 - Cambio de idioma en tiempo real sin recarga
 
 ### 3.2 Requisitos No Funcionales
@@ -404,7 +404,7 @@ page.tsx (Server Component - async)
 
 **Sistema custom ligero** (sin dependencia de i18next):
 
-- ~1656 claves de traduccion en `locales/en.json` y `locales/es.json`
+- ~1658 claves de traduccion en `locales/en.json` y `locales/es.json`
 - Hook `useTranslation()` con interpolacion `{key}`
 - Funcion server-side `t()` para Server Components
 - Cambio de idioma instantaneo via Zustand
@@ -634,7 +634,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | Componentes React          | 25+                |
 | Custom hooks               | 22+                |
 | Paginas (routes)           | 35                 |
-| Claves i18n                | 1656 (x2 idiomas)  |
+| Claves i18n                | 1658 (x2 idiomas)  |
 | Jobs CI/CD                 | 10                 |
 | Commits                    | 174+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
@@ -665,7 +665,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 - Skeletons de carga ✓
 - TypeScript strict mode ✓
 - Dark/Light mode con deteccion automatica ✓
-- i18n completo (EN/ES, ~1656 claves por idioma) ✓
+- i18n completo (EN/ES, ~1658 claves por idioma) ✓
 - Tests unitarios (1466 passing, 45 archivos) ✓
 - Tests E2E con Playwright (20 specs, 15 tools + a11y) ✓
 - CI/CD pipeline (10 jobs) ✓
@@ -691,7 +691,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 
 ---
 
-## 8.5 Sprints Finales (v4.9.0 — v4.14.0)
+## 8.5 Sprints Finales (v4.9.0 — v4.15.0)
 
 ### Sprint de Pulido (v4.9.0)
 
@@ -716,6 +716,15 @@ Tres auditorias exhaustivas con agentes especializados (security, quality, perfo
 
 **Resultado acumulado:** 68 fixes en 72 archivos. Estado final: 0 vulnerabilidades, 0 lint errors, 0 type errors, 1466 tests passing
 
+### Auditoria Pixel-Perfect & Responsive (v4.15.0)
+
+Auditoria exhaustiva de responsividad y accesibilidad visual — 11 fixes en 4 fases, 23 archivos modificados:
+
+- **Fase 1 (Mobile-Critical):** ToolHeader responsive wrap, HTTP Status Finder card overflow a 375px, 16 Cards con alturas fijas adaptadas, JSON Formatter grid apilable
+- **Fase 2 (Performance):** GSAP dynamic import en 5 hooks (~60KB eliminados del bundle principal)
+- **Fase 3 (Consistencia Visual):** 216 instancias text-[9px]/text-[10px] → text-xs (legibilidad WCAG), 10 botones con touch targets 44px, 8 grupos de botones con gap-2, debounce 150ms, StatusBadge contraste AAA (7:1)
+- **Fase 4 (Code Quality):** localStorage try/catch en importSettings (QuotaExceededError), bug fix en generateValue para campos null
+
 ---
 
 ## 9. Conclusiones
@@ -726,7 +735,7 @@ Tres auditorias exhaustivas con agentes especializados (security, quality, perfo
 2. **Arquitectura ejemplar:** Clean Architecture con patron 5-capas replicado sin excepciones en las 15 herramientas
 3. **Performance maxima:** Lighthouse 100/100/100/100, Server Components, ISR
 4. **Testing robusto:** 1466 tests unitarios + 20 E2E specs + accessibility audit (axe-core WCAG AAA), coverage per-file
-5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner. Tres auditorias exhaustivas con 73 fixes totales: prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, crypto.getRandomValues, prompt sandboxing, storage validation
+5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner. Cuatro auditorias exhaustivas con 79 fixes totales: prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, crypto.getRandomValues, prompt sandboxing, storage validation, responsive/a11y
 6. **Developer Experience:** TypeScript strict, ESLint + security plugin, CI/CD con 10 quality gates
 7. **UX avanzada:** PWA instalable, Command Palette (Cmd+K), MagicInput, Export/Import, dark/light mode, WCAG AAA
 8. **IA opcional:** 4 proveedores con fallback automatico, BYOK, rate limiting IP-based

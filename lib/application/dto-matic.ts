@@ -1282,8 +1282,10 @@ export function generateMockData(fields: JsonField[], count: number = 1): unknow
 }
 
 function generateValue(field: JsonField): unknown {
+  if (field.type === "null") return null;
+
   const name = field.name.toLowerCase();
-  
+
   if (field.semanticType === "uuid" || name.includes("id") || name.includes("uuid")) {
     return crypto.randomUUID();
   }
