@@ -1,7 +1,7 @@
 import type { PromptDimension, PromptIssue, SecurityFlag } from "@/types/prompt-analyzer";
 
 function detectLang(text: string): "en" | "es" {
-  const esPatterns = /\b(hazme|haz|crear|crea|quiero|necesito|dame|dime|escribe|genera|analiza|explica|como|para|una|con|del|los|las|por|que|esto|esta|hacer|tiene|puede|sobre|desde|tambien|seria|podrias|ayuda|favor|mejor|ejemplo|proyecto|pagina|aplicacion|usuario|datos|archivo|codigo|funcion|clase|imagen|texto|problema|solucion|resultado)\b/i;
+  const esPatterns = /\b(hazme|haz|crear|crea|quiero|necesito|dame|dime|escribe|genera|analiza|explica|como|para|una|con|del|de|los|las|por|que|esto|esta|hacer|tiene|puede|sobre|desde|tambien|seria|podrias|ayuda|favor|mejor|ejemplo|proyecto|pagina|aplicacion|usuario|datos|archivo|codigo|funcion|clase|imagen|texto|problema|solucion|resultado)\b/gi;
   const esCount = (text.match(esPatterns) || []).length;
   return esCount >= 2 ? "es" : "en";
 }
