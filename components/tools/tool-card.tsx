@@ -46,7 +46,7 @@ export const ToolCard = React.memo(function ToolCard({ tool }: ToolCardProps) {
             variant="ghost"
             size="sm"
             onPress={() => toggleFavorite(tool.id)}
-            className="relative z-10 cursor-pointer opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100"
+            className={cn("relative z-10 cursor-pointer transition-opacity focus-within:opacity-100", favorited ? "opacity-100" : "opacity-0 group-hover:opacity-100")}
             aria-label={favorited ? t("favorites.remove") : t("favorites.add")}
           >
             <Heart

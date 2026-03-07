@@ -19,7 +19,7 @@ export function analyzePrompt(prompt: string): PromptAnalysisResult {
   const securityFlags = detectSecurityFlags(trimmedPrompt);
   const score = calculateScore(anatomyScore, securityFlags);
   const category = getScoreCategory(score);
-  const suggestions = generateSuggestions(dimensions, issues, securityFlags);
+  const suggestions = generateSuggestions(dimensions, issues, securityFlags, trimmedPrompt);
   const tokenCount = estimateTokens(trimmedPrompt);
   const refinedPrompt = refinePrompt(trimmedPrompt, issues);
 
