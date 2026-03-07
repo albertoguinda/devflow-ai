@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Zap, Monitor, LockOpen, Star } from "lucide-react";
+import { Zap, Monitor, LockOpen, Star, Github, Linkedin, Heart, ArrowRight } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { GsapReveal } from "@/components/marketing/gsap-reveal";
 import { FeaturesSection } from "@/components/marketing/features-section";
@@ -44,12 +44,27 @@ export function HomeContent({ stars }: HomeContentProps) {
               {t("home.subtitle")}
             </p>
 
-            <div className="pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Link
                 href="/tools"
                 className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center rounded-lg bg-primary px-8 text-base font-semibold text-primary-foreground transition-colors hover:opacity-90"
               >
                 {t("home.getStarted")}
+                <ArrowRight className="ml-2 size-4" />
+              </Link>
+              <Link
+                href="https://github.com/albertoguinda/devflow-ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-8 text-base font-semibold text-foreground transition-colors hover:bg-muted"
+              >
+                <Github className="size-5" />
+                {t("home.starGithub")}
+                {stars !== null && (
+                  <span className="ml-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+                    {stars.toLocaleString()}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
@@ -78,27 +93,88 @@ export function HomeContent({ stars }: HomeContentProps) {
       {/* Features Section */}
       <FeaturesSection />
 
+      {/* Community CTA Section */}
+      <GsapReveal className="container mx-auto px-4 py-16">
+        <div className="relative mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-950/30 dark:via-purple-950/20 dark:to-pink-950/30 p-8 sm:p-12 text-center">
+          {/* Decorative gradient blob */}
+          <div className="absolute -top-24 -right-24 size-64 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-3xl" aria-hidden="true" />
+          <div className="absolute -bottom-24 -left-24 size-64 rounded-full bg-gradient-to-br from-purple-400/10 to-pink-400/10 blur-3xl" aria-hidden="true" />
+
+          <div className="relative">
+            <div className="mb-4 flex justify-center">
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-purple-500/20">
+                <Heart className="size-7 text-white" />
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              {t("home.communityTitle")}
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-lg text-muted-foreground">
+              {t("home.communitySubtitle")}
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="https://github.com/albertoguinda/devflow-ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-base font-semibold text-background transition-opacity hover:opacity-90"
+              >
+                <Github className="size-5" />
+                {t("home.starGithub")}
+              </Link>
+              <Link
+                href="https://github.com/albertoguinda/devflow-ai/issues/new?labels=tool-request&title=New+tool+idea"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-colors hover:bg-muted"
+              >
+                <Zap className="size-5" />
+                {t("home.contributeTools")}
+              </Link>
+              <Link
+                href="https://www.linkedin.com/in/albertoguindasevilla/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-colors hover:bg-muted"
+              >
+                <Linkedin className="size-5" />
+                {t("home.followLinkedin")}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </GsapReveal>
+
       {/* Footer */}
       <footer className="mt-auto border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          &copy; 2026 DevFlow AI &middot;{" "}
-          <Link
-            href="https://www.linkedin.com/in/albertoguindasevilla/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-foreground"
-          >
-            Alberto Guinda
-          </Link>
-          {" "}&middot; {t("home.footerFreeOS")} &middot;{" "}
-          <Link
-            href="https://github.com/albertoguinda/devflow-ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-foreground"
-          >
-            {t("home.starGithub")}
-          </Link>
+          <p>
+            {t("home.madeWith")}{" "}
+            <Heart className="inline size-3.5 fill-red-500 text-red-500 align-text-bottom" aria-hidden="true" />{" "}
+            {t("home.byDeveloper")}
+          </p>
+          <p className="mt-2">
+            &copy; 2026 DevFlow AI &middot;{" "}
+            <Link
+              href="https://www.linkedin.com/in/albertoguindasevilla/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              Alberto Guinda
+            </Link>
+            {" "}&middot; {t("home.footerFreeOS")} &middot;{" "}
+            <Link
+              href="https://github.com/albertoguinda/devflow-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              GitHub
+            </Link>
+          </p>
         </div>
       </footer>
     </div>

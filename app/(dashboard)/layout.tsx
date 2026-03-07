@@ -15,6 +15,8 @@ import {
   X,
   BookOpen,
   Wand2,
+  Github,
+  ExternalLink,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "@/hooks/use-translation";
@@ -124,6 +126,30 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Wand2 className="size-5" />
           {t("guide.ai.setupAI")}
         </Button>
+      </div>
+
+      {/* Community */}
+      <div className="border-t border-border px-4 pt-3 pb-1 space-y-1">
+        <a
+          href="https://github.com/albertoguinda/devflow-ai"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        >
+          <Github className="size-4" />
+          {t("sidebar.starGithub")}
+          <ExternalLink className="ml-auto size-3 opacity-50" aria-hidden="true" />
+        </a>
+        <a
+          href="https://github.com/albertoguinda/devflow-ai/issues/new?labels=tool-request&title=New+tool+idea"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        >
+          <Heart className="size-4" />
+          {t("sidebar.contribute")}
+          <ExternalLink className="ml-auto size-3 opacity-50" aria-hidden="true" />
+        </a>
       </div>
 
       {/* Footer */}

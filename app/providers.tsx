@@ -37,8 +37,18 @@ function ConsoleEasterEgg() {
       "background:#7c3aed;color:#fff;font-size:20px;font-weight:bold;padding:8px 12px;border-radius:0 6px 6px 0;",
     );
     console.info(
-      "%cContribute → https://github.com/albertoguinda/devflow-ai",
-      "color:#94a3b8;font-size:13px;padding:4px 0;",
+      "%c★ Star on GitHub → %chttps://github.com/albertoguinda/devflow-ai",
+      "color:#facc15;font-size:13px;font-weight:bold;padding:4px 0;",
+      "color:#94a3b8;font-size:13px;padding:4px 0;text-decoration:underline;",
+    );
+    console.info(
+      "%c🔗 Connect on LinkedIn → %chttps://linkedin.com/in/albertoguindasevilla",
+      "color:#0a66c2;font-size:13px;font-weight:bold;padding:4px 0;",
+      "color:#94a3b8;font-size:13px;padding:4px 0;text-decoration:underline;",
+    );
+    console.info(
+      "%c💡 Want to contribute a tool? Open an issue on GitHub!",
+      "color:#a78bfa;font-size:13px;padding:4px 0;",
     );
   }, []);
 
