@@ -9,6 +9,11 @@ import {
   stripComments,
   generateTree,
   exportForAI,
+  searchDocuments,
+  detectDocType,
+  getModelPreset,
+  preloadTokenEncoder,
+  MODEL_PRESETS,
 } from "@/lib/application/context-manager";
 import type { ContextWindow } from "@/types/context-manager";
 
@@ -557,6 +562,132 @@ const data = fetch(base);`;
       const result = exportForAI(win, { stripComments: true });
       expect(result).not.toContain("// inline");
       expect(result).toContain("// This should stay");
+    });
+  });
+
+  describe("searchDocuments", () => {
+    it("should return all documents when query is empty", () => {
+      let win = createContextWindow("Search Test");
+      const doc1 = createDocument("App", "code here", "code", "high", ["react"]);
+      const doc2 = createDocument("Config", "settings", "notes", "low", ["config"]);
+      win = addDocumentToWindow(win, doc1);
+      win = addDocumentToWindow(win, doc2);
+
+      expect(searchDocuments(win, "")).toHaveLength(2);
+      expect(searchDocuments(win, "   ")).toHaveLength(2);
+    });
+
+    it("should search by title", () => {
+      let win = createContextWindow("Search Test");
+      const doc1 = createDocument("App Component", "code", "code", "high", []);
+      const doc2 = createDocument("Config File", "settings", "notes", "low", []);
+      win = addDocumentToWindow(win, doc1);
+      win = addDocumentToWindow(win, doc2);
+
+      const results = searchDocuments(win, "app");
+      expect(results).toHaveLength(1);
+      expect(results[0]?.title).toBe("App Component");
+    });
+
+    it("should search by content", () => {
+      let win = createContextWindow("Search Test");
+      const doc1 = createDocument("A", "function handleClick() {}", "code", "high", []);
+      const doc2 = createDocument("B", "export const API_URL", "code", "low", []);
+      win = addDocumentToWindow(win, doc1);
+      win = addDocumentToWindow(win, doc2);
+
+      const results = searchDocuments(win, "handleClick");
+      expect(results).toHaveLength(1);
+      expect(results[0]?.title).toBe("A");
+    });
+
+    it("should search by tags", () => {
+      let win = createContextWindow("Search Test");
+      const doc1 = createDocument("A", "code", "code", "high", ["react", "hooks"]);
+      const doc2 = createDocument("B", "code", "code", "low", ["utils"]);
+      win = addDocumentToWindow(win, doc1);
+      win = addDocumentToWindow(win, doc2);
+
+      const results = searchDocuments(win, "hooks");
+      expect(results).toHaveLength(1);
+      expect(results[0]?.title).toBe("A");
+    });
+
+    it("should be case-insensitive", () => {
+      let win = createContextWindow("Search Test");
+      const doc = createDocument("MyComponent", "code", "code", "high", []);
+      win = addDocumentToWindow(win, doc);
+
+      expect(searchDocuments(win, "MYCOMPONENT")).toHaveLength(1);
+      expect(searchDocuments(win, "mycomponent")).toHaveLength(1);
+    });
+  });
+
+  describe("detectDocType", () => {
+    it("should detect code extensions", () => {
+      expect(detectDocType("index.ts")).toBe("code");
+      expect(detectDocType("app.tsx")).toBe("code");
+      expect(detectDocType("main.py")).toBe("code");
+      expect(detectDocType("App.java")).toBe("code");
+      expect(detectDocType("lib.rs")).toBe("code");
+      expect(detectDocType("style.css")).toBe("code");
+    });
+
+    it("should detect documentation extensions", () => {
+      expect(detectDocType("README.md")).toBe("documentation");
+      expect(detectDocType("docs.txt")).toBe("documentation");
+      expect(detectDocType("guide.mdx")).toBe("documentation");
+      expect(detectDocType("notes.rst")).toBe("documentation");
+    });
+
+    it("should detect API extensions", () => {
+      expect(detectDocType("schema.json")).toBe("api");
+      expect(detectDocType("config.yaml")).toBe("api");
+      expect(detectDocType("api.yml")).toBe("api");
+      expect(detectDocType("schema.graphql")).toBe("api");
+      expect(detectDocType("service.proto")).toBe("api");
+    });
+
+    it("should return notes for unknown extensions", () => {
+      expect(detectDocType("file.xyz")).toBe("notes");
+      expect(detectDocType("image.png")).toBe("notes");
+      expect(detectDocType("data.csv")).toBe("notes");
+    });
+
+    it("should handle files without extension", () => {
+      expect(detectDocType("Makefile")).toBe("notes");
+      expect(detectDocType("Dockerfile")).toBe("notes");
+    });
+  });
+
+  describe("getModelPreset", () => {
+    it("should return preset for known model", () => {
+      const preset = getModelPreset("gpt-4o");
+      expect(preset).toBeDefined();
+      expect(preset?.name).toBe("GPT-4o");
+      expect(preset?.maxTokens).toBe(128000);
+    });
+
+    it("should return undefined for unknown model", () => {
+      expect(getModelPreset("unknown-model")).toBeUndefined();
+    });
+
+    it("should have all expected presets", () => {
+      expect(MODEL_PRESETS.length).toBeGreaterThanOrEqual(10);
+      expect(getModelPreset("claude-opus-4")).toBeDefined();
+      expect(getModelPreset("gemini-2.0-flash")).toBeDefined();
+      expect(getModelPreset("custom")).toBeDefined();
+    });
+  });
+
+  describe("preloadTokenEncoder", () => {
+    it("should return a promise", () => {
+      const result = preloadTokenEncoder();
+      expect(result).toBeInstanceOf(Promise);
+    });
+
+    it("should resolve without error", async () => {
+      await expect(preloadTokenEncoder()).resolves.toBeUndefined();
     });
   });
 

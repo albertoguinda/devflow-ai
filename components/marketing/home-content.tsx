@@ -151,11 +151,6 @@ export function HomeContent({ stars }: HomeContentProps) {
       <footer className="mt-auto border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p>
-            {t("home.madeWith")}{" "}
-            <Heart className="inline size-3.5 fill-red-500 text-red-500 align-text-bottom" aria-hidden="true" />{" "}
-            {t("home.byDeveloper")}
-          </p>
-          <p className="mt-2">
             &copy; 2026 DevFlow AI &middot;{" "}
             <Link
               href="https://www.linkedin.com/in/albertoguindasevilla/"
