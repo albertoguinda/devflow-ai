@@ -14,10 +14,10 @@ export function HomeContent({ stars }: HomeContentProps) {
   const { t } = useTranslation();
 
   const stats = [
-    { label: t("home.freeTools"), value: "15", icon: <Zap className="size-6" /> },
-    { label: t("home.openSource"), value: "100%", icon: <Monitor className="size-6" /> },
-    { label: t("home.noApiKey"), value: "0", icon: <LockOpen className="size-6" /> },
-    { label: t("home.githubStars"), value: null, icon: <Star className="size-6" /> },
+    { label: t("home.freeTools"), value: "15", icon: <Zap className="size-6" aria-hidden="true" /> },
+    { label: t("home.openSource"), value: "100%", icon: <Monitor className="size-6" aria-hidden="true" /> },
+    { label: t("home.noApiKey"), value: "0", icon: <LockOpen className="size-6" aria-hidden="true" /> },
+    { label: t("home.githubStars"), value: null, icon: <Star className="size-6" aria-hidden="true" /> },
   ];
 
   return (
@@ -50,15 +50,16 @@ export function HomeContent({ stars }: HomeContentProps) {
                 className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center rounded-lg bg-primary px-8 text-base font-semibold text-primary-foreground transition-colors hover:opacity-90"
               >
                 {t("home.getStarted")}
-                <ArrowRight className="ml-2 size-4" />
+                <ArrowRight className="ml-2 size-4" aria-hidden="true" />
               </Link>
               <Link
                 href="https://github.com/albertoguinda/devflow-ai"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${t("home.starGithub")} (GitHub)`}
                 className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-8 text-base font-semibold text-foreground transition-colors hover:bg-muted"
               >
-                <Github className="size-5" />
+                <Github className="size-5" aria-hidden="true" />
                 {t("home.starGithub")}
                 {stars !== null && (
                   <span className="ml-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
@@ -103,7 +104,7 @@ export function HomeContent({ stars }: HomeContentProps) {
           <div className="relative">
             <div className="mb-4 flex justify-center">
               <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-purple-500/20">
-                <Heart className="size-7 text-white" />
+                <Heart className="size-7 text-white" aria-hidden="true" />
               </div>
             </div>
 
@@ -119,27 +120,30 @@ export function HomeContent({ stars }: HomeContentProps) {
                 href="https://github.com/albertoguinda/devflow-ai"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${t("home.starGithub")} — DevFlowAI`}
                 className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-base font-semibold text-background transition-opacity hover:opacity-90"
               >
-                <Github className="size-5" />
+                <Github className="size-5" aria-hidden="true" />
                 {t("home.starGithub")}
               </Link>
               <Link
                 href="https://github.com/albertoguinda/devflow-ai/issues/new?labels=tool-request&title=New+tool+idea"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={t("home.contributeTools")}
                 className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-colors hover:bg-muted"
               >
-                <Zap className="size-5" />
+                <Zap className="size-5" aria-hidden="true" />
                 {t("home.contributeTools")}
               </Link>
               <Link
                 href="https://www.linkedin.com/in/albertoguindasevilla/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={t("home.followLinkedin")}
                 className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-colors hover:bg-muted"
               >
-                <Linkedin className="size-5" />
+                <Linkedin className="size-5" aria-hidden="true" />
                 {t("home.followLinkedin")}
               </Link>
             </div>

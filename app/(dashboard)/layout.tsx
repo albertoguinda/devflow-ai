@@ -134,9 +134,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           href="https://github.com/albertoguinda/devflow-ai"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`${t("sidebar.starGithub")} (GitHub)`}
           className="flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
-          <Github className="size-4" />
+          <Github className="size-4" aria-hidden="true" />
           {t("sidebar.starGithub")}
           <ExternalLink className="ml-auto size-3 opacity-50" aria-hidden="true" />
         </a>
@@ -144,9 +145,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           href="https://github.com/albertoguinda/devflow-ai/issues/new?labels=tool-request&title=New+tool+idea"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`${t("sidebar.contribute")} (GitHub)`}
           className="flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
-          <Heart className="size-4" />
+          <Heart className="size-4" aria-hidden="true" />
           {t("sidebar.contribute")}
           <ExternalLink className="ml-auto size-3 opacity-50" aria-hidden="true" />
         </a>
