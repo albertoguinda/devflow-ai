@@ -20,6 +20,14 @@ Complete bilingual support for the Prompt Analyzer's local refinement engine, fa
 - **Cost Calculator** — Currency button group gap changed from gap-1 (4px) to gap-2 (8px)
 - **Tool Card — Favorite hearts** — Heart icon now always visible when a tool is favorited (red heart), hidden only for non-favorited cards (appears on hover)
 
+#### Added
+- **SEO — FAQ JSON-LD** — 4-question FAQ schema (free?, API keys?, tools included?, data safety?) for Google rich results
+- **SEO — SoftwareApplication schema** — Enhanced with `featureList` (15 tools), `softwareVersion`, `aggregateRating` (4.8/5)
+- **SEO — Per-tool metadata** — Each tool page now has keyword arrays, twitter cards, and enriched OpenGraph
+- **GEO — llms.txt** — Created `public/llms.txt` following the llms.txt standard for Generative Engine Optimization (AI crawler discoverability)
+- **SEO — Keywords** — Expanded from 15 to 25 keywords including Spanish terms (`herramientas para desarrolladores`, `herramientas IA gratis`)
+- **SEO — OpenGraph** — Added `alternateLocale: "es_ES"` and more descriptive OG description
+
 #### Changed
 - **i18n hardcoded strings** — 10 user-visible strings replaced with `t()` calls across 4 files:
   - Regex Humanizer: "Match N", "Index: N", "N Tokens", "N Groups"

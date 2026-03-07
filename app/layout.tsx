@@ -193,6 +193,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="philosophy" content="Para vosotros, developers" />
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site description" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
