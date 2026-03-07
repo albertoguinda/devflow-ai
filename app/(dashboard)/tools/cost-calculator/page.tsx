@@ -296,7 +296,7 @@ export default function CostCalculatorPage() {
       
       return dataPoint;
     });
-  }, [comparison, dailyRequests]);
+  }, [comparison, dailyRequests, t]);
 
   const topModelNames = useMemo(() => {
     if (!comparison) return [];
