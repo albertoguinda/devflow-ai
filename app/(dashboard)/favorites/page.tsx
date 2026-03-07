@@ -21,8 +21,10 @@ export default function FavoritesPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="flex items-center gap-2 text-3xl font-bold tracking-tight text-foreground">
-          <Heart className="size-8 fill-red-500 text-red-500" aria-hidden="true" />
+        <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-foreground">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-pink-600 text-white shadow-md">
+            <Heart className="size-5 fill-white" aria-hidden="true" />
+          </div>
           {t("favorites.title")}
         </h1>
         <p className="mt-2 text-muted-foreground">

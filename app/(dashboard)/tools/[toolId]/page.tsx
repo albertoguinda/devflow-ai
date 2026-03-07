@@ -47,15 +47,15 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
       </NextLink>
 
       {/* Header Card */}
-      <div className={cn("h-2 rounded-t-xl bg-gradient-to-r", tool.color)} />
-      <Card className="-mt-6 rounded-t-none">
+      <Card className="group relative overflow-hidden border border-border/50 transition-all duration-300 hover:shadow-lg card-glow-border">
+        <div className={cn("h-1.5 bg-gradient-to-r transition-all duration-300 group-hover:h-2", tool.color)} />
         <div className="p-6">
           {/* Title Row */}
           <div className="mb-6 flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div
                 className={cn(
-                  "flex size-16 items-center justify-center rounded-xl bg-gradient-to-r text-white",
+                  "flex size-16 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg transition-transform duration-300 group-hover:scale-105",
                   tool.color
                 )}
               >
@@ -141,9 +141,12 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
           </div>
 
           {/* CTA Button */}
-          <Button size="lg" className="w-full">
+          <NextLink
+            href={`/tools/${tool.slug}`}
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
+          >
             {t("common.launch", { name: t(`tool.${tool.slug}.name`) })}
-          </Button>
+          </NextLink>
         </div>
       </Card>
     </div>

@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
-import { Sun, Moon, Monitor, Bot, Eye, EyeOff, Trash2, Download, Upload } from "lucide-react";
+import { Sun, Moon, Monitor, Bot, Eye, EyeOff, Trash2, Download, Upload, Settings, ArrowDownUp, AlertTriangle } from "lucide-react";
 import { useSettingsExport } from "@/hooks/use-settings-export";
 import { cn } from "@/lib/utils";
 import type { AIProviderType } from "@/types/ai";
@@ -96,8 +96,14 @@ export default function SettingsPage() {
       </div>
 
       {/* Preferences */}
-      <Card className="overflow-hidden p-6">
-        <h2 className="mb-6 text-lg font-semibold">{t("settings.preferences")}</h2>
+      <Card className="group relative overflow-hidden border border-border/50 p-6 transition-all duration-300 hover:shadow-lg card-glow-border">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="mb-6 flex items-center gap-3">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+            <Settings className="size-5" aria-hidden="true" />
+          </div>
+          <h2 className="text-lg font-semibold">{t("settings.preferences")}</h2>
+        </div>
         <div className="space-y-6">
           {/* Theme */}
           <div>
@@ -166,16 +172,19 @@ export default function SettingsPage() {
             </Select>
           </div>
 
-          <Button onPress={handleSave} className="w-full">
+          <Button onPress={handleSave} variant="primary" className="w-full shadow-lg shadow-primary/20">
             {t("settings.save")}
           </Button>
         </div>
       </Card>
 
       {/* AI Configuration */}
-      <Card className="p-6">
-        <div className="mb-6 flex items-center gap-2">
-          <Bot className="size-5 text-primary" />
+      <Card className="group relative overflow-hidden border border-border/50 p-6 transition-all duration-300 hover:shadow-lg card-glow-border">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="mb-6 flex items-center gap-3">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+            <Bot className="size-5" aria-hidden="true" />
+          </div>
           <h2 className="text-lg font-semibold">{t("settings.ai.title")}</h2>
         </div>
         <div className="space-y-6">
@@ -277,13 +286,19 @@ export default function SettingsPage() {
       </Card>
 
       {/* Export / Import */}
-      <Card className="p-6">
-        <h2 className="mb-4 text-lg font-semibold">{t("settings.exportImport")}</h2>
+      <Card className="group relative overflow-hidden border border-border/50 p-6 transition-all duration-300 hover:shadow-lg card-glow-border">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+            <ArrowDownUp className="size-5" aria-hidden="true" />
+          </div>
+          <h2 className="text-lg font-semibold">{t("settings.exportImport")}</h2>
+        </div>
         <p className="mb-4 text-sm text-muted-foreground">
           {t("settings.exportImportDesc")}
         </p>
         <div className="flex gap-3">
-          <Button variant="primary" onPress={handleExport} isDisabled={isExporting}>
+          <Button variant="primary" onPress={handleExport} isDisabled={isExporting} className="shadow-lg shadow-primary/20">
             <Download className="size-4" />
             {t("settings.export")}
           </Button>
@@ -307,14 +322,21 @@ export default function SettingsPage() {
       </Card>
 
       {/* Danger Zone */}
-      <Card className="border-red-200 p-6 dark:border-red-900/50">
-        <h2 className="mb-4 text-lg font-semibold text-red-600 dark:text-red-400">
-          {t("settings.dangerZone")}
-        </h2>
+      <Card className="group relative overflow-hidden border border-red-200 p-6 dark:border-red-900/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-orange-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+            <AlertTriangle className="size-5" aria-hidden="true" />
+          </div>
+          <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">
+            {t("settings.dangerZone")}
+          </h2>
+        </div>
         <p className="mb-4 text-sm text-muted-foreground">
           {t("settings.dangerDesc")}
         </p>
-        <Button variant="outline" onPress={handleClearData} className="text-red-600 border-red-200 hover:bg-red-50 dark:border-red-900/50 dark:hover:bg-red-900/20">
+        <Button variant="outline" onPress={handleClearData} className="text-red-600 border-red-300 hover:bg-red-50 hover:shadow-md hover:shadow-red-500/10 dark:border-red-900/50 dark:hover:bg-red-900/20">
+          <Trash2 className="size-4" aria-hidden="true" />
           {t("settings.clearAll")}
         </Button>
       </Card>

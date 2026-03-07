@@ -131,8 +131,10 @@ export default function HistoryPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="flex items-center gap-2 text-3xl font-bold tracking-tight text-foreground">
-            <Clock className="size-8" />
+          <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-foreground">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md">
+              <Clock className="size-5" aria-hidden="true" />
+            </div>
             {t("history.title")}
           </h1>
           <p className="mt-1 text-muted-foreground">
@@ -191,7 +193,7 @@ export default function HistoryPage() {
           {filtered.map((item) => {
             const colorClass = TOOL_COLORS[item.toolSlug] ?? DEFAULT_COLOR;
             return (
-              <Card key={item.id} className="p-4">
+              <Card key={item.id} className="border border-border/50 p-4 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                 <div className="flex items-center gap-3">
                   <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${colorClass}`}>
                     {t(`tool.${item.toolSlug}.name`)}
@@ -208,8 +210,9 @@ export default function HistoryPage() {
           })}
         </div>
       ) : (
-        <Card className="p-16 text-center">
-          <Inbox className="mx-auto mb-4 size-12 text-muted-foreground" />
+        <Card className="relative overflow-hidden border border-border/50 p-16 text-center">
+          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30 dark:from-blue-950/10 dark:to-purple-950/10" />
+          <Inbox className="mx-auto mb-4 size-12 text-muted-foreground/30" />
           <p className="text-foreground">
             {search || toolFilter ? t("history.noResults") : t("history.noHistory")}
           </p>
