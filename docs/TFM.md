@@ -627,16 +627,16 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | Metrica                    | Valor              |
 | -------------------------- | ------------------ |
 | Herramientas               | 15                 |
-| Tests unitarios            | 1466               |
+| Tests unitarios            | 1481               |
 | Tests E2E (Playwright)     | 20 specs (70 tests)|
 | Archivos de test           | 45 unit + 20 E2E   |
-| Archivos fuente (.ts/.tsx) | 208                |
+| Archivos fuente (.ts/.tsx) | 228                |
 | Componentes React          | 25+                |
 | Custom hooks               | 22+                |
 | Paginas (routes)           | 35                 |
-| Claves i18n                | 1658 (x2 idiomas)  |
+| Claves i18n                | 1320 (x2 idiomas)  |
 | Jobs CI/CD                 | 10                 |
-| Commits                    | 174+               |
+| Commits                    | 190+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
 | Dependencias produccion    | 21                 |
 
@@ -665,8 +665,8 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 - Skeletons de carga ✓
 - TypeScript strict mode ✓
 - Dark/Light mode con deteccion automatica ✓
-- i18n completo (EN/ES, ~1658 claves por idioma) ✓
-- Tests unitarios (1466 passing, 45 archivos) ✓
+- i18n completo (EN/ES, 1320 claves por idioma) ✓
+- Tests unitarios (1481 passing, 45 archivos) ✓
 - Tests E2E con Playwright (20 specs, 15 tools + a11y) ✓
 - CI/CD pipeline (10 jobs) ✓
 - SAST (CodeQL + Semgrep) ✓

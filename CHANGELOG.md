@@ -5,16 +5,39 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.6] - 2026-03-07
+
+### Branding, Visual Polish & Microcopy
+
+#### Changed
+- **Crystal brackets logo** — Replaced old prism logo in navbar, dashboard sidebar, and mobile header with the crystal brackets icon
+- **Favicon fix** — Removed 21,770 white corner pixels from icon-512x512.png (were RGB 254,254,254), regenerated favicon.ico with transparent corners. Fixed all PWA icons and apple-icon.
+- **Feature cards (home)** — Colored gradient top bar matching each tool's color, gradient icon background with scale-on-hover animation, now clickable links to tool pages
+- **Stats cards (home)** — Individual gradient colors per stat (amber/blue/emerald/purple), colored accent bar, gradient icon background, per-card hover glow
+- **Shimmer border effect** — New CSS `card-shimmer-border` animation on feature cards, tool cards, and stats cards (animated gradient border on hover, respects prefers-reduced-motion)
+- **Tool cards** — Added shimmer border effect + stronger hover lift (-translate-y-1.5)
+- **Microcopy** — 15+ remaining Title Case → sentence case fixes across EN locale (settings, about, common, prompt analyzer, context manager). 6 ES fixes including missing accents (Únete, está). "Contribute a tool" → "Suggest a tool" for friendlier CTA.
+- **i18n** — 1320 keys in both EN and ES (parity maintained)
+
+---
+
 ## [4.15.5] - 2026-03-07
 
-### i18n Dead Key Cleanup & Performance
+### i18n Dead Key Cleanup, Sentence Case & UX Polish
 
 #### Removed
 - **430 orphaned i18n keys** purged from both EN and ES locales (1747 → 1317 keys, full parity maintained). Old keys from refactored UIs across all 15 tools, dashboard, home, common, and navigation sections.
 
+#### Changed
+- **Sentence case microcopy** — 120 EN + 118 ES keys converted from Title Case to sentence case across all tools and pages (e.g., "Analyze Prompt" → "Analyze prompt")
+- **Tool card hearts** — Favorite heart icons now always visible at 30% opacity (previously hidden, only visible on hover)
+- **Home card glow** — Stats cards and feature cards gain subtle glow borders on hover
+- **3 settings keys restored** — `settings.light`, `settings.dark`, `settings.system` (used dynamically via template literal)
+
 #### Fixed
 - **Variable Name Wizard** — `TYPE_OPTIONS` array wrapped in `useMemo` for consistency with `LANGUAGES` pattern (both use `t()`)
 - **README accuracy** — UUID Generator description updated (9 types including nil/max/ULID/NanoID), DTO-Matic added missing C#, E2E count clarified (20 specs, 70 tests)
+- **E2E dto-matic** — Button regex fixed from `/^java$/i` to `/java/i` to match i18n label "Java (Lombok)"
 
 ---
 
