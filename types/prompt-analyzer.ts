@@ -66,6 +66,7 @@ export interface SecurityFlag {
   type: SecurityFlagType;
   severity: "critical" | "warning" | "info";
   description: string;
+  descriptionKey: string;
 }
 
 export type SecurityFlagType =

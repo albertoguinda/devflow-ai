@@ -777,14 +777,14 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs font-medium ${SEVERITY_COLORS[issue.severity]}`}
                     >
-                      {issue.severity}
+                      {t(`promptAnalyzer.severity.${issue.severity}`)}
                     </span>
                     <div>
                       <p className="font-medium text-foreground">
                         {ISSUE_LABELS[issue.type]}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {issue.message}
+                        {t(`promptAnalyzer.qualityMsg.${issue.type}`)}
                       </p>
                     </div>
                   </div>

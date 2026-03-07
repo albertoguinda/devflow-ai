@@ -1,17 +1,10 @@
 import { AlertTriangle, AlertCircle, Info } from "lucide-react";
-import type { SecurityFlag, SecurityFlagType } from "@/types/prompt-analyzer";
+import { useTranslation } from "@/hooks/use-translation";
+import type { SecurityFlag } from "@/types/prompt-analyzer";
 
 interface SecurityFlagBadgeProps {
   flag: SecurityFlag;
 }
-
-const FLAG_LABELS: Record<SecurityFlagType, string> = {
-  prompt_injection: "Injection",
-  role_override: "Role Override",
-  data_exfiltration: "Data Leak",
-  jailbreak_attempt: "Jailbreak",
-  ignore_instruction: "Ignore Instructions",
-};
 
 const SEVERITY_STYLES = {
   critical: {
@@ -35,6 +28,7 @@ const SEVERITY_STYLES = {
 };
 
 export function SecurityFlagBadge({ flag }: SecurityFlagBadgeProps) {
+  const { t } = useTranslation();
   const styles = SEVERITY_STYLES[flag.severity];
   const { Icon } = styles;
 
@@ -46,15 +40,15 @@ export function SecurityFlagBadge({ flag }: SecurityFlagBadgeProps) {
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className={`font-medium ${styles.text}`}>
-            {FLAG_LABELS[flag.type]}
+            {t(`promptAnalyzer.securityLabel.${flag.type}`)}
           </span>
           <span
             className={`rounded-full px-2 py-0.5 text-xs font-medium uppercase ${styles.bg} ${styles.text}`}
           >
-            {flag.severity}
+            {t(`promptAnalyzer.severity.${flag.severity}`)}
           </span>
         </div>
-        <p className="mt-1 text-sm text-muted-foreground">{flag.description}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{t(`promptAnalyzer.securityMsg.${flag.descriptionKey}`)}</p>
       </div>
     </div>
   );
@@ -65,11 +59,13 @@ interface SecurityFlagsListProps {
 }
 
 export function SecurityFlagsList({ flags }: SecurityFlagsListProps) {
+  const { t } = useTranslation();
+
   if (flags.length === 0) {
     return (
       <div role="status" className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950">
         <Info className="size-5 text-green-800 dark:text-green-200" />
-        <span className="text-green-800 dark:text-green-200">No security issues detected</span>
+        <span className="text-green-800 dark:text-green-200">{t("promptAnalyzer.noSecurityIssues")}</span>
       </div>
     );
   }
