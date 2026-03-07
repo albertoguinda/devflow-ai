@@ -1,0 +1,281 @@
+# DevFlowAI — Full Documentation for AI Systems
+
+> Free, open-source developer toolkit for AI development. 15 browser-based tools. No login, no API keys required. Everything works locally. AI features are optional and free.
+
+## About
+
+DevFlowAI is a collection of 15 developer productivity tools that run entirely in the browser. Built with Next.js 16, React 19, TypeScript 5, and Tailwind CSS v4. Designed for developers working with AI/LLM APIs.
+
+- URL: https://devflowai.vercel.app
+- Source: https://github.com/albertoguinda/devflow-ai
+- License: MIT
+- Languages: English, Spanish (full bilingual UI with 1667 i18n keys)
+- Architecture: Clean Architecture, local-first, privacy-focused
+- Tests: 1466 unit tests + 20 E2E specs + axe-core WCAG accessibility audits
+
+## Tools — Detailed Reference
+
+### 1. Prompt Analyzer
+**URL:** https://devflowai.vercel.app/tools/prompt-analyzer
+**Purpose:** Analyze prompt quality, detect injection vulnerabilities, and optimize prompts for LLMs.
+**Input:** Any text prompt intended for an AI model.
+**Output:** Quality score (0-100) across 4 dimensions (clarity, specificity, context, safety), list of issues with severity, and AI-refined versions.
+**Features:**
+- Scores prompts on clarity (25pts), specificity (25pts), context (25pts), and safety/injection-resistance (25pts)
+- Detects 12 prompt injection patterns (ignore instructions, role hijacking, data exfiltration, etc.)
+- Generates refined prompt versions with 3 optimization goals: clarity, specificity, conciseness
+- Uses XML-structured prompt engineering techniques (role, context, task, guidelines, output_format)
+- Bilingual: analyzes and generates in English or Spanish based on input language
+**Use case:** Before sending a prompt to GPT-4, Claude, or Gemini, run it through the analyzer to catch issues and improve quality.
+
+### 2. Code Review Assistant
+**URL:** https://devflowai.vercel.app/tools/code-review
+**Purpose:** Automated code quality analysis with issue detection and refactoring suggestions.
+**Input:** Code snippet in any supported language (TypeScript, JavaScript, Python, Go, Rust, Java).
+**Output:** List of issues (type, line, description, suggestion), complexity score (1-10), summary, optional refactored snippet.
+**Features:**
+- Detects code smells: magic numbers, long functions, deep nesting, unused variables, console.log statements
+- Calculates cyclomatic complexity with visual gauge
+- Provides line-by-line inline annotations
+- AI-powered deep review with refactoring suggestions (optional)
+**Use case:** Paste a function before PR review to catch common issues and get actionable suggestions.
+
+### 3. API Cost Calculator
+**URL:** https://devflowai.vercel.app/tools/cost-calculator
+**Purpose:** Compare AI API costs across providers with real-time pricing.
+**Input:** Number of input tokens, output tokens, and daily requests.
+**Output:** Monthly cost projection per model, comparison charts, cost optimization recommendations.
+**Features:**
+- 8+ models: GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Claude 4, Gemini 2.0 Flash, Llama 3, Mixtral, DeepSeek
+- Live pricing from LiteLLM GitHub data
+- Interactive bar charts (Recharts)
+- Currency support: USD, EUR, GBP
+- Batch pricing and cached pricing variants
+**Use case:** Before choosing an AI provider for production, compare monthly costs for your expected usage pattern.
+
+### 4. Token Visualizer
+**URL:** https://devflowai.vercel.app/tools/token-visualizer
+**Purpose:** Real-time token counting and visualization for GPT and Claude tokenizers.
+**Input:** Any text string.
+**Output:** Token count, color-coded token boundaries, cost estimation per model, character-to-token ratio.
+**Features:**
+- Uses js-tiktoken for accurate GPT tokenization (cl100k_base, o200k_base)
+- Color-coded token visualization showing exactly where each token starts and ends
+- Cost estimation updates on every keystroke (150ms debounce)
+- Compare mode: see token differences between two texts
+- Warning at 8000+ tokens
+**Use case:** Optimize prompts for token efficiency — see which words waste tokens and how to restructure.
+
+### 5. Context Manager
+**URL:** https://devflowai.vercel.app/tools/context-manager
+**Purpose:** Build and optimize LLM context windows with file management.
+**Input:** Text documents, files (drag & drop), or pasted content.
+**Output:** Organized context window with token budgets, utilization percentage, XML/JSON export.
+**Features:**
+- Multiple context windows with model presets (GPT-4 128K, Claude 200K, Gemini 1M, etc.)
+- Drag & drop file upload with automatic token counting
+- Priority-based document ordering
+- Real-time utilization gauge with over-budget warnings
+- Export as XML or JSON format ready for API calls
+**Use case:** When building a RAG pipeline, organize and preview exactly what context goes to the LLM.
+
+### 6. Regex Humanizer
+**URL:** https://devflowai.vercel.app/tools/regex-humanizer
+**Purpose:** Explain regular expressions in plain language and generate patterns from descriptions.
+**Input:** A regex pattern OR a natural language description.
+**Output:** Plain-language explanation, matching/non-matching examples, warnings about edge cases.
+**Features:**
+- Detailed breakdown of each regex component
+- Real-time tester with match highlighting and capture group visualization
+- Common pattern presets (email, URL, IP, phone, date, etc.)
+- AI-powered pattern generation from descriptions (optional)
+- Bilingual explanations (English/Spanish)
+**Use case:** Debug a complex regex by pasting it and reading the human-readable explanation.
+
+### 7. DTO-Matic
+**URL:** https://devflowai.vercel.app/tools/dto-matic
+**Purpose:** Convert JSON API responses to TypeScript interfaces, entities, mappers, and Zod schemas.
+**Input:** Raw JSON object (e.g., API response body).
+**Output:** TypeScript interface (DTO), domain entity, mapper function, Zod validation schema.
+**Features:**
+- Automatic type inference (string, number, boolean, Date, null, nested objects, arrays)
+- Date field detection from ISO 8601 patterns
+- Clean Architecture compliant (DTO -> Entity -> Mapper)
+- Multiple naming conventions (camelCase, PascalCase, snake_case)
+- Multi-language: TypeScript, Java, Python output
+- Mock data generation for testing
+**Use case:** Paste a JSON response from an API and instantly get production-ready TypeScript types.
+
+### 8. Cron Builder
+**URL:** https://devflowai.vercel.app/tools/cron-builder
+**Purpose:** Visual cron expression builder with human-readable explanations.
+**Input:** Cron expression string OR visual selection.
+**Output:** Validated cron expression, human-readable explanation, next 5 execution times.
+**Features:**
+- Visual builder: click to select minute, hour, day, month, weekday
+- Parse existing cron expressions into human language
+- Next execution preview with timezone awareness
+- Common presets: every minute, hourly, daily at midnight, weekly, monthly
+- Export formats: raw cron, Kubernetes CronJob YAML, GitHub Actions schedule, Linux crontab
+**Use case:** Build a cron schedule visually instead of memorizing cron syntax.
+
+### 9. Tailwind Sorter
+**URL:** https://devflowai.vercel.app/tools/tailwind-sorter
+**Purpose:** Sort and organize Tailwind CSS classes by category.
+**Input:** String of Tailwind CSS classes.
+**Output:** Sorted classes grouped by category, duplicates removed, variants ordered.
+**Features:**
+- Sorts by category: layout, flexbox, spacing, sizing, typography, colors, borders, effects, animations
+- Removes duplicate classes automatically
+- Orders responsive variants (sm -> md -> lg -> xl -> 2xl)
+- Multiple output formats: single-line, multi-line, grouped
+- Dark mode preview
+**Use case:** Clean up messy Tailwind class strings in your components.
+
+### 10. Variable Name Wizard
+**URL:** https://devflowai.vercel.app/tools/variable-name-wizard
+**Purpose:** Generate meaningful variable names and convert between naming conventions.
+**Input:** Description of what the variable represents, or an existing variable name.
+**Output:** 5+ name suggestions with rationale, conversions across 8 naming conventions.
+**Features:**
+- Generate names from natural language descriptions
+- Convert between: camelCase, PascalCase, snake_case, SCREAMING_SNAKE_CASE, kebab-case, dot.case, Title Case, flatcase
+- Type-aware suggestions (hooks use "use" prefix, components use PascalCase, constants use SCREAMING_SNAKE)
+- Abbreviation expansion and compression
+- Language-specific conventions (TypeScript, Python, Java)
+**Use case:** Stop naming variables "data" or "temp" — describe what it holds and get professional names.
+
+### 11. JSON Formatter
+**URL:** https://devflowai.vercel.app/tools/json-formatter
+**Purpose:** Format, minify, validate JSON with advanced features.
+**Input:** Raw JSON string.
+**Output:** Formatted/minified JSON, validation results, extracted paths, TypeScript interfaces.
+**Features:**
+- Format with 2 or 4 space indentation
+- Minify for production
+- Validate with detailed error messages pointing to exact line/column
+- Extract all JSON paths (useful for jq queries)
+- Compare two JSON documents side-by-side
+- Generate TypeScript interfaces from JSON structure
+- Sort keys alphabetically
+- Real-time statistics: key count, depth, size
+**Use case:** Paste minified API response JSON to format it, or validate JSON before sending to an API.
+
+### 12. Base64 Encoder/Decoder
+**URL:** https://devflowai.vercel.app/tools/base64
+**Purpose:** Encode and decode Base64 with support for text, files, and images.
+**Input:** Plain text, Base64 string, or file upload.
+**Output:** Encoded/decoded result with statistics.
+**Features:**
+- Standard and URL-safe Base64 variants
+- Unicode text support (UTF-8)
+- File and image encoding with preview
+- Batch processing for multiple values
+- JWT decoding (header + payload)
+- Hex and binary byte-level views
+- Size statistics (input vs output)
+**Use case:** Decode a Base64-encoded JWT token or encode an image for data URL embedding.
+
+### 13. UUID Generator
+**URL:** https://devflowai.vercel.app/tools/uuid-generator
+**Purpose:** Generate, validate, and parse UUIDs in all versions.
+**Input:** Optional: existing UUID for validation/parsing.
+**Output:** Generated UUIDs with metadata.
+**Features:**
+- Generate UUID v1 (timestamp), v3 (MD5 namespace), v4 (random), v5 (SHA-1 namespace), v7 (Unix timestamp)
+- Bulk generation up to 1000 UUIDs
+- Multiple formats: standard, uppercase, no hyphens, braces, URN
+- Validate any UUID string
+- Parse UUID to extract version, variant, timestamp, node
+- Bit-level inspection
+- Export as JSON, CSV, SQL INSERT
+**Use case:** Generate v4 UUIDs for database primary keys or v7 for sortable IDs.
+
+### 14. Git Commit Generator
+**URL:** https://devflowai.vercel.app/tools/git-commit-generator
+**Purpose:** Generate Conventional Commits messages from diffs or descriptions.
+**Input:** Code diff or natural language description of changes.
+**Output:** 3 commit message options ranked by conventionality.
+**Features:**
+- 11 commit types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert
+- Emoji indicators for each type
+- Smart scope suggestions from file paths
+- 72-character description counter (Conventional Commits best practice)
+- Breaking change support with BREAKING CHANGE footer
+- Issue reference linking (#123)
+- Parse existing commits to extract components
+- Diff viewer with syntax highlighting
+**Use case:** Paste your git diff and get a properly formatted Conventional Commit message.
+
+### 15. HTTP Status Finder
+**URL:** https://devflowai.vercel.app/tools/http-status-finder
+**Purpose:** Search and explore HTTP status codes with descriptions and code snippets.
+**Input:** Status code number or keyword search.
+**Output:** Detailed status code information with examples.
+**Features:**
+- 55+ HTTP status codes (1xx through 5xx)
+- Search by code number or keyword (e.g., "not found", "redirect")
+- Filter by category with color coding
+- Detailed descriptions with "when to use" guidelines
+- Code snippets in fetch, axios, and Go
+- Decision wizard: answer questions to find the right status code
+- Grid and table view modes
+**Use case:** Find the right HTTP status code for your API response instead of using 200 for everything.
+
+## Technical Architecture
+
+### Stack
+- **Framework:** Next.js 16 with React 19 and React Compiler
+- **Language:** TypeScript 5 (maximum strict mode, zero `any`, `noUncheckedIndexedAccess`)
+- **Styling:** Tailwind CSS v4 + HeroUI v3 component library
+- **AI Backend:** 4 providers with automatic fallback chain: Gemini 2.0 Flash -> Groq -> OpenRouter -> Pollinations (free)
+- **State:** Zustand (global) + localStorage (per-tool) + SWR (AI data fetching)
+- **Testing:** 1466 unit tests (Vitest) + 20 E2E specs (Playwright) + axe-core a11y
+- **Accessibility:** WCAG AAA compliant (7:1 contrast, 44px touch targets, keyboard navigation)
+- **CI/CD:** 8 GitHub Actions jobs (quality, security, build, a11y, e2e, CodeQL, Semgrep, Lighthouse)
+
+### Architecture Pattern (per tool)
+```
+types/<tool>.ts                    -> Domain types and interfaces
+lib/application/<tool>.ts         -> Pure logic (no React, no side effects)
+hooks/use-<tool>.ts               -> React hook with state + localStorage
+app/(dashboard)/tools/<slug>/page.tsx -> UI page component
+tests/unit/application/<tool>.test.ts -> Unit tests
+```
+
+### AI Backend (Optional)
+- BYOK (Bring Your Own Key) support for Gemini, Groq, and OpenRouter
+- Free fallback via Pollinations (no API key needed)
+- Rate limiting: 10 RPM free, 50 RPM with BYOK
+- All AI features are optional — every tool works 100% without AI
+
+### Privacy
+- Local-first: all processing happens in the browser
+- Data stored in localStorage, never sent to servers (unless explicit AI feature use)
+- No tracking, no analytics cookies, no telemetry
+- Open source: full code audit available on GitHub
+
+## API Endpoints (for developers integrating)
+- `GET /api/health` — Health check, returns AI provider status
+- `POST /api/ai/review` — AI code review (requires code in body)
+- `POST /api/ai/suggest` — AI suggestions for prompts/variables
+- `POST /api/ai/refine` — AI prompt refinement
+- `POST /api/ai/tokenize` — Server-side tokenization
+- `POST /api/ai/status` — AI provider status check
+
+## FAQ
+
+**Is DevFlowAI free?**
+Yes, 100% free and open source (MIT license). All 15 tools work without login, API keys, or credit card.
+
+**Does it require an API key?**
+No. All tools work locally without any API key. AI features are optional and use Pollinations (free) by default. You can optionally bring your own key for Gemini, Groq, or OpenRouter.
+
+**Is my data safe?**
+Yes. DevFlowAI is local-first. All processing happens in your browser. Data never leaves your machine unless you explicitly use an AI feature.
+
+**What languages does it support?**
+Full bilingual UI: English and Spanish. 1667 translation keys with complete parity.
+
+**Can I self-host it?**
+Yes. Clone the repo, run `npm install && npm run build && npm start`. Works with any Node.js 20+ hosting.

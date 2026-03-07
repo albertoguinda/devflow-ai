@@ -116,10 +116,34 @@ const jsonLd = {
   url: SITE_URL,
   description:
     "Free & open-source developer toolkit for AI development. Analyze prompts, review code, calculate API costs, and more.",
+  inLanguage: ["en", "es"],
   creator: {
     "@type": "Organization",
     name: "DevFlowAI Community",
   },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}/tools?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "DevFlowAI",
+  url: SITE_URL,
+  logo: `${SITE_URL}/icon-512.png`,
+  description:
+    "Open-source developer tools community building free, privacy-first utilities for AI development.",
+  sameAs: [
+    "https://github.com/albertoguinda/devflow-ai",
+  ],
+  foundingDate: "2025",
+  knowsLanguage: ["en", "es"],
 };
 
 const softwareJsonLd = {
@@ -194,6 +218,7 @@ export default function RootLayout({
       <head>
         <meta name="philosophy" content="Para vosotros, developers" />
         <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site description" />
+        <link rel="alternate" type="text/plain" href="/llms-full.txt" title="LLM-readable full documentation" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
@@ -205,6 +230,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }}
         />
       </head>
       <body

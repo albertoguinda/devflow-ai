@@ -25,8 +25,13 @@ Complete bilingual support for the Prompt Analyzer's local refinement engine, fa
 - **SEO — SoftwareApplication schema** — Enhanced with `featureList` (15 tools), `softwareVersion`, `aggregateRating` (4.8/5)
 - **SEO — Per-tool metadata** — Each tool page now has keyword arrays, twitter cards, and enriched OpenGraph
 - **GEO — llms.txt** — Created `public/llms.txt` following the llms.txt standard for Generative Engine Optimization (AI crawler discoverability)
+- **GEO — llms-full.txt** — Detailed full documentation (200+ lines) with usage examples, input/output specs, and technical architecture for AI systems
+- **SEO — Per-tool JSON-LD** — `WebApplication` + `BreadcrumbList` structured data injected into all 15 tool layouts for Google rich results
+- **SEO — Organization JSON-LD** — Organization schema with logo, GitHub link, founding date, and bilingual support
+- **SEO — SearchAction** — WebSite schema enhanced with `potentialAction` SearchAction for Google Sitelinks Searchbox
 - **SEO — Keywords** — Expanded from 15 to 25 keywords including Spanish terms (`herramientas para desarrolladores`, `herramientas IA gratis`)
 - **SEO — OpenGraph** — Added `alternateLocale: "es_ES"` and more descriptive OG description
+- **GEO — robots.txt** — Explicit `Allow` rules for AI crawlers: GPTBot, ChatGPT-User, Google-Extended, ClaudeBot, PerplexityBot
 
 #### Changed
 - **i18n hardcoded strings** — 10 user-visible strings replaced with `t()` calls across 4 files:

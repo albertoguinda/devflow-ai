@@ -2,6 +2,8 @@
 
 > Free, open-source developer toolkit for AI development. 15 browser-based tools. No login, no API keys required. Everything works locally. AI features are optional and free.
 
+- Full documentation: https://devflowai.vercel.app/llms-full.txt
+
 ## About
 
 DevFlowAI is a collection of 15 developer productivity tools that run entirely in the browser. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS v4. Designed for developers working with AI/LLM APIs.
