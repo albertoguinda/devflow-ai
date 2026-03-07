@@ -33,6 +33,7 @@ export const aiSuggestSchema = z.object({
     ])
     .optional(),
   mode: z.enum(["variable-name", "regex-generate", "commit-message", "cron-generate", "json-explain", "base64-explain", "dto-optimize", "http-explain", "tailwind-optimize", "cost-advise", "context-optimize"]),
+  locale: z.enum(["en", "es"]).optional(),
 });
 
 export type AISuggestInput = z.infer<typeof aiSuggestSchema>;

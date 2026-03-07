@@ -23,14 +23,15 @@ export async function POST(request: NextRequest) {
 
   const parsed = await validateBody(request, aiRefineSchema);
   if ("error" in parsed) return parsed.error;
-  const { prompt, goal } = parsed.data;
+  const { prompt, goal, locale } = parsed.data;
 
   const provider = createAIProvider(byok);
   if (!provider) {
     return errorResponse("AI is not configured on this server", 503);
   }
 
-  const userPrompt = `Goal: ${goal}\n\nPrompt to refine:\n<user_input>\n${prompt}\n</user_input>`;
+  const localeHint = locale === "es" ? "[IMPORTANT: Respond entirely in Spanish (es-ES).]\n\n" : "";
+  const userPrompt = `${localeHint}Goal: ${goal}\n\nPrompt to refine:\n<user_input>\n${prompt}\n</user_input>`;
 
   try {
     const response = await provider.generateText(

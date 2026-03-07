@@ -7,6 +7,7 @@ import { aiFetcher } from "@/lib/api/fetcher";
 interface RefineArgs {
   prompt: string;
   goal: "clarity" | "specificity" | "conciseness";
+  locale?: "en" | "es" | undefined;
 }
 
 async function refineFetcher(
@@ -23,8 +24,8 @@ export function useAIRefine() {
   );
 
   return {
-    refineWithAI: (prompt: string, goal: RefineArgs["goal"]) =>
-      trigger({ prompt, goal }),
+    refineWithAI: (prompt: string, goal: RefineArgs["goal"], locale?: "en" | "es") =>
+      trigger({ prompt, goal, locale }),
     aiResult: data ?? null,
     aiError: error as Error | null,
     isAILoading: isMutating,

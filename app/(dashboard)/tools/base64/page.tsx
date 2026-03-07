@@ -32,6 +32,7 @@ import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { cn } from "@/lib/utils";
 export default function Base64Page() {
   const { t } = useTranslation();
@@ -55,6 +56,7 @@ export default function Base64Page() {
 
   const { explainBase64WithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
 
   const [activeView, setActiveView] = useState<"text" | "preview" | "inspector" | "batch">("text");
 
@@ -108,7 +110,7 @@ export default function Base64Page() {
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
         icon={Binary}
-        gradient="from-blue-500 to-cyan-600"
+        gradient="from-indigo-500 to-blue-600"
         title={t("base64.title")}
         description={t("base64.description")}
         breadcrumb
@@ -125,8 +127,9 @@ export default function Base64Page() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Input Column */}
         <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 to-blue-600" />
+            <div className="flex items-center justify-between mb-6 mt-1">
               <div className="flex bg-muted p-1 rounded-xl">
                 <Button size="sm" aria-pressed={mode === "encode"} variant={mode === "encode" ? "primary" : "ghost"} onPress={() => setMode("encode")} className="font-bold h-8">{t("base64.encodeBtn")}</Button>
                 <Button size="sm" aria-pressed={mode === "decode"} variant={mode === "decode" ? "primary" : "ghost"} onPress={() => setMode("decode")} className="font-bold h-8">{t("base64.decodeBtn")}</Button>
@@ -227,7 +230,7 @@ export default function Base64Page() {
                 className="w-full font-bold bg-violet-600 dark:bg-violet-500 hover:bg-violet-700 dark:hover:bg-violet-600 border-none shadow-lg shadow-violet-500/20 mb-4"
                 onPress={() => {
                   const content = result.output.slice(0, 2000);
-                  void explainBase64WithAI(`Type: ${result.detectedType || "unknown"}, Mode: ${mode}, Content (first 2000 chars): ${content}`);
+                  void explainBase64WithAI(`Type: ${result.detectedType || "unknown"}, Mode: ${mode}, Content (first 2000 chars): ${content}`, locale);
                 }}
                 isLoading={isAILoading}
               >

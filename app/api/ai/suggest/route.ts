@@ -31,31 +31,37 @@ function delimit(content: string): string {
   return `<user_input>\n${content}\n</user_input>`;
 }
 
-function getPromptForMode(mode: string, context: string, type?: string, language?: string): { systemPrompt: string; userPrompt: string } {
+function localeHint(locale?: string): string {
+  if (locale === "es") return "[IMPORTANT: Respond entirely in Spanish (es-ES).]\n\n";
+  return "";
+}
+
+function getPromptForMode(mode: string, context: string, type?: string, language?: string, locale?: string): { systemPrompt: string; userPrompt: string } {
   const safe = delimit(context);
+  const hint = localeHint(locale);
   switch (mode) {
     case "regex-generate":
-      return { systemPrompt: SUGGEST_REGEX_SYSTEM_PROMPT, userPrompt: `Generate a regex for the following user input:\n${safe}` };
+      return { systemPrompt: SUGGEST_REGEX_SYSTEM_PROMPT, userPrompt: `${hint}Generate a regex for the following user input:\n${safe}` };
     case "commit-message":
-      return { systemPrompt: SUGGEST_COMMIT_MESSAGE_SYSTEM_PROMPT, userPrompt: `Generate commit messages for these changes:\n${safe}` };
+      return { systemPrompt: SUGGEST_COMMIT_MESSAGE_SYSTEM_PROMPT, userPrompt: `${hint}Generate commit messages for these changes:\n${safe}` };
     case "cron-generate":
-      return { systemPrompt: SUGGEST_CRON_SYSTEM_PROMPT, userPrompt: `Generate a cron expression for:\n${safe}` };
+      return { systemPrompt: SUGGEST_CRON_SYSTEM_PROMPT, userPrompt: `${hint}Generate a cron expression for:\n${safe}` };
     case "json-explain":
-      return { systemPrompt: SUGGEST_JSON_EXPLAIN_SYSTEM_PROMPT, userPrompt: `Analyze this JSON structure:\n${safe}` };
+      return { systemPrompt: SUGGEST_JSON_EXPLAIN_SYSTEM_PROMPT, userPrompt: `${hint}Analyze this JSON structure:\n${safe}` };
     case "base64-explain":
-      return { systemPrompt: SUGGEST_BASE64_EXPLAIN_SYSTEM_PROMPT, userPrompt: `Analyze this decoded/encoded content:\n${safe}` };
+      return { systemPrompt: SUGGEST_BASE64_EXPLAIN_SYSTEM_PROMPT, userPrompt: `${hint}Analyze this decoded/encoded content:\n${safe}` };
     case "dto-optimize":
-      return { systemPrompt: SUGGEST_DTO_OPTIMIZE_SYSTEM_PROMPT, userPrompt: `Suggest improvements for this generated code:\n${safe}` };
+      return { systemPrompt: SUGGEST_DTO_OPTIMIZE_SYSTEM_PROMPT, userPrompt: `${hint}Suggest improvements for this generated code:\n${safe}` };
     case "http-explain":
-      return { systemPrompt: SUGGEST_HTTP_EXPLAIN_SYSTEM_PROMPT, userPrompt: `Explain this HTTP status code and provide guidance:\n${safe}` };
+      return { systemPrompt: SUGGEST_HTTP_EXPLAIN_SYSTEM_PROMPT, userPrompt: `${hint}Explain this HTTP status code and provide guidance:\n${safe}` };
     case "tailwind-optimize":
-      return { systemPrompt: SUGGEST_TAILWIND_OPTIMIZE_SYSTEM_PROMPT, userPrompt: `Optimize these Tailwind CSS classes:\n${safe}` };
+      return { systemPrompt: SUGGEST_TAILWIND_OPTIMIZE_SYSTEM_PROMPT, userPrompt: `${hint}Optimize these Tailwind CSS classes:\n${safe}` };
     case "cost-advise":
-      return { systemPrompt: SUGGEST_COST_ADVISE_SYSTEM_PROMPT, userPrompt: `Provide cost optimization advice for this scenario:\n${safe}` };
+      return { systemPrompt: SUGGEST_COST_ADVISE_SYSTEM_PROMPT, userPrompt: `${hint}Provide cost optimization advice for this scenario:\n${safe}` };
     case "context-optimize":
-      return { systemPrompt: SUGGEST_CONTEXT_OPTIMIZE_SYSTEM_PROMPT, userPrompt: `Analyze this context window and suggest optimizations:\n${safe}` };
+      return { systemPrompt: SUGGEST_CONTEXT_OPTIMIZE_SYSTEM_PROMPT, userPrompt: `${hint}Analyze this context window and suggest optimizations:\n${safe}` };
     default:
-      return { systemPrompt: SUGGEST_VARIABLE_NAME_SYSTEM_PROMPT, userPrompt: `Suggest names for a ${type ?? "variable"} in ${language ?? "typescript"}:\n${safe}` };
+      return { systemPrompt: SUGGEST_VARIABLE_NAME_SYSTEM_PROMPT, userPrompt: `${hint}Suggest names for a ${type ?? "variable"} in ${language ?? "typescript"}:\n${safe}` };
   }
 }
 
@@ -68,14 +74,14 @@ export async function POST(request: NextRequest) {
 
   const parsed = await validateBody(request, aiSuggestSchema);
   if ("error" in parsed) return parsed.error;
-  const { context, type, language, mode } = parsed.data;
+  const { context, type, language, mode, locale } = parsed.data;
 
   const provider = createAIProvider(byok);
   if (!provider) {
     return errorResponse("AI is not configured on this server", 503);
   }
 
-  const { systemPrompt, userPrompt } = getPromptForMode(mode, context, type, language);
+  const { systemPrompt, userPrompt } = getPromptForMode(mode, context, type, language, locale);
 
   try {
     const response = await provider.generateText(userPrompt, systemPrompt);

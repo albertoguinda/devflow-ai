@@ -17,6 +17,7 @@ import {
   Download,
   Coins,
   ScanSearch,
+  FileSearch,
   Bot,
   UserCircle,
   Target,
@@ -250,6 +251,7 @@ export default function PromptAnalyzerPage() {
   const { refineWithAI, aiResult: aiRefineResult, isAILoading: isAIRefining, aiError } = useAIRefine();
   const [refiningGoal, setRefiningGoal] = useState<string | null>(null);
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
   const { navigateTo } = useSmartNavigation();
 
@@ -313,8 +315,8 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
     <div className="mx-auto max-w-7xl space-y-6">
       {/* Header */}
       <ToolHeader
-        icon={ScanSearch}
-        gradient="from-yellow-500 to-orange-600"
+        icon={FileSearch}
+        gradient="from-blue-500 to-indigo-600"
         title={t("promptAnalyzer.title")}
         description={t("promptAnalyzer.description")}
         breadcrumb
@@ -323,13 +325,17 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
       <ToolSuggestions toolId="prompt-analyzer" input={prompt} output={result?.refinedPrompt || ""} />
 
       {/* Input Section */}
-      <Card className="p-6">
-        <div className="space-y-4">
+      <Card className="relative overflow-hidden p-6 border-border/40">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600" />
+        <div className="space-y-4 mt-1">
           <div className="flex items-center justify-between">
             <label
               htmlFor="prompt-input"
-              className="text-sm font-medium text-foreground"
+              className="text-sm font-medium text-foreground flex items-center gap-2"
             >
+              <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md">
+                <FileSearch className="size-4 text-white" />
+              </div>
               {t("promptAnalyzer.enterPrompt")}
             </label>
             <Button
@@ -402,7 +408,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
               {history.slice(0, 10).map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-4 rounded-lg border border-border p-3 transition-colors hover:bg-muted/50"
+                  className="flex items-center gap-4 rounded-lg border border-border p-3 transition-colors duration-200 hover:bg-muted/50"
                 >
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
                     <span
@@ -582,7 +588,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                 const statusColor = status === "detected" ? "text-emerald-500 dark:text-emerald-400" : status === "partial" ? "text-amber-500 dark:text-amber-400" : "text-red-400";
 
                 return (
-                  <div key={dim.id} className="group rounded-lg border border-border p-3 transition-colors hover:bg-muted/30">
+                  <div key={dim.id} className="group rounded-lg border border-border p-3 transition-colors duration-200 hover:bg-muted/30">
                     <div className="flex items-center gap-3">
                       <div className={`flex size-8 shrink-0 items-center justify-center rounded-md ${barColor}/15`}>
                         <DimIcon className={`size-4 ${barColor.replace("bg-", "text-")}`} />
@@ -690,7 +696,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                       isDisabled={isAIRefining && refiningGoal !== goal}
                       onPress={() => {
                         setRefiningGoal(goal);
-                        refineWithAI(result.prompt, goal)
+                        refineWithAI(result.prompt, goal, locale)
                           .catch(() => addToast(t("ai.unavailable"), "info"))
                           .finally(() => setRefiningGoal(null));
                       }}
@@ -803,7 +809,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
               {result.suggestions.map((suggestion, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-3 rounded-lg border border-border/50 p-3 text-sm text-muted-foreground transition-colors hover:bg-muted/30"
+                  className="flex items-start gap-3 rounded-lg border border-border/50 p-3 text-sm text-muted-foreground transition-colors duration-200 hover:bg-muted/30"
                 >
                   <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
                     {index + 1}

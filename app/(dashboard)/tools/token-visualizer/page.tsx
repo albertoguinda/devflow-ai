@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import {
-  Binary,
+  Eye,
   RotateCcw,
   LayoutGrid,
   List as ListIcon,
@@ -76,8 +76,8 @@ export default function TokenVisualizerPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
-        icon={Binary}
-        gradient="from-emerald-500 to-teal-600"
+        icon={Eye}
+        gradient="from-purple-500 to-violet-600"
         title={t("tokenViz.title")}
         description={t("tokenViz.description")}
         breadcrumb
@@ -94,11 +94,14 @@ export default function TokenVisualizerPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Input Column */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="p-6">
-            <div className="flex flex-col gap-4">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-purple-500 to-violet-600" />
+            <div className="flex flex-col gap-4 mt-1">
               <div className="flex items-center justify-between">
                 <h3 className="font-bold flex items-center gap-2">
-                  <Database className="size-4 text-primary" />
+                  <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-violet-600 shadow-md">
+                    <Database className="size-4 text-white" />
+                  </div>
                   {t("tokenViz.sourceText")}
                 </h3>
                 <div className="flex bg-muted p-1 rounded-xl">
@@ -196,7 +199,7 @@ export default function TokenVisualizerPage() {
                     <span className="text-xs font-bold text-muted-foreground w-8">{ctx.label}</span>
                     <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
-                        className={cn("h-full rounded-full transition-all", pct > 90 ? "bg-red-500 dark:bg-red-400" : pct > 60 ? "bg-amber-500 dark:bg-amber-400" : "bg-emerald-500 dark:bg-emerald-400")}
+                        className={cn("h-full rounded-full transition-all duration-300", pct > 90 ? "bg-red-500 dark:bg-red-400" : pct > 60 ? "bg-amber-500 dark:bg-amber-400" : "bg-emerald-500 dark:bg-emerald-400")}
                         style={{ width: `${pct}%` }}
                       />
                     </div>

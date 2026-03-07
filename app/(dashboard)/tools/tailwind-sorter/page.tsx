@@ -24,6 +24,7 @@ import {
 import { useTailwindSorter } from "@/hooks/use-tailwind-sorter";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";
@@ -48,6 +49,7 @@ export default function TailwindSorterPage() {
 
   const { optimizeTailwindWithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
 
   const [activeView, setActiveView] = useState<"result" | "audit" | "diff" | "breakpoints" | string>("result");
 
@@ -89,7 +91,7 @@ export default function TailwindSorterPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
         icon={Palette}
-        gradient="from-sky-500 to-blue-600"
+        gradient="from-sky-500 to-cyan-600"
         title={t("tailwind.title")}
         description={t("tailwind.description")}
         breadcrumb
@@ -106,10 +108,13 @@ export default function TailwindSorterPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Input Column */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold flex items-center gap-2 text-sky-600 dark:text-sky-400">
-                <ListFilter className="size-5" />
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-sky-500 to-cyan-600" />
+            <div className="flex items-center justify-between mb-4 mt-1">
+              <h3 className="font-bold flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-500 to-cyan-600 shadow-md">
+                  <ListFilter className="size-4 text-white" />
+                </div>
                 {t("tailwind.rawClasses")}
               </h3>
               <div className="flex gap-2">
@@ -168,7 +173,7 @@ export default function TailwindSorterPage() {
               <div className="flex flex-col items-center">
                 <span className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.lightPreview")}</span>
                 <div className="flex items-center justify-center p-4 sm:p-6 bg-white rounded-2xl border border-default-200 min-h-[120px] w-full">
-                  <div className={cn("transition-all duration-500 p-4 rounded", result?.output || "bg-sky-500 text-white")}>
+                  <div className={cn("transition-all duration-300 ease-out p-4 rounded", result?.output || "bg-sky-500 text-white")}>
                     <span className="text-sm font-bold text-gray-900">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
                   </div>
                 </div>
@@ -176,7 +181,7 @@ export default function TailwindSorterPage() {
               <div className="flex flex-col items-center">
                 <span className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.darkPreview")}</span>
                 <div className="flex items-center justify-center p-4 sm:p-6 bg-gray-900 rounded-2xl border border-gray-700 min-h-[120px] w-full dark">
-                  <div className={cn("transition-all duration-500 p-4 rounded", result?.output || "bg-sky-500 text-white")}>
+                  <div className={cn("transition-all duration-300 ease-out p-4 rounded", result?.output || "bg-sky-500 text-white")}>
                     <span className="text-sm font-bold text-gray-100">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
                   </div>
                 </div>
@@ -195,7 +200,7 @@ export default function TailwindSorterPage() {
                 variant="primary"
                 className="w-full font-bold bg-violet-600 hover:bg-violet-700 border-none shadow-lg shadow-violet-500/20 mb-4"
                 onPress={() => {
-                  void optimizeTailwindWithAI(result.output);
+                  void optimizeTailwindWithAI(result.output, locale);
                 }}
                 isLoading={isAILoading}
               >
@@ -373,7 +378,7 @@ export default function TailwindSorterPage() {
                           <div className="flex items-center gap-2">
                             <span className="text-xs font-black uppercase tracking-widest w-8 text-primary">{bp}</span>
                             <div className="h-1.5 flex-1 bg-muted rounded-full overflow-hidden">
-                              <div className={cn("h-full bg-primary transition-all", classes.length > 0 ? "w-full" : "w-0")} />
+                              <div className={cn("h-full bg-primary transition-all duration-300", classes.length > 0 ? "w-full" : "w-0")} />
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-1.5 pl-10">

@@ -65,6 +65,51 @@ describe("aiSuggestSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("should accept locale field", () => {
+    const result = aiSuggestSchema.safeParse({
+      context: "test",
+      mode: "cost-advise",
+      locale: "es",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should accept missing locale (optional)", () => {
+    const result = aiSuggestSchema.safeParse({
+      context: "test",
+      mode: "cost-advise",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should reject invalid locale", () => {
+    const result = aiSuggestSchema.safeParse({
+      context: "test",
+      mode: "cost-advise",
+      locale: "fr",
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe("aiReviewSchema locale", () => {
+  it("should accept locale field", () => {
+    const result = aiReviewSchema.safeParse({
+      code: "const x = 1;",
+      language: "typescript",
+      locale: "es",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should accept missing locale (optional)", () => {
+    const result = aiReviewSchema.safeParse({
+      code: "const x = 1;",
+      language: "typescript",
+    });
+    expect(result.success).toBe(true);
+  });
 });
 
 describe("aiRefineSchema", () => {
@@ -90,6 +135,15 @@ describe("aiRefineSchema", () => {
       goal: "clarity",
     });
     expect(result.success).toBe(false);
+  });
+
+  it("should accept locale field", () => {
+    const result = aiRefineSchema.safeParse({
+      prompt: "Write a function",
+      goal: "clarity",
+      locale: "es",
+    });
+    expect(result.success).toBe(true);
   });
 });
 

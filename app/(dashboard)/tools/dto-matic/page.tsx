@@ -19,7 +19,6 @@ import {
   Wand2,
   Database,
   Braces,
-  Binary,
   Box,
   FileCode,
   Download,
@@ -36,6 +35,7 @@ import { cn } from "@/lib/utils";
 import { downloadBlob } from "@/lib/utils/download";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import type { TargetLanguage } from "@/types/dto-matic";
 
 export default function DtoMaticPage() {
@@ -63,6 +63,7 @@ export default function DtoMaticPage() {
 
   const { optimizeDtoWithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
 
   const [view, setView] = useState<"code" | "schema" | "mock" | string>("code");
   const [mockCount, setMockCount] = useState(5);
@@ -70,7 +71,7 @@ export default function DtoMaticPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
-        icon={Binary}
+        icon={FileJson}
         gradient="from-green-500 to-emerald-600"
         title={t("dtoMatic.title")}
         description={t("dtoMatic.description")}
@@ -95,10 +96,13 @@ export default function DtoMaticPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Input & Config Column */}
         <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-green-500 to-emerald-600" />
+            <div className="flex items-center justify-between mb-4 mt-1">
               <h3 className="font-bold flex items-center gap-2">
-                <FileJson className="size-4 text-primary" />
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 shadow-md">
+                  <FileJson className="size-4 text-white" />
+                </div>
                 {t("dtoMatic.payloadSource")}
               </h3>
               <div className="flex gap-2">
@@ -143,9 +147,12 @@ export default function DtoMaticPage() {
             </Button>
           </Card>
 
-          <Card className="p-6">
-            <h3 className="font-bold mb-4 flex items-center gap-2 text-foreground/80">
-              <Braces className="size-4" />
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+            <h3 className="font-bold mb-4 flex items-center gap-2 text-foreground/80 mt-1">
+              <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md">
+                <Braces className="size-4 text-white" />
+              </div>
               {t("dtoMatic.generatorConfig")}
             </h3>
             <div className="space-y-5">
@@ -252,7 +259,7 @@ export default function DtoMaticPage() {
                       className="font-bold bg-violet-600 hover:bg-violet-700 border-none shadow-lg shadow-violet-500/20"
                       onPress={() => {
                         const code = selectedFile?.content || result.files.map(f => f.content).join("\n").slice(0, 3000);
-                        void optimizeDtoWithAI(`Language: ${config.targetLanguage}, Mode: ${config.mode}\n\n${code}`);
+                        void optimizeDtoWithAI(`Language: ${config.targetLanguage}, Mode: ${config.mode}\n\n${code}`, locale);
                       }}
                       isLoading={isAILoading}
                     >

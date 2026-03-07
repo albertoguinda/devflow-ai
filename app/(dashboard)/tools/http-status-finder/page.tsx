@@ -35,6 +35,7 @@ import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import type { HttpStatusCode, HttpStatusCategory } from "@/types/http-status-finder";
 
 const CATEGORY_COLORS: Record<HttpStatusCategory, string> = {
@@ -63,6 +64,7 @@ export default function HttpStatusFinderPage() {
   const [activeView, setActiveView] = useState<"grid" | "table">("grid");
   const { explainHttpStatusWithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
 
   // Debounce search by 300ms
   useEffect(() => {
@@ -157,9 +159,12 @@ export default function HttpStatusFinderPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Search & Selector Column */}
         <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6">
-            <h3 className="font-bold flex items-center gap-2 mb-6 text-foreground/80 uppercase text-xs tracking-widest">
-              <Search className="size-4 text-primary" />
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600" />
+            <h3 className="font-bold flex items-center gap-2 mb-6 text-foreground/80 uppercase text-xs tracking-widest mt-1">
+              <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md">
+                <Search className="size-4 text-white" />
+              </div>
               {t("httpStatus.smartNavigator")}
             </h3>
             <Input
@@ -327,7 +332,7 @@ export default function HttpStatusFinderPage() {
                     return Object.entries(snippets).map(([lang, code]) => (
                       <div key={lang} className="space-y-2 group">
                         <div className="flex justify-between items-center">
-                          <span className="text-xs font-black uppercase text-muted-foreground tracking-tighter group-hover:text-primary transition-colors">{lang}</span>
+                          <span className="text-xs font-black uppercase text-muted-foreground tracking-tighter group-hover:text-primary transition-colors duration-200">{lang}</span>
                           <CopyButton text={code} size="sm" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
                         <pre className="p-4 bg-muted/30 rounded-2xl font-mono text-xs border border-divider overflow-x-auto h-40 scrollbar-hide">
@@ -350,7 +355,7 @@ export default function HttpStatusFinderPage() {
                       variant="primary"
                       className="font-bold bg-violet-600 hover:bg-violet-700 border-none shadow-lg shadow-violet-500/20 dark:shadow-violet-500/30"
                       onPress={() => {
-                        void explainHttpStatusWithAI(`${selectedCode.code} ${selectedCode.name}: ${selectedCode.description}. When to use: ${selectedCode.whenToUse}`);
+                        void explainHttpStatusWithAI(`${selectedCode.code} ${selectedCode.name}: ${selectedCode.description}. When to use: ${selectedCode.whenToUse}`, locale);
                       }}
                       isLoading={isAILoading}
                     >

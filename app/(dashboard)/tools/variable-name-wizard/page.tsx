@@ -33,6 +33,7 @@ import {
 import { useVariableNameWizard } from "@/hooks/use-variable-name-wizard";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
@@ -70,6 +71,7 @@ export default function VariableNameWizardPage() {
 
   const { suggestWithAI, aiResult: aiSuggestResult, isAILoading: isAISuggesting, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState<"generate" | "convert" | string>("generate");
   const [batchInput, setBatchInput] = useState("");
@@ -154,7 +156,7 @@ export default function VariableNameWizardPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
         icon={Wand2}
-        gradient="from-violet-500 to-purple-600"
+        gradient="from-fuchsia-500 to-pink-600"
         title={t("varName.title")}
         description={t("varName.description")}
         breadcrumb
@@ -171,10 +173,13 @@ export default function VariableNameWizardPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Configuration Column */}
         <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6">
-            <div className="flex justify-between items-center mb-6">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-500 to-pink-600" />
+            <div className="flex justify-between items-center mb-6 mt-1">
               <h3 className="font-bold flex items-center gap-2 text-foreground/80">
-                <Settings2 className="size-4 text-primary" />
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-fuchsia-500 to-pink-600 shadow-md">
+                  <Settings2 className="size-4 text-white" />
+                </div>
                 {t("varName.wizardSetup")}
               </h3>
               <Button size="sm" variant="ghost" onPress={loadExample}>{t("varName.exampleBtn")}</Button>
@@ -253,7 +258,7 @@ export default function VariableNameWizardPage() {
                   if (activeTab === "generate") {
                     generate();
                     if (isAIEnabled) {
-                      suggestWithAI(input, config.type, config.language).catch(() => {
+                      suggestWithAI(input, config.type, config.language, locale).catch(() => {
                         addToast(t("ai.unavailableLocal"), "info");
                       });
                     }

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   // 3. Validate body
   const parsed = await validateBody(request, aiReviewSchema);
   if ("error" in parsed) return parsed.error;
-  const { code, language } = parsed.data;
+  const { code, language, locale } = parsed.data;
 
   // 4. Create provider
   const provider = createAIProvider(byok);
@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
   }
 
   // 5. Build prompt
-  const userPrompt = `Language: ${language}\n\nCode:\n<user_input>\n\`\`\`${language}\n${code}\n\`\`\`\n</user_input>`;
+  const localeHint = locale === "es" ? "[IMPORTANT: Respond entirely in Spanish (es-ES).]\n\n" : "";
+  const userPrompt = `${localeHint}Language: ${language}\n\nCode:\n<user_input>\n\`\`\`${language}\n${code}\n\`\`\`\n</user_input>`;
 
   try {
     // 6. Call AI

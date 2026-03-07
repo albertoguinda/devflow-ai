@@ -11,7 +11,7 @@ import {
   Checkbox,
 } from "@heroui/react";
 import {
-  GitCommit,
+  GitCommitHorizontal,
   RotateCcw,
   Sparkles,
   Terminal,
@@ -31,6 +31,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useToast } from "@/hooks/use-toast";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
@@ -44,6 +45,7 @@ export default function GitCommitGeneratorPage() {
   const { addToast } = useToast();
   const { generateCommitWithAI, aiResult: aiCommitResult, isAILoading: isAIGenerating, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
   const {
     config,
     message,
@@ -111,8 +113,8 @@ export default function GitCommitGeneratorPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
-        icon={GitCommit}
-        gradient="from-slate-700 to-zinc-900"
+        icon={GitCommitHorizontal}
+        gradient="from-orange-500 to-red-600"
         title={t("gitCommit.title")}
         description={t("gitCommit.description")}
         breadcrumb
@@ -129,10 +131,13 @@ export default function GitCommitGeneratorPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Input Column */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 to-red-600" />
+            <div className="flex items-center justify-between mb-6 mt-1">
               <h3 className="font-bold flex items-center gap-2">
-                <Terminal className="size-4 text-primary" />
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-red-600 shadow-md">
+                  <Terminal className="size-4 text-white" />
+                </div>
                 {t("gitCommit.commitArchitect")}
               </h3>
               <div className="flex gap-2">
@@ -291,7 +296,7 @@ export default function GitCommitGeneratorPage() {
                   generate();
                   if (isAIEnabled) {
                     const aiContext = `${config.type}${config.scope ? `(${config.scope})` : ""}: ${config.description}${config.body ? `\n\n${config.body}` : ""}`;
-                    generateCommitWithAI(aiContext).catch(() => {
+                    generateCommitWithAI(aiContext, locale).catch(() => {
                       addToast(t("ai.unavailable"), "warning");
                     });
                   }

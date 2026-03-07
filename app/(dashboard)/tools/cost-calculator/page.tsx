@@ -10,6 +10,7 @@ import {
   Cloud,
   CloudOff,
   Coins,
+  Calculator,
   ArrowRight,
   Eye,
   Sparkles,
@@ -23,6 +24,7 @@ import {
 import { useCostCalculator } from "@/hooks/use-cost-calculator";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 
 const CostProjectionChart = dynamic(
   () => import("@/components/tools/cost-projection-chart").then(m => m.CostProjectionChart),
@@ -158,6 +160,7 @@ export default function CostCalculatorPage() {
 
   const { adviseCostWithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
 
   const [detailModel, setDetailModel] = useState<CostCalculation | null>(null);
   const [featureFilters, setFeatureFilters] = useState<string[]>([]);
@@ -308,8 +311,8 @@ export default function CostCalculatorPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       {/* Header */}
       <ToolHeader
-        icon={Coins}
-        gradient="from-emerald-500 to-teal-600"
+        icon={Calculator}
+        gradient="from-amber-500 to-orange-600"
         title={t("costCalc.title")}
         description={t("costCalc.description")}
         breadcrumb
@@ -343,10 +346,14 @@ export default function CostCalculatorPage() {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Settings Panel */}
         <div className="space-y-6">
-          <Card className="p-6">
-            <div className="mb-4 flex items-center gap-2 border-b border-border pb-2">
-              <Coins className="size-5 text-primary" />
-              <h2 className="font-semibold">{t("common.configuration")}</h2>
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            {/* Accent bar */}
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 to-orange-600" />
+            <div className="mb-4 flex items-center gap-2 border-b border-border/50 pb-2 mt-1">
+              <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 shadow-md">
+                <Coins className="size-4 text-white" />
+              </div>
+              <h2 className="font-bold">{t("common.configuration")}</h2>
             </div>
 
             <div className="space-y-6">
@@ -440,9 +447,12 @@ export default function CostCalculatorPage() {
           </Card>
 
           {/* Result Card */}
-          <Card className="p-6 bg-primary text-white shadow-lg shadow-primary/20 border-none">
-            <div className="flex items-center justify-between mb-1">
-              <p className="text-sm opacity-80 uppercase tracking-wider font-semibold">
+          <Card className="relative overflow-hidden p-6 bg-gradient-to-br from-primary to-primary/80 text-white shadow-xl shadow-primary/25 border-none">
+            {/* Decorative glow */}
+            <div className="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute -left-4 -bottom-4 size-20 rounded-full bg-white/5 blur-xl" />
+            <div className="relative flex items-center justify-between mb-1">
+              <p className="text-sm opacity-90 uppercase tracking-wider font-bold">
                 {t("costCalc.estimatedMonthlyCost")}
               </p>
               <div className="flex gap-2">
@@ -463,7 +473,7 @@ export default function CostCalculatorPage() {
                 ))}
               </div>
             </div>
-            <p className="text-4xl font-bold mb-2">
+            <p className="text-4xl font-extrabold mb-2 drop-shadow-sm">
               {formatCost(monthlyCost, currency)}
             </p>
             <div className="flex items-center gap-2 text-sm opacity-90">
@@ -481,9 +491,13 @@ export default function CostCalculatorPage() {
           </div>
 
           {isAIEnabled && (
-            <Card className="p-6 bg-gradient-to-br from-violet-500/10 to-purple-500/10 dark:from-violet-500/15 dark:to-purple-500/15 border border-violet-500/20 dark:border-violet-500/10">
-              <h3 className="text-xs font-black uppercase text-violet-600 dark:text-violet-400 mb-4 flex items-center gap-2 tracking-widest">
-                <Bot className="size-3" /> {t("costCalc.aiAdvisor")}
+            <Card className="relative overflow-hidden p-6 bg-gradient-to-br from-violet-500/10 to-purple-500/10 dark:from-violet-500/15 dark:to-purple-500/15 border border-violet-500/20 dark:border-violet-500/10">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-purple-600" />
+              <h3 className="text-xs font-black uppercase text-violet-600 dark:text-violet-400 mb-4 flex items-center gap-2 tracking-widest mt-1">
+                <div className="flex size-6 items-center justify-center rounded-md bg-gradient-to-br from-violet-500 to-purple-600 shadow-md">
+                  <Bot className="size-3 text-white" />
+                </div>
+                {t("costCalc.aiAdvisor")}
               </h3>
               <Button
                 size="sm"
@@ -492,7 +506,7 @@ export default function CostCalculatorPage() {
                 onPress={() => {
                   const cheapest = comparison?.results[0];
                   const scenario = `Input tokens: ${inputTokens}, Output tokens: ${outputTokens}, Daily requests: ${dailyRequests}, Monthly cost estimate: $${monthlyCost.toFixed(4)}, Cheapest model: ${cheapest?.model.displayName ?? "unknown"} at $${cheapest?.totalCost.toFixed(6) ?? "?"}/req`;
-                  void adviseCostWithAI(scenario);
+                  void adviseCostWithAI(scenario, locale);
                 }}
                 isLoading={isAILoading}
               >
@@ -533,10 +547,13 @@ export default function CostCalculatorPage() {
 
         {/* Comparison Table */}
         <div className="lg:col-span-2">
-          <Card className="p-6">
-            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-1">
               <h2 className="text-xl font-bold flex items-center gap-2">
-                <TrendingDown className="size-5 text-emerald-500 dark:text-emerald-400" />
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md">
+                  <TrendingDown className="size-4 text-white" />
+                </div>
                 {t("costCalc.priceComparison")}
               </h2>
               <div className="flex items-center gap-2">
@@ -606,9 +623,12 @@ export default function CostCalculatorPage() {
       </div>
 
       {/* Projection Chart — full width, outside the grid */}
-      <Card className="p-6">
-        <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-          <Sparkles className="size-5 text-warning" />
+      <Card className="relative overflow-hidden p-6 border-border/40">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500" />
+        <h3 className="text-lg font-bold mb-6 flex items-center gap-2 mt-1">
+          <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 shadow-md">
+            <Sparkles className="size-4 text-white" />
+          </div>
           {t("costCalc.projectionTitle")}
         </h3>
         <div className="h-[350px] w-full">

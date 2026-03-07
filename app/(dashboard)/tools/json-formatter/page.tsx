@@ -27,6 +27,7 @@ import {
 import { useJsonFormatter } from "@/hooks/use-json-formatter";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
@@ -113,6 +114,7 @@ export default function JsonFormatterPage() {
 
   const { explainJsonWithAI, aiResult: aiJsonResult, isAILoading: isAIAnalyzing, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
 
   const [activeTab, setActiveTab] = useState<"output" | "paths" | "typescript" | "compare">("output");
@@ -184,7 +186,7 @@ export default function JsonFormatterPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
         icon={Braces}
-        gradient="from-amber-500 to-orange-600"
+        gradient="from-yellow-500 to-amber-600"
         title={t("jsonFmt.title")}
         description={t("jsonFmt.description")}
         breadcrumb
@@ -201,10 +203,13 @@ export default function JsonFormatterPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Control Panel */}
         <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-yellow-500 to-amber-600" />
+            <div className="flex items-center justify-between mb-6 mt-1">
               <h3 className="font-bold flex items-center gap-2">
-                <Database className="size-4 text-primary" />
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500 to-amber-600 shadow-md">
+                  <Database className="size-4 text-white" />
+                </div>
                 {t("jsonFmt.rawPayload")}
               </h3>
               <div className="flex gap-2">
@@ -268,7 +273,7 @@ export default function JsonFormatterPage() {
                 isLoading={isAIAnalyzing}
                 isDisabled={!inputValidation.isValid || !input.trim()}
                 onPress={() => {
-                  explainJsonWithAI(input).catch(() => {
+                  explainJsonWithAI(input, locale).catch(() => {
                     addToast(t("ai.unavailableLocal"), "info");
                   });
                 }}
@@ -468,7 +473,7 @@ export default function JsonFormatterPage() {
 
                 {compareInput && isEqual !== null && (
                   <Card className={cn(
-                    "p-4 flex items-center gap-3 border-2 transition-all duration-500",
+                    "p-4 flex items-center gap-3 border-2 transition-all duration-300",
                     isEqual ? "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/10 dark:border-emerald-900/30 dark:text-emerald-400" : "bg-danger-50 border-danger-200 text-danger-700 dark:bg-danger-950/10 dark:border-danger-900/30 dark:text-danger-400"
                   )}>
                     {isEqual ? (

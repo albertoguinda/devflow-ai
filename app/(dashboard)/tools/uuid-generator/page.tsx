@@ -103,7 +103,7 @@ export default function UuidGeneratorPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
         icon={Fingerprint}
-        gradient="from-indigo-500 to-purple-600"
+        gradient="from-teal-500 to-emerald-600"
         title={t("uuid.title")}
         description={t("uuid.description")}
         breadcrumb
@@ -120,7 +120,8 @@ export default function UuidGeneratorPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Config Column */}
         <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6">
+          <Card className="relative overflow-hidden p-6 border-border/40">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-teal-500 to-emerald-600" />
             <Tabs
               selectedKey={activeTab as string}
               onSelectionChange={(k) => setActiveTab(k as string)}
@@ -408,7 +409,7 @@ export default function UuidGeneratorPage() {
                 <div className="flex flex-wrap gap-1 font-mono text-xs leading-none mb-10">
                   {analysis.binaryView?.map((part, i) => (
                     <span key={i} title={part.label}>
-                      <div className={cn("flex flex-wrap gap-0.5 p-1 rounded transition-colors hover:bg-muted cursor-help", part.color)}>
+                      <div className={cn("flex flex-wrap gap-0.5 p-1 rounded transition-colors duration-200 hover:bg-muted cursor-help", part.color)}>
                         {part.bits.split('').map((bit, j) => (
                           <span key={j} className={cn("w-2 h-3 flex items-center justify-center rounded-[1px]", bit === '1' ? "bg-current text-white" : "bg-muted text-muted-foreground")}>
                             {bit}

@@ -15,6 +15,7 @@ export const aiReviewSchema = z.object({
     "php",
     "csharp",
   ]),
+  locale: z.enum(["en", "es"]).optional(),
 });
 
 export type AIReviewInput = z.infer<typeof aiReviewSchema>;

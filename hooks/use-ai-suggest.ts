@@ -9,6 +9,7 @@ interface SuggestArgs {
   type?: string | undefined;
   language?: string | undefined;
   mode: "variable-name" | "regex-generate" | "commit-message" | "cron-generate" | "json-explain" | "base64-explain" | "dto-optimize" | "http-explain" | "tailwind-optimize" | "cost-advise" | "context-optimize";
+  locale?: "en" | "es" | undefined;
 }
 
 async function suggestFetcher(
@@ -25,28 +26,28 @@ export function useAISuggest() {
   );
 
   return {
-    suggestWithAI: (context: string, type?: string, language?: string) =>
-      trigger({ context, type, language, mode: "variable-name" }),
-    generateRegexWithAI: (description: string) =>
-      trigger({ context: description, mode: "regex-generate" }),
-    generateCommitWithAI: (description: string) =>
-      trigger({ context: description, mode: "commit-message" }),
-    generateCronWithAI: (description: string) =>
-      trigger({ context: description, mode: "cron-generate" }),
-    explainJsonWithAI: (json: string) =>
-      trigger({ context: json, mode: "json-explain" }),
-    explainBase64WithAI: (content: string) =>
-      trigger({ context: content, mode: "base64-explain" }),
-    optimizeDtoWithAI: (code: string) =>
-      trigger({ context: code, mode: "dto-optimize" }),
-    explainHttpStatusWithAI: (description: string) =>
-      trigger({ context: description, mode: "http-explain" }),
-    optimizeTailwindWithAI: (classes: string) =>
-      trigger({ context: classes, mode: "tailwind-optimize" }),
-    adviseCostWithAI: (scenario: string) =>
-      trigger({ context: scenario, mode: "cost-advise" }),
-    optimizeContextWithAI: (contextSummary: string) =>
-      trigger({ context: contextSummary, mode: "context-optimize" }),
+    suggestWithAI: (context: string, type?: string, language?: string, locale?: "en" | "es") =>
+      trigger({ context, type, language, mode: "variable-name", locale }),
+    generateRegexWithAI: (description: string, locale?: "en" | "es") =>
+      trigger({ context: description, mode: "regex-generate", locale }),
+    generateCommitWithAI: (description: string, locale?: "en" | "es") =>
+      trigger({ context: description, mode: "commit-message", locale }),
+    generateCronWithAI: (description: string, locale?: "en" | "es") =>
+      trigger({ context: description, mode: "cron-generate", locale }),
+    explainJsonWithAI: (json: string, locale?: "en" | "es") =>
+      trigger({ context: json, mode: "json-explain", locale }),
+    explainBase64WithAI: (content: string, locale?: "en" | "es") =>
+      trigger({ context: content, mode: "base64-explain", locale }),
+    optimizeDtoWithAI: (code: string, locale?: "en" | "es") =>
+      trigger({ context: code, mode: "dto-optimize", locale }),
+    explainHttpStatusWithAI: (description: string, locale?: "en" | "es") =>
+      trigger({ context: description, mode: "http-explain", locale }),
+    optimizeTailwindWithAI: (classes: string, locale?: "en" | "es") =>
+      trigger({ context: classes, mode: "tailwind-optimize", locale }),
+    adviseCostWithAI: (scenario: string, locale?: "en" | "es") =>
+      trigger({ context: scenario, mode: "cost-advise", locale }),
+    optimizeContextWithAI: (contextSummary: string, locale?: "en" | "es") =>
+      trigger({ context: contextSummary, mode: "context-optimize", locale }),
     aiResult: data ?? null,
     aiError: error as Error | null,
     isAILoading: isMutating,

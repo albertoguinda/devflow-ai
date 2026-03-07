@@ -19,12 +19,14 @@ import {
   MoreVertical,
   Wand2,
   FileCode,
+  Code2,
   Sparkles,
   Bot,
 } from "lucide-react";
 import { useCodeReview } from "@/hooks/use-code-review";
 import { useAICodeReview } from "@/hooks/use-ai-code-review";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
@@ -56,6 +58,7 @@ export default function CodeReviewPage() {
   const { result, isReviewing, review, reset } = useCodeReview();
   const { reviewWithAI, aiResult, isAILoading, aiError } = useAICodeReview();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
   const { navigateTo } = useSmartNavigation();
 
@@ -80,7 +83,7 @@ export default function CodeReviewPage() {
 
       // Fire AI request in parallel (if enabled)
       if (isAIEnabled) {
-        reviewWithAI(code, language).catch(() => {
+        reviewWithAI(code, language, locale).catch(() => {
           addToast(t("ai.unavailableLocal"), "info");
         });
       }
@@ -198,8 +201,8 @@ export default function CodeReviewPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       {/* Header */}
       <ToolHeader
-        icon={FileCode}
-        gradient="from-red-500 to-rose-600"
+        icon={Code2}
+        gradient="from-emerald-500 to-teal-600"
         title={t("codeReview.title")}
         description={t("codeReview.description")}
         breadcrumb
@@ -215,10 +218,13 @@ export default function CodeReviewPage() {
 
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Input Panel */}
-        <Card className="p-6 lg:col-span-2">
-          <div className="mb-4 flex flex-col gap-4">
+        <Card className="relative overflow-hidden p-6 lg:col-span-2 border-border/40">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+          <div className="mb-4 flex flex-col gap-4 mt-1">
             <h2 className="text-lg font-bold flex items-center gap-2">
-              <FileCode className="size-5 text-primary" />
+              <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md">
+                <FileCode className="size-4 text-white" />
+              </div>
               {t("codeReview.codeInput")}
             </h2>
             
@@ -295,7 +301,8 @@ export default function CodeReviewPage() {
             <>
               {/* Score & Metrics Dashboard */}
               <div className="grid gap-4 sm:grid-cols-3">
-                <Card className="p-6 col-span-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-background to-muted/50">
+                <Card className="relative overflow-hidden p-6 col-span-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-background to-muted/50 border-border/40">
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
                     {t("codeReview.overallScore")}
                   </p>
@@ -355,10 +362,13 @@ export default function CodeReviewPage() {
               </div>
 
               {/* Issues DataTable */}
-              <Card className="p-6">
-                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <Card className="relative overflow-hidden p-6 border-border/40">
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-500 to-rose-600" />
+                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-1">
                   <h3 className="text-lg font-bold flex items-center gap-2">
-                    <ShieldAlert className="size-5 text-danger" />
+                    <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-rose-600 shadow-md">
+                      <ShieldAlert className="size-4 text-white" />
+                    </div>
                     {t("codeReview.auditFindings")}
                   </h3>
                   <div className="flex gap-2 flex-wrap" role="radiogroup" aria-label={t("codeReview.filterBySeverity")}>

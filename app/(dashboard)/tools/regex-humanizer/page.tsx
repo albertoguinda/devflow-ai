@@ -97,7 +97,7 @@ export default function RegexHumanizerPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
         icon={Regex}
-        gradient="from-pink-500 to-rose-600"
+        gradient="from-cyan-500 to-blue-600"
         title={t("regex.title")}
         description={t("regex.description")}
         breadcrumb
@@ -122,7 +122,8 @@ export default function RegexHumanizerPage() {
 
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Pattern Input & Generation */}
-        <Card className="p-6 lg:col-span-2 flex flex-col gap-6">
+        <Card className="relative overflow-hidden p-6 lg:col-span-2 flex flex-col gap-6 border-border/40">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600" />
           <Tabs
             selectedKey={activeTab as string}
             onSelectionChange={(key) => setActiveTab(key as string)}
@@ -239,7 +240,7 @@ export default function RegexHumanizerPage() {
                   onPress={() => {
                     generate(generateDesc);
                     if (isAIEnabled) {
-                      generateRegexWithAI(generateDesc).catch(() => {
+                      generateRegexWithAI(generateDesc, locale).catch(() => {
                         addToast(t("ai.unavailableLocal"), "info");
                       });
                     }
@@ -412,7 +413,7 @@ export default function RegexHumanizerPage() {
                               isLoading={isAIGenerating}
                               onPress={() => {
                                 const ctx = `Regex: /${explanation.pattern}/${explanation.flags}\nSafety score: ${explanation.safetyScore}/100\nWarnings: ${explanation.warnings.length > 0 ? explanation.warnings.join("; ") : "None"}\nGroups: ${explanation.groups.length}\nCommon pattern: ${explanation.commonPattern ?? "None detected"}`;
-                                void generateRegexWithAI(ctx);
+                                void generateRegexWithAI(ctx, locale);
                               }}
                             >
                               <Bot className="size-3.5 mr-1" /> {t("regex.aiExplainBtn")}

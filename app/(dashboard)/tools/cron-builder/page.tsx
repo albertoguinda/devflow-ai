@@ -23,6 +23,7 @@ import {
 import { useCronBuilder } from "@/hooks/use-cron-builder";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
@@ -66,7 +67,7 @@ function MiniCalendar({ executions }: { executions: NextExecution[] }) {
           <div
             key={day}
             className={cn(
-              "text-center text-xs font-bold py-1 rounded-md transition-colors",
+              "text-center text-xs font-bold py-1 rounded-md transition-colors duration-200",
               isActive ? "bg-orange-500 text-white" : "text-muted-foreground",
               isToday && "ring-1 ring-primary"
             )}
@@ -96,6 +97,7 @@ export default function CronBuilderPage() {
 
   const { generateCronWithAI, aiResult: aiCronResult, isAILoading: isAICronLoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
   const [naturalLanguageInput, setNaturalLanguageInput] = useState("");
   const [pasteInput, setPasteInput] = useState("");
@@ -167,7 +169,7 @@ export default function CronBuilderPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
         icon={Clock}
-        gradient="from-orange-500 to-amber-600"
+        gradient="from-violet-500 to-purple-600"
         title={t("cron.title")}
         description={t("cron.description")}
         breadcrumb
@@ -184,7 +186,8 @@ export default function CronBuilderPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Builder Column */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="overflow-hidden border border-border/50 p-6 card-glow-border">
+          <Card className="relative overflow-hidden border border-border/40 p-6 card-glow-border">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-purple-600" />
             <Tabs
               selectedKey={activeTab as string}
               onSelectionChange={(k) => setActiveTab(k as string)}
@@ -215,7 +218,7 @@ export default function CronBuilderPage() {
                             if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
                               e.preventDefault();
                               if (naturalLanguageInput.trim()) {
-                                generateCronWithAI(naturalLanguageInput).catch(() => {
+                                generateCronWithAI(naturalLanguageInput, locale).catch(() => {
                                   addToast(t("ai.unavailableLocal"), "info");
                                 });
                               }
@@ -230,7 +233,7 @@ export default function CronBuilderPage() {
                           isLoading={isAICronLoading}
                           isDisabled={!naturalLanguageInput.trim()}
                           onPress={() => {
-                            generateCronWithAI(naturalLanguageInput).catch(() => {
+                            generateCronWithAI(naturalLanguageInput, locale).catch(() => {
                               addToast(t("ai.unavailableLocal"), "info");
                             });
                           }}

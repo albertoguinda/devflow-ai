@@ -5,6 +5,24 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.16.0] - 2026-03-07
+
+### Systemic AI Locale Fix
+
+#### Fixed
+- **AI locale bug** — All 13 AI-enabled tools now pass the user's locale (`en`/`es`) to AI route handlers, so AI responses match the app language. Previously, AI always responded in English because user input was code/data with no language cues.
+
+#### Changed
+- **Schemas** — Added optional `locale` field to `aiSuggestSchema`, `aiReviewSchema`, `aiRefineSchema`
+- **Hooks** — `useAISuggest` (11 methods), `useAICodeReview`, `useAIRefine` now accept and forward `locale`
+- **Route handlers** — `/api/ai/suggest`, `/api/ai/review`, `/api/ai/refine` inject `[IMPORTANT: Respond entirely in Spanish (es-ES).]` locale hint when `locale === "es"`
+- **13 tool pages** — All AI-enabled pages read locale from `useLocaleStore` and pass it to AI calls
+
+#### Added
+- 6 new schema tests for locale field validation (accept `en`/`es`, reject invalid, accept optional)
+
+---
+
 ## [4.15.7] - 2026-03-07
 
 ### Visual Experience Enhancement

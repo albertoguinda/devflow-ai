@@ -16,6 +16,7 @@ import {
   Plus,
   Trash2,
   BookOpen,
+  FolderKanban,
   Coins,
   FileCode,
   FileText,
@@ -36,6 +37,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
+import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";
@@ -53,6 +55,7 @@ export default function ContextManagerPage() {
   const { navigateTo } = useSmartNavigation();
   const { optimizeContextWithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
+  const locale = useLocaleStore((s) => s.locale);
   const {
     windows,
     activeWindowId,
@@ -236,7 +239,7 @@ export default function ContextManagerPage() {
               {doc.type === "code" ? <FileCode className="size-3.5" /> : <FileText className="size-3.5" />}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-xs truncate group-hover/title:text-primary transition-colors">{highlightMatch(doc.title, searchQuery)}</span>
+              <span className="font-bold text-xs truncate group-hover/title:text-primary transition-colors duration-200">{highlightMatch(doc.title, searchQuery)}</span>
               {doc.filePath && doc.filePath !== doc.title && (
                 <span className="text-xs text-muted-foreground font-mono truncate">{highlightMatch(doc.filePath, searchQuery)}</span>
               )}
@@ -296,8 +299,8 @@ export default function ContextManagerPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <ToolHeader
-        icon={BookOpen}
-        gradient="from-blue-500 to-indigo-600"
+        icon={FolderKanban}
+        gradient="from-rose-500 to-pink-600"
         title={t("ctxMgr.title")}
         description={t("ctxMgr.description")}
         breadcrumb
@@ -309,7 +312,8 @@ export default function ContextManagerPage() {
 
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Sidebar: Windows List */}
-        <Card className="p-4 lg:col-span-3 flex flex-col gap-3">
+        <Card className="relative overflow-hidden p-4 lg:col-span-3 flex flex-col gap-3 border-border/40">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 to-orange-600" />
           <div className="flex flex-col gap-2">
             <Input
               placeholder={t("ctxMgr.newWindowPlaceholder")}
@@ -350,7 +354,7 @@ export default function ContextManagerPage() {
               <div
                 key={w.id}
                 className={cn(
-                  "group flex items-center justify-between p-2.5 rounded-lg transition-all border border-transparent",
+                  "group flex items-center justify-between p-2.5 rounded-lg transition-all duration-200 border border-transparent",
                   activeWindowId === w.id
                     ? "bg-primary/10 border-primary/20 text-primary"
                     : "hover:bg-muted text-muted-foreground"
@@ -443,7 +447,7 @@ export default function ContextManagerPage() {
                       <div className="h-1 w-20 bg-muted rounded-full overflow-hidden">
                         <div
                           className={cn(
-                            "h-full rounded-full transition-all",
+                            "h-full rounded-full transition-all duration-300",
                             activeWindow.utilizationPercentage > 90 ? "bg-red-500" : activeWindow.utilizationPercentage > 60 ? "bg-amber-500" : "bg-emerald-500"
                           )}
                           style={{ width: `${Math.min(100, activeWindow.utilizationPercentage)}%` }}
@@ -534,8 +538,8 @@ export default function ContextManagerPage() {
                         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openFileBrowser(); }}
                         aria-label={t("ctxMgr.uploadFile")}
                       >
-                        <Plus className="size-3 text-muted-foreground/40 group-hover:text-primary transition-colors" />
-                        <span className="text-xs text-muted-foreground/40 group-hover:text-primary font-bold transition-colors">
+                        <Plus className="size-3 text-muted-foreground/40 group-hover:text-primary transition-colors duration-200" />
+                        <span className="text-xs text-muted-foreground/40 group-hover:text-primary font-bold transition-colors duration-200">
                           {t("ctxMgr.addMoreFiles")}
                         </span>
                       </div>
@@ -549,8 +553,8 @@ export default function ContextManagerPage() {
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openFileBrowser(); }}
                       aria-label={t("ctxMgr.dropFilesHere")}
                     >
-                      <Upload className="size-5 mb-1.5 text-muted-foreground/40 group-hover:text-primary transition-colors" />
-                      <p className="text-xs font-bold text-muted-foreground group-hover:text-primary transition-colors">{t("ctxMgr.dropOrBrowse")}</p>
+                      <Upload className="size-5 mb-1.5 text-muted-foreground/40 group-hover:text-primary transition-colors duration-200" />
+                      <p className="text-xs font-bold text-muted-foreground group-hover:text-primary transition-colors duration-200">{t("ctxMgr.dropOrBrowse")}</p>
                       <p className="text-xs text-muted-foreground/60">{t("ctxMgr.dropOrBrowseHint")}</p>
                     </div>
                   )}
@@ -651,7 +655,7 @@ export default function ContextManagerPage() {
                           `- "${d.title}" (${d.type}, ${d.priority} priority, ${d.tokenCount} tokens)${d.filePath ? ` [${d.filePath}]` : ""}`
                         ).join("\n");
                         const contextSummary = `Model: ${MODEL_PRESETS.find(m => m.maxTokens === activeWindow.maxTokens)?.name ?? "Custom"} (${activeWindow.maxTokens.toLocaleString()} max tokens)\nTotal tokens used: ${activeWindow.totalTokens.toLocaleString()} (${activeWindow.utilizationPercentage}% utilization)\nDocuments (${activeWindow.documents.length}):\n${summary}`;
-                        void optimizeContextWithAI(contextSummary);
+                        void optimizeContextWithAI(contextSummary, locale);
                       }}
                     >
                       <Bot className="size-3.5 mr-1" /> {t("ctxMgr.aiOptimizeBtn")}
