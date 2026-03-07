@@ -20,7 +20,7 @@ export function FeatureCard({
   return (
     <Card
       className={cn(
-        "group relative cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1.5 border border-border/50 hover:shadow-[0_0_40px_-5px] hover:shadow-primary/20 card-shimmer-border",
+        "group relative cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1.5 border border-border/50 hover:shadow-[0_0_40px_-5px] hover:shadow-primary/20 card-glow-border",
         className
       )}
     >

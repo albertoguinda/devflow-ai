@@ -25,7 +25,10 @@ export function HomeContent({ stars }: HomeContentProps) {
     <div className="flex min-h-screen flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(0,0,0,0))]" />
+        {/* Multi-layer gradient background */}
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(99,102,241,0.25),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(99,102,241,0.12),transparent)]" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_50%_at_80%_50%,rgba(236,72,153,0.08),transparent)] dark:bg-[radial-gradient(ellipse_60%_50%_at_80%_50%,rgba(236,72,153,0.05),transparent)]" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_50%_at_20%_80%,rgba(16,185,129,0.06),transparent)] dark:bg-[radial-gradient(ellipse_60%_50%_at_20%_80%,rgba(16,185,129,0.04),transparent)]" />
 
         <div className="container mx-auto px-4 py-16 md:py-24">
           <div className="mx-auto max-w-4xl space-y-6 text-center">
@@ -48,17 +51,17 @@ export function HomeContent({ stars }: HomeContentProps) {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Link
                 href="/tools"
-                className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center rounded-lg bg-primary px-8 text-base font-semibold text-primary-foreground transition-colors hover:opacity-90"
+                className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 px-8 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
               >
                 {t("home.getStarted")}
-                <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+                <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
               </Link>
               <Link
                 href="https://github.com/albertoguinda/devflow-ai"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${t("home.starGithub")} (GitHub)`}
-                className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-8 text-base font-semibold text-foreground transition-colors hover:bg-muted"
+                className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-8 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 <Github className="size-5" aria-hidden="true" />
                 {t("home.starGithub")}
@@ -81,7 +84,7 @@ export function HomeContent({ stars }: HomeContentProps) {
             <div
               key={stat.label}
               className={cn(
-                "group relative cursor-pointer overflow-hidden rounded-xl bg-muted/50 p-6 text-center border border-border/40 transition-all duration-300 card-shimmer-border",
+                "group relative cursor-pointer overflow-hidden rounded-xl bg-muted/50 p-6 text-center border border-border/40 transition-all duration-300 card-glow-border",
                 "hover:-translate-y-1 hover:shadow-[0_0_30px_-5px]",
                 stat.glow
               )}

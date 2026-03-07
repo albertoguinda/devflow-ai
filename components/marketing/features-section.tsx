@@ -12,8 +12,12 @@ export function FeaturesSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="border-t border-border bg-muted/30 py-20">
-      <div className="container mx-auto px-4">
+    <section className="relative border-t border-border bg-muted/30 py-20 overflow-hidden">
+      {/* Decorative background blobs */}
+      <div className="absolute top-20 -left-32 size-96 rounded-full bg-gradient-to-br from-blue-500/5 to-purple-500/5 blur-3xl" aria-hidden="true" />
+      <div className="absolute bottom-20 -right-32 size-96 rounded-full bg-gradient-to-br from-pink-500/5 to-orange-500/5 blur-3xl" aria-hidden="true" />
+
+      <div className="relative container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="mb-3 text-4xl font-bold">{t("home.powerfulTools")}</h2>
           <p className="text-muted-foreground">
