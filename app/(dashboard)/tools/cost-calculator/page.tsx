@@ -58,6 +58,7 @@ function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, c
   const isCheapest = detailModel.model.id === cheapestId;
   const isBestValue = detailModel.model.id === bestValueId;
   const monthlyCostModel = detailModel.totalCost * dailyRequests * 30;
+  const currencySymbol = CURRENCIES.find(c => c.value === currency)?.symbol ?? "$";
 
   return (
     <div className="space-y-4">
@@ -87,7 +88,7 @@ function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, c
             <Zap className="size-3" />
             {t("costCalc.detailInputPrice")}
           </div>
-          <p className="font-bold text-lg">${detailModel.model.inputPricePerMToken.toFixed(2)}</p>
+          <p className="font-bold text-lg">{currencySymbol}{detailModel.model.inputPricePerMToken.toFixed(2)}</p>
           <p className="text-xs text-muted-foreground">{t("costCalc.detailMTokens")}</p>
         </div>
         <div className="rounded-lg bg-muted/50 p-3">
@@ -95,7 +96,7 @@ function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, c
             <Zap className="size-3" />
             {t("costCalc.detailOutputPrice")}
           </div>
-          <p className="font-bold text-lg">${detailModel.model.outputPricePerMToken.toFixed(2)}</p>
+          <p className="font-bold text-lg">{currencySymbol}{detailModel.model.outputPricePerMToken.toFixed(2)}</p>
           <p className="text-xs text-muted-foreground">{t("costCalc.detailMTokens")}</p>
         </div>
       </div>
@@ -286,7 +287,7 @@ export default function CostCalculatorPage() {
     
     return Array.from({ length: 30 }, (_, i) => {
       const day = i + 1;
-      const dataPoint: Record<string, string | number> = { day: `Day ${day}` };
+      const dataPoint: Record<string, string | number> = { day: t("costCalc.chartDay", { day: String(day) }) };
       
       topModels.forEach(result => {
         // Daily cost * number of days

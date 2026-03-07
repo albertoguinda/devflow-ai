@@ -393,7 +393,7 @@ export default function JsonFormatterPage() {
                         onPress={() => { setMode(m as JsonFormatMode); process(); }}
                         className="h-8 px-3 text-xs font-black uppercase tracking-tighter"
                       >
-                        {m.includes("-") ? m.split("-")[1] : m}
+                        {t(`jsonFmt.mode.${m}`)}
                       </Button>
                     ))}
                   </div>

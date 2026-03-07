@@ -1,11 +1,25 @@
-# TODO — DevFlow AI v4.15.0
+# TODO — DevFlow AI v4.15.4
 
-> Last updated: 2026-03-06
-> Context: Project finalized. 4 exhaustive audits completed (79 fixes). 1466 tests, 45 files, 1658 i18n keys, 0 vulnerabilities.
+> Last updated: 2026-03-07
+> Context: Project finalized. 4 exhaustive audits completed (79 fixes). 1481 tests, 45 files, 1747 i18n keys, 0 vulnerabilities.
 
 ---
 
-## Completed in This Session (2026-03-06)
+## Completed in This Session (2026-03-07)
+
+### i18n Hardcoded Strings Sweep — 30 New Keys Across 6 Tools
+- [x] **Regex Humanizer** — Flavor labels + cheat sheet descriptions use `t()`
+- [x] **Variable Name Wizard** — Convention labels + language labels use `t()`, LANGUAGES moved inside component
+- [x] **UUID Generator** — Namespace labels (DNS/URL/OID/X.500) use `t()`
+- [x] **DTO-Matic** — Language labels use existing keys, mock items label use `t()`
+- [x] **JSON Formatter** — Mode buttons (Format/Minify/YAML/XML/CSV) use `t()`
+- [x] **Cost Calculator** — Hardcoded `$` → dynamic currency symbol, chart day label uses `t()`
+- [x] 30 new i18n keys in both EN and ES (1717 → 1747, full parity)
+- [x] TypeScript: 0 errors, Build: OK, Tests: 1481 passing
+
+---
+
+## Completed in Previous Session (2026-03-06)
 
 ### Pixel-Perfect & Responsive Audit — 11 Fixes in 4 Phases
 - [x] **ToolHeader** — Responsive wrap at 375px (flex-col/sm:flex-row, min-w-0, responsive font sizes)
@@ -290,12 +304,12 @@ When resuming work:
 3. **End of session**: Update CHANGELOG.md, commit, push, verify CI on GitHub
 
 ### Quick Context
-- **Version**: 4.15.0 (current)
-- **Tests**: 45 files, 1466 passing
+- **Version**: 4.15.4 (current)
+- **Tests**: 45 files, 1481 passing
 - **Coverage**: 95.88% stmts, 88.62% branches, 93.56% funcs, 96.46% lines — all per-file thresholds pass
 - **ESLint**: 0 errors, 0 warnings
 - **TypeScript**: 0 errors (strict mode, zero `any`)
-- **i18n**: 1658 keys in both locales (perfect parity)
+- **i18n**: 1747 keys in both locales (perfect parity)
 - **Vulnerabilities**: 0
 - **Sentry**: 10.40.0, disabled by default (set `NEXT_PUBLIC_SENTRY_DSN` to activate)
 - **CI**: 10 jobs (quality, security, dep-review, build, a11y, e2e, codeql, semgrep, lighthouse, release)

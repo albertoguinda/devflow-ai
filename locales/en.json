@@ -1726,5 +1726,41 @@
 
   "ctxMgr.searchDocs": "Search documents...",
   "ctxMgr.docsAndTokens": "{docs} docs · {tokens} tok",
-  "ctxMgr.tokensUnit": "tokens"
+  "ctxMgr.tokensUnit": "tokens",
+
+  "regex.flavor.javascript": "JavaScript",
+  "regex.flavor.python": "Python",
+  "regex.flavor.go": "Go",
+  "regex.flavor.pcre": "PCRE",
+  "regex.flavor.rust": "Rust",
+  "regex.cheatDigit": "Digit",
+  "regex.cheatWord": "Word",
+  "regex.cheatSpace": "Space",
+  "regex.cheatAny": "Any",
+  "regex.cheatStart": "Start",
+  "regex.cheatEnd": "End",
+
+  "varName.convention.camelCase": "camelCase",
+  "varName.convention.snake_case": "snake_case",
+  "varName.convention.PascalCase": "PascalCase",
+  "varName.convention.kebab-case": "kebab-case",
+  "varName.convention.SCREAMING_SNAKE_CASE": "SCREAMING_SNAKE",
+  "varName.langTypeScript": "TypeScript",
+  "varName.langPython": "Python",
+  "varName.langGo": "Go",
+
+  "uuid.namespaceDns": "DNS",
+  "uuid.namespaceUrl": "URL",
+  "uuid.namespaceOid": "OID",
+  "uuid.namespaceX500": "X.500",
+
+  "dtoMatic.mockItems": "items",
+
+  "jsonFmt.mode.format": "Format",
+  "jsonFmt.mode.minify": "Minify",
+  "jsonFmt.mode.to-yaml": "YAML",
+  "jsonFmt.mode.to-xml": "XML",
+  "jsonFmt.mode.to-csv": "CSV",
+
+  "costCalc.chartDay": "Day {day}"
 }

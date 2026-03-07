@@ -164,11 +164,11 @@ export default function DtoMaticPage() {
                 <label className="text-xs font-black uppercase text-muted-foreground tracking-widest ml-1">{t("dtoMatic.targetStack")}</label>
                 <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label={t("dtoMatic.targetStack")}>
                   {[
-                    { val: "typescript", label: "TypeScript" },
-                    { val: "java", label: "Java" },
-                    { val: "python", label: "Python" },
-                    { val: "go", label: "Go" },
-                    { val: "csharp", label: "C# .NET" },
+                    { val: "typescript", label: t("dtoMatic.langTS") },
+                    { val: "java", label: t("dtoMatic.langJava") },
+                    { val: "python", label: t("dtoMatic.langPython") },
+                    { val: "go", label: t("dtoMatic.langGo") },
+                    { val: "csharp", label: t("dtoMatic.langCSharp") },
                   ].map(opt => (
                     <Button
                       key={opt.val}
@@ -333,8 +333,8 @@ export default function DtoMaticPage() {
                         <Select.Popover>
                           <ListBox>
                             {[1, 3, 5, 10, 25, 50].map(n => (
-                              <ListBox.Item key={String(n)} id={String(n)} textValue={`${n} items`}>
-                                {n} items
+                              <ListBox.Item key={String(n)} id={String(n)} textValue={`${n} ${t("dtoMatic.mockItems")}`}>
+                                {n} {t("dtoMatic.mockItems")}
                                 <ListBox.ItemIndicator />
                               </ListBox.Item>
                             ))}

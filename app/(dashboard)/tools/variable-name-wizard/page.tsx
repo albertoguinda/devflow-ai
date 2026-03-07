@@ -44,16 +44,16 @@ import { cn } from "@/lib/utils";
 import { convertToAll, expandAbbreviations, abbreviateName } from "@/hooks/use-variable-name-wizard";
 import type { NameSuggestion, VariableType, WizardConfig, NamingConvention } from "@/types/variable-name-wizard";
 
-const LANGUAGES = [
-  { id: "typescript", label: "TypeScript", icon: Globe },
-  { id: "python", label: "Python", icon: Code2 },
-  { id: "java", label: "Java", icon: Box },
-  { id: "go", label: "Go", icon: Zap },
-  { id: "csharp", label: "C# .NET", icon: Layers },
-] as const;
-
 export default function VariableNameWizardPage() {
   const { t } = useTranslation();
+
+  const LANGUAGES = useMemo(() => [
+    { id: "typescript" as const, label: t("varName.langTypeScript"), icon: Globe },
+    { id: "python" as const, label: t("varName.langPython"), icon: Code2 },
+    { id: "java" as const, label: t("varName.langJava"), icon: Box },
+    { id: "go" as const, label: t("varName.langGo"), icon: Zap },
+    { id: "csharp" as const, label: t("varName.langCSharp"), icon: Layers },
+  ], [t]);
   const {
     input,
     config,
@@ -480,7 +480,7 @@ export default function VariableNameWizardPage() {
                           batchTarget === c ? "bg-violet-500 border-violet-500" : "bg-muted/30"
                         )}
                       >
-                        {c}
+                        {t(`varName.convention.${c}`)}
                       </Button>
                     ))}
                   </div>

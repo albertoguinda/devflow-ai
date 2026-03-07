@@ -77,10 +77,10 @@ export default function UuidGeneratorPage() {
   ];
 
   const NAMESPACE_OPTIONS: { id: UuidNamespace; label: string }[] = [
-    { id: "dns", label: "DNS" },
-    { id: "url", label: "URL" },
-    { id: "oid", label: "OID" },
-    { id: "x500", label: "X.500" },
+    { id: "dns", label: t("uuid.namespaceDns") },
+    { id: "url", label: t("uuid.namespaceUrl") },
+    { id: "oid", label: t("uuid.namespaceOid") },
+    { id: "x500", label: t("uuid.namespaceX500") },
   ];
 
   const FORMATS: { id: UuidFormat; label: string }[] = [

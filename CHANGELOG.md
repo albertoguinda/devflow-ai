@@ -5,6 +5,25 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.4] - 2026-03-07
+
+### i18n Hardcoded Strings Sweep
+
+Replaced ~35 hardcoded English strings across 6 tools with `t()` i18n calls for full bilingual support.
+
+#### Fixed
+- **Regex Humanizer** — Flavor labels (JavaScript/Python/Go/PCRE/Rust) and cheat sheet descriptions (Digit/Word/Space/Any/Start/End) now use `t()` and display in Spanish when locale is ES
+- **Variable Name Wizard** — Convention labels (camelCase/snake_case/PascalCase/kebab-case/SCREAMING_SNAKE) and language labels (TypeScript/Python/Java/Go/C#) now use `t()`. LANGUAGES array moved inside component with `useMemo` for access to `t()`
+- **UUID Generator** — Namespace labels (DNS/URL/OID/X.500) now use `t()`
+- **DTO-Matic** — Language selector labels now use existing `dtoMatic.lang*` keys. Mock item count label ("items"/"elementos") now uses `t()`
+- **JSON Formatter** — Mode button labels (Format/Minify/YAML/XML/CSV) now use `t()` and translate to Spanish (Formatear/Minificar)
+- **Cost Calculator** — Hardcoded `$` in detail modal replaced with dynamic currency symbol from CURRENCIES array. Chart day label ("Day 1"/"Día 1") now uses `t()`
+
+#### Changed
+- 30 new i18n keys added to both EN and ES locales (1717 → 1747 total, full parity)
+
+---
+
 ## [4.15.3] - 2026-03-07
 
 ### New Logo & Branding

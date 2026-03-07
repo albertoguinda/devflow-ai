@@ -182,7 +182,7 @@ export default function RegexHumanizerPage() {
                         onPress={() => setFlavor(f)}
                         className="px-2.5 text-xs font-bold capitalize"
                       >
-                        {f === "pcre" ? "PCRE" : f}
+                        {t(`regex.flavor.${f}`)}
                       </Button>
                     ))}
                   </div>
@@ -289,9 +289,9 @@ export default function RegexHumanizerPage() {
             <h4 className="text-xs font-bold text-muted-foreground uppercase mb-3">{t("regex.quickRef")}</h4>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { s: "\\d", d: "Digit" }, { s: "\\w", d: "Word" },
-                { s: "\\s", d: "Space" }, { s: ".", d: "Any" },
-                { s: "^", d: "Start" }, { s: "$", d: "End" }
+                { s: "\\d", d: t("regex.cheatDigit") }, { s: "\\w", d: t("regex.cheatWord") },
+                { s: "\\s", d: t("regex.cheatSpace") }, { s: ".", d: t("regex.cheatAny") },
+                { s: "^", d: t("regex.cheatStart") }, { s: "$", d: t("regex.cheatEnd") }
               ].map(ref => (
                 <Button
                   key={ref.s}
