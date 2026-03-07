@@ -39,7 +39,7 @@ export function HomeContent({ stars }: HomeContentProps) {
 
             <h1 className="text-5xl font-bold leading-tight text-foreground md:text-7xl">
               {t("home.title1")}
-              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent animate-gradient-text">
                 {t("home.title2")}
               </span>
             </h1>
@@ -133,7 +133,7 @@ export function HomeContent({ stars }: HomeContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${t("home.starGithub")} — DevFlowAI`}
-                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-base font-semibold text-background transition-opacity hover:opacity-90"
+                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-gray-800 to-gray-950 dark:from-gray-100 dark:to-gray-300 px-6 text-base font-semibold text-white dark:text-gray-900 shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
               >
                 <Github className="size-5" aria-hidden="true" />
                 {t("home.starGithub")}
@@ -143,7 +143,7 @@ export function HomeContent({ stars }: HomeContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("home.contributeTools")}
-                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-colors hover:bg-muted"
+                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-md"
               >
                 <Zap className="size-5" aria-hidden="true" />
                 {t("home.contributeTools")}
@@ -153,7 +153,7 @@ export function HomeContent({ stars }: HomeContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("home.followLinkedin")}
-                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-colors hover:bg-muted"
+                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-md"
               >
                 <Linkedin className="size-5" aria-hidden="true" />
                 {t("home.followLinkedin")}
@@ -164,7 +164,8 @@ export function HomeContent({ stars }: HomeContentProps) {
       </GsapReveal>
 
       {/* Footer */}
-      <footer className="mt-auto border-t py-8">
+      <footer className="relative mt-auto border-t py-8">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p>
             &copy; 2026 DevFlow AI &middot;{" "}
@@ -172,7 +173,7 @@ export function HomeContent({ stars }: HomeContentProps) {
               href="https://www.linkedin.com/in/albertoguindasevilla/"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:text-foreground"
+              className="font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               Alberto Guinda
             </Link>
@@ -181,7 +182,7 @@ export function HomeContent({ stars }: HomeContentProps) {
               href="https://github.com/albertoguinda/devflow-ai"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:text-foreground"
+              className="font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               GitHub
             </Link>

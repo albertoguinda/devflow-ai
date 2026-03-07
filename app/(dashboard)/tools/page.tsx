@@ -40,10 +40,16 @@ export default function ToolsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <ToolHeader
-        title={t("tools.title")}
-        description={t("tools.subtitle")}
-      />
+      <div className="relative -mx-4 -mt-4 md:-mx-8 md:-mt-8 mb-4 overflow-hidden rounded-b-2xl bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-950/20 dark:via-purple-950/10 dark:to-pink-950/20 px-4 py-8 md:px-8">
+        <div className="absolute -top-20 -right-20 size-60 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute -bottom-20 -left-20 size-60 rounded-full bg-gradient-to-br from-purple-400/10 to-pink-400/10 blur-3xl" aria-hidden="true" />
+        <div className="relative">
+          <ToolHeader
+            title={t("tools.title")}
+            description={t("tools.subtitle")}
+          />
+        </div>
+      </div>
 
       {/* Magic Input */}
       <div className="mx-auto max-w-2xl">

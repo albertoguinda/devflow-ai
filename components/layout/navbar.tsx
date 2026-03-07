@@ -36,16 +36,16 @@ export function Navbar() {
         {/* Logo */}
         <NextLink
           href="/"
-          className="flex items-center gap-2 text-xl font-bold text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-md"
+          className="group flex items-center gap-2.5 text-xl font-bold text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-md"
         >
           <Image
             src="/icons/icon-192x192.png"
             alt="DevFlow AI"
             width={28}
             height={28}
-            className="rounded-md"
+            className="rounded-md transition-transform duration-300 group-hover:scale-110"
           />
-          <span>DevFlow AI</span>
+          <span className="bg-gradient-to-r from-foreground to-foreground bg-clip-text transition-all duration-300 group-hover:from-blue-600 group-hover:via-indigo-600 group-hover:to-purple-600 group-hover:text-transparent dark:group-hover:from-blue-400 dark:group-hover:via-indigo-400 dark:group-hover:to-purple-400">DevFlow AI</span>
         </NextLink>
 
         {/* Desktop Navigation — absolutely centered with animated underline */}
@@ -90,7 +90,7 @@ export function Navbar() {
           </NextLink>
           <NextLink
             href="/tools"
-            className="ml-2 inline-flex h-9 min-w-[170px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="ml-2 inline-flex h-9 min-w-[170px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 px-5 text-sm font-medium text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <Wrench className="size-4" />
             {t("nav.openDashboard")}
@@ -153,7 +153,7 @@ export function Navbar() {
               <NextLink
                 href="/tools"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex h-11 w-full min-w-[170px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary text-sm font-medium text-primary-foreground transition-colors hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="flex h-11 w-full min-w-[170px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-sm font-medium text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <Wrench className="size-4" />
                 {t("nav.openDashboard")}

@@ -84,10 +84,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="border-b border-border p-6">
         <NextLink
           href="/"
-          className="flex items-center gap-2 text-xl font-bold text-foreground"
+          className="group flex items-center gap-2.5 text-xl font-bold text-foreground"
         >
-          <Image src="/icons/icon-192x192.png" alt="DevFlow AI" width={24} height={24} className="rounded-md" />
-          <span>DevFlow AI</span>
+          <Image src="/icons/icon-192x192.png" alt="DevFlow AI" width={24} height={24} className="rounded-md transition-transform duration-300 group-hover:scale-110" />
+          <span className="bg-gradient-to-r from-foreground to-foreground bg-clip-text transition-all duration-300 group-hover:from-blue-600 group-hover:via-indigo-600 group-hover:to-purple-600 group-hover:text-transparent dark:group-hover:from-blue-400 dark:group-hover:via-indigo-400 dark:group-hover:to-purple-400">DevFlow AI</span>
         </NextLink>
       </div>
 
@@ -103,9 +103,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               href={item.href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-primary/10 text-primary"
+                  ? "bg-gradient-to-r from-primary/15 to-primary/5 text-primary border-l-3 border-primary shadow-sm"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >

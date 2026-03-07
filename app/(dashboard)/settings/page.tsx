@@ -96,7 +96,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Preferences */}
-      <Card className="p-6">
+      <Card className="overflow-hidden p-6">
         <h2 className="mb-6 text-lg font-semibold">{t("settings.preferences")}</h2>
         <div className="space-y-6">
           {/* Theme */}

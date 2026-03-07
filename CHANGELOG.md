@@ -5,6 +5,25 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.7] - 2026-03-07
+
+### Visual Experience Enhancement
+
+#### Changed
+- **Navbar CTA** — Gradient button (blue-indigo-purple) matching hero style, shadow lift on hover
+- **Logo hover effect** — Brand text shifts to gradient on hover (navbar + sidebar), icon scales up
+- **Sidebar active state** — Left gradient border indicator with gradient background
+- **About page** — Radial gradient header bg, mission cards with gradient icons/color bars/glow borders, tech stack with gradient text + hover lift, contact icons as gradient spheres with scale animation
+- **Tools page header** — Gradient background with decorative blobs, rounded bottom corners
+- **Hero title** — Animated gradient text shift (slow color cycling)
+- **Community CTA** — GitHub button gradient (gray-to-black), secondary buttons with lift + shadow on hover
+- **Footer** — Gradient top border accent line
+- **Magic Input** — Enhanced shadow with indigo glow on focus/hover
+- **Favorites empty state** — Subtle red-pink gradient background
+- **Scrollbar** — Softer thumb color using border color instead of muted-foreground
+
+---
+
 ## [4.15.6] - 2026-03-07
 
 ### Branding, Visual Polish & Microcopy

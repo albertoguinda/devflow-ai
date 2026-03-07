@@ -40,7 +40,8 @@ export default function FavoritesPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border-2 border-dashed border-border py-16 text-center">
+        <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-border py-16 text-center">
+          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-red-50/30 via-transparent to-pink-50/30 dark:from-red-950/10 dark:to-pink-950/10" />
           <Heart className="mx-auto size-12 text-muted-foreground/30" aria-hidden="true" />
           <p className="mt-4 text-lg text-muted-foreground">{t("favorites.empty")}</p>
           <p className="mt-1 text-sm text-muted-foreground/70">

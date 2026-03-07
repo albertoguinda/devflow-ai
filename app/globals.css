@@ -484,12 +484,12 @@ label[for] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-muted-foreground);
+  background: var(--color-border);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-foreground);
+  background: var(--color-muted-foreground);
 }
 
 /* Custom animations */
@@ -551,6 +551,17 @@ label[for] {
   animation: pulse-slow 2s ease-in-out infinite;
 }
 
+/* Animated gradient text — slow color shift for hero elements */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-text {
+  background-size: 200% auto;
+  animation: gradient-shift 4s ease-in-out infinite;
+}
+
 /* Animated glow border — color-cycling box-shadow + border on hover */
 @keyframes glow-cycle {
   0%, 100% {
@@ -594,7 +605,8 @@ label[for] {
   .animate-fade-in-up,
   .animate-slide-in-right,
   .animate-slide-in,
-  .animate-pulse-slow {
+  .animate-pulse-slow,
+  .animate-gradient-text {
     animation: none !important;
   }
 
