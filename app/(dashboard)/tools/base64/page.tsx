@@ -153,7 +153,7 @@ export default function Base64Page() {
                   };
                   fileInput.click();
                 }} aria-label={t("base64.uploadFile")}><Upload className="size-3.5 mr-1" />{t("base64.uploadFile")}</Button>
-                <Button size="sm" variant="ghost" className="min-h-[24px]" onPress={() => loadExample("json")}>{t("base64.exampleBtn")}</Button>
+                <Button size="sm" variant="ghost" className="min-h-11" onPress={() => loadExample("json")}>{t("base64.exampleBtn")}</Button>
                 <Button size="sm" variant="ghost" onPress={() => setInput("")} isIconOnly aria-label={t("common.clearInput")} className="min-h-11 min-w-11"><Trash2 className="size-3.5 text-danger" /></Button>
               </div>
             </div>
