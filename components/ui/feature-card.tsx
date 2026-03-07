@@ -18,7 +18,7 @@ export function FeatureCard({
   return (
     <Card
       className={cn(
-        "group cursor-pointer p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
+        "group cursor-pointer p-6 transition-all duration-300 hover:-translate-y-1 border border-border/50 hover:border-primary/30 hover:shadow-[0_0_30px_-5px] hover:shadow-primary/15",
         className
       )}
     >

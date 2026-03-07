@@ -79,7 +79,7 @@ export function HomeContent({ stars }: HomeContentProps) {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl bg-muted/50 p-6 text-center"
+              className="rounded-xl bg-muted/50 p-6 text-center border border-border/40 hover:border-primary/25 hover:shadow-[0_0_25px_-5px] hover:shadow-primary/10 transition-all duration-300"
             >
               <div className="mb-2 flex justify-center text-muted-foreground">{stat.icon}</div>
               <span className="block h-9 text-3xl font-bold text-foreground">
