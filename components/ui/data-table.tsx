@@ -62,7 +62,6 @@ export function DataTable<T extends { id: string | number }>({
 }: DataTableProps<T>) {
   const { t } = useTranslation();
   const [filterValue, setFilterValue] = useState("");
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(initialVisibleColumns || columns.map(c => c.uid))
   );
@@ -229,9 +228,7 @@ export function DataTable<T extends { id: string | number }>({
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === "all"
-            ? t("table.allSelected")
-            : t("table.selectedOf", { selected: (selectedKeys as Set<string>).size, total: filteredItems.length })}
+          {t("table.totalItems", { count: filteredItems.length })}
         </span>
         <nav aria-label={t("table.pagination")} ref={(el) => {
           const ul = el?.querySelector('ul[data-slot="wrapper"]');
@@ -255,7 +252,7 @@ export function DataTable<T extends { id: string | number }>({
         </div>
       </div>
     );
-  }, [selectedKeys, filteredItems.length, page, pages, t]);
+  }, [filteredItems.length, page, pages, t]);
 
   return (
     <Table
@@ -273,12 +270,10 @@ export function DataTable<T extends { id: string | number }>({
         tr: "border-b border-divider last:border-b-0 transition-colors hover:bg-default-50 data-[selected=true]:bg-default-100 outline-none cursor-default",
         emptyWrapper: "h-40",
       }}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
+      selectionMode="none"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
       onSortChange={setSortDescriptor}
     >
       <TableHeader columns={headerColumns}>
