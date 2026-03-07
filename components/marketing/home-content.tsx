@@ -5,6 +5,7 @@ import { Zap, Monitor, LockOpen, Star, Github, Linkedin, Heart, ArrowRight } fro
 import { useTranslation } from "@/hooks/use-translation";
 import { GsapReveal } from "@/components/marketing/gsap-reveal";
 import { FeaturesSection } from "@/components/marketing/features-section";
+import { cn } from "@/lib/utils";
 
 interface HomeContentProps {
   stars: number | null;
@@ -14,10 +15,10 @@ export function HomeContent({ stars }: HomeContentProps) {
   const { t } = useTranslation();
 
   const stats = [
-    { label: t("home.freeTools"), value: "15", icon: <Zap className="size-6" aria-hidden="true" /> },
-    { label: t("home.openSource"), value: "100%", icon: <Monitor className="size-6" aria-hidden="true" /> },
-    { label: t("home.noApiKey"), value: "0", icon: <LockOpen className="size-6" aria-hidden="true" /> },
-    { label: t("home.githubStars"), value: null, icon: <Star className="size-6" aria-hidden="true" /> },
+    { label: t("home.freeTools"), value: "15", icon: <Zap className="size-6" aria-hidden="true" />, color: "from-amber-500 to-orange-500", glow: "group-hover:shadow-amber-500/20" },
+    { label: t("home.openSource"), value: "100%", icon: <Monitor className="size-6" aria-hidden="true" />, color: "from-blue-500 to-indigo-500", glow: "group-hover:shadow-blue-500/20" },
+    { label: t("home.noApiKey"), value: "0", icon: <LockOpen className="size-6" aria-hidden="true" />, color: "from-emerald-500 to-teal-500", glow: "group-hover:shadow-emerald-500/20" },
+    { label: t("home.githubStars"), value: null, icon: <Star className="size-6" aria-hidden="true" />, color: "from-purple-500 to-pink-500", glow: "group-hover:shadow-purple-500/20" },
   ];
 
   return (
@@ -79,9 +80,17 @@ export function HomeContent({ stars }: HomeContentProps) {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl bg-muted/50 p-6 text-center border border-border/40 hover:border-primary/25 hover:shadow-[0_0_25px_-5px] hover:shadow-primary/10 transition-all duration-300"
+              className={cn(
+                "group relative cursor-pointer overflow-hidden rounded-xl bg-muted/50 p-6 text-center border border-border/40 transition-all duration-300 card-shimmer-border",
+                "hover:-translate-y-1 hover:shadow-[0_0_30px_-5px]",
+                stat.glow
+              )}
             >
-              <div className="mb-2 flex justify-center text-muted-foreground">{stat.icon}</div>
+              {/* Colored top accent */}
+              <div className={cn("absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r transition-all duration-300 group-hover:h-1", stat.color)} />
+              <div className={cn("mb-3 mx-auto flex size-10 items-center justify-center rounded-lg bg-gradient-to-br text-white transition-transform duration-300 group-hover:scale-110", stat.color)}>
+                {stat.icon}
+              </div>
               <span className="block h-9 text-3xl font-bold text-foreground">
                 {stat.value ?? (stars !== null ? stars.toLocaleString() : "\u2014")}
               </span>

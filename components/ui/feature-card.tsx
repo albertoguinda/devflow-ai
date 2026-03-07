@@ -6,6 +6,7 @@ interface FeatureCardProps {
   icon: LucideIcon;
   title: string;
   description: string;
+  color?: string;
   className?: string;
 }
 
@@ -13,26 +14,37 @@ export function FeatureCard({
   icon: Icon,
   title,
   description,
+  color,
   className,
 }: FeatureCardProps) {
   return (
     <Card
       className={cn(
-        "group cursor-pointer p-6 transition-all duration-300 hover:-translate-y-1 border border-border/50 hover:border-primary/30 hover:shadow-[0_0_30px_-5px] hover:shadow-primary/15",
+        "group relative cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1.5 border border-border/50 hover:shadow-[0_0_40px_-5px] hover:shadow-primary/20 card-shimmer-border",
         className
       )}
     >
-      <Card.Header className="flex-row items-start gap-4">
-        <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-          <Icon className="size-6" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <Card.Title className="text-lg font-semibold">{title}</Card.Title>
-          <Card.Description className="text-sm text-muted-foreground">
-            {description}
-          </Card.Description>
-        </div>
-      </Card.Header>
+      {/* Colored top gradient bar */}
+      <div className={cn("h-1 bg-gradient-to-r transition-all duration-300 group-hover:h-1.5", color ?? "from-primary to-primary")} />
+
+      <div className="p-6">
+        <Card.Header className="flex-row items-start gap-4">
+          <div className={cn(
+            "flex size-12 shrink-0 items-center justify-center rounded-xl transition-all duration-300",
+            "bg-gradient-to-br text-white shadow-md",
+            "group-hover:scale-110 group-hover:shadow-lg",
+            color ?? "from-primary to-primary"
+          )}>
+            <Icon className="size-6" />
+          </div>
+          <div className="flex flex-col gap-1">
+            <Card.Title className="text-lg font-semibold transition-colors group-hover:text-foreground">{title}</Card.Title>
+            <Card.Description className="text-sm text-muted-foreground">
+              {description}
+            </Card.Description>
+          </div>
+        </Card.Header>
+      </div>
     </Card>
   );
 }

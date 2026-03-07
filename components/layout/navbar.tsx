@@ -39,7 +39,7 @@ export function Navbar() {
           className="flex items-center gap-2 text-xl font-bold text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-md"
         >
           <Image
-            src="/logo.webp"
+            src="/icons/icon-192x192.png"
             alt="DevFlow AI"
             width={28}
             height={28}

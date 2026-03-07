@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
+import Image from "next/image";
 import Script from "next/script";
 import type { ReactNode } from "react";
 import {
@@ -10,7 +11,6 @@ import {
   Heart,
   Clock,
   Settings,
-  Sparkles,
   Menu,
   X,
   BookOpen,
@@ -86,7 +86,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           href="/"
           className="flex items-center gap-2 text-xl font-bold text-foreground"
         >
-          <Sparkles className="size-6 text-primary" />
+          <Image src="/icons/icon-192x192.png" alt="DevFlow AI" width={24} height={24} className="rounded-md" />
           <span>DevFlow AI</span>
         </NextLink>
       </div>
@@ -225,7 +225,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             href="/"
             className="flex items-center gap-2 text-lg font-bold text-foreground"
           >
-            <Sparkles className="size-5 text-primary" />
+            <Image src="/icons/icon-192x192.png" alt="DevFlow AI" width={20} height={20} className="rounded-md" />
             <span>DevFlow AI</span>
           </NextLink>
         </header>

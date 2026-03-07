@@ -1,5 +1,6 @@
 "use client";
 
+import NextLink from "next/link";
 import { useStaggerIn } from "@/hooks/use-gsap";
 import { useTranslation } from "@/hooks/use-translation";
 import { FeatureCard } from "@/components/ui/feature-card";
@@ -28,12 +29,14 @@ export function FeaturesSection() {
             const Icon = TOOL_ICON_MAP[tool.icon];
             if (!Icon) return null;
             return (
-              <FeatureCard
-                key={tool.id}
-                icon={Icon}
-                title={t(`tool.${tool.slug}.name`)}
-                description={t(`tool.${tool.slug}.description`)}
-              />
+              <NextLink key={tool.id} href={`/tools/${tool.slug}`} className="block">
+                <FeatureCard
+                  icon={Icon}
+                  title={t(`tool.${tool.slug}.name`)}
+                  description={t(`tool.${tool.slug}.description`)}
+                  color={tool.color}
+                />
+              </NextLink>
             );
           })}
         </div>

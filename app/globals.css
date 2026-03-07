@@ -551,6 +551,44 @@ label[for] {
   animation: pulse-slow 2s ease-in-out infinite;
 }
 
+/* Animated gradient border shimmer */
+@keyframes border-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.card-shimmer-border {
+  position: relative;
+}
+
+.card-shimmer-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    transparent 20%,
+    var(--shimmer-color, rgba(99, 102, 241, 0.4)) 40%,
+    var(--shimmer-color-2, rgba(168, 85, 247, 0.4)) 60%,
+    transparent 80%
+  );
+  background-size: 300% 300%;
+  animation: border-shimmer 4s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card-shimmer-border:hover::before {
+  opacity: 1;
+}
+
 /* Glass morphism effect */
 .glass {
   background: rgba(255, 255, 255, 0.1);

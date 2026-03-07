@@ -21,7 +21,7 @@ export const ToolCard = React.memo(function ToolCard({ tool }: ToolCardProps) {
   const IconComponent = TOOL_ICON_MAP[tool.icon];
 
   return (
-    <Card className={cn("group relative cursor-pointer overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1", getToolGlowClass(tool.color))}>
+    <Card className={cn("group relative cursor-pointer overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5 card-shimmer-border", getToolGlowClass(tool.color))}>
       {/* Color Banner */}
       <div className={cn("h-2 bg-gradient-to-r", tool.color)} />
 
