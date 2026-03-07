@@ -5,15 +5,20 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.15.1] - 2026-03-06
+## [4.15.2] - 2026-03-07
 
-### i18n, Touch Targets & Button Spacing Polish
+### Bilingual Prompt Analyzer, Favorites UX & Final Polish
 
-Final polish pass: eliminated 10 hardcoded strings across 4 tool pages, improved touch targets on 2 remaining icon buttons, and fixed button spacing in Cost Calculator.
+Complete bilingual support for the Prompt Analyzer's local refinement engine, favorite hearts always visible, and UX fixes across multiple tools.
 
 #### Fixed
-- **Prompt Analyzer** — 2 icon-only buttons (clear compare, export report) now have min-h-11/min-w-11 (44px WCAG touch targets)
-- **Cost Calculator** — Currency button group gap changed from gap-1 (4px) to gap-2 (8px) for better touch spacing
+- **Prompt Analyzer — Bilingual refinement** — The refined prompt template (role, context, task, guidelines, output_format) now generates in the same language as the user's input. Spanish keywords trigger full Spanish output.
+- **Prompt Analyzer — Bilingual suggestions** — All 7 anatomy suggestions and 16 issue-based suggestions now render in the detected language (EN/ES)
+- **Prompt Analyzer — Language detection bug** — `detectLang` regex was missing the `g` flag, causing `.match()` to always return 1 match. Spanish input was never detected. Fixed in both `refinement.ts` and `suggestions.ts`
+- **Prompt Analyzer — Loading spinner** — Refinement goal buttons (clarity/specificity/conciseness) now show loading only on the pressed button; other buttons are disabled during the request
+- **Prompt Analyzer** — 2 icon-only buttons (clear compare, export report) now have 44px WCAG touch targets
+- **Cost Calculator** — Currency button group gap changed from gap-1 (4px) to gap-2 (8px)
+- **Tool Card — Favorite hearts** — Heart icon now always visible when a tool is favorited (red heart), hidden only for non-favorited cards (appears on hover)
 
 #### Changed
 - **i18n hardcoded strings** — 10 user-visible strings replaced with `t()` calls across 4 files:
@@ -22,6 +27,7 @@ Final polish pass: eliminated 10 hardcoded strings across 4 tool pages, improved
   - Context Manager: "N docs · N tok" sidebar stats, "N tokens" chip
   - Token Visualizer: "tokens" in aria-label
 - 9 new i18n keys added to both EN and ES locales (1658 → 1667 total, full parity)
+- Role detection expanded with Spanish keywords (web, desarrollo, diseno, negocio, articulo, etc.)
 
 ---
 
