@@ -25,7 +25,7 @@ test.describe("DTO-Matic", () => {
     await page.goto("/tools/dto-matic");
 
     // Select Java language
-    const javaBtn = page.getByRole("button", { name: /^java$/i });
+    const javaBtn = page.getByRole("button", { name: /java/i });
     await expect(javaBtn).toBeVisible({ timeout: 10000 });
     await javaBtn.click();
     await expect(javaBtn).toHaveAttribute("aria-pressed", "true");
