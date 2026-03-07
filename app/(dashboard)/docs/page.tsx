@@ -108,7 +108,7 @@ export default function DocsPage() {
             <Card
               key={tool.id}
               id={tool.slug}
-              className="group relative overflow-hidden border border-border/50 transition-all duration-300 hover:shadow-lg card-glow-border"
+              className="group relative cursor-pointer overflow-hidden border border-border/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 card-glow-border"
             >
               {/* Colored top bar */}
               <div className={cn("h-1.5 bg-gradient-to-r transition-all duration-300 group-hover:h-2", tool.color)} />
@@ -136,7 +136,7 @@ export default function DocsPage() {
                   </div>
                   <NextLink
                     href={`/tools/${tool.slug}`}
-                    className="flex shrink-0 items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:border-foreground/30"
+                    className="relative z-10 flex shrink-0 items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:border-foreground/30"
                   >
                     {t("docs.openTool")}
                     <ExternalLink className="size-3.5" aria-hidden="true" />
@@ -188,6 +188,13 @@ export default function DocsPage() {
                   ))}
                 </div>
               </div>
+
+              {/* Full card clickable overlay */}
+              <NextLink
+                href={`/tools/${tool.slug}`}
+                className="absolute inset-0 z-0"
+                aria-label={t(`tool.${tool.slug}.name`)}
+              />
             </Card>
           );
         })}

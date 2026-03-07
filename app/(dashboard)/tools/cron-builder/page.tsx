@@ -184,7 +184,7 @@ export default function CronBuilderPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Builder Column */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="p-6">
+          <Card className="overflow-hidden border border-border/50 p-6 card-glow-border">
             <Tabs
               selectedKey={activeTab as string}
               onSelectionChange={(k) => setActiveTab(k as string)}
@@ -272,7 +272,7 @@ export default function CronBuilderPage() {
                   )}
 
                   {isAIEnabled && aiError && (
-                    <Card className="p-3 border-danger/30 bg-danger/5" role="alert" aria-live="assertive">
+                    <Card className="overflow-hidden border border-red-500/30 bg-red-500/5 p-3" role="alert" aria-live="assertive">
                       <p className="text-xs text-danger font-bold flex items-center gap-2">
                         <AlertTriangle className="size-3.5 shrink-0" aria-hidden="true" />
                         {t("ai.errorOccurred", { message: aiError.message })}
@@ -280,13 +280,14 @@ export default function CronBuilderPage() {
                     </Card>
                   )}
 
-                  <div className="bg-muted/50 p-6 rounded-2xl border border-divider text-center shadow-inner relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                    <p className="text-4xl font-black tracking-widest text-primary font-mono select-all">
+                  <div className="relative overflow-hidden rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-500/5 to-amber-500/5 p-6 text-center">
+                    <p className="text-3xl sm:text-4xl font-black tracking-widest text-foreground font-mono select-all break-all">
                       {Object.values(expression).join(" ")}
                     </p>
-                    <div className="flex justify-center gap-4 mt-2 text-xs uppercase font-black text-muted-foreground tracking-tighter">
-                      <span>{t("cron.fieldMin")}</span><span>{t("cron.fieldHr")}</span><span>{t("cron.fieldDy")}</span><span>{t("cron.fieldMo")}</span><span>{t("cron.fieldWk")}</span>
+                    <div className="mt-3 flex justify-center gap-3 sm:gap-4">
+                      {[t("cron.fieldMin"), t("cron.fieldHr"), t("cron.fieldDy"), t("cron.fieldMo"), t("cron.fieldWk")].map((label, i) => (
+                        <span key={i} className="rounded-full bg-orange-500/10 px-2 py-0.5 text-xs font-bold text-orange-600 dark:text-orange-400 uppercase">{label}</span>
+                      ))}
                     </div>
                     <div className="absolute top-2 right-2">
                       <CopyButton text={Object.values(expression).join(" ")} variant="ghost" size="sm" />
@@ -332,7 +333,8 @@ export default function CronBuilderPage() {
                     </Button>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3">
+                    <p className="text-xs font-black uppercase text-muted-foreground tracking-widest">{t("cron.expressionBuilder")}</p>
                     {[
                       { field: "minute", label: t("cron.minuteLabel"), range: "0-59" },
                       { field: "hour", label: t("cron.hourLabel"), range: "0-23" },
@@ -340,8 +342,8 @@ export default function CronBuilderPage() {
                       { field: "month", label: t("cron.monthLabel"), range: "1-12" },
                       { field: "dayOfWeek", label: t("cron.weekdayLabel"), range: "0-6" },
                     ].map((f) => (
-                      <div key={f.field} className="flex items-center gap-4">
-                        <label className="w-16 text-xs font-bold uppercase tracking-widest text-muted-foreground text-right">{f.label}</label>
+                      <div key={f.field} className="flex items-center gap-3">
+                        <label className="w-20 text-xs font-bold uppercase tracking-wider text-muted-foreground text-right shrink-0">{f.label}</label>
                         <Input
                           variant="primary"
                           value={expression[f.field as keyof typeof expression]}
@@ -356,14 +358,17 @@ export default function CronBuilderPage() {
                           placeholder={t("cron.fieldPlaceholder")}
                           aria-label={f.label}
                         />
-                        <span className="text-xs opacity-30 font-mono w-10" title={t("cron.validRange", { range: f.range })}>{f.range}</span>
+                        <span className="text-xs text-muted-foreground/50 font-mono w-10 shrink-0" title={t("cron.validRange", { range: f.range })}>{f.range}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="pt-4 border-t border-divider">
-                    <p className="text-xs font-black uppercase text-muted-foreground mb-3 tracking-widest">{t("cron.commonPresets")}</p>
-                    <div className="grid grid-cols-3 gap-2" role="group" aria-label={t("cron.commonPresets")}>
+                  <div className="pt-4 border-t border-border/50">
+                    <p className="text-xs font-black uppercase text-muted-foreground mb-3 tracking-widest flex items-center gap-2">
+                      <Sparkles className="size-3.5 text-orange-500" aria-hidden="true" />
+                      {t("cron.commonPresets")}
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2" role="group" aria-label={t("cron.commonPresets")}>
                       {[
                         { name: t("cron.every1m"), exp: { minute: "*", hour: "*", dayOfMonth: "*", month: "*", dayOfWeek: "*" } },
                         { name: t("cron.hourlyPreset"), exp: { minute: "0", hour: "*", dayOfMonth: "*", month: "*", dayOfWeek: "*" } },
@@ -375,9 +380,9 @@ export default function CronBuilderPage() {
                         <Button
                           key={p.name}
                           size="sm"
-                          variant="ghost"
+                          variant="outline"
                           onPress={() => setExpression(p.exp)}
-                          className="font-bold text-xs h-8"
+                          className="font-bold text-xs h-9 border-orange-500/20 hover:bg-orange-500/10 hover:border-orange-500/40 hover:text-orange-600 dark:hover:text-orange-400 transition-all"
                         >
                           {p.name}
                         </Button>
@@ -410,12 +415,12 @@ export default function CronBuilderPage() {
                   </div>
 
                   {config && (
-                    <Card className="p-0 overflow-hidden shadow-sm">
-                      <div className="p-3 bg-muted/30 border-b border-divider flex justify-between items-center">
+                    <Card className="overflow-hidden border border-border/50 p-0 shadow-sm">
+                      <div className="p-3 bg-muted/30 border-b border-border/50 flex justify-between items-center">
                         <span className="text-xs font-bold text-muted-foreground">{config.label}</span>
                         <CopyButton text={config.code} size="sm" />
                       </div>
-                      <pre className="p-4 font-mono text-xs leading-relaxed overflow-auto max-h-[300px] bg-background">
+                      <pre className="p-4 font-mono text-xs leading-relaxed overflow-x-auto overflow-y-auto max-h-[300px] bg-background whitespace-pre-wrap break-all">
                         <code>{config.code}</code>
                       </pre>
                     </Card>
@@ -430,7 +435,7 @@ export default function CronBuilderPage() {
         <div className="lg:col-span-7 space-y-6">
           {/* Natural Explanation */}
           {explanation && (
-            <Card className="p-8 bg-gradient-to-br from-orange-500/10 to-amber-500/10 border-orange-500/20 shadow-lg">
+            <Card className="overflow-hidden border border-orange-500/20 p-8 bg-gradient-to-br from-orange-500/10 to-amber-500/10 shadow-lg card-glow-border">
               <h3 className="text-xs font-black uppercase text-orange-600 dark:text-orange-400 mb-4 flex items-center gap-2 tracking-widest">
                 <Sparkles className="size-4" aria-hidden="true" /> {t("cron.humanReadable")}
               </h3>
@@ -449,7 +454,7 @@ export default function CronBuilderPage() {
 
           {/* Mini Calendar */}
           {nextExecutions.length > 0 && (
-            <Card className="p-6">
+            <Card className="overflow-hidden border border-border/50 p-6 card-glow-border">
               <h3 className="font-bold flex items-center gap-2 text-orange-600 dark:text-orange-400 mb-4">
                 <Calendar className="size-4" />
                 {t("cron.executionCalendar")}
@@ -459,7 +464,7 @@ export default function CronBuilderPage() {
           )}
 
           {/* Execution Timeline */}
-          <Card className="p-6">
+          <Card className="overflow-hidden border border-border/50 p-6 card-glow-border">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-bold flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                 <Play className="size-4" />
