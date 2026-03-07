@@ -41,8 +41,8 @@
 | `< >` | **Code Review Assistant**  | Code quality analysis: code smells, cyclomatic complexity, refactoring suggestions.      |
 | `$`   | **API Cost Calculator**    | Compare costs across OpenAI, Anthropic, Google and other providers. Monthly projections. |
 | `01`  | **Base64 Encoder/Decoder** | Encode/decode with URL-safe, data URL, Unicode and batch multi-line support.             |
-| `id`  | **UUID Generator**         | Generate UUID v1, v3, v4, v5, v7. Namespace UUIDs, validation, bulk generation.          |
-| `->`  | **DTO-Matic**              | Convert JSON to TypeScript, Java, Go, Python, SQL DDL. Zod schemas included.             |
+| `id`  | **UUID Generator**         | Generate UUID v1/v3/v4/v5/v7, nil, max, ULID, NanoID. Namespace UUIDs, validation, bulk. |
+| `->`  | **DTO-Matic**              | Convert JSON to TypeScript, Java, C#, Go, Python, SQL DDL. Zod schemas included.         |
 | `>>`  | **Git Commit Generator**   | Conventional commits with types, scopes, emojis and real-time validation.                |
 | `*`   | **Cron Builder**           | Visual cron expression builder with execution preview.                                   |
 | `~`   | **Tailwind Sorter**        | Sort Tailwind classes by category, remove duplicates, order variants.                    |
@@ -242,7 +242,7 @@ npm run test:run                                             # All unit tests (1
 npx vitest run tests/unit/application/json-formatter.test.ts # Single file
 npx vitest run -t "should format"                            # By pattern
 npm run test:coverage                                        # Coverage report
-npm run test:e2e                                             # Playwright E2E (20 specs)
+npm run test:e2e                                             # Playwright E2E (20 specs, 70 tests)
 ```
 
 ---
@@ -322,7 +322,7 @@ quality:    ESLint (+ security plugin) → TypeScript → Tests + Coverage → P
 security:   npm audit --audit-level=high + lockfile-lint (parallel)
 dep-review: dependency-review-action on PRs (moderate+ blocked)
 build:      next build → SBOM generation (CycloneDX, 90-day retention) + bundle size tracking
-e2e:        Playwright E2E tests (20 specs, Chromium, after build)
+e2e:        Playwright E2E tests (20 specs, 70 tests, Chromium, after build)
 a11y:       axe-core WCAG AAA accessibility audit (19 pages, after build)
 codeql:     CodeQL JS/TS SAST (push + PRs + weekly)
 semgrep:    Semgrep SAST — OWASP Top 10, React, Next.js, TypeScript rules (SARIF → Security tab)
@@ -361,8 +361,8 @@ Coverage reports and Playwright reports are uploaded as artifacts.
 | `< >` | **Code Review Assistant**  | Analiza calidad de codigo: code smells, complejidad ciclomatica, sugerencias de refactor.      |
 | `$`   | **API Cost Calculator**    | Compara costes entre OpenAI, Anthropic, Google y otros providers. Proyecciones mensuales.      |
 | `01`  | **Base64 Encoder/Decoder** | Encode/decode con soporte URL-safe, data URLs, Unicode y procesamiento batch.                  |
-| `id`  | **UUID Generator**         | Genera UUID v1, v3, v4, v5, v7. UUIDs con namespace, validacion, generacion masiva.            |
-| `->`  | **DTO-Matic**              | Convierte JSON a TypeScript, Java, Go, Python, SQL DDL. Schemas Zod incluidos.                 |
+| `id`  | **UUID Generator**         | Genera UUID v1/v3/v4/v5/v7, nil, max, ULID, NanoID. Namespace, validacion, generacion masiva.  |
+| `->`  | **DTO-Matic**              | Convierte JSON a TypeScript, Java, C#, Go, Python, SQL DDL. Schemas Zod incluidos.             |
 | `>>`  | **Git Commit Generator**   | Commits convencionales con tipos, scopes, emojis y validacion en tiempo real.                  |
 | `*`   | **Cron Builder**           | Constructor visual de expresiones cron con previsualizacion de ejecuciones.                    |
 | `~`   | **Tailwind Sorter**        | Ordena clases Tailwind por categoria, elimina duplicados, ordena variantes.                    |
@@ -597,7 +597,7 @@ quality:    ESLint (+ plugin seguridad) → TypeScript → Tests + Coverage → 
 security:   npm audit --audit-level=high + lockfile-lint (en paralelo)
 dep-review: dependency-review-action en PRs (moderate+ bloqueado)
 build:      next build → generacion SBOM (CycloneDX, retencion 90 dias) + tracking tamano bundle
-e2e:        Tests E2E Playwright (20 specs, Chromium, despues de build)
+e2e:        Tests E2E Playwright (20 specs, 70 tests, Chromium, despues de build)
 a11y:       Auditoria de accesibilidad axe-core WCAG AAA (19 paginas, despues de build)
 codeql:     CodeQL JS/TS SAST (push + PRs + semanal)
 semgrep:    Semgrep SAST — OWASP Top 10, React, Next.js, TypeScript (SARIF → pestana Security)
