@@ -5,6 +5,19 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.5] - 2026-03-07
+
+### i18n Dead Key Cleanup & Performance
+
+#### Removed
+- **430 orphaned i18n keys** purged from both EN and ES locales (1747 → 1317 keys, full parity maintained). Old keys from refactored UIs across all 15 tools, dashboard, home, common, and navigation sections.
+
+#### Fixed
+- **Variable Name Wizard** — `TYPE_OPTIONS` array wrapped in `useMemo` for consistency with `LANGUAGES` pattern (both use `t()`)
+- **README accuracy** — UUID Generator description updated (9 types including nil/max/ULID/NanoID), DTO-Matic added missing C#, E2E count clarified (20 specs, 70 tests)
+
+---
+
 ## [4.15.4] - 2026-03-07
 
 ### i18n Hardcoded Strings Sweep

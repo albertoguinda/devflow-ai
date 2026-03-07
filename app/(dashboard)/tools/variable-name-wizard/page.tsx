@@ -141,14 +141,14 @@ export default function VariableNameWizardPage() {
     }
   };
 
-  const TYPE_OPTIONS: { id: VariableType; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: "variable", label: t("varName.typeVariable"), icon: Code2 },
-    { id: "function", label: t("varName.typeFunction"), icon: Wand2 },
-    { id: "constant", label: t("varName.typeConstant"), icon: ListIcon },
-    { id: "class", label: t("varName.typeClass"), icon: BookOpen },
-    { id: "hook", label: t("varName.typeHook"), icon: Sparkles },
-    { id: "component", label: t("varName.typeComponent"), icon: LayoutGrid },
-  ];
+  const TYPE_OPTIONS = useMemo(() => [
+    { id: "variable" as const, label: t("varName.typeVariable"), icon: Code2 },
+    { id: "function" as const, label: t("varName.typeFunction"), icon: Wand2 },
+    { id: "constant" as const, label: t("varName.typeConstant"), icon: ListIcon },
+    { id: "class" as const, label: t("varName.typeClass"), icon: BookOpen },
+    { id: "hook" as const, label: t("varName.typeHook"), icon: Sparkles },
+    { id: "component" as const, label: t("varName.typeComponent"), icon: LayoutGrid },
+  ], [t]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
