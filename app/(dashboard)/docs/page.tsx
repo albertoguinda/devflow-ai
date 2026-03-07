@@ -7,12 +7,12 @@ import {
   Tag,
   CheckCircle2,
 } from "lucide-react";
-import { Button, SearchField } from "@heroui/react";
+import { Card, Button, SearchField } from "@heroui/react";
 import { TOOLS_DATA } from "@/config/tools-data";
 import { TOOL_ICON_MAP } from "@/config/tool-icon-map";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
-import { cn, getToolGlowClass } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { ToolCategory } from "@/types/tools";
 
 const CATEGORY_COLORS: Record<ToolCategory, string> = {
@@ -58,7 +58,7 @@ export default function DocsPage() {
   }, [search, category, t]);
 
   return (
-    <div className="space-y-8">
+    <div className="mx-auto max-w-4xl space-y-8">
       <ToolHeader
         title={t("docs.title")}
         description={t("docs.subtitle")}
@@ -101,63 +101,66 @@ export default function DocsPage() {
       </p>
 
       {/* Tool Documentation Cards */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         {filteredTools.map((tool) => {
           const IconComponent = TOOL_ICON_MAP[tool.icon];
           return (
-            <article
+            <Card
               key={tool.id}
               id={tool.slug}
-              className={cn("overflow-hidden rounded-xl border bg-card transition-all", getToolGlowClass(tool.color))}
+              className="group relative overflow-hidden border border-border/50 transition-all duration-300 hover:shadow-lg card-glow-border"
             >
-              {/* Header */}
-              <div className={cn("bg-gradient-to-r p-6", tool.color)}>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3">
+              {/* Colored top bar */}
+              <div className={cn("h-1.5 bg-gradient-to-r transition-all duration-300 group-hover:h-2", tool.color)} />
+
+              <div className="p-5">
+                {/* Header: Icon + Title + Open button */}
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3 min-w-0">
                     {IconComponent && (
-                      <div className="rounded-lg bg-white/20 p-2.5 backdrop-blur-sm">
-                        <IconComponent className="size-6 text-white" />
+                      <div className={cn(
+                        "flex size-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-md transition-transform duration-300 group-hover:scale-110",
+                        tool.color
+                      )}>
+                        <IconComponent className="size-5" />
                       </div>
                     )}
-                    <div>
-                      <h2 className="text-xl font-bold text-white">
+                    <div className="min-w-0">
+                      <h2 className="text-lg font-bold text-foreground truncate">
                         {t(`tool.${tool.slug}.name`)}
                       </h2>
-                      <p className="mt-0.5 text-sm text-white/80">
+                      <p className="text-sm text-muted-foreground line-clamp-1">
                         {t(`tool.${tool.slug}.description`)}
                       </p>
                     </div>
                   </div>
                   <NextLink
                     href={`/tools/${tool.slug}`}
-                    className="flex shrink-0 items-center gap-1.5 rounded-lg bg-white/20 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/30"
+                    className="flex shrink-0 items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:border-foreground/30"
                   >
                     {t("docs.openTool")}
-                    <ExternalLink className="size-3.5" />
+                    <ExternalLink className="size-3.5" aria-hidden="true" />
                   </NextLink>
                 </div>
-              </div>
 
-              {/* Body */}
-              <div className="space-y-4 p-6">
                 {/* Long Description */}
-                <p className="leading-relaxed text-foreground/90">
+                <p className="text-sm leading-relaxed text-foreground/80 mb-3">
                   {t(`tool.${tool.slug}.longDescription`)}
                 </p>
 
                 {/* Features */}
-                <div>
-                  <h3 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-foreground">
-                    <CheckCircle2 className="size-4 text-primary" />
+                <div className="mb-3">
+                  <h3 className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <CheckCircle2 className="size-3.5 text-primary" aria-hidden="true" />
                     {t("common.features")}
                   </h3>
-                  <ul className="grid gap-1.5 sm:grid-cols-2">
+                  <ul className="grid gap-1 sm:grid-cols-2">
                     {tool.features.map((_, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2 text-sm text-muted-foreground"
+                        className="flex items-start gap-2 text-xs text-muted-foreground"
                       >
-                        <span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60" />
+                        <span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60" aria-hidden="true" />
                         {t(`tool.${tool.slug}.feature.${String(idx)}`)}
                       </li>
                     ))}
@@ -165,7 +168,7 @@ export default function DocsPage() {
                 </div>
 
                 {/* Tags + Category */}
-                <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
+                <div className="flex flex-wrap items-center gap-1.5 border-t border-border/50 pt-3">
                   <span
                     className={cn(
                       "rounded-full px-2.5 py-0.5 text-xs font-medium",
@@ -177,15 +180,15 @@ export default function DocsPage() {
                   {tool.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground"
+                      className="flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground"
                     >
-                      <Tag className="size-2.5" />
+                      <Tag className="size-2.5" aria-hidden="true" />
                       {tag}
                     </span>
                   ))}
                 </div>
               </div>
-            </article>
+            </Card>
           );
         })}
       </div>
