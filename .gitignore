@@ -81,3 +81,5 @@ docs/slides.md
 # Reference screenshots (local only)
 *.png
 !/public/icons/*.png
+!/app/apple-icon.png
+!/app/opengraph-image.png

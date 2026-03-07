@@ -5,6 +5,22 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.3] - 2026-03-07
+
+### New Logo & Branding
+
+Premium crystal code brackets `[ ]` logo generated with Flux 2 Pro. All icon formats updated for a polished, professional brand identity.
+
+#### Changed
+- **Logo & Branding** — New crystal code brackets logo (Flux 2 Pro) deployed across all formats:
+  - `app/favicon.ico` (16+32+48px multi-size ICO)
+  - `app/apple-icon.png` (180x180 Apple touch icon)
+  - `public/icons/icon-192x192.png` (PWA maskable)
+  - `public/icons/icon-512x512.png` (PWA splash)
+  - `app/opengraph-image.png` (1200x630 social share)
+
+---
+
 ## [4.15.2] - 2026-03-07
 
 ### Bilingual Prompt Analyzer, Favorites UX & Final Polish
