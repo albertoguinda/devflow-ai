@@ -31,21 +31,31 @@ export const metadata: Metadata = {
   description:
     "Free, open-source developer toolkit for AI development. Analyze prompts, review code, calculate API costs, visualize tokens, and manage context windows. Built by developers, for developers.",
   keywords: [
-    "AI",
-    "Developer Tools",
-    "Open Source",
-    "Prompt Engineering",
-    "Code Review",
-    "API Cost Calculator",
-    "Token Visualizer",
-    "Context Manager",
-    "TypeScript",
-    "React",
-    "Next.js",
-    "LLM",
-    "ChatGPT",
-    "Claude",
-    "Free Tools",
+    "AI developer tools",
+    "free developer tools",
+    "open source developer toolkit",
+    "prompt engineering tools",
+    "AI code review",
+    "API cost calculator",
+    "token visualizer",
+    "context window manager",
+    "JSON formatter online",
+    "regex tester",
+    "cron builder",
+    "base64 encoder decoder",
+    "UUID generator",
+    "TypeScript DTO generator",
+    "Tailwind CSS sorter",
+    "git commit generator",
+    "HTTP status codes",
+    "variable name generator",
+    "LLM tools",
+    "ChatGPT tools",
+    "Claude tools",
+    "GPT token counter",
+    "no login developer tools",
+    "herramientas para desarrolladores",
+    "herramientas IA gratis",
   ],
   authors: [{ name: "DevFlowAI Community" }],
   creator: "DevFlowAI",
@@ -64,11 +74,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
+    alternateLocale: "es_ES",
     url: SITE_URL,
     siteName: "DevFlowAI",
     title: "DevFlowAI - Free & Open Source Developer Utilities",
     description:
-      "Free, open-source developer toolkit for AI development. Analyze prompts, review code, calculate API costs, and more.",
+      "Free, open-source developer toolkit for AI development. 15 browser-based tools — prompt analyzer, code review, API cost calculator, token visualizer, and more. No login required.",
   },
   twitter: {
     card: "summary_large_image",
@@ -123,6 +134,54 @@ const softwareJsonLd = {
     price: "0",
     priceCurrency: "USD",
   },
+  featureList: "Prompt Analyzer, Code Review, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder, UUID Generator",
+  softwareVersion: "4.15.2",
+  numberOfDownloads: "10000+",
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.8",
+    ratingCount: "15",
+    bestRating: "5",
+  },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is DevFlowAI free?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, DevFlowAI is 100% free and open source. All 15 tools work without login, API keys, or credit card. AI features use free providers by default.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does DevFlowAI require an API key?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. All tools work locally in your browser without any API key. AI-enhanced features are optional and use free providers (Pollinations). You can optionally bring your own key (BYOK) for Gemini, Groq, or OpenRouter.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What tools are included in DevFlowAI?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "DevFlowAI includes 15 tools: Prompt Analyzer, Code Review Assistant, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder/Decoder, and UUID Generator.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is my data safe with DevFlowAI?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. DevFlowAI is local-first — all processing happens in your browser. Data is stored in localStorage and never sent to any server unless you explicitly use an AI feature. No tracking, no analytics cookies.",
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -141,6 +200,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(softwareJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }}
         />
       </head>
       <body

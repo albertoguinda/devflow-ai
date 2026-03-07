@@ -12,16 +12,35 @@ export function generateToolMetadata(slug: string): Metadata {
     };
   }
 
+  const title = `${tool.name} — Free Online Developer Tool | DevFlowAI`;
+  const description = tool.longDescription;
+
   return {
     title: tool.name,
-    description: tool.longDescription,
+    description,
+    keywords: [
+      tool.name,
+      ...tool.tags,
+      "free developer tool",
+      "online",
+      "no login",
+      "open source",
+      "AI",
+    ],
     alternates: {
       canonical: `${SITE_URL}/tools/${tool.slug}`,
     },
     openGraph: {
-      title: `${tool.name} | DevFlowAI`,
-      description: tool.longDescription,
+      title,
+      description,
       url: `${SITE_URL}/tools/${tool.slug}`,
+      type: "website",
+      siteName: "DevFlowAI",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }
