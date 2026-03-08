@@ -330,8 +330,9 @@ export default function CodeReviewPage() {
                   </div>
                 </Card>
 
-                <Card className="p-6 col-span-2">
-                  <div className="grid grid-cols-2 gap-4">
+                <Card className="relative overflow-hidden p-6 col-span-2 border-border/40">
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+                  <div className="grid grid-cols-2 gap-4 mt-1">
                     <div className="space-y-1">
                       <p className="text-xs font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.complexityTooltip")}>{t("codeReview.complexity")} ⓘ</p>
                       <p className="text-xl font-bold flex items-center gap-2">

@@ -372,7 +372,8 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
               onPress={handleAnalyze}
               isLoading={isAnalyzing}
               isDisabled={!prompt.trim()}
-              className="gap-2"
+              variant="primary"
+              className="h-12 font-black shadow-xl shadow-primary/20 text-md gap-2"
             >
               <Sparkles className="size-4" />
               {t("promptAnalyzer.analyzePrompt")}

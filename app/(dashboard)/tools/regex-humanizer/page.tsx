@@ -318,8 +318,9 @@ export default function RegexHumanizerPage() {
             <>
               {/* Safety & Overview */}
               <div className="grid gap-4 sm:grid-cols-3">
-                <Card className="p-6 col-span-1 flex flex-col items-center justify-center text-center">
-                  <p className="text-xs font-bold text-muted-foreground uppercase mb-3">{t("regex.safetyScoreLabel")}</p>
+                <Card className="relative overflow-hidden p-6 col-span-1 flex flex-col items-center justify-center text-center border-border/40">
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600" />
+                  <p className="text-xs font-bold text-muted-foreground uppercase mb-3 mt-1">{t("regex.safetyScoreLabel")}</p>
                   <div className="relative mb-2">
                     <svg className="size-20 transform -rotate-90">
                       <circle cx="40" cy="40" r="32" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-muted" />
@@ -342,9 +343,12 @@ export default function RegexHumanizerPage() {
                   </StatusBadge>
                 </Card>
 
-                <Card className="p-6 col-span-2">
-                  <h3 className="text-sm font-bold mb-3 flex items-center gap-2">
-                    <Info className="size-4 text-primary" />
+                <Card className="relative overflow-hidden p-6 col-span-2 border-border/40">
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600" />
+                  <h3 className="text-sm font-bold mb-3 flex items-center gap-2 mt-1">
+                    <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md">
+                      <Info className="size-4 text-white" />
+                    </div>
                     {t("regex.structuralBreakdown")}
                   </h3>
                   <div className="space-y-3">

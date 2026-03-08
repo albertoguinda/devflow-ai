@@ -20,6 +20,7 @@ import {
   Activity,
   GitCompareArrows,
   Bot,
+  Sparkles,
 } from "lucide-react";
 import { useTailwindSorter } from "@/hooks/use-tailwind-sorter";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
@@ -157,6 +158,16 @@ export default function TailwindSorterPage() {
                   <span className="text-xs font-bold">{t("tailwind.smartSort")}</span>
                 </Checkbox>
               </div>
+
+              <Button
+                onPress={sort}
+                isLoading={isSorting}
+                isDisabled={!input.trim()}
+                variant="primary"
+                className="w-full h-12 font-black shadow-xl shadow-primary/20 text-md"
+              >
+                <Sparkles className="size-4 mr-2" /> {t("tailwind.sortOptimize")}
+              </Button>
             </div>
           </Card>
 
