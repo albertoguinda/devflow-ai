@@ -269,7 +269,7 @@ export default function CodeReviewPage() {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder={t("codeReview.placeholder")}
-              className="h-[400px] w-full resize-none rounded-xl border border-border bg-background p-4 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-inner transition-all"
+              className="h-[250px] sm:h-[400px] w-full resize-none rounded-xl border border-border bg-background p-4 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-inner transition-all"
               spellCheck={false}
               onKeyDown={(e) => {
                 if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {

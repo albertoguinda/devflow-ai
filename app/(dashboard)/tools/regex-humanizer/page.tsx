@@ -53,7 +53,7 @@ export default function RegexHumanizerPage() {
   const { generateRegexWithAI, aiResult: aiRegexResult, isAILoading: isAIGenerating, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const { addToast } = useToast();
-  const [testText, setTestText] = useState("john.doe@example.com, test@devflow.ai, invalid-email");
+  const [testText, setTestText] = useState(t("regex.defaultTestText"));
   const [activeTab, setActiveTab] = useState<"explain" | "generate" | string>("explain");
   const [resultTab, setResultTab] = useState<"explanation" | "groups" | "test" | string>("explanation");
   const [generateDesc, setGenerateDesc] = useState("");

@@ -366,8 +366,8 @@ export default function GitCommitGeneratorPage() {
                         <Github className="size-4 text-background" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold">git-preview</span>
-                        <span className="text-xs opacity-40 font-mono">main · a1b2c3d</span>
+                        <span className="text-xs font-bold">{t("gitCommit.previewBranch")}</span>
+                        <span className="text-xs opacity-40 font-mono">{t("gitCommit.previewRef")}</span>
                       </div>
                     </div>
                     <CopyButton text={message || ""} />

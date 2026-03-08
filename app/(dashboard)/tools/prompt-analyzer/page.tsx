@@ -616,7 +616,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                             })()}
                           </div>
                         </div>
-                        <div className="mt-1.5 h-3 w-full overflow-hidden rounded-full bg-muted">
+                        <div className="mt-1.5 h-3 w-full overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuenow={dim.score} aria-valuemin={0} aria-valuemax={100} aria-label={`${t(`promptAnalyzer.anatomy.${dim.id}`)}: ${dim.score}/100`}>
                           <div
                             className={`h-full rounded-full transition-all duration-700 ease-out ${barColor}`}
                             style={{ width: `${Math.max(dim.score, 2)}%` }}

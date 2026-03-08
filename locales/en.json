@@ -1379,5 +1379,8 @@
   "promptAnalyzer.tip.steps": "Break complex tasks into numbered steps",
   "promptAnalyzer.tip.format": "Specify output format: JSON, list, table, code",
   "promptAnalyzer.tip.constraints": "Set limits: max length, tone, avoid topics",
-  "promptAnalyzer.tip.clarification": "Ask the model to clarify if unsure"
+  "promptAnalyzer.tip.clarification": "Ask the model to clarify if unsure",
+  "regex.defaultTestText": "john.doe@example.com, test@devflow.ai, invalid-email",
+  "gitCommit.previewBranch": "git-preview",
+  "gitCommit.previewRef": "main · a1b2c3d"
 }
