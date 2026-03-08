@@ -279,12 +279,12 @@
 
 ## KPIs
 
-| Metric | v4.17.0 (actual) | v4.18.0 target | v5.0.0 vision |
+| Metric | v4.17.0 | v4.18.0 (actual) | v5.0.0 vision |
 |--------|:-----------------:|:--------------:|:-------------:|
-| Tools | 15 | 20 | 23+ |
-| Unit tests | 1,487 | 1,600+ | 2,000+ |
-| i18n keys | 1,356 | 1,500+ | 1,800+ |
-| Lighthouse PWA | ~70 | ~80 | 100 |
+| Tools | 15 | **20** | 23+ |
+| Unit tests | 1,487 | **1,694** | 2,000+ |
+| i18n keys | 1,356 | **1,571** | 1,800+ |
+| Lighthouse PWA | ~70 | ~70 | 100 |
 | WCAG level | AAA | AAA | AAA |
 | Offline support | Partial | Partial | Full (SW) |
 
@@ -299,11 +299,11 @@ When resuming work:
 3. **End of session**: Update CHANGELOG.md, README.md, commit, push
 
 ### Quick Context
-- **Version**: 4.17.0 (current, post-gloss upgrade)
-- **Tests**: 45 files, 1487 passing
-- **ESLint**: 0 errors, 0 warnings
+- **Version**: 4.18.0 (current, 20 tools + gloss luxury UI)
+- **Tests**: 50 files, 1694 passing
+- **ESLint**: 0 new errors/warnings
 - **TypeScript**: 0 errors (strict mode, zero `any`)
-- **i18n**: 1356 keys in both locales (perfect parity)
+- **i18n**: 1571 keys in both locales (perfect parity)
 - **Vulnerabilities**: 0
 - **CI**: 10 jobs (quality, security, dep-review, build, a11y, e2e, codeql, semgrep, lighthouse, release)
 
