@@ -5,6 +5,36 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.18.0] - 2026-03-08
+
+### Gloss Luxury Visual Upgrade + 5 New Tools (15 → 20)
+
+#### Added
+- **Hash Generator** (#16) — MD5, SHA-1, SHA-256, SHA-384, SHA-512 via Web Crypto API. HMAC generation, constant-time comparison, hash type auto-detection. Pure JS MD5 fallback. 33 tests
+- **JWT Decoder** (#17) — Decode, inspect, and validate JSON Web Tokens. Auto-decode on paste, expiration/nbf validation, alg:none warning, color-coded claim annotations. Zero dependencies (native atob + JSON.parse). 33 tests
+- **Color Converter** (#18) — Convert between HEX, RGB, HSL, OKLCH, HWB formats. WCAG contrast checker with AA/AAA level badges. Palette generator (complementary, analogous, triadic, shades). Native color picker integration. 49 tests
+- **Diff Comparer** (#19) — LCS-based line diff algorithm. Unified and side-by-side view modes. Color-coded output (green added, red removed). Stats bar with added/removed/unchanged counts. 33 tests
+- **Password Generator** (#20) — Cryptographically secure via `crypto.getRandomValues()`. Configurable character pools, exclude ambiguous chars. Strength meter with entropy calculation and crack time estimation. Batch generation mode. 59 tests
+- **Gloss Luxury CSS** — 10 new CSS variables (`--shadow-glass`, `--shadow-elevated`, `--shadow-float`, `--glass-bg`, `--glass-border`, `--card-surface`), `.surface-card`, `.hover-lift`, `.accent-glow`, `.btn-luxury`, `.glass-subtle` utility classes
+- **Glass morphism** — ToolHeader, dashboard sidebar, mobile header, toast container, MagicInput all use frosted glass effects with backdrop-blur
+- **~210 new i18n keys** (1356 → 1571 keys, EN + ES in parity)
+- **+207 unit tests** (1487 → 1694 tests across 50 files)
+
+#### Changed
+- **Card component** — All cards now use `surface-card` class (glass background, elevated shadow, hover state)
+- **ToolCard** — Thinner accent bar (h-2 → h-0.5), icon scale on hover, tag backdrop blur
+- **FeatureCard** — Surface-card + hover-lift, accent-glow bar
+- **31 accent bars** across 17 files thinned from `h-1` to `h-0.5 accent-glow`
+- **12 CTA buttons** across 11 tool pages get `btn-luxury` gloss overlay
+- **Typography** — `text-rendering: optimizeLegibility`, `letter-spacing: -0.01em` globally
+- **Scrollbar** — 6px width, pill thumb, transparent track
+- **Selection** — Indigo-tinted text selection (light + dark modes)
+- **Dashboard layout** — Frosted glass sidebar, radial gradient background on main content
+- **Tool registry** expanded from 15 to 20 tools in tools-data, tool-icon-map, commands, smart-navigation
+- **Reduced motion** — All new hover/transform animations disabled for `prefers-reduced-motion`
+
+---
+
 ## [4.17.0] - 2026-03-08
 
 ### 15-Tool UX Polish

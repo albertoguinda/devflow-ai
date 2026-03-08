@@ -131,7 +131,7 @@ export default function Base64Page() {
         {/* Input Column */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="relative overflow-hidden p-6 border-border/40">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 to-blue-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-indigo-500 to-blue-600" />
             <div className="flex items-center justify-between mb-6 mt-1">
               <div className="flex bg-muted p-1 rounded-xl">
                 <Button size="sm" aria-pressed={mode === "encode"} variant={mode === "encode" ? "primary" : "ghost"} onPress={() => setMode("encode")} className="font-bold h-8">{t("base64.encodeBtn")}</Button>
@@ -192,7 +192,7 @@ export default function Base64Page() {
               </div>
             </div>
 
-            <Button onPress={process} isDisabled={!input.trim()} variant="primary" className="w-full mt-6 h-12 font-black bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 border-0 transition-all text-md">
+            <Button onPress={process} isDisabled={!input.trim()} variant="primary" className="btn-luxury w-full mt-6 h-12 font-black bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 border-0 transition-all text-md">
               <Sparkles className="size-4 mr-2" /> {mode === "encode" ? t("base64.generateEncoding") : t("base64.executeDecoding")}
             </Button>
           </Card>

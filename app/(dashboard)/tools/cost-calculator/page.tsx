@@ -349,7 +349,7 @@ export default function CostCalculatorPage() {
         <div className="space-y-6">
           <Card className="relative overflow-hidden p-6 border-border/40">
             {/* Accent bar */}
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 to-orange-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-amber-500 to-orange-600" />
             <div className="mb-4 flex items-center gap-2 border-b border-border/50 pb-2 mt-1">
               <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 shadow-md">
                 <Coins className="size-4 text-white" />
@@ -493,7 +493,7 @@ export default function CostCalculatorPage() {
 
           {isAIEnabled && (
             <Card className="relative overflow-hidden p-6 bg-gradient-to-br from-violet-500/10 to-purple-500/10 dark:from-violet-500/15 dark:to-purple-500/15 border border-violet-500/20 dark:border-violet-500/10">
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-purple-600" />
+              <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-violet-500 to-purple-600" />
               <h3 className="text-xs font-black uppercase text-violet-600 dark:text-violet-400 mb-4 flex items-center gap-2 tracking-widest mt-1">
                 <div className="flex size-6 items-center justify-center rounded-md bg-gradient-to-br from-violet-500 to-purple-600 shadow-md">
                   <Bot className="size-3 text-white" />
@@ -544,7 +544,7 @@ export default function CostCalculatorPage() {
         {/* Comparison Table */}
         <div className="lg:col-span-2">
           <Card className="relative overflow-hidden p-6 border-border/40">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-emerald-500 to-teal-600" />
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-1">
               <h2 className="text-xl font-bold flex items-center gap-2">
                 <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md">
@@ -629,7 +629,7 @@ export default function CostCalculatorPage() {
 
       {/* Projection Chart — full width, outside the grid */}
       <Card className="relative overflow-hidden p-6 border-border/40">
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500" />
+        <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-amber-400 to-orange-500" />
         <h3 className="text-lg font-bold mb-6 flex items-center gap-2 mt-1">
           <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 shadow-md">
             <Sparkles className="size-4 text-white" />

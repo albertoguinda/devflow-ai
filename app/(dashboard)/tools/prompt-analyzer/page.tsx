@@ -326,7 +326,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
 
       {/* Input Section */}
       <Card className="relative overflow-hidden p-6 border-border/40">
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600" />
+        <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-blue-500 to-indigo-600" />
         <div className="space-y-4 mt-1">
           <div className="flex items-center justify-between">
             <label
@@ -373,7 +373,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
               isLoading={isAnalyzing}
               isDisabled={!prompt.trim() || isAnalyzing}
               variant="primary"
-              className="h-12 font-black bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 border-0 transition-all text-md gap-2"
+              className="btn-luxury h-12 font-black bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 border-0 transition-all text-md gap-2"
             >
               <Sparkles className="size-4" />
               {t("promptAnalyzer.analyzePrompt")}

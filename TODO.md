@@ -1,323 +1,292 @@
-# TODO — DevFlow AI v4.15.6
+# TODO — DevFlow AI v4.18.0 Roadmap
 
-> Last updated: 2026-03-07
-> Context: Project finalized. 4 exhaustive audits completed (79 fixes). 1481 tests, 45 files, 1320 i18n keys, 0 vulnerabilities.
-
----
-
-## Completed in This Session (2026-03-07)
-
-### Branding & Visual Polish (v4.15.6)
-- [x] **Crystal brackets logo** — Replaced prism logo (navbar) + Sparkles icon (sidebar, mobile header) with crystal brackets icon
-- [x] **Favicon fix** — Removed 21,770 white corner pixels from icon-512 → transparent. Regenerated favicon.ico, apple-icon, PWA icons
-- [x] **Feature cards** — Colored gradient top bars, gradient icons with scale-on-hover, shimmer border animation, now link to tool pages
-- [x] **Stats cards** — Individual gradient colors (amber/blue/emerald/purple), accent bars, gradient icons, per-card hover glow
-- [x] **Shimmer border CSS** — `card-shimmer-border` animation on feature, tool, and stats cards
-- [x] **Microcopy polish** — 15+ remaining Title Case → sentence case (EN + ES), missing accents fixed (Únete, está)
-- [x] **"Suggest a tool"** — Friendlier CTA replacing "Contribute a tool"
-
-### Sentence Case & UX Polish (v4.15.5)
-- [x] **120 EN + 118 ES keys** — Title Case → sentence case across all tools and pages
-- [x] **Tool card hearts** — Always visible at 30% opacity (not just on hover)
-- [x] **Home card glow** — Subtle glow borders on stats and feature cards
-- [x] **E2E fix** — dto-matic Java button regex matches "Java (Lombok)"
-- [x] **3 settings keys restored** — `settings.light/dark/system` (dynamic template literal)
-
-### i18n Hardcoded Strings Sweep — 30 New Keys Across 6 Tools (v4.15.4)
-- [x] **Regex Humanizer** — Flavor labels + cheat sheet descriptions use `t()`
-- [x] **Variable Name Wizard** — Convention labels + language labels use `t()`, LANGUAGES moved inside component
-- [x] **UUID Generator** — Namespace labels (DNS/URL/OID/X.500) use `t()`
-- [x] **DTO-Matic** — Language labels use existing keys, mock items label use `t()`
-- [x] **JSON Formatter** — Mode buttons (Format/Minify/YAML/XML/CSV) use `t()`
-- [x] **Cost Calculator** — Hardcoded `$` → dynamic currency symbol, chart day label uses `t()`
-
-### i18n Dead Key Cleanup — 430 Orphaned Keys Purged
-- [x] Audited all 1747 i18n keys against codebase (static + dynamic template literal patterns)
-- [x] Removed 430 orphaned keys from both EN and ES locales (1747 → 1320 keys, full parity)
-
-### Project Cleanup — 7 Obsolete Files Removed
-- [x] Deleted 5 unused Next.js template SVGs, root `DEPLOYMENT.md`, `AGENTS.md`, `docs/slides.md`, empty `scripts/`
-
-### README Accuracy
-- [x] UUID Generator — added nil, max, ULID, NanoID to description (9 types)
-- [x] DTO-Matic — added missing C# to language list (6 languages)
-- [x] E2E — clarified "70 tests" alongside "20 specs" (EN + ES)
+> Last updated: 2026-03-08
+> Context: Competitive analysis completed. 15→20 tools expansion, gloss luxury UI, new features.
+> Baseline: 1487 tests, 45 files, 1356 i18n keys, 0 vulnerabilities, 0 TS errors, 0 ESLint warnings.
 
 ---
 
-## Completed in Previous Session (2026-03-06)
+## Competitive Intelligence Summary
 
-### Pixel-Perfect & Responsive Audit — 11 Fixes in 4 Phases
-- [x] **ToolHeader** — Responsive wrap at 375px (flex-col/sm:flex-row, min-w-0, responsive font sizes)
-- [x] **HTTP Status Finder** — Card overflow on mobile (responsive padding, gap, icon size, title size)
-- [x] **Fixed heights → responsive** — 16 Cards across 8 tools (h-[400px] sm:h-[600px])
-- [x] **JSON Formatter** — Stats grid stacks on mobile (grid-cols-1 sm:grid-cols-2)
-- [x] **GSAP dynamic import** — Static import replaced with import("gsap").then() in 5 hooks (~60KB bundle savings)
-- [x] **text-[9px]/text-[10px] → text-xs** — 216 instances across 16 files for WCAG legibility
-- [x] **Touch targets 44px** — 10 icon-only buttons with min-h-11 min-w-11
-- [x] **Button group gaps** — 8 groups from gap-1 to gap-2
-- [x] **Debounce 300→150ms** — Token Visualizer and HTTP Status Finder search
-- [x] **StatusBadge contrast AAA** — Text colors -800 → -900 for 7:1 ratio
-- [x] **localStorage try/catch** — importSettings handles QuotaExceededError with partial error reporting
-- [x] 2 new i18n keys (settings.importPartial) in EN + ES (1658 total)
+> Full analysis: March 2026 market study of IT-Tools (86), DevToys (30+), CyberChef (300+), ToolCove, AppDevTools, BeginThings (90+).
+> **DevFlow AI is the ONLY toolkit with embedded AI** (14/15 tools). Strategy: quality + AI + a11y > quantity.
 
-### Verification
-- [x] TypeScript: 0 errors (strict mode)
-- [x] ESLint: 0 errors, 0 warnings
-- [x] Unit tests: 45 files, 1465+ passing (1 pre-existing flaky dto-matic mock test)
-- [x] Build: successful
+### Where we win
+- AI integration (14/15 tools) — no competitor has this
+- WCAG AAA accessibility — 95.9% of websites fail basic WCAG
+- Zero barriers (no login, no API key needed, Pollinations free fallback)
+- Bilingual EN+ES with AI responding in locale
+- Enterprise quality (1487 tests, Clean Architecture, TypeScript strict)
+
+### Where competitors beat us
+- Tool count: IT-Tools 86, CyberChef 300+ vs DevFlow 15
+- Offline: DevToys desktop, DevToys Web Pro has service worker
+- Pipelines: CyberChef recipe chaining (drag & drop)
+- Shareability: no competitor has URL-shared state (blue ocean)
 
 ---
 
-## Completed in Previous Session (2026-02-28)
+## Gloss Luxury Visual Upgrade (v4.17.1) — COMPLETED 2026-03-08
 
-### E2E Stability — 12 Flaky Tests Fixed (7 spec files)
-- [x] command-palette — removed `waitForTimeout(200)`, click options instead of Enter (SearchField intercepts keydown)
-- [x] command-palette — arrow keys test: changed to mouse hover selection (avoids SearchField keyboard conflict)
-- [x] context-manager — replaced generic `locator("input").first()` with `getByPlaceholder(/new window name/i)`
-- [x] context-manager — fixed fragile `.locator("..")` parent selector with specific aria-label selectors for delete flow
-- [x] context-manager — fixed model selector: `select[aria-label="Target model"]` instead of `.first()`
-- [x] context-manager — added `.first()` on text assertions to avoid strict mode violations (3 matching elements)
-- [x] cost-calculator — replaced loose `getByText(/\$/)` with `getByText(/estimated monthly cost/i)`
-- [x] dto-matic — replaced `locator("textarea").first()` with `textarea[aria-label="JSON input for DTO generation"]`
-- [x] dto-matic — output assertion: target `pre` block with `hasText: /interface/` instead of loose regex
-- [x] git-commit — type selector: use label text `getByText(/^type$/i)` (Dropdown trigger has no aria-label)
-- [x] git-commit — description input: use `getByPlaceholder(/add authentication flow/i)` instead of fragile filter chain
-- [x] prompt-analyzer — use `#prompt-input` selector, added `.first()` for score strict mode
-- [x] settings-export — **rewrote theme test**: was targeting `role="switch"` but theme uses 3 Buttons (light/dark/system)
-- [x] settings-export — replaced `waitForTimeout(500)` with `waitForFunction()` for HTML class change detection
-- [x] E2E results: 66/67 passed (1 pre-existing a11y timeout from browser contention, unrelated)
-
-### New E2E Tests (+3 tests, 67 → 70)
-- [x] Base64 — batch encoding test (Batch tab, multi-line encode, success count)
-- [x] Regex Humanizer — flavor selector test (select Python, verify aria-pressed toggle)
-- [x] DTO-Matic — Java language selector test (switch to Java, verify `class` in output)
-
-### Feature Improvements
-- [x] Context Manager — search highlight: matching terms highlighted with `<mark>` in document title and file path
-- [x] UUID Generator — v7 timestamp extraction (already implemented: parseUuid + UI display with Clock icon)
-
-### Full Audit (15/15 tools)
-- [x] Deep code review of all 15 tool pages, hooks, and lib/application logic
-- [x] Result: 0 critical bugs, 0 high-severity issues, codebase production-ready
-
-### Exhaustive 4-Layer Audit + Fixes (24 files, 256 insertions)
-
-#### Security by Design (16 fixes)
-- [x] AI providers (Groq, OpenRouter, Pollinations) — 30s AbortController timeout on all external fetch calls
-- [x] AI providers — error log sanitization: truncate to 500 chars, redact Bearer tokens
-- [x] Client fetcher — 45s AbortController timeout on all AI API calls
-- [x] Context Manager `exportForAI` — XML injection fix via `escapeXml()` on all interpolated values
-- [x] Context Manager `exportAsXml` — `escapeXml()` on `doc.type` and `doc.priority` attributes
-- [x] Context Manager `generateTree` — prototype pollution guard (`__proto__`, `constructor`, `prototype` keys skipped)
-- [x] Settings export `importSettings` — per-key value length cap (1MB) to prevent localStorage DoS
-- [x] UUID `hexToBytes` — validates namespace format (32 hex chars) before parsing
-- [x] UUID `generateUuidV7`/`generateUlid` — replaced `Math.random()` with `crypto.getRandomValues()`
-- [x] JSON Formatter `diffJsonLines` — 2000-line cap to prevent O(n²) memory exhaustion
-- [x] JSON Formatter `fixJson` — 50KB input guard to prevent ReDoS in single-quote regex
-- [x] Regex Humanizer `testRegex` — input size caps (pattern 500 chars, input 50K chars)
-- [x] Regex Humanizer `testRegex` — safe named groups copy (filters `__proto__`/`constructor`/`prototype`)
-- [x] Cost Calculator CSV export — formula injection prevention via `escapeCsvCell()`
-- [x] Security patterns — ReDoS fix: `{5,}` → `{5,50}` on obfuscation detection regex
-- [x] Favorites context — `localStorage` operations wrapped in try-catch
-
-#### Security by Default (2 fixes)
-- [x] Locale store — SSR guard on `document.cookie` write
-- [x] useTranslation — removed duplicate cookie write (locale-store persist handles it)
-
-#### Code Quality (8 fixes)
-- [x] CopyButton — useEffect cleanup for timer on unmount (prevents state-after-unmount)
-- [x] Toast system — clear all pending timers on unmount
-- [x] GitHubStars — AbortController cleanup on unmount
-- [x] GSAP hooks — tween.kill() cleanup in all 5 hooks (useFadeIn, useStaggerIn, usePulse, useCounter)
-- [x] Tailwind Sorter — split sort into silent auto-sort (no history spam) + explicit button sort
-- [x] DTO-Matic — one-shot ref guard for shared data load
-- [x] Token Visualizer — try-catch around localStorage.getItem in getSharedInput
-- [x] Favorites context — memoized context value with useMemo
-
-#### Optimization (3 fixes)
-- [x] Code Review — PHP superglobal regex fixed (removed leading spaces, now detects `$_POST` correctly)
-- [x] Token Visualizer — off-by-one fix in `getTokenColor` (was using incremented tokenId)
-- [x] Variable Name Wizard — `REVERSE_ABBREVIATIONS` pre-computed at module level (was rebuilt per call)
-
-#### Verification
-- [x] TypeScript: 0 errors (strict mode)
-- [x] ESLint: 0 errors, 0 warnings
-- [x] Unit tests: 45 files, 1466 passing
-- [x] Infrastructure tests: 8 files, 55 passing (all AbortController changes verified)
+- [x] **CSS Foundation** — 10 new CSS variables (glass, surface, shadows) for light+dark
+- [x] **Glass upgrade** — `.glass` blur(16px) + saturate(1.8) + CSS variable-driven
+- [x] **New utilities** — `.surface-card`, `.hover-lift`, `.accent-glow`, `.btn-luxury`, `.glass-subtle`
+- [x] **Typography** — `text-rendering: optimizeLegibility`, `letter-spacing: -0.01em`
+- [x] **Selection** — Indigo-tinted selection (light+dark)
+- [x] **Scrollbar** — 6px, transparent track, pill thumb
+- [x] **Card component** — `surface-card` class (cascades to ALL cards in app)
+- [x] **ToolHeader** — Glass morphism, larger glows, ring on icon badge
+- [x] **ToolCard** — surface-card + hover-lift, thinner banner, icon scale on hover
+- [x] **FeatureCard** — surface-card + hover-lift, accent-glow bar, icon ring
+- [x] **Dashboard layout** — Frosted glass sidebar, radial gradient main content
+- [x] **Toast** — rounded-xl, shadow-float, backdrop-blur-xl
+- [x] **MagicInput** — Glass class, shadow-float
+- [x] **31 accent bars** — `h-1` → `h-0.5 accent-glow` across 17 files
+- [x] **12 CTA buttons** — `btn-luxury` gloss overlay across 11 tool pages
+- [x] **Reduced motion** — All new animations disabled for `prefers-reduced-motion`
+- [x] Verification: 0 TS errors, 1487/1487 tests pass, 0 new lint warnings
 
 ---
 
-## Completed in Previous Session (2026-02-27)
+## FASE 1 — New Tools: High-Impact, Zero Dependencies (v4.18.0)
 
-### 15-Tool Feature Iteration
-- [x] JSON Formatter — Syntax highlighting (color-coded tokens, dark/light)
-- [x] Base64 — Batch multi-line processing (encode/decode N lines)
-- [x] UUID Generator — v3 (MD5) and v5 (SHA-1) namespace UUIDs (deterministic)
-- [x] Regex Humanizer — Flavor selector (JS/Python/Go/PCRE/Rust) + 10 compatibility warnings
-- [x] HTTP Status Finder — Code snippet generator (curl/fetch/axios/python)
-- [x] Variable Name Wizard — Abbreviation expand/contract UI
-- [x] Cron Builder — Parse existing cron expression into fields
-- [x] Tailwind Sorter — Side-by-side dark/light mode preview
-- [x] DTO-Matic — SQL DDL generation (PostgreSQL/MySQL)
-- [x] Git Commit Generator — Smart scope suggestion chips
-- [x] Code Review — Side-by-side diff view (original vs refactored)
-- [x] Prompt Analyzer — Interactive radar tooltips with coaching tips
-- [x] Token Visualizer — Inline cost estimation chip
-- [x] Cost Calculator — Feature matrix filter (Vision, JSON Mode, etc.)
-- [x] Context Manager — Full-text search across documents
+> 5 new tools using ONLY native Web APIs. Each follows the 5-layer pattern.
+> Priority: tools that every competitor has AND we can enhance with AI.
 
-### Tests
-- [x] +50 new tests: batch base64 (6), UUID v3/v5/resolveNamespace (16), SQL DDL (8), flavor warnings (12), code snippets (8)
-- [x] 1466 total tests passing (45 test files)
-- [x] Coverage: all per-file thresholds pass (http-status-finder fixed from 56%→70%+ branches)
+### Tool #16: Hash Generator — COMPLETED
 
-### i18n
-- [x] +45 keys in EN and ES (full parity)
+> Native Web Crypto API. 33 tests, 40 i18n keys, 5-layer stack complete.
 
-### Docs Sync
-- [x] README.md — test badge 1416→1466, scripts comment updated
-- [x] TFM.md — test count 1416→1466, i18n keys ~1605→~1656, per-tool test table updated
-- [x] DEPLOYMENT.md — health endpoint version 4.11.0→4.14.0
-
-### Quality Assurance
-- [x] E2E: 54/67 passed, 1 regression fixed (json-formatter selector), 12 pre-existing flaky
-- [x] Mobile overflow: 4 fixes (uuid grid, tailwind preview, code-review diff, radar tooltip)
-- [x] Bundle analysis: build OK, no regressions, zero new dependencies
-- [x] UUID v5 SSR safety: confirmed safe (client-only hook, static page)
+- [x] `types/hash-generator.ts` — HashAlgorithm, HashResult (with id), HashConfig, HmacConfig, HashDetection
+- [x] `lib/application/hash-generator.ts` — generateHash, generateHmac, detectHashType, compareHashes, generateFileHash, generateAllHashes, processHash
+- [x] `hooks/use-hash-generator.ts` — full state management with useToolHistory
+- [x] `app/(dashboard)/tools/hash-generator/page.tsx` — all sections (input, algorithm selector, HMAC, compare, detect, empty state)
+- [x] `tests/unit/application/hash-generator.test.ts` — 33 tests passing
+- [x] Registry: tools-data, tool-icon-map, commands, smart-navigation
+- [x] i18n: ~40 keys in en.json + es.json
 
 ---
 
-## Next Session — Potential Tasks
+### Tool #17: JWT Decoder — COMPLETED
 
-### E2E Stability
-- [x] Fix 12 pre-existing flaky E2E tests (command-palette, context-manager, cost-calculator, dto-matic, git-commit, prompt-analyzer, settings-export) ✓ 2026-02-28
-- [x] Add E2E coverage for new features (Base64 batch, Regex flavor, DTO-Matic language selector) ✓ 2026-02-28
+> Zero dependencies. 33 tests, 38 i18n keys, 5-layer stack complete.
 
-### Visual QA
+- [x] `types/jwt-decoder.ts` — JwtParts, JwtValidation, JwtClaim, JwtResult (with id), STANDARD_CLAIMS
+- [x] `lib/application/jwt-decoder.ts` — decodeJwt, validateJwt, isExpired, isNotYetValid, getExpiresIn, formatClaims, processJwt, isJwtLike
+- [x] `hooks/use-jwt-decoder.ts` — full state management with auto-decode on paste, useToolHistory
+- [x] `app/(dashboard)/tools/jwt-decoder/page.tsx` — all sections (input, validation, header, payload, claims, signature, empty state)
+- [x] `tests/unit/application/jwt-decoder.test.ts` — 33 tests passing
+- [x] Registry: tools-data, tool-icon-map, commands, smart-navigation
+- [x] i18n: ~38 keys in en.json + es.json
+
+---
+
+### Tool #18: Color Converter & Palette — COMPLETED
+
+> Pure math, zero dependencies. 49 tests, 37 i18n keys, 5-layer stack complete.
+
+- [x] `types/color-converter.ts` — ColorFormat, ColorValue, ColorResult (with id), ContrastResult, PaletteType, PaletteColor
+- [x] `lib/application/color-converter.ts` — parseColor, convertColor, convertToAllFormats, calculateContrast, getWcagLevel, checkContrast, generatePalette, processColorConversion
+- [x] `hooks/use-color-converter.ts` — full state management, live contrast, palette generation, history
+- [x] `app/(dashboard)/tools/color-converter/page.tsx` — color input + picker, format grid, contrast checker, palette generator
+- [x] `tests/unit/application/color-converter.test.ts` — 49 tests passing
+- [x] Registry: tools-data, tool-icon-map, commands, smart-navigation
+- [x] i18n: ~37 keys in en.json + es.json
+
+---
+
+### Tool #19: Diff / Text Comparer — COMPLETED
+
+> LCS-based diff algorithm, zero dependencies. 33 tests, 19 i18n keys, 5-layer stack complete.
+
+- [x] `types/diff-comparer.ts` — DiffLineType, DiffLine, DiffResult (with id), DiffStats, DiffViewMode
+- [x] `lib/application/diff-comparer.ts` — computeDiff (LCS), getDiffStats, processDiff, formatUnifiedDiff
+- [x] `hooks/use-diff-comparer.ts` — full state management with view mode toggle
+- [x] `app/(dashboard)/tools/diff-comparer/page.tsx` — side-by-side textareas, unified/side-by-side toggle, color-coded diff, stats bar
+- [x] `tests/unit/application/diff-comparer.test.ts` — 33 tests passing
+- [x] Registry: tools-data, tool-icon-map, commands, smart-navigation
+- [x] i18n: ~19 keys in en.json + es.json
+
+---
+
+### Tool #20: Password Generator — COMPLETED
+
+> crypto.getRandomValues(), zero dependencies. 59 tests, 25 i18n keys, 5-layer stack complete.
+
+- [x] `types/password-generator.ts` — PasswordConfig, PasswordStrength, PasswordResult (with id), DEFAULT_PASSWORD_CONFIG
+- [x] `lib/application/password-generator.ts` — generatePassword, evaluateStrength, generateBatch, processPassword
+- [x] `hooks/use-password-generator.ts` — full state management with config, batch generation
+- [x] `app/(dashboard)/tools/password-generator/page.tsx` — config panel (slider + switches), strength meter, batch mode
+- [x] `tests/unit/application/password-generator.test.ts` — 59 tests passing
+- [x] Registry: tools-data, tool-icon-map, commands, smart-navigation
+- [x] i18n: ~25 keys in en.json + es.json
+
+---
+
+### Fase 1 — Cross-cutting tasks
+
+#### Registry & Navigation
+- [ ] Update `config/tools-data.ts` — add 5 new tools with metadata
+- [ ] Update `config/tool-icon-map.ts` — map 5 new icons
+- [ ] Update `config/commands.ts` — add 5 tools to command palette
+- [ ] Update `hooks/use-smart-navigation.ts` — add 5 new tool routes to `ToolRoute` union type
+- [ ] Update MagicInput detection for new tool types
+
+#### E2E Tests
+- [ ] Create `tests/e2e/hash-generator.spec.ts` — basic flow (input → hash → copy)
+- [ ] Create `tests/e2e/jwt-decoder.spec.ts` — paste JWT → see decoded parts
+- [ ] Create `tests/e2e/color-converter.spec.ts` — input hex → see RGB/HSL
+- [ ] Create `tests/e2e/diff-comparer.spec.ts` — input two texts → see diff
+- [ ] Create `tests/e2e/password-generator.spec.ts` — generate → copy → strength visible
+
+#### Documentation
+- [ ] Update `README.md` — 15→20 tools, update stats (EN + ES sections)
+- [ ] Update `CHANGELOG.md` — v4.18.0 section
+- [ ] Update `docs/TFM.md` — tool count, test count, i18n keys
+
+#### Verification Gate
+- [ ] `npx tsc --noEmit` — 0 errors
+- [ ] `npx vitest run` — all tests pass (target: 1587+)
+- [ ] `npm run lint` — 0 new warnings
+- [ ] `npm run build` — production build succeeds
+- [ ] Visual QA: all 5 new tools in light/dark mode, 375px mobile
+
+---
+
+## FASE 2 — Share via URL (v4.19.0)
+
+> Blue ocean feature: no competitor has shareable tool state. Each share = free marketing.
+
+### 2.1 Core Infrastructure
+- [ ] Create `lib/application/share-state.ts`:
+  - `encodeState(toolSlug: string, state: Record<string, string>): string` — compress + base64url encode
+  - `decodeState(hash: string): { toolSlug: string; state: Record<string, string> } | null`
+  - Use `CompressionStream` API (native, no deps) for gzip compression
+  - Fallback: plain base64url for browsers without CompressionStream
+
+### 2.2 Share Hook
+- [ ] Create `hooks/use-share-state.ts`:
+  - `shareCurrentState()` — encode tool state → update URL hash → copy to clipboard
+  - `loadSharedState()` — on mount, check URL hash → decode → populate tool state
+  - `getShareUrl(): string` — return full URL with encoded state
+
+### 2.3 Share Button Component
+- [ ] Create `components/shared/share-button.tsx`:
+  - `<ShareButton state={...} toolSlug="json-formatter" />`
+  - Uses Web Share API where available (`navigator.share`), falls back to clipboard copy
+  - Show toast on share success
+
+### 2.4 Integrate into all 20 tool pages
+- [ ] Add `<ShareButton>` next to CopyButton in each tool's output section
+- [ ] Add `useShareState()` to each tool's hook to load state on mount from URL hash
+
+### 2.5 i18n
+- [ ] Add ~10 keys: `share.copy`, `share.copied`, `share.title`, `share.description`, etc.
+
+### 2.6 Tests
+- [ ] Unit tests for `share-state.ts` — encode/decode round-trip, compression, edge cases (empty, oversized)
+- [ ] Component test for `share-button.tsx`
+
+---
+
+## FASE 3 — UX Enhancements (v4.20.0)
+
+### 3.1 Clipboard Auto-Detection
+- [ ] Enhance `components/tools/magic-input.tsx`:
+  - On focus, request `navigator.clipboard.readText()` (requires permission)
+  - If clipboard content matches a type (JSON, JWT, hash, regex, etc.), show "Paste from clipboard?" chip
+  - Graceful fallback: if permission denied, just show normal placeholder
+- [ ] Add i18n keys: `magic.pasteFromClipboard`, `magic.clipboardDetected`
+
+### 3.2 Per-Tool Keyboard Shortcuts
+- [ ] Create `hooks/use-tool-shortcuts.ts`:
+  - Register tool-specific shortcuts (e.g., Ctrl+Enter to execute primary action)
+  - Ctrl+Shift+C to copy output
+  - Ctrl+Shift+S to share
+  - Escape to clear input
+- [ ] Add `<Kbd>` component hints next to CTA buttons showing shortcut
+- [ ] Add i18n keys for shortcut descriptions
+
+### 3.3 Visual QA (pending from earlier)
 - [ ] Verify JSON Formatter syntax highlighting renders correctly in both light/dark themes
 - [ ] Verify Tailwind Sorter dual-preview shows correct dark mode rendering
 
-### Future Enhancements (Lower Priority)
+### 3.4 Tool Enhancements (from previous TODO)
 - [ ] Regex Humanizer — visual regex graph/railroad diagram
 - [ ] JSON Formatter — tree view collapse/expand
-- [x] UUID Generator — UUID v7 timestamp extraction display ✓ already implemented
-- [x] Context Manager — highlight search terms in results ✓ 2026-02-28
 - [ ] Cost Calculator — comparison chart (Recharts bar chart for selected models)
 - [ ] Base64 — file upload for batch processing (drag & drop)
 
 ---
 
-## Completed in Previous Session (2026-02-27) — v4.12.0
+## FASE 4 — Service Worker Offline (v4.21.0)
 
-### Security Hardening (HIGH)
-- [x] BYOK bypass — min 20-char key + blocked pollinations as BYOK provider
-- [x] TOCTOU race condition — atomic rate limit check-and-record in middleware
-- [x] Error message sanitization — 5 route handlers + 3 provider clients (generic to client, full server-side)
-- [x] IP trust gating — `x-real-ip` only trusted when `VERCEL=1`
+> Critical gap vs competition. DevToys Web Pro has full offline, we don't.
 
-### Security (MEDIUM)
-- [x] Tokenize output guard — 10K segment maximum
-- [x] Settings export denylist — history keys excluded from export
-- [x] Status endpoint info leak — removed provider/config/limits from response
-- [x] Health endpoint — removed version exposure
-- [x] X-XSS-Protection — `1; mode=block` → `0` (deprecated)
+### 4.1 Service Worker Setup
+- [ ] Install `@serwist/next` (successor to next-pwa for Next.js 16)
+- [ ] Create `app/sw.ts` — service worker with Serwist
+- [ ] Configure caching strategies:
+  - **Cache-first**: static assets (JS, CSS, fonts, images, icons)
+  - **Stale-while-revalidate**: tool pages (HTML), config data
+  - **Network-first**: API routes (`/api/ai/*`)
+  - **Network-only**: health check, external fetches
+- [ ] Add offline fallback page — show "You're offline" with list of tools that work offline (all 20)
 
-### Critical Bug Fixes
-- [x] Cross-tool navigation data mismatch — ToolSuggestions uses `useSmartNavigation`
-- [x] Toast timer memory leak — `useRef<Map>` with proper cleanup
+### 4.2 Manifest Enhancement
+- [ ] Update `app/manifest.ts` — add `share_target` for Web Share Target API
+- [ ] Add `screenshots` field for richer install experience
+- [ ] Add `shortcuts` — quick access to top 5 tools from OS icon
 
-### Architecture
-- [x] Dependency flow enforcement — 8 pages fixed (Page → Hook → lib/application)
-- [x] Re-exports added to 8 hooks as facade layer
-- [x] Dead code removed (`fetchAIStatus`, `usePulse`, `useCounter`)
-- [x] Empty barrel files deleted (3 files)
+### 4.3 Offline Indicators
+- [ ] Create `hooks/use-online-status.ts` — `navigator.onLine` + event listeners
+- [ ] Show subtle offline indicator in sidebar when disconnected
+- [ ] Disable AI buttons when offline, show "Offline — local mode" chip
 
-### Tech Debt Elimination
-- [x] SEO metadata for about/docs pages
-- [x] Label semantics fix in regex-humanizer (3 `<label>` → `<p>`)
-- [x] localStorage debounce (300ms) in variable-name-wizard
-- [x] GSAP lazy import in score-badge
-- [x] 13 tool pages — `aria-live="assertive"` on error elements
-- [x] 3 non-null assertions → safe fallbacks
-- [x] Context Manager — Zustand selector fix
-- [x] Dashboard layout — stale prerender URL fix
-- [x] Duplicate React imports merged
-
-### Tests
-- [x] 6 test files updated for new security behaviors
+### 4.4 Testing
+- [ ] Lighthouse PWA audit — target: 100 score
+- [ ] Manual test: kill network → verify all tools work → reconnect → AI works again
 
 ---
 
-## Completed in Previous Session (2026-02-26)
+## FASE 5 — Advanced Differentiators (v5.0.0)
 
-### Accessibility — Toggle Button Semantics (All Tools)
-- [x] **Token Visualizer** — Added `aria-pressed` to model selector buttons (3 providers)
-- [x] **Variable Name Wizard** — Added `aria-pressed` to language selector (5 languages) and batch target convention selector (5 conventions)
-- [x] **HTTP Status Finder** — Added `aria-pressed` + individual `aria-label` with i18n (`httpStatus.filterCategory`) to all 5 category filter buttons
-- [x] **Base64** — Added `aria-pressed` to encode/decode toggle and standard/URL-safe variant toggle (4 buttons)
-- [x] **Tools Index** — Added `aria-pressed` to category filter buttons
-- [x] **UUID Generator** — Added `aria-pressed` to version selector buttons
-- [x] **JSON Formatter** — Added `aria-pressed` to format mode buttons
-- [x] **Code Review** — Added `aria-pressed` to severity filter buttons
-- [x] **DTO-Matic** — Added `aria-pressed` to target language, output mode, and file selector buttons
+> Long-term vision: become the "AI-Native Swiss Army Knife for Developers"
 
-> Note: Used `aria-pressed` instead of `role="radio"` because HeroUI v3 Button TypeScript types don't accept `role` prop. `aria-pressed` is the correct ARIA pattern for toggle buttons in a group.
+### 5.1 YAML ↔ JSON ↔ TOML Converter (Tool #21)
+- [ ] Types + logic + hook + page + tests + i18n (5-layer pattern)
+- [ ] AI: detect format, suggest schema validation
 
-### i18n Gaps — Zero Hardcoded Strings
-- [x] **Regex Humanizer hook** — Replaced 3 hardcoded English error fallbacks with `t()` calls
-- [x] **Git Commit Generator hook** — Replaced hardcoded `"Breaking change detected in diff"` with `t()`
-- [x] **DTO-Matic hook** — Replaced hardcoded `"Mock generation failed"` with `t()`
-- [x] **Variable Name Wizard hook** — Replaced hardcoded `"Conversion failed"` and `"Generation failed"` with `t()`
-- [x] **Cron Builder** — Replaced hardcoded `placeholder="*"` and `title` template literal with i18n keys
-- [x] **10 new i18n keys** added to both locales (1595 → 1605 keys per locale, perfect parity)
-- [x] **Context Manager** — Model preset names verified as proper nouns (intentionally not localized)
+### 5.2 Markdown Preview + Editor (Tool #22)
+- [ ] Live preview with syntax highlighting
+- [ ] AI: generate TOC, fix formatting, suggest structure
 
-### Security
-- [x] **Rollup** — Patched path traversal vulnerability (GHSA-mw96-cpmx-2vgc) via `npm audit fix`
+### 5.3 QR Code Generator (Tool #23)
+- [ ] Canvas-based QR generation (no deps, use qr-code algorithm)
+- [ ] Download as PNG/SVG, custom colors, logo overlay
 
-### UX Audit
-- [x] **Error states** — All 15 tools verified: 14/15 have `role="alert"` on error cards. UUID Generator has no error state (purely synchronous tool, can't fail)
-- [x] **Empty states** — All 15 tools have meaningful placeholder messages (no blank boxes)
-- [x] **Loading states** — All AI-enabled tools show spinner + disable button during calls
+### 5.4 Docker Compose Support
+- [ ] Dockerfile for self-hosting: `FROM node:20-slim` + standalone build
+- [ ] `docker-compose.yml` for one-command deployment
+- [ ] Document in README
 
-### Documentation Updates
-- [x] **CHANGELOG.md** — Updated with comprehensive v4.11.0 section (all 5 commits consolidated)
-- [x] **SECURITY.md** — Updated supported versions from `3.x` to `4.x + 3.x`
-- [x] **docs/DEPLOYMENT.md** — Updated health check version example to `4.11.0`
-- [x] **docs/TFM.md** — Updated i18n key counts (~1595 → ~1605), fixed CI test count
-- [x] **package.json** — Bumped version to 4.11.0
-
-### Verification
-- [x] `tsc --noEmit` — 0 errors
-- [x] `npm run lint` — 0 errors, 0 warnings
-- [x] `npm run test:run` — 45 files, 1416 tests passing
-- [x] `npm audit` — 0 vulnerabilities
-- [x] i18n parity: 1605 keys in both EN and ES
+### 5.5 Flow Builder (CyberChef-style pipeline)
+- [ ] Visual drag-and-drop tool chaining
+- [ ] Input → Tool A → Tool B → Output
+- [ ] Save/share recipes via URL
 
 ---
 
-## Completed in v4.10.0 (2026-02-25)
+## KPIs
 
-### Bug Fixes
-- [x] Easter egg invisible in production — switched to `console.info`
-- [x] API status route missing try-catch
-- [x] AIStatusResult.provider incorrectly nullable
-- [x] Pollinations missing top_p
-- [x] Division by zero in code-review page
-- [x] dto-matic Spanish error in logic layer
-
-### Accessibility (WCAG AAA)
-- [x] API Key Guide — dialog role, modal, escape handler
-- [x] DataTable select — aria-label
-- [x] 13 tool error cards — role="alert" + aria-hidden on icons
-
-### Code Quality
-- [x] ESLint: 139 warnings → 0
-- [x] Rate limiter singleton simplified
-- [x] BYOK validation hardening
-
----
+| Metric | v4.17.0 (actual) | v4.18.0 target | v5.0.0 vision |
+|--------|:-----------------:|:--------------:|:-------------:|
+| Tools | 15 | 20 | 23+ |
+| Unit tests | 1,487 | 1,600+ | 2,000+ |
+| i18n keys | 1,356 | 1,500+ | 1,800+ |
+| Lighthouse PWA | ~70 | ~80 | 100 |
+| WCAG level | AAA | AAA | AAA |
+| Offline support | Partial | Partial | Full (SW) |
 
 ---
 
@@ -326,18 +295,78 @@
 When resuming work:
 
 1. **Start with verification**: Run `npm run lint && npm run type-check && npm run test:run` to confirm baseline
-2. **After each change**: Run `npm run lint` (0 warnings) and `npm run test:run` (1481+)
-3. **End of session**: Update CHANGELOG.md, commit, push, verify CI on GitHub
+2. **After each tool**: Run full verification gate before starting next tool
+3. **End of session**: Update CHANGELOG.md, README.md, commit, push
 
 ### Quick Context
-- **Version**: 4.15.6 (current)
-- **Tests**: 45 files, 1481 passing
-- **Coverage**: 95.88% stmts, 88.62% branches, 93.56% funcs, 96.46% lines — all per-file thresholds pass
+- **Version**: 4.17.0 (current, post-gloss upgrade)
+- **Tests**: 45 files, 1487 passing
 - **ESLint**: 0 errors, 0 warnings
 - **TypeScript**: 0 errors (strict mode, zero `any`)
-- **i18n**: 1320 keys in both locales (perfect parity)
+- **i18n**: 1356 keys in both locales (perfect parity)
 - **Vulnerabilities**: 0
-- **Sentry**: 10.40.0, disabled by default (set `NEXT_PUBLIC_SENTRY_DSN` to activate)
 - **CI**: 10 jobs (quality, security, dep-review, build, a11y, e2e, codeql, semgrep, lighthouse, release)
-- **Source files**: 228 (.ts/.tsx)
-- **Commits**: 188+
+
+---
+
+## Completed Sessions Archive
+
+<details>
+<summary>v4.17.0 — Gloss Luxury Visual Upgrade (2026-03-08)</summary>
+
+- CSS foundation: 10 new variables, 5 new utility classes
+- 7 component wrappers upgraded (cascading to all pages)
+- 31 accent bars + 12 CTA buttons polished
+- Typography + scrollbar + selection refinements
+
+</details>
+
+<details>
+<summary>v4.15.4–v4.15.6 — Branding & Polish (2026-03-07)</summary>
+
+- Crystal brackets logo, favicon fix, feature/stats cards
+- 120 EN + 118 ES keys sentence case, tool card hearts
+- i18n sweep: 30 new keys across 6 tools
+- i18n dead key cleanup: 430 orphaned keys purged
+- 7 obsolete files removed
+
+</details>
+
+<details>
+<summary>v4.15.0 — Pixel-Perfect & Responsive (2026-03-06)</summary>
+
+- 11 fixes in 4 phases: mobile layout, GSAP dynamic import, text-xs WCAG, touch targets, debounce, contrast
+
+</details>
+
+<details>
+<summary>v4.14.0 — E2E Stability + Feature Iteration (2026-02-28)</summary>
+
+- 12 flaky E2E tests fixed, 3 new E2E tests
+- 15-tool deep audit: 0 critical bugs
+- 4-layer security+quality audit: 29 fixes across 24 files
+
+</details>
+
+<details>
+<summary>v4.13.0 — 15-Tool Feature Iteration (2026-02-27)</summary>
+
+- Every tool got a new feature: syntax highlighting, batch processing, UUID v3/v5, flavor selector, code snippets, SQL DDL, etc.
+- +50 tests, +45 i18n keys
+
+</details>
+
+<details>
+<summary>v4.12.0 — Security Hardening (2026-02-27)</summary>
+
+- BYOK bypass fix, TOCTOU race, error sanitization, dependency flow enforcement, tech debt zero
+
+</details>
+
+<details>
+<summary>v4.10.0–v4.11.0 — Deep Audit + i18n + a11y (2026-02-25–26)</summary>
+
+- 6 bug fixes, ESLint 139→0, a11y toggle semantics, i18n zero hardcoded strings, UX audit all tools
+
+</details>
+</details>

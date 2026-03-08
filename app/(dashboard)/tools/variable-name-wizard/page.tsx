@@ -175,7 +175,7 @@ export default function VariableNameWizardPage() {
         {/* Configuration Column */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="relative overflow-hidden p-6 border-border/40">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-500 to-pink-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-fuchsia-500 to-pink-600" />
             <div className="flex justify-between items-center mb-6 mt-1">
               <h3 className="font-bold flex items-center gap-2 text-foreground/80">
                 <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-fuchsia-500 to-pink-600 shadow-md">
@@ -268,7 +268,7 @@ export default function VariableNameWizardPage() {
                   }
                 }}
                 variant="primary"
-                className="w-full h-12 font-black bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/30 border-0 transition-all text-md"
+                className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/30 border-0 transition-all text-md"
                 isLoading={isProcessing}
                 isDisabled={!input.trim()}
               >

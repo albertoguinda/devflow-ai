@@ -10,7 +10,7 @@ export interface CardProps extends ComponentProps<typeof HeroCard> {
 
 export function Card({ children, variant = "default", className, ...props }: CardProps) {
   return (
-    <HeroCard variant={variant} className={cn(className)} {...props}>
+    <HeroCard variant={variant} className={cn("surface-card relative overflow-hidden", className)} {...props}>
       {children}
     </HeroCard>
   );

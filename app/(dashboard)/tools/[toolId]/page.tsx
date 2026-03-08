@@ -143,7 +143,7 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
           {/* CTA Button */}
           <NextLink
             href={`/tools/${tool.slug}`}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
+            className="btn-luxury flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
           >
             {t("common.launch", { name: t(`tool.${tool.slug}.name`) })}
           </NextLink>

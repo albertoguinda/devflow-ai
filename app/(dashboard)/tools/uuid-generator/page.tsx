@@ -122,7 +122,7 @@ export default function UuidGeneratorPage() {
         {/* Config Column */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="relative overflow-hidden p-6 border-border/40">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-teal-500 to-emerald-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-teal-500 to-emerald-600" />
             <Tabs
               selectedKey={activeTab as string}
               onSelectionChange={(k) => setActiveTab(k as string)}
@@ -247,7 +247,7 @@ export default function UuidGeneratorPage() {
                   <Button
                     onPress={generate}
                     variant="primary"
-                    className="w-full h-12 font-black bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-500/25 hover:shadow-xl hover:shadow-teal-500/30 border-0 transition-all text-md"
+                    className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-500/25 hover:shadow-xl hover:shadow-teal-500/30 border-0 transition-all text-md"
                     isLoading={isGenerating}
                   >
                     <Sparkles className="size-4 mr-2" /> {t("uuid.generateSequence")}

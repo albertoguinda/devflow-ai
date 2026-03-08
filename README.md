@@ -2,12 +2,12 @@
 
 # DevFlow AI
 
-### 15 developer tools &middot; AI-enhanced &middot; Local-first &middot; Open Source
+### 20 developer tools &middot; AI-enhanced &middot; Local-first &middot; Open Source
 
-### 15 herramientas para developers &middot; IA integrada &middot; Local-first &middot; Open Source
+### 20 herramientas para developers &middot; IA integrada &middot; Local-first &middot; Open Source
 
 [![Build](https://img.shields.io/github/actions/workflow/status/albertoguinda/devflow-ai/ci.yml?branch=main&style=flat-square&logo=github&label=CI)](https://github.com/albertoguinda/devflow-ai/actions)
-[![Tests](https://img.shields.io/badge/tests-1487_passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
+[![Tests](https://img.shields.io/badge/tests-1694_passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
 [![Coverage](https://img.shields.io/badge/coverage-strategic_(100%2F80%2F0)-blue?style=flat-square&logo=vitest&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
 [![Lighthouse](https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-brightgreen?style=flat-square&logo=lighthouse&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
@@ -25,7 +25,7 @@
 
 ## What Is This
 
-15 tools that save you time every day as a developer.
+20 tools that save you time every day as a developer.
 
 **No login. No API keys required. Everything works locally. AI features are optional and free.**
 
@@ -50,6 +50,11 @@
 | `Tk`  | **Token Visualizer**       | Real-time tokenization visualization with per-token cost estimation.                     |
 | `[ ]` | **Context Manager**        | Organize LLM context windows with chunking and prioritization.                           |
 | `200` | **HTTP Status Finder**     | 61 HTTP status codes with code snippets (curl/fetch/axios/python) and usage guides.     |
+| `##`  | **Hash Generator**         | MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashes. HMAC, comparison, auto-detect algorithm.  |
+| `jwt` | **JWT Decoder**            | Decode, inspect and validate JSON Web Tokens. Expiration check, claim annotations.       |
+| `🎨`  | **Color Converter**        | Convert HEX, RGB, HSL, OKLCH, HWB. WCAG contrast checker, palette generator.            |
+| `±`   | **Diff Comparer**          | LCS-based text diff with unified/side-by-side views. Color-coded, line numbers, stats.   |
+| `🔐`  | **Password Generator**     | Cryptographically secure passwords. Strength meter, entropy, crack time, batch mode.     |
 
 ---
 
@@ -97,7 +102,7 @@
 ```
 ├── app/                    # Pages & layouts (App Router)
 │   ├── (marketing)/        # Landing, about
-│   ├── (dashboard)/        # Dashboard + 15 tool pages + docs
+│   ├── (dashboard)/        # Dashboard + 20 tool pages + docs
 │   └── api/ai/             # Server-side AI Route Handlers
 ├── components/             # UI components
 ├── hooks/                  # Custom React hooks ("use client")
@@ -238,7 +243,7 @@ We follow a **Strategic Coverage** architecture. Not all code needs the same lev
 **Per-file enforcement** is enabled: each CORE file must individually meet thresholds. The CI pipeline fails if any file drops below its floor.
 
 ```bash
-npm run test:run                                             # All unit tests (1487+)
+npm run test:run                                             # All unit tests (1694+)
 npx vitest run tests/unit/application/json-formatter.test.ts # Single file
 npx vitest run -t "should format"                            # By pattern
 npm run test:coverage                                        # Coverage report
@@ -345,7 +350,7 @@ Coverage reports and Playwright reports are uploaded as artifacts.
 
 </div>
 
-15 herramientas que te ahorran tiempo en tu dia a dia como developer.
+20 herramientas que te ahorran tiempo en tu dia a dia como developer.
 
 **Sin login. Sin API keys obligatorias. Todo funciona en local. La IA es opcional y gratuita.**
 
@@ -370,6 +375,11 @@ Coverage reports and Playwright reports are uploaded as artifacts.
 | `Tk`  | **Token Visualizer**       | Visualiza tokenizacion en tiempo real con estimacion de costes por token.                      |
 | `[ ]` | **Context Manager**        | Organiza ventanas de contexto para LLMs con chunking y priorizacion.                           |
 | `200` | **HTTP Status Finder**     | 61 codigos HTTP con snippets de codigo (curl/fetch/axios/python) y guias de uso.              |
+| `##`  | **Hash Generator**         | Hashes MD5, SHA-1, SHA-256, SHA-384, SHA-512. HMAC, comparacion, deteccion de algoritmo.       |
+| `jwt` | **JWT Decoder**            | Decodifica, inspecciona y valida JSON Web Tokens. Verificacion de expiracion, anotacion de claims. |
+| `🎨`  | **Color Converter**        | Convierte HEX, RGB, HSL, OKLCH, HWB. Verificador contraste WCAG, generador de paletas.        |
+| `±`   | **Diff Comparer**          | Diff de texto basado en LCS con vistas unificada/lado a lado. Colores, numeros de linea, stats. |
+| `🔐`  | **Password Generator**     | Contrasenas criptograficamente seguras. Medidor de fortaleza, entropia, tiempo de crackeo, lotes. |
 
 ---
 
@@ -417,7 +427,7 @@ Coverage reports and Playwright reports are uploaded as artifacts.
 ```
 ├── app/                    # Paginas y layouts (App Router)
 │   ├── (marketing)/        # Landing, about
-│   ├── (dashboard)/        # Dashboard + 15 tool pages + docs
+│   ├── (dashboard)/        # Dashboard + 20 tool pages + docs
 │   └── api/ai/             # Route Handlers IA server-side
 ├── components/             # Componentes UI
 ├── hooks/                  # Custom React hooks ("use client")

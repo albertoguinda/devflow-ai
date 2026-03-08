@@ -97,7 +97,7 @@ export default function SettingsPage() {
 
       {/* Preferences */}
       <Card className="group relative overflow-hidden border border-border/50 p-6 transition-all duration-300 hover:shadow-lg card-glow-border">
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 group-hover:h-1" />
         <div className="mb-6 flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
             <Settings className="size-5" aria-hidden="true" />
@@ -180,7 +180,7 @@ export default function SettingsPage() {
 
       {/* AI Configuration */}
       <Card className="group relative overflow-hidden border border-border/50 p-6 transition-all duration-300 hover:shadow-lg card-glow-border">
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:h-1" />
         <div className="mb-6 flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
             <Bot className="size-5" aria-hidden="true" />
@@ -287,7 +287,7 @@ export default function SettingsPage() {
 
       {/* Export / Import */}
       <Card className="group relative overflow-hidden border border-border/50 p-6 transition-all duration-300 hover:shadow-lg card-glow-border">
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-300 group-hover:h-1" />
         <div className="mb-4 flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
             <ArrowDownUp className="size-5" aria-hidden="true" />
@@ -323,7 +323,7 @@ export default function SettingsPage() {
 
       {/* Danger Zone */}
       <Card className="group relative overflow-hidden border border-red-200 p-6 dark:border-red-900/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
-        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300 group-hover:h-1.5" />
+        <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300 group-hover:h-1" />
         <div className="mb-4 flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-orange-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
             <AlertTriangle className="size-5" aria-hidden="true" />

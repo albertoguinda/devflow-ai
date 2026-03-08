@@ -18,7 +18,12 @@ export type ToolRoute =
   | "uuid-generator"
   | "tailwind-sorter"
   | "context-manager"
-  | "http-status-finder";
+  | "http-status-finder"
+  | "hash-generator"
+  | "jwt-decoder"
+  | "color-converter"
+  | "diff-comparer"
+  | "password-generator";
 
 const SHARED_DATA_KEY = "devflow-shared-data";
 

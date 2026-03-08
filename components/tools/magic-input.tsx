@@ -122,7 +122,7 @@ export function MagicInput() {
   const actions = getActions();
 
   return (
-    <Card className="p-1 shadow-lg shadow-indigo-500/10 border-primary/20 ring-4 ring-primary/5 transition-all duration-300 focus-within:ring-primary/20 focus-within:shadow-xl focus-within:shadow-indigo-500/15 hover:shadow-xl hover:shadow-indigo-500/15">
+    <Card className="glass p-1 shadow-[var(--shadow-float)] shadow-indigo-500/10 border-primary/20 ring-4 ring-primary/5 transition-all duration-300 focus-within:ring-primary/20 focus-within:shadow-xl focus-within:shadow-indigo-500/15 hover:shadow-xl hover:shadow-indigo-500/15">
       <div className="relative">
         <div className="absolute left-4 top-4 text-muted-foreground">
           <Sparkles className="size-5" aria-hidden="true" />

@@ -188,7 +188,7 @@ export default function CronBuilderPage() {
         {/* Builder Column */}
         <div className="lg:col-span-5 space-y-6">
           <Card className="relative overflow-hidden border border-border/40 p-6 card-glow-border">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-purple-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-violet-500 to-purple-600" />
             <Tabs
               selectedKey={activeTab as string}
               onSelectionChange={(k) => setActiveTab(k as string)}

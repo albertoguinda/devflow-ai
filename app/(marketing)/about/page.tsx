@@ -30,7 +30,7 @@ export default function AboutPage() {
       <section ref={cardsRef} className="container mx-auto px-4 pb-16">
         <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
           <Card className="group relative overflow-hidden border border-border/50 p-8 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg card-glow-border">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 group-hover:h-1.5" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 group-hover:h-1" />
             <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg">
               <Code2 className="size-6" />
             </div>
@@ -40,7 +40,7 @@ export default function AboutPage() {
             </p>
           </Card>
           <Card className="group relative overflow-hidden border border-border/50 p-8 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg card-glow-border">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-300 group-hover:h-1.5" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-300 group-hover:h-1" />
             <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg">
               <Heart className="size-6" />
             </div>
@@ -50,7 +50,7 @@ export default function AboutPage() {
             </p>
           </Card>
           <Card className="group relative overflow-hidden border border-border/50 p-8 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg card-glow-border">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:h-1.5" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:h-1" />
             <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg">
               <Zap className="size-6" />
             </div>

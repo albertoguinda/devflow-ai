@@ -23,6 +23,10 @@ import {
   Settings,
   BookOpen,
   History,
+  Hash,
+  KeyRound,
+  GitCompareArrows,
+  Lock,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -51,4 +55,8 @@ export const TOOL_ICON_MAP: Record<string, LucideIcon> = {
   Settings,
   BookOpen,
   History,
+  Hash,
+  KeyRound,
+  GitCompareArrows,
+  Lock,
 };

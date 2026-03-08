@@ -124,7 +124,7 @@ export default function RegexHumanizerPage() {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Pattern Input & Generation */}
         <Card className="relative overflow-hidden p-6 lg:col-span-2 flex flex-col gap-6 border-border/40">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600" />
+          <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-cyan-500 to-blue-600" />
           <Tabs
             selectedKey={activeTab as string}
             onSelectionChange={(key) => setActiveTab(key as string)}
@@ -210,7 +210,7 @@ export default function RegexHumanizerPage() {
                   isLoading={isExplaining}
                   isDisabled={!pattern.trim() || !isValidRegex}
                   variant="primary"
-                  className="w-full h-12 font-bold bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 border-0 transition-all"
+                  className="btn-luxury w-full h-12 font-bold bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 border-0 transition-all"
                 >
                   {t("regex.analyzePattern")}
                 </Button>
@@ -249,7 +249,7 @@ export default function RegexHumanizerPage() {
                   isDisabled={!generateDesc.trim()}
                   isLoading={isAIGenerating}
                   variant="primary"
-                  className="w-full h-12 font-bold bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 border-0 transition-all"
+                  className="btn-luxury w-full h-12 font-bold bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 border-0 transition-all"
                 >
                   <Wand2 className="size-4 mr-2" /> {t("regex.generatePatternBtn")}
                 </Button>
@@ -321,7 +321,7 @@ export default function RegexHumanizerPage() {
               {/* Safety & Overview */}
               <div className="grid gap-4 sm:grid-cols-3">
                 <Card className="relative overflow-hidden p-6 col-span-1 flex flex-col items-center justify-center text-center border-border/40">
-                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600" />
+                  <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-cyan-500 to-blue-600" />
                   <p className="text-xs font-bold text-muted-foreground uppercase mb-3 mt-1">{t("regex.safetyScoreLabel")}</p>
                   <div className="relative mb-2">
                     <svg className="size-20 transform -rotate-90">
@@ -346,7 +346,7 @@ export default function RegexHumanizerPage() {
                 </Card>
 
                 <Card className="relative overflow-hidden p-6 col-span-2 border-border/40">
-                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600" />
+                  <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-cyan-500 to-blue-600" />
                   <h3 className="text-sm font-bold mb-3 flex items-center gap-2 mt-1">
                     <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md">
                       <Info className="size-4 text-white" />

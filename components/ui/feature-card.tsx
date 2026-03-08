@@ -20,18 +20,18 @@ export function FeatureCard({
   return (
     <Card
       className={cn(
-        "group relative cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1.5 border border-border/50 hover:shadow-[0_0_40px_-5px] hover:shadow-primary/20 card-glow-border",
+        "group relative cursor-pointer overflow-hidden surface-card hover-lift card-glow-border",
         className
       )}
     >
       {/* Colored top gradient bar */}
-      <div className={cn("h-1 bg-gradient-to-r transition-all duration-300 group-hover:h-1.5", color ?? "from-primary to-primary")} />
+      <div className={cn("h-0.5 accent-glow bg-gradient-to-r transition-all duration-300 group-hover:h-1", color ?? "from-primary to-primary")} />
 
       <div className="p-6">
         <Card.Header className="flex-row items-start gap-4">
           <div className={cn(
             "flex size-12 shrink-0 items-center justify-center rounded-xl transition-all duration-300",
-            "bg-gradient-to-br text-white shadow-md",
+            "bg-gradient-to-br text-white shadow-md ring-1 ring-white/20",
             "group-hover:scale-110 group-hover:shadow-lg",
             color ?? "from-primary to-primary"
           )}>

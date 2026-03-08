@@ -205,7 +205,7 @@ export default function JsonFormatterPage() {
         {/* Control Panel */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="relative overflow-hidden p-6 border-border/40">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-yellow-500 to-amber-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-yellow-500 to-amber-600" />
             <div className="flex items-center justify-between mb-6 mt-1">
               <h3 className="font-bold flex items-center gap-2">
                 <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500 to-amber-600 shadow-md">
@@ -260,7 +260,7 @@ export default function JsonFormatterPage() {
             )}
 
             <div className="grid grid-cols-2 gap-3 mt-6">
-              <Button variant="primary" className="font-black h-12 text-md bg-gradient-to-r from-yellow-500 to-amber-600 text-white shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 border-0 transition-all" onPress={() => { setMode("format"); process(); }}>
+              <Button variant="primary" className="btn-luxury font-black h-12 text-md bg-gradient-to-r from-yellow-500 to-amber-600 text-white shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 border-0 transition-all" onPress={() => { setMode("format"); process(); }}>
                 <Braces className="size-4 mr-2" /> {t("jsonFmt.formatBtn")}
               </Button>
               <Button variant="ghost" className="font-black h-12 text-md text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:bg-amber-500/10" onPress={() => { setMode("minify"); process(); }}>

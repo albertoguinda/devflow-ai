@@ -95,7 +95,7 @@ export default function TokenVisualizerPage() {
         {/* Input Column */}
         <div className="lg:col-span-5 space-y-6">
           <Card className="relative overflow-hidden p-6 border-border/40">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-purple-500 to-violet-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-purple-500 to-violet-600" />
             <div className="flex flex-col gap-4 mt-1">
               <div className="flex items-center justify-between">
                 <h3 className="font-bold flex items-center gap-2">

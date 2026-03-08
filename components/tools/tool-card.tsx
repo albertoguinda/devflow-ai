@@ -21,16 +21,16 @@ export const ToolCard = React.memo(function ToolCard({ tool }: ToolCardProps) {
   const IconComponent = TOOL_ICON_MAP[tool.icon];
 
   return (
-    <Card className={cn("group relative cursor-pointer overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5 card-glow-border", getToolGlowClass(tool.color))}>
+    <Card className={cn("group relative cursor-pointer overflow-hidden surface-card hover-lift card-glow-border", getToolGlowClass(tool.color))}>
       {/* Color Banner */}
-      <div className={cn("h-2 bg-gradient-to-r", tool.color)} />
+      <div className={cn("h-0.5 group-hover:h-1 transition-all duration-300 bg-gradient-to-r", tool.color)} />
 
       <div className="p-5">
         {/* Header: Icon + Like Button */}
         <div className="mb-3 flex items-start justify-between">
           <div
             className={cn(
-              "flex size-12 items-center justify-center rounded-lg bg-gradient-to-r text-white",
+              "flex size-12 items-center justify-center rounded-lg bg-gradient-to-r text-white shadow-lg ring-1 ring-white/20 transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl",
               tool.color
             )}
           >
@@ -71,7 +71,7 @@ export const ToolCard = React.memo(function ToolCard({ tool }: ToolCardProps) {
           {tool.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+              className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground backdrop-blur-sm border border-border/30"
             >
               {tag}
             </span>

@@ -28,6 +28,11 @@ export const COMMANDS: Command[] = [
   { id: "git-commit-generator", type: "tool", labelKey: "tool.git-commit-generator.name", descriptionKey: "tool.git-commit-generator.description", icon: "GitCommit", href: "/tools/git-commit-generator", category: "management" },
   { id: "http-status-finder", type: "tool", labelKey: "tool.http-status-finder.name", descriptionKey: "tool.http-status-finder.description", icon: "Globe", href: "/tools/http-status-finder", category: "analysis" },
   { id: "tailwind-sorter", type: "tool", labelKey: "tool.tailwind-sorter.name", descriptionKey: "tool.tailwind-sorter.description", icon: "ArrowUpDown", href: "/tools/tailwind-sorter", category: "review" },
+  { id: "hash-generator", type: "tool", labelKey: "tool.hash-generator.name", descriptionKey: "tool.hash-generator.description", icon: "Hash", href: "/tools/hash-generator", category: "generation" },
+  { id: "jwt-decoder", type: "tool", labelKey: "tool.jwt-decoder.name", descriptionKey: "tool.jwt-decoder.description", icon: "KeyRound", href: "/tools/jwt-decoder", category: "analysis" },
+  { id: "color-converter", type: "tool", labelKey: "tool.color-converter.name", descriptionKey: "tool.color-converter.description", icon: "Palette", href: "/tools/color-converter", category: "calculation" },
+  { id: "diff-comparer", type: "tool", labelKey: "tool.diff-comparer.name", descriptionKey: "tool.diff-comparer.description", icon: "GitCompareArrows", href: "/tools/diff-comparer", category: "analysis" },
+  { id: "password-generator", type: "tool", labelKey: "tool.password-generator.name", descriptionKey: "tool.password-generator.description", icon: "Lock", href: "/tools/password-generator", category: "generation" },
   // Actions (5)
   { id: "action-theme", type: "action", labelKey: "cmdPalette.toggleTheme", descriptionKey: "cmdPalette.toggleThemeDesc", icon: "Sun", action: "toggle-theme" },
   { id: "action-locale", type: "action", labelKey: "cmdPalette.toggleLocale", descriptionKey: "cmdPalette.toggleLocaleDesc", icon: "Languages", action: "toggle-locale" },

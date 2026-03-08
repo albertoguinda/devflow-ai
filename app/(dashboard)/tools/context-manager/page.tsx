@@ -314,7 +314,7 @@ export default function ContextManagerPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Sidebar: Windows List */}
         <Card className="relative overflow-hidden p-4 lg:col-span-3 flex flex-col gap-3 border-border/40">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 to-orange-600" />
+          <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-amber-500 to-orange-600" />
           <div className="flex flex-col gap-2">
             <Input
               placeholder={t("ctxMgr.newWindowPlaceholder")}

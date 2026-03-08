@@ -48,7 +48,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
 
   return (
     <div
-      className={`flex items-center gap-3 rounded-lg border p-4 shadow-lg backdrop-blur-sm animate-slide-in ${styles.bg}`}
+      className={`flex items-center gap-3 rounded-xl border p-4 shadow-[var(--shadow-float)] backdrop-blur-xl animate-slide-in ${styles.bg}`}
       role="alert"
     >
       <Icon className={`size-5 shrink-0 ${styles.iconColor}`} />

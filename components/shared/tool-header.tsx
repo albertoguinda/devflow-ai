@@ -52,10 +52,10 @@ export function ToolHeader({
 
   if (Icon && gradient) {
     return (
-      <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm p-5 sm:p-6">
+      <div className="relative overflow-hidden rounded-2xl glass p-5 sm:p-6">
         {/* Decorative gradient glow */}
-        <div className={cn("absolute -right-16 -top-16 size-48 rounded-full bg-gradient-to-br opacity-[0.07] blur-3xl dark:opacity-[0.12]", gradient)} />
-        <div className={cn("absolute -left-8 -bottom-8 size-32 rounded-full bg-gradient-to-br opacity-[0.04] blur-2xl dark:opacity-[0.08]", gradient)} />
+        <div className={cn("absolute -right-16 -top-16 size-56 rounded-full bg-gradient-to-br opacity-[0.07] blur-3xl dark:opacity-[0.12] mix-blend-screen", gradient)} />
+        <div className={cn("absolute -left-8 -bottom-8 size-40 rounded-full bg-gradient-to-br opacity-[0.04] blur-2xl dark:opacity-[0.08] mix-blend-screen", gradient)} />
 
         <div className="relative">
           {breadcrumbNav}
@@ -63,10 +63,10 @@ export function ToolHeader({
             <div className="flex items-center gap-4 min-w-0">
               <div
                 className={cn(
-                  "flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br shadow-lg transition-transform duration-300 ease-out hover:scale-105",
+                  "flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br shadow-lg ring-1 ring-white/20 dark:ring-white/10 transition-transform duration-300 ease-out hover:scale-105",
                   gradient
                 )}
-                style={{ boxShadow: "0 8px 24px -4px rgba(0,0,0,0.15)" }}
+                style={{ boxShadow: "0 8px 24px -4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2)" }}
               >
                 <Icon className="size-7 text-white drop-shadow-sm" aria-hidden="true" />
               </div>

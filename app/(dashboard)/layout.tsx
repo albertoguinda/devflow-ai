@@ -169,7 +169,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex min-h-screen">
       {/* Desktop Sidebar — sticky */}
       <aside
-        className="sticky top-0 hidden h-screen w-64 flex-col overflow-y-auto border-r border-border bg-card md:flex"
+        className="sticky top-0 hidden h-screen w-64 flex-col overflow-y-auto border-r border-border/50 bg-card/80 backdrop-blur-xl md:flex"
         aria-label={t("sidebar.sidebarLabel")}
       >
         {sidebarContent}
@@ -187,7 +187,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Mobile Sidebar Drawer */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-card transition-transform duration-300 ease-in-out md:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-card/95 backdrop-blur-xl transition-transform duration-300 ease-in-out md:hidden",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
         aria-label={t("sidebar.sidebarLabel")}
@@ -209,7 +209,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main area */}
       <div className="flex flex-1 flex-col">
         {/* Mobile Header */}
-        <header className="flex items-center gap-3 border-b border-border bg-card px-4 py-3 md:hidden">
+        <header className="flex items-center gap-3 border-b border-border/50 bg-card/80 backdrop-blur-xl px-4 py-3 md:hidden">
           <Button
             isIconOnly
             size="sm"
@@ -231,7 +231,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
 
         {/* Main Content */}
-        <main id="main-content" className="flex-1 overflow-auto scroll-pt-4 bg-background p-4 md:p-8">
+        <main id="main-content" className="flex-1 overflow-auto scroll-pt-4 bg-background bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(99,102,241,0.03),transparent)] p-4 md:p-8">
           {children}
         </main>
       </div>

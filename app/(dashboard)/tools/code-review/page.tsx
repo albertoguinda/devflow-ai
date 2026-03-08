@@ -219,7 +219,7 @@ export default function CodeReviewPage() {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Input Panel */}
         <Card className="relative overflow-hidden p-6 lg:col-span-2 border-border/40">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+          <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-emerald-500 to-teal-600" />
           <div className="mb-4 flex flex-col gap-4 mt-1">
             <h2 className="text-lg font-bold flex items-center gap-2">
               <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md">
@@ -285,7 +285,7 @@ export default function CodeReviewPage() {
               isLoading={isReviewing}
               isDisabled={!code.trim()}
               variant="primary"
-              className="h-12 text-md font-bold bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 border-0 transition-all"
+              className="btn-luxury h-12 text-md font-bold bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 border-0 transition-all"
             >
               <Sparkles className="mr-2 size-5" />
               {t("codeReview.reviewCode")}
@@ -302,7 +302,7 @@ export default function CodeReviewPage() {
               {/* Score & Metrics Dashboard */}
               <div className="grid gap-4 sm:grid-cols-3">
                 <Card className="relative overflow-hidden p-6 col-span-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-background to-muted/50 border-border/40">
-                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+                  <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-emerald-500 to-teal-600" />
                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
                     {t("codeReview.overallScore")}
                   </p>
@@ -331,7 +331,7 @@ export default function CodeReviewPage() {
                 </Card>
 
                 <Card className="relative overflow-hidden p-6 col-span-2 border-border/40">
-                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-600" />
+                  <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-emerald-500 to-teal-600" />
                   <div className="grid grid-cols-2 gap-4 mt-1">
                     <div className="space-y-1">
                       <p className="text-xs font-bold text-muted-foreground uppercase cursor-help" title={t("codeReview.complexityTooltip")}>{t("codeReview.complexity")} ⓘ</p>
@@ -364,7 +364,7 @@ export default function CodeReviewPage() {
 
               {/* Issues DataTable */}
               <Card className="relative overflow-hidden p-6 border-border/40">
-                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-500 to-rose-600" />
+                <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-red-500 to-rose-600" />
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-1">
                   <h3 className="text-lg font-bold flex items-center gap-2">
                     <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-rose-600 shadow-md">

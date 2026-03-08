@@ -111,7 +111,7 @@ export default function TailwindSorterPage() {
         {/* Input Column */}
         <div className="lg:col-span-5 space-y-6">
           <Card className="relative overflow-hidden p-6 border-border/40">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-sky-500 to-cyan-600" />
+            <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-sky-500 to-cyan-600" />
             <div className="flex items-center justify-between mb-4 mt-1">
               <h3 className="font-bold flex items-center gap-2">
                 <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-500 to-cyan-600 shadow-md">
@@ -165,7 +165,7 @@ export default function TailwindSorterPage() {
                 isLoading={isSorting}
                 isDisabled={!input.trim()}
                 variant="primary"
-                className="w-full h-12 font-black bg-gradient-to-r from-sky-500 to-cyan-600 text-white shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 border-0 transition-all text-md"
+                className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-sky-500 to-cyan-600 text-white shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 border-0 transition-all text-md"
               >
                 <Sparkles className="size-4 mr-2" /> {t("tailwind.sortOptimize")}
               </Button>
