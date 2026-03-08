@@ -373,7 +373,7 @@ export default function TokenVisualizerPage() {
               <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
                 <Fingerprint className="size-12 text-muted-foreground/30" />
               </div>
-              <h3 className="text-2xl font-black mb-2 opacity-80 text-foreground/50">{t("tokenViz.laboratory")}</h3>
+              <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("tokenViz.laboratory")}</h3>
               <p className="text-muted-foreground max-w-sm mx-auto font-medium">
                 {t("tokenViz.laboratoryDesc")}
               </p>

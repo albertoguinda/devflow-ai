@@ -435,7 +435,7 @@ export default function DtoMaticPage() {
                       <CopyButton text={mockData || ""} />
                     </div>
                     <pre className="p-6 font-mono text-xs leading-relaxed overflow-auto flex-1 bg-background text-foreground/80">
-                      <code>{mockData}</code>
+                      <code>{mockData || <span className="text-muted-foreground/50 italic">{t("dtoMatic.emptyMockState")}</span>}</code>
                     </pre>
                   </Card>
                 </Tabs.Panel>
@@ -446,7 +446,7 @@ export default function DtoMaticPage() {
               <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
                 <FolderTree className="size-12 text-muted-foreground/30" />
               </div>
-              <h3 className="text-2xl font-black mb-2 opacity-80 text-foreground/50">{t("dtoMatic.architecturalEngine")}</h3>
+              <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("dtoMatic.architecturalEngine")}</h3>
               <p className="text-muted-foreground max-w-sm mx-auto font-medium">
                 {t("dtoMatic.architecturalEngineDesc")}
               </p>

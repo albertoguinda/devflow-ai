@@ -300,7 +300,7 @@ export default function GitCommitGeneratorPage() {
                       addToast(t("ai.unavailable"), "warning");
                     });
                   }
-                }} variant="primary" className="w-full h-12 font-black shadow-xl shadow-primary/20 text-md" isDisabled={!validation.isValid}>
+                }} variant="primary" className="w-full h-12 font-black shadow-xl shadow-primary/20 text-md" isDisabled={!validation.isValid} isLoading={isAIEnabled && isAIGenerating}>
                   <Sparkles className="size-4 mr-2" /> {t("gitCommit.forgeMessage")}
                 </Button>
             </div>

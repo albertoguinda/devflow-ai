@@ -421,7 +421,7 @@ export default function VariableNameWizardPage() {
                   <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
                     <Wand2 className="size-12 text-muted-foreground/30" />
                   </div>
-                  <h3 className="text-2xl font-black mb-2 opacity-80 text-foreground/50">{t("varName.readyToMagic")}</h3>
+                  <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("varName.readyToMagic")}</h3>
                   <p className="text-muted-foreground max-w-sm mx-auto font-medium">
                     {t("varName.readyToMagicDesc")}
                   </p>
@@ -453,7 +453,7 @@ export default function VariableNameWizardPage() {
                     <div className="size-16 bg-muted rounded-full flex items-center justify-center mb-4">
                       <Wand2 className="size-8 text-muted-foreground/30" />
                     </div>
-                    <h3 className="text-lg font-black mb-1 opacity-80 text-foreground/50">{t("varName.readyToMagic")}</h3>
+                    <h3 className="text-lg font-black mb-1 text-foreground/60">{t("varName.readyToMagic")}</h3>
                     <p className="text-muted-foreground text-sm max-w-sm mx-auto font-medium">
                       {t("varName.readyToMagicDesc")}
                     </p>

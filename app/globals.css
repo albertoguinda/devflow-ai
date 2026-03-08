@@ -492,6 +492,15 @@ label[for] {
   background: var(--color-muted-foreground);
 }
 
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Custom animations */
 @keyframes fade-in {
   from { opacity: 0; }

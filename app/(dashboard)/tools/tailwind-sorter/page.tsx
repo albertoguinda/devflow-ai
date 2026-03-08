@@ -218,7 +218,7 @@ export default function TailwindSorterPage() {
                 <Bot className="size-4 mr-2" /> {t("tailwind.aiOptimizeBtn")}
               </Button>
               {isAILoading && (
-                <div className="space-y-2 animate-pulse">
+                <div className="space-y-2 animate-pulse" role="status" aria-label={t("ai.generating")}>
                   <div className="h-3 bg-violet-500/20 rounded w-3/4" />
                   <div className="h-3 bg-violet-500/20 rounded w-1/2" />
                 </div>
@@ -411,7 +411,7 @@ export default function TailwindSorterPage() {
               <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
                 <Palette className="size-12 text-muted-foreground/30" />
               </div>
-              <h3 className="text-2xl font-black mb-2 opacity-80 text-foreground/50">{t("tailwind.auditorTitle")}</h3>
+              <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("tailwind.auditorTitle")}</h3>
               <p className="text-muted-foreground max-w-sm mx-auto font-medium">
                 {t("tailwind.auditorDesc")}
               </p>

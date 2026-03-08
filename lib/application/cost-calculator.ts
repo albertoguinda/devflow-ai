@@ -98,8 +98,8 @@ function escapeCsvCell(value: string): string {
   return value;
 }
 
-export function exportComparisonCsv(comparison: CostComparison, currency: Currency = "USD"): string {
-  const headers = ["Model", "Provider", "Input Cost", "Output Cost", "Total Cost", "Value Score"];
+export function exportComparisonCsv(comparison: CostComparison, currency: Currency = "USD", headerLabels?: string[]): string {
+  const headers = headerLabels ?? ["Model", "Provider", "Input Cost", "Output Cost", "Total Cost", "Value Score"];
   const rows = comparison.results.map((r) => [
     escapeCsvCell(r.model.displayName),
     escapeCsvCell(r.model.provider),

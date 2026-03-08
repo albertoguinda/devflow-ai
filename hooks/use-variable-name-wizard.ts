@@ -107,8 +107,8 @@ export function useVariableNameWizard(): UseVariableNameWizardReturn {
   }, []);
 
   const loadExample = useCallback(() => {
-    setInput("get current user info");
-  }, []);
+    setInput(t("varName.exampleInput"));
+  }, [t]);
 
   return {
     input,

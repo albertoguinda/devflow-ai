@@ -568,7 +568,11 @@ export default function CostCalculatorPage() {
                       size="sm"
                       variant="ghost"
                       onPress={() => {
-                        const csv = exportComparisonCsv(comparison, currency);
+                        const csv = exportComparisonCsv(comparison, currency, [
+                          t("costCalc.csvModel"), t("costCalc.csvProvider"),
+                          t("costCalc.csvInputCost"), t("costCalc.csvOutputCost"),
+                          t("costCalc.csvTotalCost"), t("costCalc.csvValueScore"),
+                        ]);
                         const blob = new Blob([csv], { type: "text/csv" });
                         downloadBlob(blob, `cost-comparison-${new Date().toISOString().slice(0, 10)}.csv`);
                       }}

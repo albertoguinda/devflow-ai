@@ -448,9 +448,13 @@ export default function JsonFormatterPage() {
                   <CopyButton text={tsOutput} />
                 </div>
                 <div className="flex-1 bg-muted/30 dark:bg-muted/50 p-8 overflow-auto">
-                  <pre className="font-mono text-xs leading-relaxed text-primary">
-                    <code>{tsOutput}</code>
-                  </pre>
+                  {tsOutput ? (
+                    <pre className="font-mono text-xs leading-relaxed text-primary">
+                      <code>{tsOutput}</code>
+                    </pre>
+                  ) : (
+                    <p className="text-sm text-muted-foreground/50 italic text-center mt-12">{t("jsonFmt.emptyTsState")}</p>
+                  )}
                 </div>
               </Card>
               </Tabs.Panel>

@@ -1357,5 +1357,15 @@
   "jsonFmt.mode.to-yaml": "YAML",
   "jsonFmt.mode.to-xml": "XML",
   "jsonFmt.mode.to-csv": "CSV",
-  "costCalc.chartDay": "Day {day}"
+  "costCalc.chartDay": "Day {day}",
+  "costCalc.csvModel": "Model",
+  "costCalc.csvProvider": "Provider",
+  "costCalc.csvInputCost": "Input Cost",
+  "costCalc.csvOutputCost": "Output Cost",
+  "costCalc.csvTotalCost": "Total Cost",
+  "costCalc.csvValueScore": "Value Score",
+  "varName.exampleInput": "get current user info",
+  "dtoMatic.emptyMockState": "Click 'Re-roll' to generate mock JSON data",
+  "jsonFmt.emptyTsState": "Format or paste valid JSON to generate TypeScript definitions",
+  "ctxMgr.deleteButtonLabel": "Delete"
 }

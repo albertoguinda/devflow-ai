@@ -363,7 +363,7 @@ export default function ContextManagerPage() {
                 <button
                   type="button"
                   onClick={() => setActiveWindowId(w.id)}
-                  className="flex flex-col min-w-0 flex-1 text-left bg-transparent border-none outline-none cursor-pointer"
+                  className="flex flex-col min-w-0 flex-1 text-left bg-transparent border-none outline-none cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded"
                   aria-label={w.name}
                   aria-pressed={activeWindowId === w.id}
                 >
@@ -374,7 +374,7 @@ export default function ContextManagerPage() {
                   isIconOnly
                   size="sm"
                   variant="ghost"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity size-6"
+                  className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity size-6"
                   aria-label={t("ctxMgr.deleteWorkspace")}
                   onPress={() => setDeleteConfirm({ type: "window", id: w.id, name: w.name })}
                 >
@@ -531,7 +531,7 @@ export default function ContextManagerPage() {
                         ))}
                       </div>
                       <div
-                        className="flex items-center justify-center gap-1.5 py-2.5 rounded-lg border border-dashed border-default-200 hover:border-primary/40 cursor-pointer transition-all group"
+                        className="flex items-center justify-center gap-1.5 py-2.5 rounded-lg border border-dashed border-default-200 hover:border-primary/40 cursor-pointer transition-all group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                         onClick={openFileBrowser}
                         role="button"
                         tabIndex={0}
@@ -546,7 +546,7 @@ export default function ContextManagerPage() {
                     </div>
                   ) : (
                     <div
-                      className="flex flex-col items-center justify-center py-6 rounded-lg border border-dashed border-default-200 hover:border-primary/30 cursor-pointer transition-all group"
+                      className="flex flex-col items-center justify-center py-6 rounded-lg border border-dashed border-default-200 hover:border-primary/30 cursor-pointer transition-all group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                       onClick={openFileBrowser}
                       role="button"
                       tabIndex={0}
