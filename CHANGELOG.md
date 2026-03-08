@@ -5,6 +5,33 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.17.0] - 2026-03-08
+
+### 15-Tool UX Polish
+
+#### Fixed
+- **i18n** — Base64 file upload error toast, Cron Builder infra labels, HTTP Status Finder category names, Variable Name Wizard example input, Git Commit preview labels, Regex Humanizer default test text, Tailwind Sorter audit reasons — all now translated (EN + ES)
+- **i18n** — Prompt Analyzer coaching tips moved from hardcoded `{en, es}` object to proper locale files
+- **i18n** — Cost Calculator CSV export headers now use translated column names
+- **a11y** — Empty state heading contrast improved across 5 tools (`opacity-80 text-foreground/50` → `text-foreground/60`)
+- **a11y** — Context Manager: `focus-visible` on custom upload/workspace buttons, keyboard-discoverable delete button
+- **a11y** — Prompt Analyzer: ARIA `progressbar` on dimension score bars with labels
+- **a11y** — Tailwind Sorter: `aria-label` on AI loading skeleton
+- **a11y** — Code Review: responsive TextArea height on mobile (`h-[250px] sm:h-[400px]`)
+- **a11y** — Code Review: mobile-responsive grid for language/lines selectors
+- **UX** — DTO-Matic: empty mock data tab now shows placeholder instead of blank
+- **UX** — JSON Formatter: TypeScript tab empty state with instructional text
+- **UX** — Git Commit Generator: loading spinner on forge button during AI call
+- **UX** — Prompt Analyzer: disable analyze button during analysis (prevent double-click)
+- **UX** — UUID Generator: `isGenerating` loading state with try/catch error handling
+- **CSS** — Define `scrollbar-hide` utility class (was undefined, used in 6 tools)
+
+#### Changed
+- **Tailwind Sorter** — Audit reasons use i18n keys, translated at render via `t()` in DataTable cell renderer
+- 25 new i18n keys added (1356 total, EN + ES in parity)
+
+---
+
 ## [4.16.0] - 2026-03-07
 
 ### Systemic AI Locale Fix
