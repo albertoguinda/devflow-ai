@@ -76,7 +76,7 @@ export default function TailwindSorterPage() {
       case "class":
         return <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-bold text-primary">{item.class}</code>;
       case "reason":
-        return <span className="text-sm font-medium">{item.reason}</span>;
+        return <span className="text-sm font-medium">{t(item.reason)}</span>;
       case "severity":
         return (
           <Chip size="sm" variant="soft" color={item.severity === "medium" ? "warning" : "default"} className="capitalize font-black text-xs">
@@ -86,7 +86,7 @@ export default function TailwindSorterPage() {
       default:
         return String(item[key as keyof typeof item] ?? "");
     }
-  }, []);
+  }, [t]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

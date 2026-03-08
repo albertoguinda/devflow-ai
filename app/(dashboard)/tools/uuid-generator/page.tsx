@@ -45,6 +45,7 @@ export default function UuidGeneratorPage() {
     analysis,
     namespace,
     namespaceName,
+    isGenerating,
     setNamespace,
     setNamespaceName,
     updateConfig,
@@ -247,6 +248,7 @@ export default function UuidGeneratorPage() {
                     onPress={generate}
                     variant="primary"
                     className="w-full h-12 font-black shadow-lg shadow-primary/20 text-md"
+                    isLoading={isGenerating}
                   >
                     <Sparkles className="size-4 mr-2" /> {t("uuid.generateSequence")}
                   </Button>

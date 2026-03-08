@@ -359,7 +359,7 @@ describe("Tailwind Sorter", () => {
       const blockAudit = result.audit.find((a) => a.class === "block");
       expect(blockAudit).toBeDefined();
       expect(blockAudit?.severity).toBe("low");
-      expect(blockAudit?.suggestion).toBe("remove 'block'");
+      expect(blockAudit?.suggestion).toBe("tailwind.audit.removeBlock");
     });
 
     it("should flag w-full as redundant inside a flex-col container", () => {
@@ -369,7 +369,7 @@ describe("Tailwind Sorter", () => {
       const wFullAudit = result.audit.find((a) => a.class === "w-full");
       expect(wFullAudit).toBeDefined();
       expect(wFullAudit?.severity).toBe("low");
-      expect(wFullAudit?.reason).toContain("w-full");
+      expect(wFullAudit?.reason).toBe("tailwind.audit.wFullRedundant");
     });
 
     it("should flag w-full as redundant inside a grid container", () => {
@@ -388,7 +388,7 @@ describe("Tailwind Sorter", () => {
       const inlineAudit = result.audit.find((a) => a.class === "inline");
       expect(inlineAudit).toBeDefined();
       expect(inlineAudit?.severity).toBe("medium");
-      expect(inlineAudit?.suggestion).toBe("use 'inline-block' instead");
+      expect(inlineAudit?.suggestion).toBe("tailwind.audit.useInlineBlock");
     });
 
     it("should flag inline with vertical padding using pt- prefix", () => {

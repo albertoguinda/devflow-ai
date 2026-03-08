@@ -35,6 +35,7 @@ interface HistoryItem {
 export function useUuidGenerator() {
   const [config, setConfig] = useState<UuidConfig>(DEFAULT_UUID_CONFIG);
   const [result, setResult] = useState<UuidResult | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [analysis, setAnalysis] = useState<UuidInfo | null>(null);
   const [namespace, setNamespace] = useState<UuidNamespace>("dns");
   const [namespaceName, setNamespaceName] = useState("");
@@ -53,32 +54,37 @@ export function useUuidGenerator() {
   }, [addItemToHistory]);
 
   const generate = useCallback(async () => {
-    if (config.version === "v3" || config.version === "v5") {
-      const ns = resolveNamespace(namespace);
-      const name = namespaceName || "devflow";
-      const qty = Math.min(config.quantity, 1000);
-      const uuids: string[] = [];
-      for (let i = 0; i < qty; i++) {
-        const n = qty > 1 ? `${name}-${i}` : name;
-        const uuid =
-          config.version === "v3"
-            ? generateUuidV3(ns, n)
-            : await generateUuidV5(ns, n);
-        uuids.push(formatUuid(uuid, config.format));
+    setIsGenerating(true);
+    try {
+      if (config.version === "v3" || config.version === "v5") {
+        const ns = resolveNamespace(namespace);
+        const name = namespaceName || "devflow";
+        const qty = Math.min(config.quantity, 1000);
+        const uuids: string[] = [];
+        for (let i = 0; i < qty; i++) {
+          const n = qty > 1 ? `${name}-${i}` : name;
+          const uuid =
+            config.version === "v3"
+              ? generateUuidV3(ns, n)
+              : await generateUuidV5(ns, n);
+          uuids.push(formatUuid(uuid, config.format));
+        }
+        setResult({
+          id: crypto.randomUUID(),
+          uuids,
+          version: config.version,
+          format: config.format,
+          timestamp: new Date().toISOString(),
+          collisionStats: { attempts: qty, collisions: 0, probability: "0% (deterministic)" },
+        });
+        addToHistory(config);
+      } else {
+        const genResult = processUuidGeneration(config);
+        setResult(genResult);
+        addToHistory(config);
       }
-      setResult({
-        id: crypto.randomUUID(),
-        uuids,
-        version: config.version,
-        format: config.format,
-        timestamp: new Date().toISOString(),
-        collisionStats: { attempts: qty, collisions: 0, probability: "0% (deterministic)" },
-      });
-      addToHistory(config);
-    } else {
-      const genResult = processUuidGeneration(config);
-      setResult(genResult);
-      addToHistory(config);
+    } finally {
+      setIsGenerating(false);
     }
   }, [config, namespace, namespaceName, addToHistory]);
 
@@ -119,6 +125,7 @@ export function useUuidGenerator() {
     history,
     namespace,
     namespaceName,
+    isGenerating,
     setNamespace,
     setNamespaceName,
     updateConfig,

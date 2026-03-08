@@ -290,16 +290,16 @@ function performAudit(classes: string[]): TailwindAuditItem[] {
     if (base === "block" && classSet.has("flex")) {
       audit.push({
         class: cls,
-        reason: "'block' is redundant when 'flex' is present",
-        suggestion: "remove 'block'",
+        reason: "tailwind.audit.blockRedundant",
+        suggestion: "tailwind.audit.removeBlock",
         severity: "low",
       });
     }
-    
+
     if (base === "w-full" && (classSet.has("flex-col") || classSet.has("grid"))) {
       audit.push({
         class: cls,
-        reason: "'w-full' is often redundant in flex-col or grid containers",
+        reason: "tailwind.audit.wFullRedundant",
         severity: "low",
       });
     }
@@ -307,8 +307,8 @@ function performAudit(classes: string[]): TailwindAuditItem[] {
     if (base === "inline" && [...classSet].some(c => /^[pm]-/.test(c) || /^p[ytb]-/.test(c) || /^m[ytb]-/.test(c))) {
       audit.push({
         class: cls,
-        reason: "Vertical padding/margin may not work as expected on 'inline' elements",
-        suggestion: "use 'inline-block' instead",
+        reason: "tailwind.audit.inlineSpacing",
+        suggestion: "tailwind.audit.useInlineBlock",
         severity: "medium",
       });
     }

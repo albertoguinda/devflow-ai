@@ -1367,5 +1367,17 @@
   "varName.exampleInput": "obtener información del usuario actual",
   "dtoMatic.emptyMockState": "Pulsa 'Re-roll' para generar datos JSON de prueba",
   "jsonFmt.emptyTsState": "Formatea o pega JSON válido para generar definiciones TypeScript",
-  "ctxMgr.deleteButtonLabel": "Eliminar"
+  "ctxMgr.deleteButtonLabel": "Eliminar",
+  "tailwind.audit.blockRedundant": "'block' es redundante cuando 'flex' está presente",
+  "tailwind.audit.removeBlock": "eliminar 'block'",
+  "tailwind.audit.wFullRedundant": "'w-full' suele ser redundante en contenedores flex-col o grid",
+  "tailwind.audit.inlineSpacing": "El padding/margin vertical puede no funcionar como se espera en elementos 'inline'",
+  "tailwind.audit.useInlineBlock": "usar 'inline-block' en su lugar",
+  "promptAnalyzer.tip.role": "Prueba 'Eres un senior...' o 'Actúa como un...'",
+  "promptAnalyzer.tip.task": "Sé específico: qué acción, qué resultado, qué alcance",
+  "promptAnalyzer.tip.context": "Añade contexto, restricciones, audiencia",
+  "promptAnalyzer.tip.steps": "Divide tareas complejas en pasos numerados",
+  "promptAnalyzer.tip.format": "Especifica el formato: JSON, lista, tabla, código",
+  "promptAnalyzer.tip.constraints": "Establece límites: longitud máxima, tono, evitar temas",
+  "promptAnalyzer.tip.clarification": "Pide al modelo que aclare si no está seguro"
 }

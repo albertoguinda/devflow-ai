@@ -86,19 +86,19 @@ const AXIS_LABEL_KEYS: Record<AnatomyElement, string> = {
   clarification: "promptAnalyzer.radar.clarify",
 };
 
-const COACHING_TIPS: Record<AnatomyElement, { en: string; es: string }> = {
-  role: { en: "Try 'You are a senior...' or 'Act as a...'", es: "Prueba 'Eres un senior...' o 'Actúa como un...'" },
-  task: { en: "Be specific: what action, what output, what scope", es: "Sé específico: qué acción, qué resultado, qué alcance" },
-  context: { en: "Add background info, constraints, audience", es: "Añade contexto, restricciones, audiencia" },
-  steps: { en: "Break complex tasks into numbered steps", es: "Divide tareas complejas en pasos numerados" },
-  format: { en: "Specify output format: JSON, list, table, code", es: "Especifica el formato: JSON, lista, tabla, código" },
-  constraints: { en: "Set limits: max length, tone, avoid topics", es: "Establece límites: longitud máxima, tono, evitar temas" },
-  clarification: { en: "Ask the model to clarify if unsure", es: "Pide al modelo que aclare si no está seguro" },
+const COACHING_TIP_KEYS: Record<AnatomyElement, string> = {
+  role: "promptAnalyzer.tip.role",
+  task: "promptAnalyzer.tip.task",
+  context: "promptAnalyzer.tip.context",
+  steps: "promptAnalyzer.tip.steps",
+  format: "promptAnalyzer.tip.format",
+  constraints: "promptAnalyzer.tip.constraints",
+  clarification: "promptAnalyzer.tip.clarification",
 };
 
 function AnatomyRadar({ dimensions, compareDimensions, axisLabels }: { dimensions: PromptDimension[]; compareDimensions?: PromptDimension[] | undefined; axisLabels: Record<AnatomyElement, string> }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const locale = useLocaleStore((s) => s.locale);
+  const { t } = useTranslation();
   const size = 280;
   const cx = size / 2;
   const cy = size / 2;
@@ -198,7 +198,7 @@ function AnatomyRadar({ dimensions, compareDimensions, axisLabels }: { dimension
         <div className="absolute bottom-0 left-1 right-1 p-2 bg-background/95 backdrop-blur-sm border border-divider rounded-lg shadow-lg text-center animate-in fade-in duration-150">
           <p className="text-xs font-black uppercase text-primary">{axisLabels[hoveredDim.id]} — {hoveredDim.score}/100</p>
           {hoveredDim.score < 60 && (
-            <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">{COACHING_TIPS[hoveredDim.id][locale]}</p>
+            <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">{t(COACHING_TIP_KEYS[hoveredDim.id])}</p>
           )}
         </div>
       )}
@@ -371,7 +371,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
             <Button
               onPress={handleAnalyze}
               isLoading={isAnalyzing}
-              isDisabled={!prompt.trim()}
+              isDisabled={!prompt.trim() || isAnalyzing}
               variant="primary"
               className="h-12 font-black shadow-xl shadow-primary/20 text-md gap-2"
             >

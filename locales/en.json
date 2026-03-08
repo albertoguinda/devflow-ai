@@ -1367,5 +1367,17 @@
   "varName.exampleInput": "get current user info",
   "dtoMatic.emptyMockState": "Click 'Re-roll' to generate mock JSON data",
   "jsonFmt.emptyTsState": "Format or paste valid JSON to generate TypeScript definitions",
-  "ctxMgr.deleteButtonLabel": "Delete"
+  "ctxMgr.deleteButtonLabel": "Delete",
+  "tailwind.audit.blockRedundant": "'block' is redundant when 'flex' is present",
+  "tailwind.audit.removeBlock": "remove 'block'",
+  "tailwind.audit.wFullRedundant": "'w-full' is often redundant in flex-col or grid containers",
+  "tailwind.audit.inlineSpacing": "Vertical padding/margin may not work as expected on 'inline' elements",
+  "tailwind.audit.useInlineBlock": "use 'inline-block' instead",
+  "promptAnalyzer.tip.role": "Try 'You are a senior...' or 'Act as a...'",
+  "promptAnalyzer.tip.task": "Be specific: what action, what output, what scope",
+  "promptAnalyzer.tip.context": "Add background info, constraints, audience",
+  "promptAnalyzer.tip.steps": "Break complex tasks into numbered steps",
+  "promptAnalyzer.tip.format": "Specify output format: JSON, list, table, code",
+  "promptAnalyzer.tip.constraints": "Set limits: max length, tone, avoid topics",
+  "promptAnalyzer.tip.clarification": "Ask the model to clarify if unsure"
 }
