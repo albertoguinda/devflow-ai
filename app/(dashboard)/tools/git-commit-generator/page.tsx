@@ -33,6 +33,7 @@ import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
@@ -422,8 +423,9 @@ export default function GitCommitGeneratorPage() {
                         <span className="text-xs text-muted-foreground animate-pulse ml-auto">{t("ai.generating")}</span>
                       )}
                     </div>
+                    {isAIGenerating && !aiCommitResult && <AIResultSkeleton lines={3} />}
                     {aiCommitResult && aiCommitResult.suggestions.map((s, i) => (
-                      <div key={i} className="p-3 bg-violet-500/5 border border-violet-500/10 dark:bg-violet-500/10 dark:border-violet-500/20 rounded-xl space-y-2 mb-3 last:mb-0">
+                      <div key={i} className="animate-stagger-item p-3 bg-violet-500/5 border border-violet-500/10 dark:bg-violet-500/10 dark:border-violet-500/20 rounded-xl space-y-2 mb-3 last:mb-0">
                         <div className="flex items-center justify-between gap-2">
                           <code className="font-mono text-sm font-bold text-violet-600 dark:text-violet-400 truncate">{s.value}</code>
                           <div className="flex items-center gap-2 shrink-0">

@@ -27,6 +27,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useToast } from "@/hooks/use-toast";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { CopyButton } from "@/components/shared/copy-button";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
@@ -177,7 +178,7 @@ export default function Base64Page() {
                   if (input.trim()) process();
                 }
               }}
-              className="h-48 w-full resize-none rounded-xl border border-divider bg-background p-4 font-mono text-xs focus:ring-2 focus:ring-primary/20 shadow-inner"
+              className="h-32 sm:h-48 w-full resize-none rounded-xl border border-divider bg-background p-4 font-mono text-xs focus:ring-2 focus:ring-primary/20 shadow-inner"
               aria-label={mode === "encode" ? t("base64.encodePlaceholder") : t("base64.decodePlaceholder")}
             />
 
@@ -242,16 +243,11 @@ export default function Base64Page() {
               >
                 <Bot className="size-4 mr-2" /> {t("base64.aiAnalyzeBtn")}
               </Button>
-              {isAILoading && (
-                <div className="space-y-2 animate-pulse">
-                  <div className="h-3 bg-violet-500/20 dark:bg-violet-500/30 rounded w-3/4" />
-                  <div className="h-3 bg-violet-500/20 dark:bg-violet-500/30 rounded w-1/2" />
-                </div>
-              )}
+              {isAILoading && <AIResultSkeleton lines={2} />}
               {aiResult?.suggestions && aiResult.suggestions.length > 0 && !isAILoading && (
                 <div className="space-y-3">
                   {aiResult.suggestions.map((s, i) => (
-                    <div key={i} className="p-3 bg-background/80 rounded-xl border border-violet-500/10 dark:border-violet-500/20">
+                    <div key={i} className="animate-stagger-item p-3 bg-background/80 rounded-xl border border-violet-500/10 dark:border-violet-500/20">
                       <p className="text-xs font-medium leading-relaxed">{s.value}</p>
                       <p className="text-xs text-muted-foreground mt-2 italic">{s.reasoning}</p>
                     </div>

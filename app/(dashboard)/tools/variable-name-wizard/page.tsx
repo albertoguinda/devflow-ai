@@ -37,6 +37,7 @@ import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
@@ -388,10 +389,11 @@ export default function VariableNameWizardPage() {
                           <span className="text-xs text-muted-foreground animate-pulse ml-auto">{t("ai.generating")}</span>
                         )}
                       </div>
+                      {isAISuggesting && !aiSuggestResult && <AIResultSkeleton lines={3} />}
                       {aiSuggestResult && aiSuggestResult.suggestions.length > 0 && (
                         <div className="space-y-3">
                           {aiSuggestResult.suggestions.map((s, i) => (
-                            <div key={i} className="flex items-center justify-between p-3 bg-background/50 rounded-lg border border-violet-500/10">
+                            <div key={i} className="animate-stagger-item flex items-center justify-between p-3 bg-background/50 rounded-lg border border-violet-500/10">
                               <div className="flex flex-col gap-0.5">
                                 <span className="font-mono text-sm font-black text-violet-600 dark:text-violet-400">{s.value}</span>
                                 <span className="text-xs text-muted-foreground">{s.reasoning}</span>

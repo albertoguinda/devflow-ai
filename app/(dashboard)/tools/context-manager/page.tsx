@@ -40,6 +40,7 @@ import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
 import { formatCost } from "@/hooks/use-cost-calculator";
 import { MODEL_PRESETS, detectDocType } from "@/hooks/use-context-manager";
@@ -662,17 +663,12 @@ export default function ContextManagerPage() {
                     </Button>
                   </div>
 
-                  {isAILoading && (
-                    <div className="flex items-center gap-2 text-xs text-violet-500 animate-pulse">
-                      <div className="size-2 rounded-full bg-violet-500 animate-bounce" />
-                      {t("ctxMgr.aiAnalyzing")}
-                    </div>
-                  )}
+                  {isAILoading && <AIResultSkeleton lines={3} />}
 
                   {aiResult && !isAILoading && aiResult.suggestions.length > 0 && (
                     <div className="space-y-3">
                       {aiResult.suggestions.map((s, i) => (
-                        <div key={i} className="p-3 bg-background/80 rounded-lg border border-violet-500/10">
+                        <div key={i} className="animate-stagger-item p-3 bg-background/80 rounded-lg border border-violet-500/10">
                           <div className="flex items-center justify-between mb-1.5">
                             <span className="text-xs font-bold text-violet-500 uppercase tracking-wider">{t("ctxMgr.aiInsight")} #{i + 1}</span>
                             <Chip size="sm" variant="soft" className="text-xs font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400">{s.score}/100</Chip>
@@ -870,7 +866,7 @@ export default function ContextManagerPage() {
                       }
                     }}
                     placeholder={t("ctxMgr.pasteContentPlaceholder")}
-                    className="h-48 w-full resize-none rounded-2xl border-2 border-divider bg-background p-4 font-mono text-sm focus:border-indigo-500 outline-none transition-all shadow-inner"
+                    className="h-32 sm:h-48 w-full resize-none rounded-2xl border-2 border-divider bg-background p-4 font-mono text-sm focus:border-indigo-500 outline-none transition-all shadow-inner"
                     aria-label={t("ctxMgr.contentLabel")}
                   />
                 </div>

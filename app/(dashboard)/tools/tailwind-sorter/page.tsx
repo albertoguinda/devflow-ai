@@ -28,6 +28,7 @@ import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
@@ -133,7 +134,7 @@ export default function TailwindSorterPage() {
                   if (input.trim()) sort();
                 }
               }}
-              className="h-48 w-full resize-none rounded-xl border border-divider bg-background p-4 font-mono text-sm focus:ring-2 focus:ring-sky-500/20 shadow-inner"
+              className="h-32 sm:h-48 w-full resize-none rounded-xl border border-divider bg-background p-4 font-mono text-sm focus:ring-2 focus:ring-sky-500/20 shadow-inner"
               aria-label={t("tailwind.inputPlaceholder")}
             />
             
@@ -217,16 +218,11 @@ export default function TailwindSorterPage() {
               >
                 <Bot className="size-4 mr-2" /> {t("tailwind.aiOptimizeBtn")}
               </Button>
-              {isAILoading && (
-                <div className="space-y-2 animate-pulse" role="status" aria-label={t("ai.generating")}>
-                  <div className="h-3 bg-violet-500/20 rounded w-3/4" />
-                  <div className="h-3 bg-violet-500/20 rounded w-1/2" />
-                </div>
-              )}
+              {isAILoading && <AIResultSkeleton lines={2} />}
               {aiResult?.suggestions && aiResult.suggestions.length > 0 && !isAILoading && (
                 <div className="space-y-3">
                   {aiResult.suggestions.map((s, i) => (
-                    <div key={i} className="p-3 bg-background/80 rounded-xl border border-violet-500/10">
+                    <div key={i} className="animate-stagger-item p-3 bg-background/80 rounded-xl border border-violet-500/10">
                       <p className="text-xs font-medium leading-relaxed">{s.value}</p>
                       <p className="text-xs text-muted-foreground mt-2 italic">{s.reasoning}</p>
                     </div>

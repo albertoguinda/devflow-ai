@@ -98,6 +98,24 @@ export function AISectionSkeleton() {
   );
 }
 
+/** Enhanced shimmer skeleton for AI suggestion loading states */
+export function AIResultSkeleton({ lines = 3 }: { lines?: number }) {
+  const { t } = useTranslation();
+  return (
+    <div className="space-y-3" role="status" aria-label={t("ai.generating")}>
+      {Array.from({ length: lines }, (_, i) => (
+        <div key={i} className="p-3 rounded-xl border border-violet-500/10 bg-violet-500/5 skeleton-shimmer">
+          <div className="space-y-2">
+            <div className="h-3 bg-violet-500/20 rounded w-4/5 animate-pulse" />
+            <div className="h-3 bg-violet-500/15 rounded w-3/5 animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
+            <div className="h-2.5 bg-violet-500/10 rounded w-2/3 animate-pulse" style={{ animationDelay: `${i * 200}ms` }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function PromptAnalyzerSkeleton() {
   return (
     <div className="space-y-6">

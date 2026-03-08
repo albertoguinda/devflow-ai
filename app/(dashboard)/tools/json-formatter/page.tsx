@@ -32,6 +32,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { CopyButton } from "@/components/shared/copy-button";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
@@ -344,8 +345,9 @@ export default function JsonFormatterPage() {
                   <span className="text-xs text-muted-foreground animate-pulse ml-auto">{t("ai.generating")}</span>
                 )}
               </div>
+              {isAIAnalyzing && !aiJsonResult && <AIResultSkeleton lines={2} />}
               {aiJsonResult && aiJsonResult.suggestions.map((s, i) => (
-                <div key={i} className="p-3 bg-violet-500/5 border border-violet-500/10 rounded-xl space-y-2 mb-3 last:mb-0">
+                <div key={i} className="animate-stagger-item p-3 bg-violet-500/5 border border-violet-500/10 rounded-xl space-y-2 mb-3 last:mb-0">
                   <div className="flex items-start justify-between gap-2">
                     <p className="text-sm font-bold text-violet-600 dark:text-violet-400">{s.value}</p>
                     <CopyButton text={s.value} size="sm" variant="ghost" />
@@ -472,7 +474,7 @@ export default function JsonFormatterPage() {
                     value={compareInput}
                     onChange={(e) => setCompareInput(e.target.value)}
                     placeholder={t("jsonFmt.pasteDiffJson")}
-                    className="h-48 w-full resize-none rounded-2xl border border-divider bg-background p-4 font-mono text-xs focus:ring-2 focus:ring-primary/20 shadow-inner"
+                    className="h-32 sm:h-48 w-full resize-none rounded-2xl border border-divider bg-background p-4 font-mono text-xs focus:ring-2 focus:ring-primary/20 shadow-inner"
                     aria-label={t("jsonFmt.comparisonTarget")}
                   />
                 </Card>

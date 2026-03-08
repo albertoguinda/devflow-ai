@@ -4,6 +4,7 @@ export {
   SkeletonText,
   SkeletonCircle,
   SkeletonCard,
+  AIResultSkeleton,
   PromptAnalyzerSkeleton,
 } from "./skeletons";
 export { ErrorBoundary } from "./error-boundary";

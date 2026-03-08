@@ -26,6 +26,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { useDtoMatic } from "@/hooks/use-dto-matic";
 import { useTranslation } from "@/hooks/use-translation";
 import { CopyButton } from "@/components/shared/copy-button";
@@ -117,7 +118,7 @@ export default function DtoMaticPage() {
                 onChange={(e) => setJsonInput(e.target.value)}
                 placeholder={t("dtoMatic.pasteJsonHint")}
                 className={cn(
-                  "h-[300px] w-full resize-none rounded-xl border p-4 font-mono text-xs focus:ring-2 transition-all shadow-inner leading-relaxed",
+                  "h-[200px] sm:h-[300px] w-full resize-none rounded-xl border p-4 font-mono text-xs focus:ring-2 transition-all shadow-inner leading-relaxed",
                   !isValidJson(jsonInput) && jsonInput ? "border-danger ring-danger/10" : "border-divider focus:ring-primary/20"
                 )}
                 spellCheck={false}
@@ -266,16 +267,11 @@ export default function DtoMaticPage() {
                       <Bot className="size-4 mr-2" /> {t("dtoMatic.aiOptimizeBtn")}
                     </Button>
                   </div>
-                  {isAILoading && (
-                    <div className="space-y-2 animate-pulse">
-                      <div className="h-3 bg-violet-500/20 rounded w-3/4" />
-                      <div className="h-3 bg-violet-500/20 rounded w-1/2" />
-                    </div>
-                  )}
+                  {isAILoading && <AIResultSkeleton lines={2} />}
                   {aiResult?.suggestions && aiResult.suggestions.length > 0 && !isAILoading && (
                     <div className="space-y-3">
                       {aiResult.suggestions.map((s, i) => (
-                        <div key={i} className="p-4 bg-background/80 rounded-xl border border-violet-500/10">
+                        <div key={i} className="animate-stagger-item p-4 bg-background/80 rounded-xl border border-violet-500/10">
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-xs font-black uppercase text-violet-500">{t("dtoMatic.aiSuggestion")} #{i + 1}</span>
                             <span className="text-xs font-bold text-violet-400">{s.score}/100</span>

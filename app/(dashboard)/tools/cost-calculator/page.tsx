@@ -34,6 +34,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { formatCost, exportComparisonCsv } from "@/hooks/use-cost-calculator";
 import type { Currency } from "@/hooks/use-cost-calculator";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { PROVIDER_LABELS } from "@/config/ai-models";
@@ -512,16 +513,11 @@ export default function CostCalculatorPage() {
               >
                 <Bot className="size-4 mr-2" /> {t("costCalc.aiAdviseBtn")}
               </Button>
-              {isAILoading && (
-                <div className="space-y-2 animate-pulse">
-                  <div className="h-3 bg-violet-500/20 rounded w-3/4" />
-                  <div className="h-3 bg-violet-500/20 rounded w-1/2" />
-                </div>
-              )}
+              {isAILoading && <AIResultSkeleton lines={3} />}
               {aiResult?.suggestions && aiResult.suggestions.length > 0 && !isAILoading && (
                 <div className="space-y-3">
                   {aiResult.suggestions.map((s, i) => (
-                    <div key={i} className="p-3 bg-background/80 rounded-xl border border-violet-500/10">
+                    <div key={i} className="animate-stagger-item p-3 bg-background/80 rounded-xl border border-violet-500/10">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-black uppercase text-violet-500">{t("costCalc.aiStrategy")} #{i + 1}</span>
                         <span className="text-xs font-bold text-violet-400">{s.score}/100</span>
@@ -640,7 +636,7 @@ export default function CostCalculatorPage() {
           </div>
           {t("costCalc.projectionTitle")}
         </h3>
-        <div className="h-[350px] w-full">
+        <div className="h-[250px] sm:h-[350px] w-full">
           <CostProjectionChart chartData={chartData} topModelNames={topModelNames} />
         </div>
         <p className="text-xs text-muted-foreground mt-4 italic text-center">

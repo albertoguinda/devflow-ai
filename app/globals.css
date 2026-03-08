@@ -560,6 +560,40 @@ label[for] {
   animation: pulse-slow 2s ease-in-out infinite;
 }
 
+/* Stagger animation for AI result items */
+@keyframes stagger-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-stagger-item {
+  animation: stagger-fade-in 0.4s ease-out both;
+}
+
+.animate-stagger-item:nth-child(1) { animation-delay: 0ms; }
+.animate-stagger-item:nth-child(2) { animation-delay: 100ms; }
+.animate-stagger-item:nth-child(3) { animation-delay: 200ms; }
+.animate-stagger-item:nth-child(4) { animation-delay: 300ms; }
+.animate-stagger-item:nth-child(5) { animation-delay: 400ms; }
+
+/* Enhanced shimmer skeleton for AI loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(139, 92, 246, 0.08) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
 /* Animated gradient text — slow color shift for hero elements */
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
@@ -615,7 +649,9 @@ label[for] {
   .animate-slide-in-right,
   .animate-slide-in,
   .animate-pulse-slow,
-  .animate-gradient-text {
+  .animate-gradient-text,
+  .animate-stagger-item,
+  .skeleton-shimmer {
     animation: none !important;
   }
 

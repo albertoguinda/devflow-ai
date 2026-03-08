@@ -27,6 +27,7 @@ import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
@@ -247,11 +248,9 @@ export default function CronBuilderPage() {
                       {/* AI Results */}
                       {(isAICronLoading || aiCronResult) && (
                         <div className="space-y-2">
-                          {isAICronLoading && (
-                            <span className="text-xs text-muted-foreground animate-pulse">{t("ai.generating")}</span>
-                          )}
+                          {isAICronLoading && !aiCronResult && <AIResultSkeleton lines={2} />}
                           {aiCronResult && aiCronResult.suggestions.map((s, i) => (
-                            <div key={i} className="p-3 bg-violet-500/5 border border-violet-500/10 rounded-xl space-y-2">
+                            <div key={i} className="animate-stagger-item p-3 bg-violet-500/5 border border-violet-500/10 rounded-xl space-y-2">
                               <div className="flex items-center justify-between">
                                 <code className="font-mono text-sm font-bold text-violet-600 dark:text-violet-400">{s.value}</code>
                                 <div className="flex gap-2">
