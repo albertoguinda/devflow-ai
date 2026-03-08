@@ -73,11 +73,11 @@ export default function RegexHumanizerPage() {
     test(pattern, testText);
   }, [pattern, testText, test]);
 
-  const groupColumns: ColumnConfig[] = [
+  const groupColumns: ColumnConfig[] = useMemo(() => [
     { name: t("table.colIndex"), uid: "index", sortable: true },
     { name: t("table.colPattern"), uid: "pattern" },
     { name: t("table.colExplanation"), uid: "description" },
-  ];
+  ], [t]);
 
   const renderGroupCell = (group: RegexGroup, columnKey: React.Key) => {
     const key = columnKey.toString();
@@ -209,7 +209,7 @@ export default function RegexHumanizerPage() {
                   isLoading={isExplaining}
                   isDisabled={!pattern.trim() || !isValidRegex}
                   variant="primary"
-                  className="w-full h-12 font-bold shadow-lg shadow-primary/20"
+                  className="w-full h-12 font-bold bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 border-0 transition-all"
                 >
                   {t("regex.analyzePattern")}
                 </Button>
@@ -248,7 +248,7 @@ export default function RegexHumanizerPage() {
                   isDisabled={!generateDesc.trim()}
                   isLoading={isAIGenerating}
                   variant="primary"
-                  className="w-full h-12 font-bold shadow-lg shadow-primary/20"
+                  className="w-full h-12 font-bold bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 border-0 transition-all"
                 >
                   <Wand2 className="size-4 mr-2" /> {t("regex.generatePatternBtn")}
                 </Button>
@@ -538,14 +538,17 @@ export default function RegexHumanizerPage() {
               </Card>
             </>
           ) : (
-            <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-full">
-              <div className="size-20 bg-muted rounded-full flex items-center justify-center mb-6">
-                <Regex className="size-10 text-muted-foreground/40" />
+            <Card className="relative p-8 sm:p-20 border-dashed border-2 border-cyan-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-full">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-500/5" />
+              <div className="relative">
+                <div className="size-20 rounded-2xl bg-gradient-to-br from-cyan-500/15 to-blue-500/15 flex items-center justify-center mb-6 mx-auto">
+                  <Regex className="size-10 text-cyan-500/40" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">{t("regex.readyToDecode")}</h3>
+                <p className="text-muted-foreground max-w-xs mx-auto">
+                  {t("regex.readyToDecodeDesc")}
+                </p>
               </div>
-              <h3 className="text-xl font-bold mb-2">{t("regex.readyToDecode")}</h3>
-              <p className="text-muted-foreground max-w-xs">
-                {t("regex.readyToDecodeDesc")}
-              </p>
             </Card>
           )}
         </div>

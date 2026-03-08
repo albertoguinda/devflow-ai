@@ -42,11 +42,11 @@ import { cn } from "@/lib/utils";
 import { downloadBlob } from "@/lib/utils/download";
 import type { CostCalculation } from "@/types/cost-calculator";
 
-const CURRENCIES: { value: Currency; label: string; symbol: string }[] = [
+const CURRENCIES: Readonly<{ value: Currency; label: string; symbol: string }[]> = [
   { value: "USD", label: "USD ($)", symbol: "$" },
   { value: "EUR", label: "EUR (€)", symbol: "€" },
   { value: "GBP", label: "GBP (£)", symbol: "£" },
-];
+] as const;
 
 function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, currency, t }: {
   detailModel: CostCalculation;
@@ -616,9 +616,14 @@ export default function CostCalculatorPage() {
                 emptyContent={t("costCalc.noModels")}
               />
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-border rounded-xl">
-                <Coins className="size-10 text-muted-foreground/30 mb-2" />
-                <p className="text-muted-foreground">{t("costCalc.emptyState")}</p>
+              <div className="relative flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-amber-500/20 rounded-xl overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-orange-500/5" />
+                <div className="relative">
+                  <div className="size-16 rounded-2xl bg-gradient-to-br from-amber-500/15 to-orange-500/15 flex items-center justify-center mb-3 mx-auto">
+                    <Coins className="size-8 text-amber-500/40" />
+                  </div>
+                  <p className="text-muted-foreground">{t("costCalc.emptyState")}</p>
+                </div>
               </div>
             )}
           </Card>

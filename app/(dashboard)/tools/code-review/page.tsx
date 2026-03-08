@@ -124,12 +124,12 @@ export default function CodeReviewPage() {
     reset();
   };
 
-  const issueColumns: ColumnConfig[] = [
+  const issueColumns: ColumnConfig[] = useMemo(() => [
     { name: t("table.colLine"), uid: "line", sortable: true },
     { name: t("table.colIssue"), uid: "message", sortable: true },
     { name: t("table.colSeverity"), uid: "severity", sortable: true },
     { name: t("table.colActions"), uid: "actions" },
-  ];
+  ], [t]);
 
   const renderIssueCell = useCallback((issue: CodeIssue, columnKey: React.Key) => {
     const key = columnKey.toString();
@@ -285,7 +285,7 @@ export default function CodeReviewPage() {
               isLoading={isReviewing}
               isDisabled={!code.trim()}
               variant="primary"
-              className="h-12 text-md font-bold shadow-lg shadow-primary/20"
+              className="h-12 text-md font-bold bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 border-0 transition-all"
             >
               <Sparkles className="mr-2 size-5" />
               {t("codeReview.reviewCode")}
@@ -539,10 +539,11 @@ export default function CodeReviewPage() {
               )}
             </>
           ) : (
-            <Card className="p-20 border-dashed border-2 bg-muted/20">
-              <div className="text-center">
-                <div className="size-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Search className="size-10 text-muted-foreground/40" />
+            <Card className="relative p-8 sm:p-20 border-dashed border-2 border-emerald-500/20 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5" />
+              <div className="relative text-center">
+                <div className="size-20 rounded-2xl bg-gradient-to-br from-emerald-500/15 to-teal-500/15 flex items-center justify-center mx-auto mb-6">
+                  <Search className="size-10 text-emerald-500/40" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">{t("codeReview.emptyState")}</h3>
                 <p className="text-muted-foreground max-w-xs mx-auto">

@@ -247,7 +247,7 @@ export default function UuidGeneratorPage() {
                   <Button
                     onPress={generate}
                     variant="primary"
-                    className="w-full h-12 font-black shadow-lg shadow-primary/20 text-md"
+                    className="w-full h-12 font-black bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-500/25 hover:shadow-xl hover:shadow-teal-500/30 border-0 transition-all text-md"
                     isLoading={isGenerating}
                   >
                     <Sparkles className="size-4 mr-2" /> {t("uuid.generateSequence")}
@@ -463,14 +463,17 @@ export default function UuidGeneratorPage() {
               </Card>
             </div>
           ) : (
-            <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[400px] sm:h-[600px]">
-              <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
-                <Fingerprint className="size-12 text-muted-foreground/30" />
+            <Card className="relative p-20 border-dashed border-2 border-teal-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-[400px] sm:h-[600px]">
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 via-transparent to-emerald-500/5" />
+              <div className="relative">
+                <div className="size-24 rounded-2xl bg-gradient-to-br from-teal-500/15 to-emerald-500/15 flex items-center justify-center mb-6 mx-auto">
+                  <Fingerprint className="size-12 text-teal-500/40" />
+                </div>
+                <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("uuid.controlCenter")}</h3>
+                <p className="text-muted-foreground max-w-sm mx-auto font-medium">
+                  {t("uuid.controlCenterDesc")}
+                </p>
               </div>
-              <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("uuid.controlCenter")}</h3>
-              <p className="text-muted-foreground max-w-sm mx-auto font-medium">
-                {t("uuid.controlCenterDesc")}
-              </p>
             </Card>
           )}
         </div>

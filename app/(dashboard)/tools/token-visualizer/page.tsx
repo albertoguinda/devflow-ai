@@ -369,14 +369,17 @@ export default function TokenVisualizerPage() {
               </Card>
             </>
           ) : (
-            <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-full">
-              <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
-                <Fingerprint className="size-12 text-muted-foreground/30" />
+            <Card className="relative p-8 sm:p-20 border-dashed border-2 border-purple-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-full">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-violet-500/5" />
+              <div className="relative">
+                <div className="size-24 rounded-2xl bg-gradient-to-br from-purple-500/15 to-violet-500/15 flex items-center justify-center mb-6 mx-auto">
+                  <Fingerprint className="size-12 text-purple-500/40" />
+                </div>
+                <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("tokenViz.laboratory")}</h3>
+                <p className="text-muted-foreground max-w-sm mx-auto font-medium">
+                  {t("tokenViz.laboratoryDesc")}
+                </p>
               </div>
-              <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("tokenViz.laboratory")}</h3>
-              <p className="text-muted-foreground max-w-sm mx-auto font-medium">
-                {t("tokenViz.laboratoryDesc")}
-              </p>
             </Card>
           )}
         </div>

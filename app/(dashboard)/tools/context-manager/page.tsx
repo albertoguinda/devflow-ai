@@ -699,9 +699,10 @@ export default function ContextManagerPage() {
             </>
           ) : (
             /* Empty state — redesigned with value proposition */
-            <Card className="p-6 sm:p-12 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center min-h-[300px] sm:min-h-[500px]">
-              <div className="size-20 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-full flex items-center justify-center mb-6">
-                <BookOpen className="size-10 text-blue-500/50" />
+            <Card className="relative p-6 sm:p-12 border-dashed border-2 border-rose-500/20 overflow-hidden flex flex-col items-center justify-center text-center min-h-[300px] sm:min-h-[500px]">
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 via-transparent to-pink-500/5" />
+              <div className="size-20 rounded-2xl bg-gradient-to-br from-rose-500/15 to-pink-500/15 flex items-center justify-center mb-6 relative">
+                <BookOpen className="size-10 text-rose-500/40" />
               </div>
               <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("ctxMgr.selectCreateTitle")}</h3>
               <p className="text-muted-foreground max-w-md mx-auto font-bold mb-2">

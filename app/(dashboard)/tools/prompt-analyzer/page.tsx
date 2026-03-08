@@ -373,7 +373,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
               isLoading={isAnalyzing}
               isDisabled={!prompt.trim() || isAnalyzing}
               variant="primary"
-              className="h-12 font-black shadow-xl shadow-primary/20 text-md gap-2"
+              className="h-12 font-black bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 border-0 transition-all text-md gap-2"
             >
               <Sparkles className="size-4" />
               {t("promptAnalyzer.analyzePrompt")}
@@ -822,10 +822,11 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
           </Card>
         </div>
       ) : (
-        <Card className="p-16">
-          <div className="text-center">
-            <div className="mx-auto flex size-20 items-center justify-center rounded-2xl bg-gradient-to-br from-yellow-500/10 to-orange-600/10">
-              <Sparkles className="size-10 text-yellow-500/60" />
+        <Card className="relative p-8 sm:p-16 border-dashed border-2 border-blue-500/20 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5" />
+          <div className="relative text-center">
+            <div className="mx-auto flex size-20 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/15 to-indigo-500/15">
+              <Sparkles className="size-10 text-blue-500/40" />
             </div>
             <h3 className="mt-6 text-lg font-semibold text-foreground">
               {t("promptAnalyzer.readyToAnalyze")}

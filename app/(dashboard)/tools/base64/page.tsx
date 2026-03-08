@@ -191,7 +191,7 @@ export default function Base64Page() {
               </div>
             </div>
 
-            <Button onPress={process} isDisabled={!input.trim()} variant="primary" className="w-full mt-6 h-12 font-black shadow-xl shadow-primary/20 text-md">
+            <Button onPress={process} isDisabled={!input.trim()} variant="primary" className="w-full mt-6 h-12 font-black bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 border-0 transition-all text-md">
               <Sparkles className="size-4 mr-2" /> {mode === "encode" ? t("base64.generateEncoding") : t("base64.executeDecoding")}
             </Button>
           </Card>
@@ -299,20 +299,22 @@ export default function Base64Page() {
 
             <div className="animate-in fade-in slide-in-from-right-4 duration-500">
               <Tabs.Panel id="text">
-                <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[600px] flex flex-col">
-                  <div className="p-4 border-b border-divider flex justify-between items-center bg-muted/20">
-                    <span className="text-xs font-black opacity-40 uppercase tracking-widest">{t("base64.rawPayload")}</span>
-                    <span className="text-xs font-mono opacity-30">{t("base64.characters", { count: result?.stats.outputLength || 0 })}</span>
+                <Card className="p-0 border-indigo-500/20 dark:border-indigo-500/10 shadow-xl shadow-indigo-500/5 overflow-hidden h-[400px] sm:h-[600px] flex flex-col">
+                  <div className="p-4 border-b border-indigo-500/10 flex justify-between items-center bg-gradient-to-r from-indigo-500/5 to-blue-500/5">
+                    <span className="text-xs font-black text-indigo-600/60 dark:text-indigo-400/60 uppercase tracking-widest">{t("base64.rawPayload")}</span>
+                    <span className="text-xs font-mono text-muted-foreground/50">{t("base64.characters", { count: result?.stats.outputLength || 0 })}</span>
                   </div>
                   {result?.output ? (
                     <pre className="p-8 font-mono text-[11px] leading-relaxed overflow-auto flex-1 bg-background break-all">
                       <code>{result.output}</code>
                     </pre>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-40">
-                      <Binary className="size-12 mb-3" />
-                      <p className="text-sm font-bold">{t("base64.emptyState")}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{t("base64.emptyStateHint")}</p>
+                    <div className="flex flex-col items-center justify-center h-full text-center p-8">
+                      <div className="size-20 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-blue-500/10 flex items-center justify-center mb-4">
+                        <Binary className="size-10 text-indigo-500/40" />
+                      </div>
+                      <p className="text-sm font-bold text-muted-foreground/60">{t("base64.emptyState")}</p>
+                      <p className="text-xs text-muted-foreground/40 mt-1">{t("base64.emptyStateHint")}</p>
                     </div>
                   )}
                 </Card>

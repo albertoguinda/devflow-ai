@@ -435,10 +435,15 @@ export default function HttpStatusFinderPage() {
               )}
 
               {displayCodes.length === 0 && (
-                <Card className="p-20 border-dashed border-2 bg-muted/20 text-center">
-                  <Globe className="size-16 mx-auto mb-4 opacity-20" />
-                  <h3 className="text-xl font-bold opacity-40">{t("httpStatus.noMatchingCodes")}</h3>
-                  <p className="text-sm opacity-30 mt-1">{t("httpStatus.trySearching")}</p>
+                <Card className="relative p-8 sm:p-20 border-dashed border-2 border-cyan-500/20 overflow-hidden text-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-500/5" />
+                  <div className="relative">
+                    <div className="size-20 rounded-2xl bg-gradient-to-br from-cyan-500/15 to-blue-500/15 flex items-center justify-center mb-4 mx-auto">
+                      <Globe className="size-10 text-cyan-500/40" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground/60">{t("httpStatus.noMatchingCodes")}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{t("httpStatus.trySearching")}</p>
+                  </div>
                 </Card>
               )}
             </div>

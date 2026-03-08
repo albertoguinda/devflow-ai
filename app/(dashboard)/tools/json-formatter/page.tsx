@@ -259,10 +259,10 @@ export default function JsonFormatterPage() {
             )}
 
             <div className="grid grid-cols-2 gap-3 mt-6">
-              <Button variant="primary" className="font-black h-12 text-md shadow-xl shadow-primary/20" onPress={() => { setMode("format"); process(); }}>
+              <Button variant="primary" className="font-black h-12 text-md bg-gradient-to-r from-yellow-500 to-amber-600 text-white shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 border-0 transition-all" onPress={() => { setMode("format"); process(); }}>
                 <Braces className="size-4 mr-2" /> {t("jsonFmt.formatBtn")}
               </Button>
-              <Button variant="ghost" className="font-black h-12 text-md text-primary" onPress={() => { setMode("minify"); process(); }}>
+              <Button variant="ghost" className="font-black h-12 text-md text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:bg-amber-500/10" onPress={() => { setMode("minify"); process(); }}>
                 <Minimize2 className="size-4 mr-2" /> {t("jsonFmt.minifyBtn")}
               </Button>
             </div>
@@ -386,8 +386,8 @@ export default function JsonFormatterPage() {
 
             <div className="animate-in fade-in slide-in-from-right-4 duration-500">
               <Tabs.Panel id="output">
-                <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[650px] flex flex-col">
-                <div className="p-4 border-b border-divider flex justify-between items-center bg-muted/20">
+                <Card className="p-0 border-amber-500/20 dark:border-amber-500/10 shadow-xl shadow-amber-500/5 overflow-hidden h-[400px] sm:h-[650px] flex flex-col">
+                <div className="p-4 border-b border-amber-500/10 flex justify-between items-center bg-gradient-to-r from-yellow-500/5 to-amber-500/5">
                   <div className="flex gap-2">
                     {["format", "minify", "to-yaml", "to-xml", "to-csv"].map((m) => (
                       <Button
@@ -410,9 +410,11 @@ export default function JsonFormatterPage() {
                       <code>{highlightedLines}</code>
                     </pre>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-40">
-                      <Braces className="size-12 mb-3" />
-                      <p className="text-sm font-bold">{t("jsonFmt.formatHint")}</p>
+                    <div className="flex flex-col items-center justify-center h-full text-center p-8">
+                      <div className="size-20 rounded-2xl bg-gradient-to-br from-yellow-500/10 to-amber-500/10 flex items-center justify-center mb-4">
+                        <Braces className="size-10 text-amber-500/40" />
+                      </div>
+                      <p className="text-sm font-bold text-muted-foreground/60">{t("jsonFmt.formatHint")}</p>
                     </div>
                   )}
                   {result && (

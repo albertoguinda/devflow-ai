@@ -267,7 +267,7 @@ export default function VariableNameWizardPage() {
                   }
                 }}
                 variant="primary"
-                className="w-full h-12 font-black shadow-xl shadow-primary/20 text-md"
+                className="w-full h-12 font-black bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/30 border-0 transition-all text-md"
                 isLoading={isProcessing}
                 isDisabled={!input.trim()}
               >
@@ -417,14 +417,17 @@ export default function VariableNameWizardPage() {
                   )}
                 </div>
               ) : (
-                <Card className="p-8 sm:p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[300px] sm:h-[500px]">
-                  <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
-                    <Wand2 className="size-12 text-muted-foreground/30" />
+                <Card className="relative p-8 sm:p-20 border-dashed border-2 border-fuchsia-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-[300px] sm:h-[500px]">
+                  <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 via-transparent to-pink-500/5" />
+                  <div className="relative">
+                  <div className="size-24 rounded-2xl bg-gradient-to-br from-fuchsia-500/15 to-pink-500/15 flex items-center justify-center mb-6 mx-auto">
+                    <Wand2 className="size-12 text-fuchsia-500/40" />
                   </div>
                   <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("varName.readyToMagic")}</h3>
                   <p className="text-muted-foreground max-w-sm mx-auto font-medium">
                     {t("varName.readyToMagicDesc")}
                   </p>
+                  </div>
                 </Card>
               )}
             </Tabs.Panel>
@@ -449,14 +452,17 @@ export default function VariableNameWizardPage() {
                     ))}
                   </div>
                 ) : (
-                  <Card className="p-8 sm:p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-[200px] sm:h-[300px]">
-                    <div className="size-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                      <Wand2 className="size-8 text-muted-foreground/30" />
+                  <Card className="relative p-8 sm:p-20 border-dashed border-2 border-fuchsia-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-[200px] sm:h-[300px]">
+                    <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 via-transparent to-pink-500/5" />
+                    <div className="relative">
+                      <div className="size-16 rounded-2xl bg-gradient-to-br from-fuchsia-500/15 to-pink-500/15 flex items-center justify-center mb-4 mx-auto">
+                        <Wand2 className="size-8 text-fuchsia-500/40" />
+                      </div>
+                      <h3 className="text-lg font-black mb-1 text-foreground/60">{t("varName.readyToMagic")}</h3>
+                      <p className="text-muted-foreground text-sm max-w-sm mx-auto font-medium">
+                        {t("varName.readyToMagicDesc")}
+                      </p>
                     </div>
-                    <h3 className="text-lg font-black mb-1 text-foreground/60">{t("varName.readyToMagic")}</h3>
-                    <p className="text-muted-foreground text-sm max-w-sm mx-auto font-medium">
-                      {t("varName.readyToMagicDesc")}
-                    </p>
                   </Card>
                 )}
 

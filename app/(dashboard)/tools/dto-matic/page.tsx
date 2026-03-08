@@ -137,10 +137,10 @@ export default function DtoMaticPage() {
             </div>
 
             <Button 
-              onPress={generate} 
+              onPress={generate}
               isLoading={isGenerating}
               variant="primary"
-              className="w-full mt-4 font-bold h-12 shadow-lg shadow-primary/20 text-md"
+              className="w-full mt-4 font-bold h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-xl hover:shadow-green-500/30 border-0 transition-all text-md"
               isDisabled={!jsonInput.trim() || !config.rootName.trim()}
             >
               <Sparkles className="size-4 mr-2" /> {t("dtoMatic.generateArch")}
@@ -442,14 +442,17 @@ export default function DtoMaticPage() {
               </Tabs>
             </div>
           ) : (
-            <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-full">
-              <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
-                <FolderTree className="size-12 text-muted-foreground/30" />
+            <Card className="relative p-8 sm:p-20 border-dashed border-2 border-green-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-full">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5" />
+              <div className="relative">
+                <div className="size-24 rounded-2xl bg-gradient-to-br from-green-500/15 to-emerald-500/15 flex items-center justify-center mb-6 mx-auto">
+                  <FolderTree className="size-12 text-green-500/40" />
+                </div>
+                <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("dtoMatic.architecturalEngine")}</h3>
+                <p className="text-muted-foreground max-w-sm mx-auto font-medium">
+                  {t("dtoMatic.architecturalEngineDesc")}
+                </p>
               </div>
-              <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("dtoMatic.architecturalEngine")}</h3>
-              <p className="text-muted-foreground max-w-sm mx-auto font-medium">
-                {t("dtoMatic.architecturalEngineDesc")}
-              </p>
             </Card>
           )}
         </div>

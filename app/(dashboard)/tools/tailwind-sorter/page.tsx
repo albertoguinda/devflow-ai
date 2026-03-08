@@ -164,7 +164,7 @@ export default function TailwindSorterPage() {
                 isLoading={isSorting}
                 isDisabled={!input.trim()}
                 variant="primary"
-                className="w-full h-12 font-black shadow-xl shadow-primary/20 text-md"
+                className="w-full h-12 font-black bg-gradient-to-r from-sky-500 to-cyan-600 text-white shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 border-0 transition-all text-md"
               >
                 <Sparkles className="size-4 mr-2" /> {t("tailwind.sortOptimize")}
               </Button>
@@ -407,14 +407,17 @@ export default function TailwindSorterPage() {
               </Card>
             </>
           ) : (
-            <Card className="p-20 border-dashed border-2 bg-muted/20 flex flex-col items-center justify-center text-center h-full">
-              <div className="size-24 bg-muted rounded-full flex items-center justify-center mb-6">
-                <Palette className="size-12 text-muted-foreground/30" />
+            <Card className="relative p-8 sm:p-20 border-dashed border-2 border-sky-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-full">
+              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/5 via-transparent to-cyan-500/5" />
+              <div className="relative">
+                <div className="size-24 rounded-2xl bg-gradient-to-br from-sky-500/15 to-cyan-500/15 flex items-center justify-center mb-6 mx-auto">
+                  <Palette className="size-12 text-sky-500/40" />
+                </div>
+                <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("tailwind.auditorTitle")}</h3>
+                <p className="text-muted-foreground max-w-sm mx-auto font-medium">
+                  {t("tailwind.auditorDesc")}
+                </p>
               </div>
-              <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("tailwind.auditorTitle")}</h3>
-              <p className="text-muted-foreground max-w-sm mx-auto font-medium">
-                {t("tailwind.auditorDesc")}
-              </p>
             </Card>
           )}
         </div>
