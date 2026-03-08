@@ -159,10 +159,10 @@ export default function CronBuilderPage() {
   }, []);
 
   const INFRA_FORMATS: { id: ConfigFormat; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: "kubernetes", label: "Kubernetes CronJob", icon: Cloud },
-    { id: "github-actions", label: "GitHub Actions", icon: Github },
-    { id: "aws-eventbridge", label: "AWS EventBridge", icon: Box },
-    { id: "linux-crontab", label: "Linux Crontab", icon: Terminal },
+    { id: "kubernetes", label: t("cron.infraKubernetes"), icon: Cloud },
+    { id: "github-actions", label: t("cron.infraGithub"), icon: Github },
+    { id: "aws-eventbridge", label: t("cron.infraAws"), icon: Box },
+    { id: "linux-crontab", label: t("cron.infraLinux"), icon: Terminal },
   ];
 
   return (

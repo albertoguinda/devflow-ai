@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useBase64 } from "@/hooks/use-base64";
 import { useTranslation } from "@/hooks/use-translation";
+import { useToast } from "@/hooks/use-toast";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { CopyButton } from "@/components/shared/copy-button";
 import { ToolHeader } from "@/components/shared/tool-header";
@@ -36,6 +37,7 @@ import { useLocaleStore } from "@/lib/stores/locale-store";
 import { cn } from "@/lib/utils";
 export default function Base64Page() {
   const { t } = useTranslation();
+  const { addToast } = useToast();
   const { navigateTo } = useSmartNavigation();
   const {
     input,
@@ -142,6 +144,10 @@ export default function Base64Page() {
                     const file = (e.target as HTMLInputElement).files?.[0];
                     if (!file) { fileInput.onchange = null; return; }
                     const reader = new FileReader();
+                    reader.onerror = () => {
+                      addToast(t("base64.fileReadError"), "error");
+                      fileInput.onchange = null;
+                    };
                     if (mode === "encode") {
                       reader.onload = () => {
                         const base64 = (reader.result as string).split(",")[1];

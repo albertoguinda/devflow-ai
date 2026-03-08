@@ -30,7 +30,6 @@ import { ToolHeader } from "@/components/shared/tool-header";
 import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
-import { getCategoryInfo } from "@/hooks/use-http-status-finder";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
@@ -48,6 +47,7 @@ const CATEGORY_COLORS: Record<HttpStatusCategory, string> = {
 
 export default function HttpStatusFinderPage() {
   const { t } = useTranslation();
+  const categoryLabel = useCallback((cat: HttpStatusCategory) => t(`httpStatus.category.${cat}`), [t]);
   const {
     query,
     categoryFilter,
@@ -96,7 +96,7 @@ export default function HttpStatusFinderPage() {
       case "name":
         return <span className="font-bold text-sm">{status.name}</span>;
       case "category":
-        return <span className="text-xs font-black uppercase opacity-60">{getCategoryInfo(status.category).label}</span>;
+        return <span className="text-xs font-black uppercase opacity-60">{categoryLabel(status.category)}</span>;
       case "description":
         return <span className="text-xs text-muted-foreground line-clamp-1">{status.description}</span>;
       default:
@@ -237,7 +237,7 @@ export default function HttpStatusFinderPage() {
                         <CopyButton text={selectedCode.code.toString()} variant="ghost" size="sm" />
                       </div>
                       <div className="flex gap-2 items-center">
-                        <StatusBadge variant="info">{getCategoryInfo(selectedCode.category).label.toUpperCase()}</StatusBadge>
+                        <StatusBadge variant="info">{categoryLabel(selectedCode.category).toUpperCase()}</StatusBadge>
                         <span className="text-xs font-black opacity-30 uppercase tracking-widest">{t("httpStatus.rfcCompliant")}</span>
                       </div>
                     </div>
@@ -415,7 +415,7 @@ export default function HttpStatusFinderPage() {
                         </div>
                         <div className="min-w-0">
                           <h4 className="font-black text-sm truncate uppercase tracking-tight">{status.name}</h4>
-                          <p className="text-xs text-muted-foreground truncate font-bold opacity-60 uppercase">{getCategoryInfo(status.category).label}</p>
+                          <p className="text-xs text-muted-foreground truncate font-bold opacity-60 uppercase">{categoryLabel(status.category)}</p>
                         </div>
                         <div className="absolute -bottom-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity"><Globe className="size-16" /></div>
                       </Card>
