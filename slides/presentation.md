@@ -92,7 +92,7 @@ Los developers usan **10+ herramientas fragmentadas** para tareas cotidianas
 </div>
 
 <div class="mt-8 text-center text-lg">
-  <strong>20 herramientas</strong> &middot; <strong>1758 tests</strong> &middot; <strong>Lighthouse 100/100/100/100</strong>
+  <strong>20 herramientas</strong> &middot; <strong>1780 tests</strong> &middot; <strong>Lighthouse 100/100/100/100</strong>
 </div>
 
 ---
@@ -271,8 +271,8 @@ React Compiler + View Transitions API + ISR + optimizePackageImports
 ### Metricas actuales
 
 ```
-Tests:    1758 passing (53 files)
-E2E:      20 Playwright specs
+Tests:    1780 passing (53 files)
+E2E:      25 Playwright specs
 a11y:     20 paginas (axe-core WCAG AA)
 Duration: ~72s
 ```
@@ -426,7 +426,7 @@ const { t } = useTranslation();
 </div>
 
 <div class="p-4 bg-green-500/10 rounded-lg text-center">
-  <div class="text-4xl font-bold text-green-400">1758</div>
+  <div class="text-4xl font-bold text-green-400">1780</div>
   <div>Tests passing</div>
 </div>
 
@@ -468,7 +468,7 @@ const { t } = useTranslation();
 1. **Producto funcional** — 20 tools en produccion
 2. **Clean Architecture** — 5-capas sin excepciones
 3. **Performance maxima** — Lighthouse 100x4
-4. **Testing robusto** — 1758 + 20 E2E + a11y
+4. **Testing robusto** — 1780 + 20 E2E + a11y
 5. **Seguridad enterprise** — SAST, CSP, rate limiting
 6. **UX avanzada** — PWA, Cmd+K, Share URL, shortcuts
 7. **IA opcional** — 4 proveedores, BYOK, fallback

@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Regex railroad diagram** (`lib/application/regex-railroad.ts`) — pure TypeScript SVG generator for visual regex syntax diagrams. Handles literals, character classes, quantifiers, alternation, groups, anchors, escape sequences. +22 tests
 - **JSON tree view** (`components/tools/json-tree-view.tsx`, `lib/application/json-tree.ts`) — collapsible tree with color-coded types, expand/collapse all, JSONPath display. New tab in JSON Formatter. +22 tests
 - **~14 new i18n keys** (EN + ES in parity): regex.railroadDiagram, regex.railroadDescription, jsonFmt.treeView, jsonFmt.treeItems, jsonFmt.treeExpand, jsonFmt.treeCollapse, magic.pasteFromClipboard, magic.clipboardDetected, shortcuts.*
-- **+44 unit tests** (1714 → 1758 tests across 53 files)
+- **+66 unit tests** (1714 → 1780 tests across 53 files)
+- **5 new E2E specs** — hash-generator, jwt-decoder, color-converter, diff-comparer, password-generator (25 E2E specs total, all 20 tools now covered)
 
 #### Fixed
 - **Cost Calculator duplicate key** — Deduplicated model names in projection/bar charts to prevent "Mistral Small" duplicate React key error

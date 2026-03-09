@@ -15,7 +15,7 @@ export function HomeContent({ stars }: HomeContentProps) {
   const { t } = useTranslation();
 
   const stats = [
-    { label: t("home.freeTools"), value: "15", icon: <Zap className="size-6" aria-hidden="true" />, color: "from-amber-500 to-orange-500", glow: "group-hover:shadow-amber-500/20" },
+    { label: t("home.freeTools"), value: "20", icon: <Zap className="size-6" aria-hidden="true" />, color: "from-amber-500 to-orange-500", glow: "group-hover:shadow-amber-500/20" },
     { label: t("home.openSource"), value: "100%", icon: <Monitor className="size-6" aria-hidden="true" />, color: "from-blue-500 to-indigo-500", glow: "group-hover:shadow-blue-500/20" },
     { label: t("home.noApiKey"), value: "0", icon: <LockOpen className="size-6" aria-hidden="true" />, color: "from-emerald-500 to-teal-500", glow: "group-hover:shadow-emerald-500/20" },
     { label: t("home.githubStars"), value: null, icon: <Star className="size-6" aria-hidden="true" />, color: "from-purple-500 to-pink-500", glow: "group-hover:shadow-purple-500/20" },
