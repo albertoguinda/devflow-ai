@@ -13,7 +13,7 @@ mdc: true
 
 # DevFlow AI
 
-### 15 herramientas para developers
+### 20 herramientas para developers
 
 **Trabajo Final de Master** — Desarrollo con IA (BIG School)
 
@@ -92,22 +92,22 @@ Los developers usan **10+ herramientas fragmentadas** para tareas cotidianas
 </div>
 
 <div class="mt-8 text-center text-lg">
-  <strong>15 herramientas</strong> &middot; <strong>1466 tests</strong> &middot; <strong>Lighthouse 100/100/100/100</strong>
+  <strong>20 herramientas</strong> &middot; <strong>1758 tests</strong> &middot; <strong>Lighthouse 100/100/100/100</strong>
 </div>
 
 ---
 
-# Las 15 Herramientas
+# Las 20 Herramientas
 
-<div class="grid grid-cols-3 gap-3 text-sm">
+<div class="grid grid-cols-4 gap-2 text-xs">
 
-<div class="p-2 bg-blue-500/10 rounded">**JSON Formatter** — Format, diff, TS interfaces</div>
+<div class="p-2 bg-blue-500/10 rounded">**JSON Formatter** — Format, diff, tree view</div>
 <div class="p-2 bg-emerald-500/10 rounded">**Variable Name Wizard** — 8 convenciones</div>
-<div class="p-2 bg-cyan-500/10 rounded">**Regex Humanizer** — Explicacion + tester</div>
-<div class="p-2 bg-green-500/10 rounded">**Code Review** — Smells, complejidad, seguridad</div>
-<div class="p-2 bg-amber-500/10 rounded">**Cost Calculator** — 10+ modelos, Claude 4.x</div>
-<div class="p-2 bg-indigo-500/10 rounded">**Base64** — URL-safe, data URL, Unicode</div>
-<div class="p-2 bg-teal-500/10 rounded">**UUID Generator** — v1-v5, v7, bulk 1000</div>
+<div class="p-2 bg-cyan-500/10 rounded">**Regex Humanizer** — Explicacion + railroad</div>
+<div class="p-2 bg-green-500/10 rounded">**Code Review** — Smells, complejidad</div>
+<div class="p-2 bg-amber-500/10 rounded">**Cost Calculator** — 10+ modelos IA</div>
+<div class="p-2 bg-indigo-500/10 rounded">**Base64** — URL-safe, data URL</div>
+<div class="p-2 bg-teal-500/10 rounded">**UUID Generator** — v1-v5, v7, bulk</div>
 <div class="p-2 bg-lime-500/10 rounded">**DTO-Matic** — JSON → TS + Zod</div>
 <div class="p-2 bg-orange-500/10 rounded">**Git Commit** — Convencional + emojis</div>
 <div class="p-2 bg-violet-500/10 rounded">**Cron Builder** — Visual + calendario</div>
@@ -116,10 +116,15 @@ Los developers usan **10+ herramientas fragmentadas** para tareas cotidianas
 <div class="p-2 bg-purple-500/10 rounded">**Token Visualizer** — BPE + costes</div>
 <div class="p-2 bg-rose-500/10 rounded">**Context Manager** — Chunks + export</div>
 <div class="p-2 bg-slate-500/10 rounded">**HTTP Status** — 61 codigos + guias</div>
+<div class="p-2 bg-red-500/10 rounded">**Hash Generator** — SHA/MD5/HMAC</div>
+<div class="p-2 bg-yellow-500/10 rounded">**JWT Decoder** — Decode + validar</div>
+<div class="p-2 bg-pink-500/10 rounded">**Color Converter** — HEX/RGB/HSL/OKLCH</div>
+<div class="p-2 bg-fuchsia-500/10 rounded">**Diff Comparer** — LCS line diff</div>
+<div class="p-2 bg-emerald-500/10 rounded">**Password Generator** — Criptografico</div>
 
 </div>
 
-<div class="mt-4 text-center text-sm opacity-70">
+<div class="mt-3 text-center text-sm opacity-70">
   Cada herramienta sigue el patron 5-capas: types → lib/application → hooks → page → tests
 </div>
 
@@ -142,7 +147,7 @@ tests/.../<tool>.test.ts → Tests
 
 **Flujo:** Presentation → Application → Domain
 
-**0 violaciones de capas** en las 15 herramientas
+**0 violaciones de capas** en las 20 herramientas
 
 </div>
 <div>
@@ -266,10 +271,10 @@ React Compiler + View Transitions API + ISR + optimizePackageImports
 ### Metricas actuales
 
 ```
-Tests:    1466 passing (45 files)
+Tests:    1758 passing (53 files)
 E2E:      20 Playwright specs
-a11y:     19 paginas (axe-core WCAG AA)
-Duration: ~50s
+a11y:     20 paginas (axe-core WCAG AA)
+Duration: ~72s
 ```
 
 **Top herramientas:**
@@ -332,14 +337,14 @@ Duration: ~50s
 
 ### Sistema custom (sin i18next)
 
-- **1656 claves** por idioma (EN/ES)
+- **~1590 claves** por idioma (EN/ES)
 - Hook `useTranslation()` con interpolacion
 - Cambio instantaneo via Zustand
 - Paridad perfecta verificada
 
 ### Cobertura
 
-- 15 tool pages completamente traducidas
+- 20 tool pages completamente traducidas
 - Landing page, settings, docs, history
 - ARIA labels, placeholders, toasts
 - Error messages, empty states
@@ -374,7 +379,7 @@ const { t } = useTranslation();
 <div>
 
 ### Command Palette (`Cmd+K`)
-- Busqueda fuzzy de 15 tools + 5 acciones
+- Busqueda fuzzy de 20 tools + 5 acciones
 - Navegacion por teclado completa
 - Zero dependencias extra
 
@@ -416,22 +421,22 @@ const { t } = useTranslation();
 <div class="grid grid-cols-3 gap-6 mt-4">
 
 <div class="p-4 bg-blue-500/10 rounded-lg text-center">
-  <div class="text-4xl font-bold text-blue-400">15</div>
+  <div class="text-4xl font-bold text-blue-400">20</div>
   <div>Herramientas</div>
 </div>
 
 <div class="p-4 bg-green-500/10 rounded-lg text-center">
-  <div class="text-4xl font-bold text-green-400">1466</div>
+  <div class="text-4xl font-bold text-green-400">1758</div>
   <div>Tests passing</div>
 </div>
 
 <div class="p-4 bg-purple-500/10 rounded-lg text-center">
-  <div class="text-4xl font-bold text-purple-400">35</div>
+  <div class="text-4xl font-bold text-purple-400">40</div>
   <div>Rutas</div>
 </div>
 
 <div class="p-4 bg-amber-500/10 rounded-lg text-center">
-  <div class="text-4xl font-bold text-amber-400">1656</div>
+  <div class="text-4xl font-bold text-amber-400">~1590</div>
   <div>Claves i18n (x2)</div>
 </div>
 
@@ -460,14 +465,14 @@ const { t } = useTranslation();
 
 ### Logros principales
 
-1. **Producto funcional** — 15 tools en produccion
+1. **Producto funcional** — 20 tools en produccion
 2. **Clean Architecture** — 5-capas sin excepciones
 3. **Performance maxima** — Lighthouse 100x4
-4. **Testing robusto** — 1466 + 20 E2E + a11y
+4. **Testing robusto** — 1758 + 20 E2E + a11y
 5. **Seguridad enterprise** — SAST, CSP, rate limiting
-6. **UX avanzada** — PWA, Cmd+K, MagicInput
+6. **UX avanzada** — PWA, Cmd+K, Share URL, shortcuts
 7. **IA opcional** — 4 proveedores, BYOK, fallback
-8. **i18n completo** — 1656 claves EN/ES
+8. **i18n completo** — ~1590 claves EN/ES
 
 </div>
 <div>

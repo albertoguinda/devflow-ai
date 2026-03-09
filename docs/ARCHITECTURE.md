@@ -2,7 +2,7 @@
 
 ## Overview
 
-DevFlow AI is a 15-tool developer toolkit built with **Next.js 16**, **React 19**, **TypeScript 5 (strict)**, **Tailwind CSS v4**, and **HeroUI v3 beta**. Every tool works locally in the browser without any server dependencies. AI features are optional enhancements powered by server-side Route Handlers.
+DevFlow AI is a 20-tool developer toolkit built with **Next.js 16**, **React 19**, **TypeScript 5 (strict)**, **Tailwind CSS v4**, and **HeroUI v3 beta**. Every tool works locally in the browser without any server dependencies. AI features are optional enhancements powered by server-side Route Handlers.
 
 ## Layered Architecture
 
@@ -143,7 +143,7 @@ Lazy garbage collection cleans stale entries on each check.
 | Component | Location | Purpose |
 |-----------|----------|---------|
 | Provider chain | `app/providers.tsx` | Theme + HeroUI + Favorites + Toast + SWR |
-| Tool registry | `config/tools-data.ts` | All 15 tools metadata |
+| Tool registry | `config/tools-data.ts` | All 20 tools metadata |
 | i18n | `hooks/use-translation.ts` | Flat JSON dictionaries in `locales/` |
 | Smart navigation | `hooks/use-smart-navigation.ts` | Cross-tool data passing via localStorage |
 | DataTable | `components/ui/data-table.tsx` | `@heroui/table` + `@heroui/pagination` |

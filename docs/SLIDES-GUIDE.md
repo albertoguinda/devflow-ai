@@ -78,7 +78,7 @@ Abre http://localhost:3030/export y selecciona la opcion PPTX/images.
 | 1 | Portada | 30s |
 | 2 | El Problema | 1.5min |
 | 3 | La Solucion | 1min |
-| 4 | Las 15 Herramientas | 1min |
+| 4 | Las 20 Herramientas | 1min |
 | 5 | Arquitectura Clean | 2min |
 | 6 | Stack Tecnologico | 1min |
 | 7 | Server Components & Performance | 1.5min |

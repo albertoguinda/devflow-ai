@@ -22,7 +22,7 @@ DevFlow AI is designed to deploy on **Vercel** with zero configuration for the f
 
 #### Required for AI Features
 
-Without these, the 15 browser tools work fully — only AI-powered features (code review, suggestions, refinement, tokenization) are disabled.
+Without these, the 20 browser tools work fully — only AI-powered features (code review, suggestions, refinement, tokenization) are disabled.
 
 | Variable | Provider | Description |
 |----------|----------|-------------|
