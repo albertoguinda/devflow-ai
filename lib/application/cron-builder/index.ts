@@ -197,11 +197,539 @@ const CRON_STRINGS = {
       "yearly": { name: "Anual", description: "Se ejecuta el 1 de enero a las 00:00" },
     } as Record<string, { name: string; description: string }>,
   },
+
+  fr: {
+    // Field labels
+    fieldLabels: {
+      minute: "Minute",
+      hour: "Heure",
+      dayOfMonth: "Jour du mois",
+      month: "Mois",
+      dayOfWeek: "Jour de la semaine",
+    } satisfies Record<CronField, string>,
+
+    // Field units (plural)
+    fieldUnits: {
+      minute: "minutes",
+      hour: "heures",
+      dayOfMonth: "jours",
+      month: "mois",
+      dayOfWeek: "jours",
+    } satisfies Record<CronField, string>,
+
+    // Month abbreviations (index 0-11)
+    monthNames: ["JAN", "FÉV", "MAR", "AVR", "MAI", "JUN", "JUL", "AOÛ", "SEP", "OCT", "NOV", "DÉC"],
+
+    // Day-of-week abbreviations (index 0=Sun .. 6=Sat)
+    dayNames: ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"],
+
+    // Parse / validation messages
+    parseError: "L'expression cron doit comporter 5 champs",
+    invalidExpression: "Expression invalide",
+    invalidStep: (label: string, step: string | undefined) => `${label} : pas invalide "${step}"`,
+    invalidRange: (label: string) => `${label} : plage invalide`,
+    rangeStartGreaterThanEnd: (label: string) => `${label} : le début de la plage est supérieur à la fin`,
+    invalidRangeInList: (label: string) => `${label} : plage invalide dans la liste`,
+    notAValidNumber: (label: string, value: string) => `${label} : "${value}" n'est pas un nombre valide`,
+    outOfRange: (label: string, num: number, min: number, max: number) =>
+      `${label} : ${num} hors limites (${min}-${max})`,
+
+    // Explanation templates
+    every: (unit: string) => `Chaque ${unit}`,
+    everyN: (step: string | undefined, unit: string) => `Toutes les ${step} ${unit}`,
+    everyNStartingAt: (step: string | undefined, unit: string, base: string | undefined) =>
+      `Toutes les ${step} ${unit} à partir de ${base}`,
+    fromTo: (start: string, end: string) => `De ${start} à ${end}`,
+
+    // buildHumanReadable templates
+    everyMinute: "Chaque minute",
+    everyNMinutes: (step: string | undefined) => `Toutes les ${step} minutes`,
+    atMinuteOfEveryHour: (minute: string) => `À la minute ${minute} de chaque heure`,
+    atTime: (h: string, m: string) => `À ${h}:${m}`,
+    atMinuteFromTo: (m: string, start: string | undefined, end: string | undefined) =>
+      `À la minute ${m}, de ${start}:00 à ${end}:00`,
+    minuteFallback: (minute: string) => `minute ${minute}`,
+    hourFallback: (hour: string) => `heure ${hour}`,
+    onDay: (day: string) => `le jour ${day}`,
+    days: (dayOfMonth: string) => `jours ${dayOfMonth}`,
+    inMonth: (monthName: string) => `en ${monthName}`,
+    months: (month: string) => `mois ${month}`,
+    onDayOfWeek: (dayName: string) => `le ${dayName}`,
+    mondayToFriday: "du lundi au vendredi",
+    saturdaysAndSundays: "samedis et dimanches",
+    weekdays: (dayOfWeek: string) => `jours ouvrables ${dayOfWeek}`,
+
+    // formatRelative templates
+    inMinutes: (n: number) => `dans ${n} minute${n !== 1 ? "s" : ""}`,
+    inHoursAndMinutes: (h: number, m: number) => `dans ${h}h ${m}m`,
+    inHours: (n: number) => `dans ${n} heure${n !== 1 ? "s" : ""}`,
+    inDays: (n: number) => `dans ${n} jour${n !== 1 ? "s" : ""}`,
+    inWeeks: (n: number) => `dans ${n} semaine${n !== 1 ? "s" : ""}`,
+
+    // Intl locale code for date formatting
+    intlLocale: "fr-FR",
+
+    // Preset names and descriptions
+    presets: {
+      "every-minute": { name: "Chaque minute", description: "S'exécute chaque minute" },
+      "every-5-minutes": { name: "Toutes les 5 minutes", description: "S'exécute toutes les 5 minutes" },
+      "every-15-minutes": { name: "Toutes les 15 minutes", description: "S'exécute toutes les 15 minutes" },
+      "every-30-minutes": { name: "Toutes les 30 minutes", description: "S'exécute toutes les demi-heures" },
+      "hourly": { name: "Toutes les heures", description: "S'exécute au début de chaque heure" },
+      "daily-midnight": { name: "Quotidien (minuit)", description: "S'exécute à 00:00 chaque jour" },
+      "daily-noon": { name: "Quotidien (midi)", description: "S'exécute à 12:00 chaque jour" },
+      "weekly-monday": { name: "Hebdomadaire (lundi)", description: "S'exécute chaque lundi à 00:00" },
+      "monthly": { name: "Mensuel", description: "S'exécute le 1er de chaque mois à 00:00" },
+      "weekdays": { name: "Jours ouvrables", description: "S'exécute du lundi au vendredi à 09:00" },
+      "weekends": { name: "Week-ends", description: "S'exécute samedis et dimanches à 10:00" },
+      "yearly": { name: "Annuel", description: "S'exécute le 1er janvier à 00:00" },
+    } as Record<string, { name: string; description: string }>,
+  },
+
+  pt: {
+    // Field labels
+    fieldLabels: {
+      minute: "Minuto",
+      hour: "Hora",
+      dayOfMonth: "Dia do mês",
+      month: "Mês",
+      dayOfWeek: "Dia da semana",
+    } satisfies Record<CronField, string>,
+
+    // Field units (plural)
+    fieldUnits: {
+      minute: "minutos",
+      hour: "horas",
+      dayOfMonth: "dias",
+      month: "meses",
+      dayOfWeek: "dias",
+    } satisfies Record<CronField, string>,
+
+    // Month abbreviations (index 0-11)
+    monthNames: ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"],
+
+    // Day-of-week abbreviations (index 0=Sun .. 6=Sat)
+    dayNames: ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"],
+
+    // Parse / validation messages
+    parseError: "A expressão cron deve ter 5 campos",
+    invalidExpression: "Expressão inválida",
+    invalidStep: (label: string, step: string | undefined) => `${label}: passo inválido "${step}"`,
+    invalidRange: (label: string) => `${label}: intervalo inválido`,
+    rangeStartGreaterThanEnd: (label: string) => `${label}: o início do intervalo é maior que o fim`,
+    invalidRangeInList: (label: string) => `${label}: intervalo inválido na lista`,
+    notAValidNumber: (label: string, value: string) => `${label}: "${value}" não é um número válido`,
+    outOfRange: (label: string, num: number, min: number, max: number) =>
+      `${label}: ${num} fora do intervalo (${min}-${max})`,
+
+    // Explanation templates
+    every: (unit: string) => `Cada ${unit}`,
+    everyN: (step: string | undefined, unit: string) => `A cada ${step} ${unit}`,
+    everyNStartingAt: (step: string | undefined, unit: string, base: string | undefined) =>
+      `A cada ${step} ${unit} a partir de ${base}`,
+    fromTo: (start: string, end: string) => `De ${start} a ${end}`,
+
+    // buildHumanReadable templates
+    everyMinute: "A cada minuto",
+    everyNMinutes: (step: string | undefined) => `A cada ${step} minutos`,
+    atMinuteOfEveryHour: (minute: string) => `No minuto ${minute} de cada hora`,
+    atTime: (h: string, m: string) => `Às ${h}:${m}`,
+    atMinuteFromTo: (m: string, start: string | undefined, end: string | undefined) =>
+      `No minuto ${m}, de ${start}:00 a ${end}:00`,
+    minuteFallback: (minute: string) => `minuto ${minute}`,
+    hourFallback: (hour: string) => `hora ${hour}`,
+    onDay: (day: string) => `no dia ${day}`,
+    days: (dayOfMonth: string) => `dias ${dayOfMonth}`,
+    inMonth: (monthName: string) => `em ${monthName}`,
+    months: (month: string) => `meses ${month}`,
+    onDayOfWeek: (dayName: string) => `na ${dayName}`,
+    mondayToFriday: "de segunda a sexta",
+    saturdaysAndSundays: "sábados e domingos",
+    weekdays: (dayOfWeek: string) => `dias úteis ${dayOfWeek}`,
+
+    // formatRelative templates
+    inMinutes: (n: number) => `em ${n} minuto${n !== 1 ? "s" : ""}`,
+    inHoursAndMinutes: (h: number, m: number) => `em ${h}h ${m}m`,
+    inHours: (n: number) => `em ${n} hora${n !== 1 ? "s" : ""}`,
+    inDays: (n: number) => `em ${n} dia${n !== 1 ? "s" : ""}`,
+    inWeeks: (n: number) => `em ${n} semana${n !== 1 ? "s" : ""}`,
+
+    // Intl locale code for date formatting
+    intlLocale: "pt-BR",
+
+    // Preset names and descriptions
+    presets: {
+      "every-minute": { name: "A cada minuto", description: "Executa a cada minuto" },
+      "every-5-minutes": { name: "A cada 5 minutos", description: "Executa a cada 5 minutos" },
+      "every-15-minutes": { name: "A cada 15 minutos", description: "Executa a cada 15 minutos" },
+      "every-30-minutes": { name: "A cada 30 minutos", description: "Executa a cada meia hora" },
+      "hourly": { name: "A cada hora", description: "Executa no início de cada hora" },
+      "daily-midnight": { name: "Diário (meia-noite)", description: "Executa às 00:00 todos os dias" },
+      "daily-noon": { name: "Diário (meio-dia)", description: "Executa às 12:00 todos os dias" },
+      "weekly-monday": { name: "Semanal (segunda)", description: "Executa toda segunda-feira às 00:00" },
+      "monthly": { name: "Mensal", description: "Executa no dia 1 de cada mês às 00:00" },
+      "weekdays": { name: "Dias úteis", description: "Executa de segunda a sexta às 09:00" },
+      "weekends": { name: "Fins de semana", description: "Executa sábados e domingos às 10:00" },
+      "yearly": { name: "Anual", description: "Executa em 1 de janeiro às 00:00" },
+    } as Record<string, { name: string; description: string }>,
+  },
+
+  de: {
+    // Field labels
+    fieldLabels: {
+      minute: "Minute",
+      hour: "Stunde",
+      dayOfMonth: "Tag des Monats",
+      month: "Monat",
+      dayOfWeek: "Wochentag",
+    } satisfies Record<CronField, string>,
+
+    // Field units (plural)
+    fieldUnits: {
+      minute: "Minuten",
+      hour: "Stunden",
+      dayOfMonth: "Tage",
+      month: "Monate",
+      dayOfWeek: "Tage",
+    } satisfies Record<CronField, string>,
+
+    // Month abbreviations (index 0-11)
+    monthNames: ["JAN", "FEB", "MÄR", "APR", "MAI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV", "DEZ"],
+
+    // Day-of-week abbreviations (index 0=Sun .. 6=Sat)
+    dayNames: ["SO", "MO", "DI", "MI", "DO", "FR", "SA"],
+
+    // Parse / validation messages
+    parseError: "Der Cron-Ausdruck muss 5 Felder haben",
+    invalidExpression: "Ungültiger Ausdruck",
+    invalidStep: (label: string, step: string | undefined) => `${label}: ungültiger Schritt "${step}"`,
+    invalidRange: (label: string) => `${label}: ungültiger Bereich`,
+    rangeStartGreaterThanEnd: (label: string) => `${label}: Bereichsanfang ist größer als das Ende`,
+    invalidRangeInList: (label: string) => `${label}: ungültiger Bereich in der Liste`,
+    notAValidNumber: (label: string, value: string) => `${label}: "${value}" ist keine gültige Zahl`,
+    outOfRange: (label: string, num: number, min: number, max: number) =>
+      `${label}: ${num} außerhalb des Bereichs (${min}-${max})`,
+
+    // Explanation templates
+    every: (unit: string) => `Jede ${unit}`,
+    everyN: (step: string | undefined, unit: string) => `Alle ${step} ${unit}`,
+    everyNStartingAt: (step: string | undefined, unit: string, base: string | undefined) =>
+      `Alle ${step} ${unit} ab ${base}`,
+    fromTo: (start: string, end: string) => `Von ${start} bis ${end}`,
+
+    // buildHumanReadable templates
+    everyMinute: "Jede Minute",
+    everyNMinutes: (step: string | undefined) => `Alle ${step} Minuten`,
+    atMinuteOfEveryHour: (minute: string) => `In Minute ${minute} jeder Stunde`,
+    atTime: (h: string, m: string) => `Um ${h}:${m}`,
+    atMinuteFromTo: (m: string, start: string | undefined, end: string | undefined) =>
+      `In Minute ${m}, von ${start}:00 bis ${end}:00`,
+    minuteFallback: (minute: string) => `Minute ${minute}`,
+    hourFallback: (hour: string) => `Stunde ${hour}`,
+    onDay: (day: string) => `am Tag ${day}`,
+    days: (dayOfMonth: string) => `Tage ${dayOfMonth}`,
+    inMonth: (monthName: string) => `im ${monthName}`,
+    months: (month: string) => `Monate ${month}`,
+    onDayOfWeek: (dayName: string) => `am ${dayName}`,
+    mondayToFriday: "Montag bis Freitag",
+    saturdaysAndSundays: "Samstage und Sonntage",
+    weekdays: (dayOfWeek: string) => `Wochentage ${dayOfWeek}`,
+
+    // formatRelative templates
+    inMinutes: (n: number) => `in ${n} Minute${n !== 1 ? "n" : ""}`,
+    inHoursAndMinutes: (h: number, m: number) => `in ${h}h ${m}m`,
+    inHours: (n: number) => `in ${n} Stunde${n !== 1 ? "n" : ""}`,
+    inDays: (n: number) => `in ${n} Tag${n !== 1 ? "en" : ""}`,
+    inWeeks: (n: number) => `in ${n} Woche${n !== 1 ? "n" : ""}`,
+
+    // Intl locale code for date formatting
+    intlLocale: "de-DE",
+
+    // Preset names and descriptions
+    presets: {
+      "every-minute": { name: "Jede Minute", description: "Wird jede Minute ausgeführt" },
+      "every-5-minutes": { name: "Alle 5 Minuten", description: "Wird alle 5 Minuten ausgeführt" },
+      "every-15-minutes": { name: "Alle 15 Minuten", description: "Wird alle 15 Minuten ausgeführt" },
+      "every-30-minutes": { name: "Alle 30 Minuten", description: "Wird alle halbe Stunde ausgeführt" },
+      "hourly": { name: "Stündlich", description: "Wird zu Beginn jeder Stunde ausgeführt" },
+      "daily-midnight": { name: "Täglich (Mitternacht)", description: "Wird täglich um 00:00 ausgeführt" },
+      "daily-noon": { name: "Täglich (Mittag)", description: "Wird täglich um 12:00 ausgeführt" },
+      "weekly-monday": { name: "Wöchentlich (Montag)", description: "Wird jeden Montag um 00:00 ausgeführt" },
+      "monthly": { name: "Monatlich", description: "Wird am 1. jedes Monats um 00:00 ausgeführt" },
+      "weekdays": { name: "Werktage", description: "Wird Montag bis Freitag um 09:00 ausgeführt" },
+      "weekends": { name: "Wochenende", description: "Wird Samstag und Sonntag um 10:00 ausgeführt" },
+      "yearly": { name: "Jährlich", description: "Wird am 1. Januar um 00:00 ausgeführt" },
+    } as Record<string, { name: string; description: string }>,
+  },
+
+  it: {
+    // Field labels
+    fieldLabels: {
+      minute: "Minuto",
+      hour: "Ora",
+      dayOfMonth: "Giorno del mese",
+      month: "Mese",
+      dayOfWeek: "Giorno della settimana",
+    } satisfies Record<CronField, string>,
+
+    // Field units (plural)
+    fieldUnits: {
+      minute: "minuti",
+      hour: "ore",
+      dayOfMonth: "giorni",
+      month: "mesi",
+      dayOfWeek: "giorni",
+    } satisfies Record<CronField, string>,
+
+    // Month abbreviations (index 0-11)
+    monthNames: ["GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV", "DIC"],
+
+    // Day-of-week abbreviations (index 0=Sun .. 6=Sat)
+    dayNames: ["DOM", "LUN", "MAR", "MER", "GIO", "VEN", "SAB"],
+
+    // Parse / validation messages
+    parseError: "L'espressione cron deve avere 5 campi",
+    invalidExpression: "Espressione non valida",
+    invalidStep: (label: string, step: string | undefined) => `${label}: passo non valido "${step}"`,
+    invalidRange: (label: string) => `${label}: intervallo non valido`,
+    rangeStartGreaterThanEnd: (label: string) => `${label}: l'inizio dell'intervallo è maggiore della fine`,
+    invalidRangeInList: (label: string) => `${label}: intervallo non valido nella lista`,
+    notAValidNumber: (label: string, value: string) => `${label}: "${value}" non è un numero valido`,
+    outOfRange: (label: string, num: number, min: number, max: number) =>
+      `${label}: ${num} fuori dall'intervallo (${min}-${max})`,
+
+    // Explanation templates
+    every: (unit: string) => `Ogni ${unit}`,
+    everyN: (step: string | undefined, unit: string) => `Ogni ${step} ${unit}`,
+    everyNStartingAt: (step: string | undefined, unit: string, base: string | undefined) =>
+      `Ogni ${step} ${unit} a partire da ${base}`,
+    fromTo: (start: string, end: string) => `Da ${start} a ${end}`,
+
+    // buildHumanReadable templates
+    everyMinute: "Ogni minuto",
+    everyNMinutes: (step: string | undefined) => `Ogni ${step} minuti`,
+    atMinuteOfEveryHour: (minute: string) => `Al minuto ${minute} di ogni ora`,
+    atTime: (h: string, m: string) => `Alle ${h}:${m}`,
+    atMinuteFromTo: (m: string, start: string | undefined, end: string | undefined) =>
+      `Al minuto ${m}, dalle ${start}:00 alle ${end}:00`,
+    minuteFallback: (minute: string) => `minuto ${minute}`,
+    hourFallback: (hour: string) => `ora ${hour}`,
+    onDay: (day: string) => `il giorno ${day}`,
+    days: (dayOfMonth: string) => `giorni ${dayOfMonth}`,
+    inMonth: (monthName: string) => `a ${monthName}`,
+    months: (month: string) => `mesi ${month}`,
+    onDayOfWeek: (dayName: string) => `il ${dayName}`,
+    mondayToFriday: "da lunedì a venerdì",
+    saturdaysAndSundays: "sabato e domenica",
+    weekdays: (dayOfWeek: string) => `giorni feriali ${dayOfWeek}`,
+
+    // formatRelative templates
+    inMinutes: (n: number) => `tra ${n} minut${n !== 1 ? "i" : "o"}`,
+    inHoursAndMinutes: (h: number, m: number) => `tra ${h}h ${m}m`,
+    inHours: (n: number) => `tra ${n} or${n !== 1 ? "e" : "a"}`,
+    inDays: (n: number) => `tra ${n} giorn${n !== 1 ? "i" : "o"}`,
+    inWeeks: (n: number) => `tra ${n} settiman${n !== 1 ? "e" : "a"}`,
+
+    // Intl locale code for date formatting
+    intlLocale: "it-IT",
+
+    // Preset names and descriptions
+    presets: {
+      "every-minute": { name: "Ogni minuto", description: "Eseguito ogni minuto" },
+      "every-5-minutes": { name: "Ogni 5 minuti", description: "Eseguito ogni 5 minuti" },
+      "every-15-minutes": { name: "Ogni 15 minuti", description: "Eseguito ogni 15 minuti" },
+      "every-30-minutes": { name: "Ogni 30 minuti", description: "Eseguito ogni mezz'ora" },
+      "hourly": { name: "Ogni ora", description: "Eseguito all'inizio di ogni ora" },
+      "daily-midnight": { name: "Giornaliero (mezzanotte)", description: "Eseguito alle 00:00 ogni giorno" },
+      "daily-noon": { name: "Giornaliero (mezzogiorno)", description: "Eseguito alle 12:00 ogni giorno" },
+      "weekly-monday": { name: "Settimanale (lunedì)", description: "Eseguito ogni lunedì alle 00:00" },
+      "monthly": { name: "Mensile", description: "Eseguito il 1° di ogni mese alle 00:00" },
+      "weekdays": { name: "Giorni feriali", description: "Eseguito da lunedì a venerdì alle 09:00" },
+      "weekends": { name: "Fine settimana", description: "Eseguito sabato e domenica alle 10:00" },
+      "yearly": { name: "Annuale", description: "Eseguito il 1° gennaio alle 00:00" },
+    } as Record<string, { name: string; description: string }>,
+  },
+
+  zh: {
+    // Field labels
+    fieldLabels: {
+      minute: "分钟",
+      hour: "小时",
+      dayOfMonth: "日",
+      month: "月",
+      dayOfWeek: "星期",
+    } satisfies Record<CronField, string>,
+
+    // Field units (plural)
+    fieldUnits: {
+      minute: "分钟",
+      hour: "小时",
+      dayOfMonth: "天",
+      month: "个月",
+      dayOfWeek: "天",
+    } satisfies Record<CronField, string>,
+
+    // Month abbreviations (index 0-11)
+    monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+
+    // Day-of-week abbreviations (index 0=Sun .. 6=Sat)
+    dayNames: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+
+    // Parse / validation messages
+    parseError: "Cron表达式必须包含5个字段",
+    invalidExpression: "无效的表达式",
+    invalidStep: (label: string, step: string | undefined) => `${label}：步长 "${step}" 无效`,
+    invalidRange: (label: string) => `${label}：范围无效`,
+    rangeStartGreaterThanEnd: (label: string) => `${label}：范围起始值大于结束值`,
+    invalidRangeInList: (label: string) => `${label}：列表中的范围无效`,
+    notAValidNumber: (label: string, value: string) => `${label}："${value}" 不是有效数字`,
+    outOfRange: (label: string, num: number, min: number, max: number) =>
+      `${label}：${num} 超出范围 (${min}-${max})`,
+
+    // Explanation templates
+    every: (unit: string) => `每${unit}`,
+    everyN: (step: string | undefined, unit: string) => `每 ${step} ${unit}`,
+    everyNStartingAt: (step: string | undefined, unit: string, base: string | undefined) =>
+      `从 ${base} 开始每 ${step} ${unit}`,
+    fromTo: (start: string, end: string) => `从 ${start} 到 ${end}`,
+
+    // buildHumanReadable templates
+    everyMinute: "每分钟",
+    everyNMinutes: (step: string | undefined) => `每 ${step} 分钟`,
+    atMinuteOfEveryHour: (minute: string) => `每小时的第 ${minute} 分钟`,
+    atTime: (h: string, m: string) => `在 ${h}:${m}`,
+    atMinuteFromTo: (m: string, start: string | undefined, end: string | undefined) =>
+      `在第 ${m} 分钟，从 ${start}:00 到 ${end}:00`,
+    minuteFallback: (minute: string) => `第 ${minute} 分钟`,
+    hourFallback: (hour: string) => `第 ${hour} 小时`,
+    onDay: (day: string) => `每月第 ${day} 天`,
+    days: (dayOfMonth: string) => `第 ${dayOfMonth} 天`,
+    inMonth: (monthName: string) => `在 ${monthName}`,
+    months: (month: string) => `第 ${month} 月`,
+    onDayOfWeek: (dayName: string) => `在${dayName}`,
+    mondayToFriday: "周一至周五",
+    saturdaysAndSundays: "周六和周日",
+    weekdays: (dayOfWeek: string) => `工作日 ${dayOfWeek}`,
+
+    // formatRelative templates
+    inMinutes: (n: number) => `${n} 分钟后`,
+    inHoursAndMinutes: (h: number, m: number) => `${h}小时 ${m}分钟后`,
+    inHours: (n: number) => `${n} 小时后`,
+    inDays: (n: number) => `${n} 天后`,
+    inWeeks: (n: number) => `${n} 周后`,
+
+    // Intl locale code for date formatting
+    intlLocale: "zh-CN",
+
+    // Preset names and descriptions
+    presets: {
+      "every-minute": { name: "每分钟", description: "每分钟执行一次" },
+      "every-5-minutes": { name: "每5分钟", description: "每5分钟执行一次" },
+      "every-15-minutes": { name: "每15分钟", description: "每15分钟执行一次" },
+      "every-30-minutes": { name: "每30分钟", description: "每半小时执行一次" },
+      "hourly": { name: "每小时", description: "每小时开始时执行" },
+      "daily-midnight": { name: "每日（午夜）", description: "每天 00:00 执行" },
+      "daily-noon": { name: "每日（中午）", description: "每天 12:00 执行" },
+      "weekly-monday": { name: "每周（周一）", description: "每周一 00:00 执行" },
+      "monthly": { name: "每月", description: "每月1日 00:00 执行" },
+      "weekdays": { name: "工作日", description: "周一至周五 09:00 执行" },
+      "weekends": { name: "周末", description: "周六和周日 10:00 执行" },
+      "yearly": { name: "每年", description: "每年1月1日 00:00 执行" },
+    } as Record<string, { name: string; description: string }>,
+  },
+
+  ja: {
+    // Field labels
+    fieldLabels: {
+      minute: "分",
+      hour: "時",
+      dayOfMonth: "日",
+      month: "月",
+      dayOfWeek: "曜日",
+    } satisfies Record<CronField, string>,
+
+    // Field units (plural)
+    fieldUnits: {
+      minute: "分",
+      hour: "時間",
+      dayOfMonth: "日",
+      month: "ヶ月",
+      dayOfWeek: "日",
+    } satisfies Record<CronField, string>,
+
+    // Month abbreviations (index 0-11)
+    monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+
+    // Day-of-week abbreviations (index 0=Sun .. 6=Sat)
+    dayNames: ["日", "月", "火", "水", "木", "金", "土"],
+
+    // Parse / validation messages
+    parseError: "Cron式は5つのフィールドが必要です",
+    invalidExpression: "無効な式",
+    invalidStep: (label: string, step: string | undefined) => `${label}：ステップ "${step}" は無効です`,
+    invalidRange: (label: string) => `${label}：範囲が無効です`,
+    rangeStartGreaterThanEnd: (label: string) => `${label}：範囲の開始が終了より大きいです`,
+    invalidRangeInList: (label: string) => `${label}：リスト内の範囲が無効です`,
+    notAValidNumber: (label: string, value: string) => `${label}："${value}" は有効な数値ではありません`,
+    outOfRange: (label: string, num: number, min: number, max: number) =>
+      `${label}：${num} は範囲外です (${min}-${max})`,
+
+    // Explanation templates
+    every: (unit: string) => `毎${unit}`,
+    everyN: (step: string | undefined, unit: string) => `${step}${unit}ごと`,
+    everyNStartingAt: (step: string | undefined, unit: string, base: string | undefined) =>
+      `${base}から${step}${unit}ごと`,
+    fromTo: (start: string, end: string) => `${start}から${end}まで`,
+
+    // buildHumanReadable templates
+    everyMinute: "毎分",
+    everyNMinutes: (step: string | undefined) => `${step}分ごと`,
+    atMinuteOfEveryHour: (minute: string) => `毎時${minute}分`,
+    atTime: (h: string, m: string) => `${h}:${m}に`,
+    atMinuteFromTo: (m: string, start: string | undefined, end: string | undefined) =>
+      `${m}分に、${start}:00から${end}:00まで`,
+    minuteFallback: (minute: string) => `${minute}分`,
+    hourFallback: (hour: string) => `${hour}時`,
+    onDay: (day: string) => `${day}日に`,
+    days: (dayOfMonth: string) => `${dayOfMonth}日`,
+    inMonth: (monthName: string) => `${monthName}に`,
+    months: (month: string) => `${month}月`,
+    onDayOfWeek: (dayName: string) => `${dayName}曜日に`,
+    mondayToFriday: "月曜日から金曜日",
+    saturdaysAndSundays: "土曜日と日曜日",
+    weekdays: (dayOfWeek: string) => `平日 ${dayOfWeek}`,
+
+    // formatRelative templates
+    inMinutes: (n: number) => `${n}分後`,
+    inHoursAndMinutes: (h: number, m: number) => `${h}時間${m}分後`,
+    inHours: (n: number) => `${n}時間後`,
+    inDays: (n: number) => `${n}日後`,
+    inWeeks: (n: number) => `${n}週間後`,
+
+    // Intl locale code for date formatting
+    intlLocale: "ja-JP",
+
+    // Preset names and descriptions
+    presets: {
+      "every-minute": { name: "毎分", description: "毎分実行" },
+      "every-5-minutes": { name: "5分ごと", description: "5分ごとに実行" },
+      "every-15-minutes": { name: "15分ごと", description: "15分ごとに実行" },
+      "every-30-minutes": { name: "30分ごと", description: "30分ごとに実行" },
+      "hourly": { name: "毎時", description: "毎時0分に実行" },
+      "daily-midnight": { name: "毎日（深夜）", description: "毎日 00:00 に実行" },
+      "daily-noon": { name: "毎日（正午）", description: "毎日 12:00 に実行" },
+      "weekly-monday": { name: "毎週（月曜）", description: "毎週月曜日 00:00 に実行" },
+      "monthly": { name: "毎月", description: "毎月1日 00:00 に実行" },
+      "weekdays": { name: "平日", description: "月曜〜金曜 09:00 に実行" },
+      "weekends": { name: "週末", description: "土曜・日曜 10:00 に実行" },
+      "yearly": { name: "毎年", description: "毎年1月1日 00:00 に実行" },
+    } as Record<string, { name: string; description: string }>,
+  },
 } as const;
 
 /** Helper to get the locale-aware strings object */
 function t(locale: Locale) {
-  return (CRON_STRINGS[locale as "en" | "es"] ?? CRON_STRINGS.en);
+  return (CRON_STRINGS[locale as keyof typeof CRON_STRINGS] ?? CRON_STRINGS.en);
 }
 
 // --- IaC Generators ---
