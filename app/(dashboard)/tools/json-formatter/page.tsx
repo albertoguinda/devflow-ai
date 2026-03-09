@@ -32,12 +32,17 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { CopyButton } from "@/components/shared/copy-button";
+import { ShareButton } from "@/components/shared/share-button";
 import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { useShareState } from "@/hooks/use-share-state";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
+import { JsonTreeView } from "@/components/tools/json-tree-view";
 import type { JsonPathResult, JsonFormatMode, JsonDiffResult } from "@/types/json-formatter";
 
 function highlightJsonLine(line: string): React.ReactNode[] {
@@ -118,7 +123,26 @@ export default function JsonFormatterPage() {
   const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
 
-  const [activeTab, setActiveTab] = useState<"output" | "paths" | "typescript" | "compare">("output");
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["input"]) setInput(state["input"]);
+  }, [setInput]);
+  const { share } = useShareState({ toolSlug: "json-formatter", onLoad: handleShareLoad });
+  const getShareUrl = useCallback(() => {
+    return share({ input });
+  }, [share, input]);
+
+  useToolShortcuts({
+    onExecute: () => { setMode("format"); process(); },
+    onCopyOutput: () => {
+      if (result?.output) {
+        try { void navigator.clipboard.writeText(result.output); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
+  const [activeTab, setActiveTab] = useState<"output" | "paths" | "typescript" | "compare" | "tree">("output");
   const [copiedPath, setCopiedPath] = useState<string | null>(null);
 
   const outputText = result?.output;
@@ -192,10 +216,13 @@ export default function JsonFormatterPage() {
         description={t("jsonFmt.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <ArrowRightLeft className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <ArrowRightLeft className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -208,8 +235,8 @@ export default function JsonFormatterPage() {
             <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-yellow-500 to-amber-600" />
             <div className="flex items-center justify-between mb-6 mt-1">
               <h3 className="font-bold flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500 to-amber-600 shadow-md">
-                  <Database className="size-4 text-white" />
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500 to-amber-600 shadow-md text-white dark:text-white">
+                  <Database className="size-4" />
                 </div>
                 {t("jsonFmt.rawPayload")}
               </h3>
@@ -261,7 +288,7 @@ export default function JsonFormatterPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-6">
               <Button variant="primary" className="btn-luxury font-black h-12 text-md bg-gradient-to-r from-yellow-500 to-amber-600 text-white shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 border-0 transition-all" onPress={() => { setMode("format"); process(); }}>
-                <Braces className="size-4 mr-2" /> {t("jsonFmt.formatBtn")}
+                <Braces className="size-4 mr-2" /> {t("jsonFmt.formatBtn")} <KbdHint shortcut="⌘↵" className="ml-2" />
               </Button>
               <Button variant="ghost" className="font-black h-12 text-md text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:bg-amber-500/10" onPress={() => { setMode("minify"); process(); }}>
                 <Minimize2 className="size-4 mr-2" /> {t("jsonFmt.minifyBtn")}
@@ -372,6 +399,7 @@ export default function JsonFormatterPage() {
                   <Tabs.Tab id="output">{t("jsonFmt.outputTab")}</Tabs.Tab>
                   <Tabs.Tab id="paths">{t("jsonFmt.pathExplorer")}</Tabs.Tab>
                   <Tabs.Tab id="typescript">{t("jsonFmt.schemaTab")}</Tabs.Tab>
+                  <Tabs.Tab id="tree">{t("jsonFmt.treeView")}</Tabs.Tab>
                   <Tabs.Tab id="compare">{t("jsonFmt.diffAnalysis")}</Tabs.Tab>
                 </Tabs.List>
               </Tabs.ListContainer>
@@ -458,6 +486,27 @@ export default function JsonFormatterPage() {
                     </pre>
                   ) : (
                     <p className="text-sm text-muted-foreground/50 italic text-center mt-12">{t("jsonFmt.emptyTsState")}</p>
+                  )}
+                </div>
+              </Card>
+              </Tabs.Panel>
+
+              <Tabs.Panel id="tree">
+              <Card className="p-0 border-divider shadow-xl overflow-hidden h-[400px] sm:h-[650px] flex flex-col">
+                <div className="p-4 border-b border-divider bg-muted/20 flex items-center gap-2">
+                  <Braces className="size-4 text-amber-500" aria-hidden="true" />
+                  <span className="text-xs font-black uppercase tracking-widest">{t("jsonFmt.treeView")}</span>
+                </div>
+                <div className="flex-1 overflow-auto p-4">
+                  {inputValidation.isValid && input.trim() ? (
+                    <JsonTreeView data={JSON.parse(input)} />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-center p-8">
+                      <div className="size-20 rounded-2xl bg-gradient-to-br from-yellow-500/10 to-amber-500/10 flex items-center justify-center mb-4">
+                        <Braces className="size-10 text-amber-500/40" />
+                      </div>
+                      <p className="text-sm font-bold text-muted-foreground/60">{t("jsonFmt.formatHint")}</p>
+                    </div>
                   )}
                 </div>
               </Card>

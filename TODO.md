@@ -1,8 +1,8 @@
-# TODO — DevFlow AI v4.18.0 Roadmap
+# TODO — DevFlow AI v4.20.0 Roadmap
 
-> Last updated: 2026-03-08
-> Context: Competitive analysis completed. 15→20 tools expansion, gloss luxury UI, new features.
-> Baseline: 1487 tests, 45 files, 1356 i18n keys, 0 vulnerabilities, 0 TS errors, 0 ESLint warnings.
+> Last updated: 2026-03-09
+> Context: 20-tool expansion, share via URL, UX enhancements, visual polish.
+> Baseline: 1758 tests, 53 files, ~1590 i18n keys, 0 vulnerabilities, 0 TS errors, 0 ESLint warnings.
 
 ---
 
@@ -153,69 +153,62 @@
 
 ---
 
-## FASE 2 — Share via URL (v4.19.0)
+## FASE 2 — Share via URL (v4.19.0) — COMPLETED 2026-03-08
 
 > Blue ocean feature: no competitor has shareable tool state. Each share = free marketing.
 
-### 2.1 Core Infrastructure
-- [ ] Create `lib/application/share-state.ts`:
-  - `encodeState(toolSlug: string, state: Record<string, string>): string` — compress + base64url encode
-  - `decodeState(hash: string): { toolSlug: string; state: Record<string, string> } | null`
-  - Use `CompressionStream` API (native, no deps) for gzip compression
-  - Fallback: plain base64url for browsers without CompressionStream
+### 2.1 Core Infrastructure — COMPLETED
+- [x] `lib/application/share-state.ts` — encodeState/decodeState with CompressionStream gzip + base64url fallback, buildShareUrl, getShareHash, isShareSafe, MAX_SHARE_LENGTH=4000
+- [x] UTF-8 safe encoding (Unicode, emoji, CJK characters)
+- [x] Format: `"c."` prefix = compressed, `"p."` prefix = plain base64url
 
-### 2.2 Share Hook
-- [ ] Create `hooks/use-share-state.ts`:
-  - `shareCurrentState()` — encode tool state → update URL hash → copy to clipboard
-  - `loadSharedState()` — on mount, check URL hash → decode → populate tool state
-  - `getShareUrl(): string` — return full URL with encoded state
+### 2.2 Share Hook — COMPLETED
+- [x] `hooks/use-share-state.ts` — share(state) returns URL, loads from URL hash on mount via onLoad callback, cleans hash after loading
 
-### 2.3 Share Button Component
-- [ ] Create `components/shared/share-button.tsx`:
-  - `<ShareButton state={...} toolSlug="json-formatter" />`
-  - Uses Web Share API where available (`navigator.share`), falls back to clipboard copy
-  - Show toast on share success
+### 2.3 Share Button Component — COMPLETED
+- [x] `components/shared/share-button.tsx` — Web Share API with clipboard fallback, toast feedback, check icon on success
 
-### 2.4 Integrate into all 20 tool pages
-- [ ] Add `<ShareButton>` next to CopyButton in each tool's output section
-- [ ] Add `useShareState()` to each tool's hook to load state on mount from URL hash
+### 2.4 Integrate into all 20 tool pages — COMPLETED
+- [x] All 20 tools: ShareButton in ToolHeader actions, useShareState with onLoad, getShareUrl callback
+- [x] Each tool shares its essential input state (not computed output)
+- [x] Shared state restores tool inputs on URL load
 
-### 2.5 i18n
-- [ ] Add ~10 keys: `share.copy`, `share.copied`, `share.title`, `share.description`, etc.
+### 2.5 i18n — COMPLETED
+- [x] 6 keys added: share.share, share.copied, share.tooLong, share.title, share.text, share.shareState (EN + ES)
 
-### 2.6 Tests
-- [ ] Unit tests for `share-state.ts` — encode/decode round-trip, compression, edge cases (empty, oversized)
-- [ ] Component test for `share-button.tsx`
+### 2.6 Tests — COMPLETED
+- [x] 20 unit tests for share-state.ts — encode/decode round-trip, Unicode, large state, error handling, buildShareUrl, isShareSafe
+- [x] Verification: 0 TS errors, 1714 tests pass (51 files), 0 new lint warnings
 
 ---
 
-## FASE 3 — UX Enhancements (v4.20.0)
+## FASE 3 — UX Enhancements (v4.20.0) — COMPLETED 2026-03-09
 
-### 3.1 Clipboard Auto-Detection
-- [ ] Enhance `components/tools/magic-input.tsx`:
-  - On focus, request `navigator.clipboard.readText()` (requires permission)
-  - If clipboard content matches a type (JSON, JWT, hash, regex, etc.), show "Paste from clipboard?" chip
-  - Graceful fallback: if permission denied, just show normal placeholder
-- [ ] Add i18n keys: `magic.pasteFromClipboard`, `magic.clipboardDetected`
+### 3.1 Clipboard Auto-Detection — COMPLETED
+- [x] MagicInput reads clipboard on focus, shows "Paste from clipboard: TYPE" chip
+- [x] Graceful fallback on permission denied
+- [x] i18n keys: `magic.pasteFromClipboard`, `magic.clipboardDetected`
 
-### 3.2 Per-Tool Keyboard Shortcuts
-- [ ] Create `hooks/use-tool-shortcuts.ts`:
-  - Register tool-specific shortcuts (e.g., Ctrl+Enter to execute primary action)
-  - Ctrl+Shift+C to copy output
-  - Ctrl+Shift+S to share
-  - Escape to clear input
-- [ ] Add `<Kbd>` component hints next to CTA buttons showing shortcut
-- [ ] Add i18n keys for shortcut descriptions
+### 3.2 Per-Tool Keyboard Shortcuts — COMPLETED
+- [x] `hooks/use-tool-shortcuts.ts` — Ctrl+Enter execute, Ctrl+Shift+C copy, Ctrl+Shift+S share, Escape clear
+- [x] `components/shared/kbd-hint.tsx` — shortcut hints next to CTA buttons
+- [x] Integrated into all 20 tool pages
+- [x] i18n keys for shortcuts
 
-### 3.3 Visual QA (pending from earlier)
-- [ ] Verify JSON Formatter syntax highlighting renders correctly in both light/dark themes
-- [ ] Verify Tailwind Sorter dual-preview shows correct dark mode rendering
+### 3.3 Visual QA — COMPLETED
+- [x] 20-tool visual audit: ~60 illegible text fixes (opacity→text-muted-foreground), dark mode contrast, Recharts CSS vars
+- [x] Cost Calculator: duplicate key fix, tooltip dark mode, empty badge fallback, Groq badge color
+- [x] Color Converter: contrast preview fallback colors
+- [x] ESLint CI blocker fixed (http-status-finder useCallback)
 
-### 3.4 Tool Enhancements (from previous TODO)
-- [ ] Regex Humanizer — visual regex graph/railroad diagram
-- [ ] JSON Formatter — tree view collapse/expand
-- [ ] Cost Calculator — comparison chart (Recharts bar chart for selected models)
-- [ ] Base64 — file upload for batch processing (drag & drop)
+### 3.4 Tool Enhancements — COMPLETED
+- [x] Regex Humanizer — railroad diagram (SVG, pure TS, 22 tests)
+- [x] JSON Formatter — tree view with collapse/expand (22 tests)
+- [x] Cost Calculator — comparison bar chart already existed, fixed styling
+- [ ] Base64 — file upload drag & drop (deferred to future)
+
+### Verification
+- 0 TS errors, 0 ESLint warnings, 1758 tests (53 files), 0 new lint issues
 
 ---
 

@@ -29,23 +29,32 @@ export function CostProjectionChart({ chartData, topModelNames }: CostProjection
             </linearGradient>
           ))}
         </defs>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.5} />
         <XAxis
           dataKey="day"
           axisLine={false}
           tickLine={false}
-          tick={{fontSize: 10, fill: 'gray'}}
+          tick={{ fontSize: 10, fill: "var(--color-muted-foreground)" }}
           interval={6}
         />
         <YAxis
           axisLine={false}
           tickLine={false}
-          tick={{fontSize: 10, fill: 'gray'}}
+          tick={{ fontSize: 10, fill: "var(--color-muted-foreground)" }}
           tickFormatter={(val: number) => `$${val}`}
         />
         <RechartsTooltip
-          contentStyle={{ backgroundColor: 'var(--color-background)', border: '1px solid var(--color-border)', borderRadius: '8px', fontSize: '12px', color: 'var(--color-foreground)' }}
-          itemStyle={{ padding: '2px 0' }}
+          contentStyle={{
+            backgroundColor: "var(--color-background)",
+            border: "1px solid var(--color-border)",
+            borderRadius: "12px",
+            fontSize: "12px",
+            color: "var(--color-foreground)",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+            padding: "10px 14px",
+          }}
+          labelStyle={{ fontWeight: "bold", marginBottom: "4px", color: "var(--color-foreground)" }}
+          itemStyle={{ padding: "2px 0", color: "var(--color-foreground)" }}
         />
         {topModelNames.map((name, i) => (
           <Area

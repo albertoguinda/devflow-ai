@@ -29,10 +29,13 @@ import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
+import { ShareButton } from "@/components/shared/share-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
+import { useShareState } from "@/hooks/use-share-state";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import { useLocaleStore } from "@/lib/stores/locale-store";
@@ -63,6 +66,20 @@ export default function HttpStatusFinderPage() {
 
   const [searchInput, setSearchInput] = useState(query);
   const [activeView, setActiveView] = useState<"grid" | "table">("grid");
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["search"]) setSearchInput(state["search"]);
+  }, []);
+  const { share } = useShareState({ toolSlug: "http-status-finder", onLoad: handleShareLoad });
+  const getShareUrl = useCallback(() => {
+    return share({ search: searchInput });
+  }, [share, searchInput]);
+
+  useToolShortcuts({
+    onShare: getShareUrl,
+    onClear: clearSearch,
+  });
+
   const { explainHttpStatusWithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const locale = useLocaleStore((s) => s.locale);
@@ -85,7 +102,7 @@ export default function HttpStatusFinderPage() {
     { name: t("table.colDescription"), uid: "description" },
   ], [t]);
 
-  const renderStatusCell = useCallback((status: HttpStatusCode, columnKey: React.Key) => {
+  const renderStatusCell = (status: HttpStatusCode, columnKey: React.Key) => {
     const key = columnKey.toString();
     switch (key) {
       case "code":
@@ -97,13 +114,13 @@ export default function HttpStatusFinderPage() {
       case "name":
         return <span className="font-bold text-sm">{status.name}</span>;
       case "category":
-        return <span className="text-xs font-black uppercase opacity-60">{categoryLabel(status.category)}</span>;
+        return <span className="text-xs font-black uppercase text-muted-foreground">{categoryLabel(status.category)}</span>;
       case "description":
         return <span className="text-xs text-muted-foreground line-clamp-1">{status.description}</span>;
       default:
         return String(status[key as keyof typeof status] ?? "");
     }
-  }, []);
+  };
 
   const runMockTest = (code: number) => {
     if (mockTestTimerRef.current) clearTimeout(mockTestTimerRef.current);
@@ -144,6 +161,7 @@ export default function HttpStatusFinderPage() {
         breadcrumb
         actions={
           <div className="flex gap-2">
+            <ShareButton getShareUrl={getShareUrl} />
             <div className="flex bg-muted p-1 rounded-xl">
               <Button isIconOnly size="sm" variant={activeView === "grid" ? "primary" : "ghost"} onPress={() => setActiveView("grid")} aria-label={t("httpStatus.ariaGridView")} className="min-h-11 min-w-11"><LayoutGrid className="size-3.5" /></Button>
               <Button isIconOnly size="sm" variant={activeView === "table" ? "primary" : "ghost"} onPress={() => setActiveView("table")} aria-label={t("httpStatus.ariaTableView")} className="min-h-11 min-w-11"><List className="size-3.5" /></Button>
@@ -212,7 +230,7 @@ export default function HttpStatusFinderPage() {
                   className="flex justify-between items-center bg-muted/50 p-3 h-auto rounded-xl border border-default-200 group hover:bg-muted w-full"
                 >
                   <span className="text-xs font-bold text-foreground/80">{item.q}</span>
-                  <ChevronRight className="size-3 text-muted-foreground/30 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="size-3 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                   <span className="text-xs font-black uppercase text-cyan-500 dark:text-cyan-400">{item.a}</span>
                 </Button>
               ))}
@@ -239,7 +257,7 @@ export default function HttpStatusFinderPage() {
                       </div>
                       <div className="flex gap-2 items-center">
                         <StatusBadge variant="info">{categoryLabel(selectedCode.category).toUpperCase()}</StatusBadge>
-                        <span className="text-xs font-black opacity-30 uppercase tracking-widest">{t("httpStatus.rfcCompliant")}</span>
+                        <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">{t("httpStatus.rfcCompliant")}</span>
                       </div>
                     </div>
                   </div>
@@ -251,13 +269,13 @@ export default function HttpStatusFinderPage() {
                     <label className="text-xs font-black uppercase text-muted-foreground tracking-widest flex items-center gap-2">
                       <Info className="size-3" /> {t("httpStatus.descriptionHeader")}
                     </label>
-                    <p className="text-sm font-medium leading-relaxed opacity-80">{selectedCode.description}</p>
+                    <p className="text-sm font-medium leading-relaxed text-muted-foreground">{selectedCode.description}</p>
                   </div>
                   <div className="space-y-3">
                     <label className="text-xs font-black uppercase text-muted-foreground tracking-widest flex items-center gap-2">
                       <Activity className="size-3" /> {t("httpStatus.usageContext")}
                     </label>
-                    <p className="text-sm font-medium leading-relaxed opacity-80">{selectedCode.whenToUse}</p>
+                    <p className="text-sm font-medium leading-relaxed text-muted-foreground">{selectedCode.whenToUse}</p>
                   </div>
                 </div>
               </Card>
@@ -271,7 +289,7 @@ export default function HttpStatusFinderPage() {
                   <div className="flex flex-wrap gap-2">
                     {selectedCode.relatedHeaders?.length ? selectedCode.relatedHeaders.map(h => (
                       <Chip key={h} variant="primary" color="default" className="font-mono text-xs font-bold">{h}</Chip>
-                    )) : <p className="text-xs italic opacity-40">{t("httpStatus.noHeaders")}</p>}
+                    )) : <p className="text-xs italic text-muted-foreground">{t("httpStatus.noHeaders")}</p>}
                   </div>
                   <div className="mt-8 pt-6 border-t border-divider flex gap-3">
                     {selectedCode.rfcLink && (
@@ -299,15 +317,15 @@ export default function HttpStatusFinderPage() {
                   {testResponse ? (
                     <div className="space-y-4 animate-in fade-in duration-500 relative z-10">
                       <div className="flex justify-between items-center px-1">
-                        <span className={cn("text-xs font-black uppercase px-2 py-0.5 rounded", testResponse.ok ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400")}>
+                        <span className={cn("text-xs font-black uppercase px-2 py-0.5 rounded", testResponse.ok ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400" : "bg-rose-500/20 text-rose-700 dark:text-rose-400")}>
                           {testResponse.ok ? t("httpStatus.httpOk") : t("httpStatus.errorSignal")}
                         </span>
-                        <span className="text-xs font-mono text-muted-foreground/60">{testResponse.time}ms</span>
+                        <span className="text-xs font-mono text-muted-foreground">{testResponse.time}ms</span>
                       </div>
                       <div className="p-4 bg-muted/80 dark:bg-muted rounded-2xl font-mono text-xs h-40 overflow-auto border border-default-200 scrollbar-hide">
                         {Object.entries(testResponse.headers).map(([k, v]) => (
                           <div key={k} className="mb-1.5 flex gap-2">
-                            <span className="text-muted-foreground/50 shrink-0 capitalize">{k}:</span>
+                            <span className="text-muted-foreground shrink-0 capitalize">{k}:</span>
                             <span className="text-emerald-600 dark:text-emerald-400/80 break-all">{v}</span>
                           </div>
                         ))}
@@ -315,7 +333,7 @@ export default function HttpStatusFinderPage() {
                     </div>
                   ) : (
                     <div className="h-40 flex flex-col items-center justify-center border-2 border-dashed border-default-200 rounded-2xl text-center p-6 relative z-10">
-                      <p className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">{t("httpStatus.awaitingExecution")}</p>
+                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t("httpStatus.awaitingExecution")}</p>
                     </div>
                   )}
                 </Card>
@@ -410,7 +428,7 @@ export default function HttpStatusFinderPage() {
                         </div>
                         <div className="min-w-0">
                           <h4 className="font-black text-sm truncate uppercase tracking-tight">{status.name}</h4>
-                          <p className="text-xs text-muted-foreground truncate font-bold opacity-60 uppercase">{categoryLabel(status.category)}</p>
+                          <p className="text-xs text-muted-foreground truncate font-bold uppercase">{categoryLabel(status.category)}</p>
                         </div>
                         <div className="absolute -bottom-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity"><Globe className="size-16" /></div>
                       </Card>
@@ -436,7 +454,7 @@ export default function HttpStatusFinderPage() {
                     <div className="size-20 rounded-2xl bg-gradient-to-br from-cyan-500/15 to-blue-500/15 flex items-center justify-center mb-4 mx-auto">
                       <Globe className="size-10 text-cyan-500/40" />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground/60">{t("httpStatus.noMatchingCodes")}</h3>
+                    <h3 className="text-xl font-bold text-muted-foreground">{t("httpStatus.noMatchingCodes")}</h3>
                     <p className="text-sm text-muted-foreground mt-1">{t("httpStatus.trySearching")}</p>
                   </div>
                 </Card>

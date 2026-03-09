@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import dynamic from "next/dynamic";
 import { Chip, Modal, Slider, NumberField, Input, Label } from "@heroui/react";
 import {
@@ -30,6 +32,10 @@ const CostProjectionChart = dynamic(
   () => import("@/components/tools/cost-projection-chart").then(m => m.CostProjectionChart),
   { ssr: false, loading: () => <div className="h-[300px] w-full animate-pulse rounded-xl bg-muted/50" /> },
 );
+const CostComparisonBarChart = dynamic(
+  () => import("@/components/tools/cost-comparison-bar-chart").then(m => m.CostComparisonBarChart),
+  { ssr: false, loading: () => <div className="h-[300px] w-full animate-pulse rounded-xl bg-muted/50" /> },
+);
 import { useTranslation } from "@/hooks/use-translation";
 import { formatCost, exportComparisonCsv } from "@/hooks/use-cost-calculator";
 import type { Currency } from "@/hooks/use-cost-calculator";
@@ -40,6 +46,7 @@ import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { PROVIDER_LABELS } from "@/config/ai-models";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
 import { downloadBlob } from "@/lib/utils/download";
 import type { CostCalculation } from "@/types/cost-calculator";
 
@@ -80,10 +87,16 @@ function CostDetailBody({ detailModel, cheapestId, bestValueId, dailyRequests, c
       </div>
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted-foreground">{t("costCalc.colProvider")}</span>
-        <Chip variant="primary" size="sm" className={cn("capitalize font-bold h-6", provider?.color)}>
-          <span className="mr-1">{provider?.emoji}</span>
-          {provider?.label}
-        </Chip>
+        {provider ? (
+          <Chip variant="primary" size="sm" className={cn("capitalize font-bold h-6 px-2", provider.color)}>
+            <span className="inline-flex items-center gap-1">
+              <span>{provider.emoji}</span>
+              <span>{provider.label}</span>
+            </span>
+          </Chip>
+        ) : (
+          <span className="text-sm font-mono text-muted-foreground">{detailModel.model.provider}</span>
+        )}
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-lg bg-muted/50 p-3">
@@ -163,8 +176,32 @@ export default function CostCalculatorPage() {
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const locale = useLocaleStore((s) => s.locale);
 
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["inputTokens"]) setInputTokens(Number(state["inputTokens"]));
+    if (state["outputTokens"]) setOutputTokens(Number(state["outputTokens"]));
+    if (state["dailyRequests"]) setDailyRequests(Number(state["dailyRequests"]));
+    if (state["currency"]) setCurrency(state["currency"] as Currency);
+  }, [setInputTokens, setOutputTokens, setDailyRequests]);
+
+  const { share } = useShareState({ toolSlug: "cost-calculator", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({
+      inputTokens: String(inputTokens),
+      outputTokens: String(outputTokens),
+      dailyRequests: String(dailyRequests),
+      currency,
+    });
+  }, [share, inputTokens, outputTokens, dailyRequests, currency]);
+
+  useToolShortcuts({
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const [detailModel, setDetailModel] = useState<CostCalculation | null>(null);
   const [featureFilters, setFeatureFilters] = useState<string[]>([]);
+  const [barChartMode, setBarChartMode] = useState<"perRequest" | "daily">("perRequest");
 
   const FEATURE_OPTIONS = useMemo(() => [
     { id: "vision", label: t("costCalc.featureVision") },
@@ -221,17 +258,19 @@ export default function CostCalculatorPage() {
           </div>
         );
       case "provider":
-        return (
+        return provider ? (
           <Chip
             variant="primary"
             size="sm"
-            className={cn("capitalize font-bold h-6", provider?.color)}
+            className={cn("capitalize font-bold h-6 px-2", provider.color)}
           >
-            <div className="flex items-center gap-1">
-              <span>{provider?.emoji}</span>
-              {provider?.label}
-            </div>
+            <span className="inline-flex items-center gap-1">
+              <span>{provider.emoji}</span>
+              <span>{provider.label}</span>
+            </span>
           </Chip>
+        ) : (
+          <span className="text-xs text-muted-foreground">{result.model.provider}</span>
         );
       case "totalCost":
         return (
@@ -253,7 +292,7 @@ export default function CostCalculatorPage() {
             <span className={cn("font-medium", isBestValue ? "text-secondary" : "text-foreground")}>
               {result.valueScore
                 ? (result.valueScore / 1000000).toFixed(2)
-                : <span className="text-muted-foreground/50">&mdash;</span>
+                : <span className="text-muted-foreground">&mdash;</span>
               }
             </span>
             {isBestValue && <span className="text-xs text-secondary font-bold uppercase tracking-tighter">{t("costCalc.bestValueLabel")}</span>}
@@ -285,28 +324,60 @@ export default function CostCalculatorPage() {
 
   const chartData = useMemo(() => {
     if (!comparison || comparison.results.length === 0) return [];
-    
-    // Top 5 models for the chart
-    const topModels = comparison.results.slice(0, 5);
-    
+
+    // Deduplicated top 5 models for the chart
+    const seen = new Set<string>();
+    const topModels = comparison.results.filter(r => {
+      if (seen.has(r.model.displayName) || seen.size >= 5) return false;
+      seen.add(r.model.displayName);
+      return true;
+    });
+
     return Array.from({ length: 30 }, (_, i) => {
       const day = i + 1;
       const dataPoint: Record<string, string | number> = { day: t("costCalc.chartDay", { day: String(day) }) };
-      
+
       topModels.forEach(result => {
-        // Daily cost * number of days
         dataPoint[result.model.displayName] = Number((result.totalCost * dailyRequests * day).toFixed(2));
       });
-      
+
       return dataPoint;
     });
   }, [comparison, dailyRequests, t]);
 
   const topModelNames = useMemo(() => {
     if (!comparison) return [];
-    return comparison.results.slice(0, 5).map(r => r.model.displayName);
+    const seen = new Set<string>();
+    const names: string[] = [];
+    for (const r of comparison.results) {
+      if (names.length >= 5) break;
+      const name = r.model.displayName;
+      if (!seen.has(name)) {
+        seen.add(name);
+        names.push(name);
+      }
+    }
+    return names;
   }, [comparison]);
 
+  const barChartData = useMemo(() => {
+    if (!comparison || comparison.results.length === 0) return [];
+    const seen = new Set<string>();
+    return comparison.results.filter(r => {
+      if (seen.has(r.model.displayName) || seen.size >= 8) return false;
+      seen.add(r.model.displayName);
+      return true;
+    }).map((r) => ({
+      name: r.model.displayName,
+      costPerRequest: r.totalCost,
+      dailyCost: r.totalCost * dailyRequests,
+    }));
+  }, [comparison, dailyRequests]);
+
+  const currencySymbol = useMemo(
+    () => CURRENCIES.find(c => c.value === currency)?.symbol ?? "$",
+    [currency],
+  );
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -319,6 +390,7 @@ export default function CostCalculatorPage() {
         breadcrumb
         actions={
           <div className="flex items-center gap-2">
+            <ShareButton getShareUrl={getShareUrl} />
             {isUsingFallback && !isSyncing && (
               <Chip size="sm" variant="soft" className="bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs">
                 {t("costCalc.cachedPrices")}
@@ -453,7 +525,7 @@ export default function CostCalculatorPage() {
             <div className="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-2xl" />
             <div className="absolute -left-4 -bottom-4 size-20 rounded-full bg-white/5 blur-xl" />
             <div className="relative flex items-center justify-between mb-1">
-              <p className="text-sm opacity-90 uppercase tracking-wider font-bold">
+              <p className="text-sm text-white/90 uppercase tracking-wider font-bold">
                 {t("costCalc.estimatedMonthlyCost")}
               </p>
               <div className="flex gap-2">
@@ -477,7 +549,7 @@ export default function CostCalculatorPage() {
             <p className="text-4xl font-extrabold mb-2 drop-shadow-sm">
               {formatCost(monthlyCost, currency)}
             </p>
-            <div className="flex items-center gap-2 text-sm opacity-90">
+            <div className="flex items-center gap-2 text-sm text-white/90">
               <ArrowRight className="size-4" />
               <span>{t("costCalc.reqPerDay", { count: dailyRequests.toLocaleString() })}</span>
             </div>
@@ -626,6 +698,54 @@ export default function CostCalculatorPage() {
 
         </div>
       </div>
+
+      {/* Comparison Bar Chart — full width, outside the grid */}
+      {barChartData.length > 0 && (
+        <Card className="relative overflow-hidden p-6 border-border/40">
+          <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-blue-500 to-cyan-500" />
+          <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-1">
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 shadow-md">
+                <BarChart3 className="size-4 text-white" />
+              </div>
+              {t("costCalc.comparisonChart")}
+            </h3>
+            <div className="flex items-center gap-1.5">
+              <Button
+                size="sm"
+                aria-pressed={barChartMode === "perRequest"}
+                variant={barChartMode === "perRequest" ? "primary" : "ghost"}
+                onPress={() => setBarChartMode("perRequest")}
+                className="text-xs font-bold h-7 px-3"
+              >
+                {t("costCalc.costPerRequest")}
+              </Button>
+              <Button
+                size="sm"
+                aria-pressed={barChartMode === "daily"}
+                variant={barChartMode === "daily" ? "primary" : "ghost"}
+                onPress={() => setBarChartMode("daily")}
+                className="text-xs font-bold h-7 px-3"
+              >
+                {t("costCalc.dailyCost")}
+              </Button>
+            </div>
+          </div>
+          <div
+            className="h-[300px] sm:h-[400px] w-full"
+            role="img"
+            aria-label={t("costCalc.comparisonChart")}
+          >
+            <CostComparisonBarChart
+              data={barChartData}
+              mode={barChartMode}
+              currencySymbol={currencySymbol}
+              costPerRequestLabel={t("costCalc.costPerRequest")}
+              dailyCostLabel={t("costCalc.dailyCost")}
+            />
+          </div>
+        </Card>
+      )}
 
       {/* Projection Chart — full width, outside the grid */}
       <Card className="relative overflow-hidden p-6 border-border/40">

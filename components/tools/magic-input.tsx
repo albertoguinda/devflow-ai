@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { Card, Button } from "@heroui/react";
 import {
   Sparkles,
@@ -10,6 +10,7 @@ import {
   Code2,
   Regex,
   Search,
+  ClipboardPaste,
 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
@@ -74,10 +75,51 @@ function detectInputType(trimmed: string): DetectedType {
 
 export function MagicInput() {
   const [input, setInput] = useState("");
+  const [clipboardContent, setClipboardContent] = useState<string | null>(null);
+  const [clipboardType, setClipboardType] = useState<DetectedType>(null);
+  const hasCheckedClipboard = useRef(false);
   const { navigateTo } = useSmartNavigation();
   const { t } = useTranslation();
 
   const detectedType = useMemo(() => detectInputType(input.trim()), [input]);
+
+  const handleFocus = useCallback(async () => {
+    if (input || hasCheckedClipboard.current) return;
+    hasCheckedClipboard.current = true;
+    try {
+      const text = await navigator.clipboard.readText();
+      const trimmed = text?.trim();
+      if (!trimmed) return;
+      const detected = detectInputType(trimmed);
+      if (detected) {
+        setClipboardContent(trimmed);
+        setClipboardType(detected);
+      }
+    } catch {
+      /* Permission denied or clipboard API unavailable — graceful fallback */
+    }
+  }, [input]);
+
+  const handleBlur = useCallback(() => {
+    hasCheckedClipboard.current = false;
+  }, []);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    setInput(val);
+    if (val) {
+      setClipboardContent(null);
+      setClipboardType(null);
+    }
+  }, []);
+
+  const handlePasteFromClipboard = useCallback(() => {
+    if (clipboardContent) {
+      setInput(clipboardContent);
+      setClipboardContent(null);
+      setClipboardType(null);
+    }
+  }, [clipboardContent]);
 
   const handleAction = (tool: ToolRoute) => {
     navigateTo(tool, input);
@@ -129,7 +171,9 @@ export function MagicInput() {
         </div>
         <textarea
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           placeholder={t("magic.placeholder")}
           className="w-full resize-none bg-transparent px-12 py-4 text-base text-foreground placeholder:text-muted-foreground/50 min-h-[60px] border-none outline-none ring-0 focus:outline-none focus:ring-0"
           rows={Math.min(5, Math.max(2, input.split("\n").length))}
@@ -152,6 +196,20 @@ export function MagicInput() {
                 {action.label}
               </Button>
             ))}
+          </div>
+        )}
+        {clipboardContent && clipboardType && !input && (
+          <div className="px-4 pb-3">
+            <Button
+              size="sm"
+              variant="ghost"
+              className="rounded-full bg-primary/10 text-primary text-xs font-medium h-7"
+              onPress={handlePasteFromClipboard}
+              aria-label={t("magic.clipboardDetected")}
+            >
+              <ClipboardPaste className="size-3.5 mr-1" aria-hidden="true" />
+              {t("magic.pasteFromClipboard")}: {DETECTION_LABELS[clipboardType]}
+            </Button>
           </div>
         )}
       </div>

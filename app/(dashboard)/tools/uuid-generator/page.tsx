@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import {
   Tabs,
   Input,
@@ -27,11 +27,15 @@ import { useUuidGenerator } from "@/hooks/use-uuid-generator";
 import { useTranslation } from "@/hooks/use-translation";
 import { useToast } from "@/hooks/use-toast";
 import { CopyButton } from "@/components/shared/copy-button";
+import { ShareButton } from "@/components/shared/share-button";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { useShareState } from "@/hooks/use-share-state";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { Button, Card } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import { downloadBlob } from "@/lib/utils/download";
 import { checkCollisions } from "@/hooks/use-uuid-generator";
 import type { UuidVersion, UuidFormat, UuidNamespace } from "@/types/uuid-generator";
@@ -57,6 +61,27 @@ export default function UuidGeneratorPage() {
 
   const [activeTab, setActiveTab] = useState<"generate" | "analyze" | string>("generate");
   const [analyzeInput, setAnalyzeInput] = useState("");
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["analyzeInput"]) setAnalyzeInput(state["analyzeInput"]);
+    if (state["version"]) updateConfig("version", state["version"] as import("@/types/uuid-generator").UuidVersion);
+  }, [setAnalyzeInput, updateConfig]);
+  const { share } = useShareState({ toolSlug: "uuid-generator", onLoad: handleShareLoad });
+  const getShareUrl = useCallback(() => {
+    return share({ analyzeInput, version: config.version });
+  }, [share, analyzeInput, config.version]);
+
+  useToolShortcuts({
+    onExecute: generate,
+    onCopyOutput: () => {
+      if (result?.uuids) {
+        try { void navigator.clipboard.writeText(result.uuids.join("\n")); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const [exportFormat, setExportFormat] = useState<"text" | "json" | "csv" | "sql">("text");
   const [collisionInput, setCollisionInput] = useState("");
   const collisionResult = useMemo(() => checkCollisions(collisionInput), [collisionInput]);
@@ -109,10 +134,13 @@ export default function UuidGeneratorPage() {
         description={t("uuid.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -154,7 +182,7 @@ export default function UuidGeneratorPage() {
                           )}
                         >
                           <span className="text-xs font-bold">{v.label}</span>
-                          <span className="text-xs opacity-60">{v.desc}</span>
+                          <span className="text-xs text-muted-foreground">{v.desc}</span>
                         </Button>
                       ))}
                     </div>
@@ -250,7 +278,7 @@ export default function UuidGeneratorPage() {
                     className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-500/25 hover:shadow-xl hover:shadow-teal-500/30 border-0 transition-all text-md"
                     isLoading={isGenerating}
                   >
-                    <Sparkles className="size-4 mr-2" /> {t("uuid.generateSequence")}
+                    <Sparkles className="size-4 mr-2" /> {t("uuid.generateSequence")} <KbdHint shortcut="⌘↵" className="ml-2" />
                   </Button>
                 </div>
               </Tabs.Panel>
@@ -413,7 +441,7 @@ export default function UuidGeneratorPage() {
                     <span key={i} title={part.label}>
                       <div className={cn("flex flex-wrap gap-0.5 p-1 rounded transition-colors duration-200 hover:bg-muted cursor-help", part.color)}>
                         {part.bits.split('').map((bit, j) => (
-                          <span key={j} className={cn("w-2 h-3 flex items-center justify-center rounded-[1px]", bit === '1' ? "bg-current text-white" : "bg-muted text-muted-foreground")}>
+                          <span key={j} className={cn("w-2 h-3 flex items-center justify-center rounded-[1px]", bit === '1' ? "bg-foreground text-background" : "bg-muted text-muted-foreground")}>
                             {bit}
                           </span>
                         ))}
@@ -427,8 +455,8 @@ export default function UuidGeneratorPage() {
                     <div key={i} className="flex items-center gap-3">
                       <div className={cn("size-2 rounded-full", part.color.replace('text-', 'bg-'))} />
                       <div className="flex flex-col">
-                        <span className="text-xs font-black uppercase tracking-tighter opacity-40">{part.label}</span>
-                        <span className="text-xs font-mono font-bold">{part.bits.length} bits</span>
+                        <span className="text-xs font-black uppercase tracking-tighter text-muted-foreground">{part.label}</span>
+                        <span className="text-xs font-mono font-bold">{t("uuid.bitsCount", { count: part.bits.length })}</span>
                       </div>
                     </div>
                   ))}
@@ -442,12 +470,12 @@ export default function UuidGeneratorPage() {
                 </h3>
                 <div className="space-y-4">
                   <div className="flex justify-between border-b border-divider pb-2">
-                    <span className="text-xs font-bold opacity-50 uppercase">{t("uuid.variantField")}</span>
+                    <span className="text-xs font-bold text-muted-foreground uppercase">{t("uuid.variantField")}</span>
                     <span className="text-xs font-mono font-bold">{analysis.variant}</span>
                   </div>
                   {analysis.timestamp && (
                     <div className="flex justify-between border-b border-divider pb-2">
-                      <span className="text-xs font-bold opacity-50 uppercase">{t("uuid.embeddedTime")}</span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase">{t("uuid.embeddedTime")}</span>
                       <span className="text-xs font-mono font-bold flex items-center gap-2">
                         <Clock className="size-3" /> {analysis.timestamp.toLocaleString()}
                       </span>
@@ -455,7 +483,7 @@ export default function UuidGeneratorPage() {
                   )}
                   {analysis.node && (
                     <div className="flex justify-between border-b border-divider pb-2 text-warning">
-                      <span className="text-xs font-bold opacity-50 uppercase">{t("uuid.nodeField")}</span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase">{t("uuid.nodeField")}</span>
                       <span className="text-xs font-mono font-bold">{analysis.node}</span>
                     </div>
                   )}

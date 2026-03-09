@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   KeyRound,
   RotateCcw,
@@ -18,6 +20,8 @@ import { ToolHeader } from "@/components/shared/tool-header";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { Button, Card } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 
 export default function JwtDecoderPage() {
   const { t } = useTranslation();
@@ -32,6 +36,28 @@ export default function JwtDecoderPage() {
     decode,
     reset,
   } = useJwtDecoder();
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["token"]) setToken(state["token"]);
+  }, [setToken]);
+
+  const { share } = useShareState({ toolSlug: "jwt-decoder", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({ token });
+  }, [share, token]);
+
+  useToolShortcuts({
+    onExecute: decode,
+    onCopyOutput: () => {
+      if (parts) {
+        const payloadStr = JSON.stringify(parts.payload, null, 2);
+        try { void navigator.clipboard.writeText(payloadStr); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
 
   const canDecode = useMemo(() => token.trim().length > 0, [token]);
 
@@ -54,10 +80,13 @@ export default function JwtDecoderPage() {
         gradient="from-amber-500 to-yellow-600"
         breadcrumb
         actions={
-          <Button variant="ghost" size="sm" onPress={reset} aria-label={t("common.reset")}>
-            <RotateCcw className="size-4" aria-hidden="true" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="ghost" size="sm" onPress={reset} aria-label={t("common.reset")}>
+              <RotateCcw className="size-4" aria-hidden="true" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -81,7 +110,7 @@ export default function JwtDecoderPage() {
             className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-amber-500 to-yellow-600 text-white shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 border-0 transition-all text-md"
           >
             <Unlock className="size-5 mr-2" aria-hidden="true" />
-            {t("jwt.decode")}
+            {t("jwt.decode")} <KbdHint shortcut="⌘↵" className="ml-2" />
           </Button>
         </div>
       </Card>
@@ -261,9 +290,9 @@ export default function JwtDecoderPage() {
       {/* Empty state */}
       {!parts && !error && (
         <div className="text-center text-muted-foreground py-8">
-          <KeyRound className="size-12 mx-auto mb-3 opacity-30" aria-hidden="true" />
+          <KeyRound className="size-12 mx-auto mb-3 opacity-50" aria-hidden="true" />
           <p className="text-sm">{t("jwt.emptyState")}</p>
-          <p className="text-xs mt-1 opacity-70">{t("jwt.emptyStateHint")}</p>
+          <p className="text-xs mt-1 text-muted-foreground">{t("jwt.emptyStateHint")}</p>
         </div>
       )}
 

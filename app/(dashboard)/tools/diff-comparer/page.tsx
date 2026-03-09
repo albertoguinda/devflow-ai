@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   GitCompareArrows,
   RotateCcw,
@@ -17,6 +19,8 @@ import { ToolHeader } from "@/components/shared/tool-header";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { Button, Card } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import type { DiffLine, DiffViewMode } from "@/types/diff-comparer";
 
 const VIEW_MODES: { value: DiffViewMode; labelKey: string }[] = [
@@ -159,6 +163,28 @@ export default function DiffComparerPage() {
     reset,
   } = useDiffComparer();
 
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["original"]) setOriginal(state["original"]);
+    if (state["modified"]) setModified(state["modified"]);
+  }, [setOriginal, setModified]);
+
+  const { share } = useShareState({ toolSlug: "diff-comparer", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({ original, modified });
+  }, [share, original, modified]);
+
+  useToolShortcuts({
+    onExecute: compare,
+    onCopyOutput: () => {
+      if (formattedDiff) {
+        try { void navigator.clipboard.writeText(formattedDiff); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 animate-fade-in-up">
       <ToolHeader
@@ -169,6 +195,7 @@ export default function DiffComparerPage() {
         breadcrumb
         actions={
           <div className="flex gap-2">
+            <ShareButton getShareUrl={getShareUrl} />
             <Button variant="ghost" size="sm" onPress={swap} aria-label={t("diff.swap")}>
               <ArrowLeftRight className="size-4" aria-hidden="true" />
               {t("diff.swap")}
@@ -219,7 +246,7 @@ export default function DiffComparerPage() {
             className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 hover:shadow-xl hover:shadow-violet-500/30 border-0 transition-all text-md"
           >
             <GitCompareArrows className="size-5 mr-2" aria-hidden="true" />
-            {t("diff.compare")}
+            {t("diff.compare")} <KbdHint shortcut="⌘↵" className="ml-2" />
           </Button>
         </div>
       </Card>
@@ -301,9 +328,9 @@ export default function DiffComparerPage() {
       {/* Empty state */}
       {!result && (
         <div className="text-center text-muted-foreground py-8">
-          <GitCompareArrows className="size-12 mx-auto mb-3 opacity-30" aria-hidden="true" />
+          <GitCompareArrows className="size-12 mx-auto mb-3 opacity-50" aria-hidden="true" />
           <p className="text-sm">{t("diff.emptyState")}</p>
-          <p className="text-xs mt-1 opacity-70">{t("diff.emptyStateHint")}</p>
+          <p className="text-xs mt-1 text-muted-foreground">{t("diff.emptyStateHint")}</p>
         </div>
       )}
 

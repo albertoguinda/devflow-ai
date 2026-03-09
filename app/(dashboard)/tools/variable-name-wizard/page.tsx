@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   Tabs,
   TextArea,
@@ -43,6 +45,8 @@ import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import { convertToAll, expandAbbreviations, abbreviateName } from "@/hooks/use-variable-name-wizard";
 import type { NameSuggestion, VariableType, WizardConfig, NamingConvention } from "@/types/variable-name-wizard";
 
@@ -74,7 +78,39 @@ export default function VariableNameWizardPage() {
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["input"]) setInput(state["input"]);
+    if (state["language"]) updateConfig("language", state["language"] as WizardConfig["language"]);
+    if (state["type"]) updateConfig("type", state["type"] as VariableType);
+  }, [setInput, updateConfig]);
+
+  const { share } = useShareState({ toolSlug: "variable-name-wizard", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({
+      input,
+      language: config.language,
+      type: config.type,
+    });
+  }, [share, input, config.language, config.type]);
+
   const [activeTab, setActiveTab] = useState<"generate" | "convert" | string>("generate");
+
+  useToolShortcuts({
+    onExecute: () => {
+      if (activeTab === "generate") { generate(); } else { convert(); }
+    },
+    onCopyOutput: () => {
+      const text = generationResult?.suggestions[0]?.name;
+      if (text) {
+        try { void navigator.clipboard.writeText(text); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const [batchInput, setBatchInput] = useState("");
   const [abbrInput, setAbbrInput] = useState("");
   const [abbrExpanded, setAbbrExpanded] = useState("");
@@ -162,10 +198,13 @@ export default function VariableNameWizardPage() {
         description={t("varName.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -273,7 +312,7 @@ export default function VariableNameWizardPage() {
                 isDisabled={!input.trim()}
               >
                 <Sparkles className="size-4 mr-2" />
-                {t("varName.castSpell")}
+                {t("varName.castSpell")} <KbdHint shortcut="⌘↵" className="ml-2" />
               </Button>
             </div>
           </Card>
@@ -287,14 +326,14 @@ export default function VariableNameWizardPage() {
               <div className="space-y-6">
                 <div className="flex justify-around items-center">
                   <div className="text-center">
-                    <p className="text-xs font-bold uppercase text-muted-foreground/60 mb-1">{t("varName.clarityLabel")}</p>
+                    <p className="text-xs font-bold uppercase text-muted-foreground mb-1">{t("varName.clarityLabel")}</p>
                     <p className={cn("text-xl font-black", (generationResult.suggestions[0]?.score ?? 0) >= 80 ? "text-emerald-600 dark:text-emerald-400" : (generationResult.suggestions[0]?.score ?? 0) >= 50 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400")}>
                       {(generationResult.suggestions[0]?.score ?? 0) >= 80 ? t("varName.highLabel") : (generationResult.suggestions[0]?.score ?? 0) >= 50 ? t("varName.mediumLabel") : t("varName.lowLabel")}
                     </p>
                   </div>
                   <div className="size-px h-8 bg-default-200" />
                   <div className="text-center">
-                    <p className="text-xs font-bold uppercase text-muted-foreground/60 mb-1">{t("varName.avgScore")}</p>
+                    <p className="text-xs font-bold uppercase text-muted-foreground mb-1">{t("varName.avgScore")}</p>
                     <p className="text-xl font-black text-blue-500 dark:text-blue-400">
                       {Math.round(generationResult.suggestions.reduce((sum, s) => sum + s.score, 0) / generationResult.suggestions.length)}%
                     </p>
@@ -425,7 +464,7 @@ export default function VariableNameWizardPage() {
                   <div className="size-24 rounded-2xl bg-gradient-to-br from-fuchsia-500/15 to-pink-500/15 flex items-center justify-center mb-6 mx-auto">
                     <Wand2 className="size-12 text-fuchsia-500/40" />
                   </div>
-                  <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("varName.readyToMagic")}</h3>
+                  <h3 className="text-2xl font-black mb-2 text-muted-foreground">{t("varName.readyToMagic")}</h3>
                   <p className="text-muted-foreground max-w-sm mx-auto font-medium">
                     {t("varName.readyToMagicDesc")}
                   </p>
@@ -460,7 +499,7 @@ export default function VariableNameWizardPage() {
                       <div className="size-16 rounded-2xl bg-gradient-to-br from-fuchsia-500/15 to-pink-500/15 flex items-center justify-center mb-4 mx-auto">
                         <Wand2 className="size-8 text-fuchsia-500/40" />
                       </div>
-                      <h3 className="text-lg font-black mb-1 text-foreground/60">{t("varName.readyToMagic")}</h3>
+                      <h3 className="text-lg font-black mb-1 text-muted-foreground">{t("varName.readyToMagic")}</h3>
                       <p className="text-muted-foreground text-sm max-w-sm mx-auto font-medium">
                         {t("varName.readyToMagicDesc")}
                       </p>

@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   Eye,
   RotateCcw,
@@ -27,6 +29,7 @@ import { TextArea } from "@heroui/react";
 import { Card, Button } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
 import { AI_MODELS } from "@/config/ai-models";
 import type { TokenizerProvider } from "@/types/token-visualizer";
 
@@ -48,6 +51,28 @@ export default function TokenVisualizerPage() {
   const { addToast } = useToast();
   const { navigateTo } = useSmartNavigation();
   const [isCompareMode, setIsCompareMode] = useState(false);
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["input"]) setInput(state["input"]);
+    if (state["provider"]) setProvider(state["provider"] as TokenizerProvider);
+  }, [setInput, setProvider]);
+
+  const { share } = useShareState({ toolSlug: "token-visualizer", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({ input, provider });
+  }, [share, input, provider]);
+
+  useToolShortcuts({
+    onExecute: () => { tokenize(input, provider, isCompareMode); },
+    onCopyOutput: () => {
+      if (visualization?.input) {
+        try { void navigator.clipboard.writeText(visualization.input); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
 
   const PROVIDERS = useMemo(() => [
     { id: "openai" as const, label: t("tokenViz.modelOpenAI"), color: "text-emerald-500 dark:text-emerald-400" },
@@ -82,10 +107,13 @@ export default function TokenVisualizerPage() {
         description={t("tokenViz.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -273,7 +301,7 @@ export default function TokenVisualizerPage() {
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-end">
-                  <span className="text-xs font-bold uppercase text-muted-foreground/60">{t("tokenViz.optimization")}</span>
+                  <span className="text-xs font-bold uppercase text-muted-foreground">{t("tokenViz.optimization")}</span>
                   <span className={cn("text-xl font-black", visualization.efficiencyScore > 80 ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400")}>
                     {visualization.efficiencyScore}%
                   </span>
@@ -339,7 +367,7 @@ export default function TokenVisualizerPage() {
                     <StatusBadge variant="info">
                       <Timer className="size-3 mr-1" /> {visualization.totalTokens} {t("tokenViz.totalTokens")}
                     </StatusBadge>
-                    <span className="text-xs font-black opacity-40 uppercase">{visualization.input.length} {t("tokenViz.characters")}</span>
+                    <span className="text-xs font-black text-muted-foreground uppercase">{visualization.input.length} {t("tokenViz.characters")}</span>
                     {estimatedCost && (
                       <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400" title={`${estimatedCost.modelName} ${t("tokenViz.inputCost")}`}>
                         ~${estimatedCost.cost < 0.01 ? estimatedCost.cost.toFixed(6) : estimatedCost.cost.toFixed(4)}

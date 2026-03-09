@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   Chip,
   Dropdown,
@@ -37,6 +39,8 @@ import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { CodeReviewSkeleton } from "@/components/shared/skeletons";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import type { SupportedLanguage, CodeIssue } from "@/types/code-review";
 import type { ToolRoute } from "@/hooks/use-smart-navigation";
 
@@ -61,6 +65,17 @@ export default function CodeReviewPage() {
   const locale = useLocaleStore((s) => s.locale);
   const { addToast } = useToast();
   const { navigateTo } = useSmartNavigation();
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["code"]) setCode(state["code"]);
+    if (state["language"]) setLanguage(state["language"] as SupportedLanguage);
+  }, []);
+
+  const { share } = useShareState({ toolSlug: "code-review", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({ code, language });
+  }, [share, code, language]);
 
   const handleReview = async () => {
     if (!code.trim()) {
@@ -124,6 +139,17 @@ export default function CodeReviewPage() {
     reset();
   };
 
+  useToolShortcuts({
+    onExecute: () => { void handleReview(); },
+    onCopyOutput: () => {
+      if (result?.refactoredCode) {
+        try { void navigator.clipboard.writeText(result.refactoredCode); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: handleReset,
+  });
+
   const issueColumns: ColumnConfig[] = useMemo(() => [
     { name: t("table.colLine"), uid: "line", sortable: true },
     { name: t("table.colIssue"), uid: "message", sortable: true },
@@ -145,7 +171,7 @@ export default function CodeReviewPage() {
                 <Wand2 className="size-3" /> {issue.suggestion}
               </span>
             )}
-            <span className="text-xs uppercase font-bold opacity-40 mt-1">{issue.category}</span>
+            <span className="text-xs uppercase font-bold text-muted-foreground mt-1">{issue.category}</span>
           </div>
         );
       case "severity":
@@ -174,7 +200,7 @@ export default function CodeReviewPage() {
           <Dropdown>
             <Dropdown.Trigger>
               <Button isIconOnly size="sm" variant="ghost" aria-label={t("codeReview.issueActions")} className="min-h-11 min-w-11">
-                <MoreVertical className="size-4 text-default-300" />
+                <MoreVertical className="size-4 text-muted-foreground" />
               </Button>
             </Dropdown.Trigger>
             <Dropdown.Popover>
@@ -207,10 +233,13 @@ export default function CodeReviewPage() {
         description={t("codeReview.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={handleReset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={handleReset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -288,7 +317,7 @@ export default function CodeReviewPage() {
               className="btn-luxury h-12 text-md font-bold bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 border-0 transition-all"
             >
               <Sparkles className="mr-2 size-5" />
-              {t("codeReview.reviewCode")}
+              {t("codeReview.reviewCode")} <KbdHint shortcut="⌘↵" className="ml-2" />
             </Button>
           </div>
         </Card>

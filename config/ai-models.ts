@@ -188,12 +188,22 @@ export const PROVIDER_LABELS: Record<
   },
   groq: {
     label: "Groq",
-    color: "bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-200",
+    color: "bg-amber-100 text-amber-900 dark:bg-amber-900/30 dark:text-amber-200",
     emoji: "⚡",
   },
   meta: {
     label: "Meta",
     color: "bg-blue-100 text-blue-900 dark:bg-blue-900/30 dark:text-blue-200",
     emoji: "🦙",
+  },
+  mistral: {
+    label: "Mistral",
+    color: "bg-indigo-100 text-indigo-900 dark:bg-indigo-900/30 dark:text-indigo-200",
+    emoji: "🌀",
+  },
+  together: {
+    label: "Together",
+    color: "bg-emerald-100 text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-200",
+    emoji: "🤝",
   },
 };

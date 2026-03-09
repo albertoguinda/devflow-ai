@@ -27,8 +27,10 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useToast } from "@/hooks/use-toast";
 import { useSmartNavigation } from "@/hooks/use-smart-navigation";
 import { CopyButton } from "@/components/shared/copy-button";
+import { ShareButton } from "@/components/shared/share-button";
 import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { useShareState } from "@/hooks/use-share-state";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
@@ -36,6 +38,8 @@ import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 export default function Base64Page() {
   const { t } = useTranslation();
   const { addToast } = useToast();
@@ -60,6 +64,25 @@ export default function Base64Page() {
   const { explainBase64WithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const locale = useLocaleStore((s) => s.locale);
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["input"]) setInput(state["input"]);
+  }, [setInput]);
+  const { share } = useShareState({ toolSlug: "base64", onLoad: handleShareLoad });
+  const getShareUrl = useCallback(() => {
+    return share({ input });
+  }, [share, input]);
+
+  useToolShortcuts({
+    onExecute: process,
+    onCopyOutput: () => {
+      if (result?.output) {
+        try { void navigator.clipboard.writeText(result.output); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
 
   const [activeView, setActiveView] = useState<"text" | "preview" | "inspector" | "batch">("text");
 
@@ -88,7 +111,7 @@ export default function Base64Page() {
     switch (key) {
       case "offset": return <span className="font-mono text-xs text-muted-foreground">0x{item.offset}</span>;
       case "hex": return <span className="font-mono text-xs font-black text-primary">{item.hex}</span>;
-      case "binary": return <span className="font-mono text-xs opacity-60">{item.binary}</span>;
+      case "binary": return <span className="font-mono text-xs text-muted-foreground">{item.binary}</span>;
       case "decimal": return <span className="font-mono text-xs">{item.decimal}</span>;
       default: return String(item[key]);
     }
@@ -118,10 +141,13 @@ export default function Base64Page() {
         description={t("base64.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -193,7 +219,7 @@ export default function Base64Page() {
             </div>
 
             <Button onPress={process} isDisabled={!input.trim()} variant="primary" className="btn-luxury w-full mt-6 h-12 font-black bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 border-0 transition-all text-md">
-              <Sparkles className="size-4 mr-2" /> {mode === "encode" ? t("base64.generateEncoding") : t("base64.executeDecoding")}
+              <Sparkles className="size-4 mr-2" /> {mode === "encode" ? t("base64.generateEncoding") : t("base64.executeDecoding")} <KbdHint shortcut="⌘↵" className="ml-2" />
             </Button>
           </Card>
 
@@ -330,7 +356,7 @@ export default function Base64Page() {
                       </Card>
                       <Card className="p-6 border-divider bg-muted/5">
                         <p className="text-xs font-black text-muted-foreground uppercase mb-3 tracking-widest">{t("base64.jwtSignature")}</p>
-                        <p className="text-xs font-mono break-all opacity-40 leading-relaxed">{jwtParts.signature}</p>
+                        <p className="text-xs font-mono break-all text-muted-foreground leading-relaxed">{jwtParts.signature}</p>
                       </Card>
                     </div>
                   )}
@@ -338,7 +364,7 @@ export default function Base64Page() {
                   {result?.detectedType === "image" && (
                     <Card className="p-12 flex flex-col items-center justify-center bg-muted/10 border-dashed border-2">
                       {/* eslint-disable-next-line @next/next/no-img-element -- data URI from user input, next/image cannot optimize */}
-                      <img src={mode === "decode" ? `data:image/*;base64,${result.input}` : `data:image/*;base64,${result.output}`} alt="Preview" className="max-w-full max-h-[350px] rounded-2xl shadow-2xl border-4 border-white dark:border-slate-800" />
+                      <img src={mode === "decode" ? `data:image/*;base64,${result.input}` : `data:image/*;base64,${result.output}`} alt={t("base64.imagePreviewAlt")} className="max-w-full max-h-[350px] rounded-2xl shadow-2xl border-4 border-background" />
                       <Button size="md" variant="primary" className="mt-8 font-black shadow-lg" onPress={() => {
                         const a = document.createElement("a");
                         a.href = mode === "decode" ? `data:image/*;base64,${result.input}` : `data:image/*;base64,${result.output}`;
@@ -372,7 +398,7 @@ export default function Base64Page() {
                     </Card>
                   )}
 
-                  {result?.detectedType && !["jwt", "image", "json"].includes(result.detectedType) && (
+                  {((!result) || (result?.detectedType && !["jwt", "image", "json"].includes(result.detectedType)) || (!result?.detectedType)) && (
                     <Card className="p-20 border-dashed border-2 bg-muted/10 flex flex-col items-center justify-center h-full text-center">
                       <div className="size-20 bg-muted rounded-full flex items-center justify-center mb-6">
                         <Search className="size-10 text-muted-foreground/40" />
@@ -392,8 +418,8 @@ export default function Base64Page() {
                       <span className="text-xs font-black uppercase tracking-widest">{t("base64.byteAnalysis")}</span>
                     </div>
                     <div className="flex gap-4">
-                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-primary" /><span className="text-xs font-black uppercase opacity-60">{t("base64.hexLabel")}</span></div>
-                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-secondary" /><span className="text-xs font-black uppercase opacity-60">{t("base64.binLabel")}</span></div>
+                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-primary" /><span className="text-xs font-black uppercase text-muted-foreground">{t("base64.hexLabel")}</span></div>
+                      <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-secondary" /><span className="text-xs font-black uppercase text-muted-foreground">{t("base64.binLabel")}</span></div>
                     </div>
                   </div>
                   <div className="flex-1 overflow-auto">
@@ -412,8 +438,8 @@ export default function Base64Page() {
               <Tabs.Panel id="batch">
                 <Card className="p-0 overflow-hidden shadow-xl border-divider h-[400px] sm:h-[600px] flex flex-col">
                   <div className="p-4 border-b border-divider bg-muted/20 flex items-center justify-between">
-                    <span className="text-xs font-black uppercase tracking-widest opacity-40">{t("base64.batchTitle")}</span>
-                    <span className="text-xs font-mono opacity-30">{t("base64.batchHint")}</span>
+                    <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t("base64.batchTitle")}</span>
+                    <span className="text-xs font-mono text-muted-foreground">{t("base64.batchHint")}</span>
                   </div>
                   <div className="p-4 space-y-4 flex-1 overflow-auto">
                     <TextArea

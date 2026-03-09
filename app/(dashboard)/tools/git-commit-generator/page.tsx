@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   Tabs,
   Chip,
@@ -38,6 +40,8 @@ import { CopyButton } from "@/components/shared/copy-button";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { StatusBadge } from "@/components/shared/status-badge";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import type { CommitType, CommitResult } from "@/types/git-commit-generator";
 import { getCommitTypeInfo } from "@/hooks/use-git-commit-generator";
 
@@ -64,6 +68,42 @@ export default function GitCommitGeneratorPage() {
     clearHistory,
   } = useGitCommitGenerator();
 
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["description"]) updateConfig("description", state["description"]);
+    if (state["type"]) updateConfig("type", state["type"] as CommitType);
+    if (state["scope"]) updateConfig("scope", state["scope"]);
+    if (state["body"]) updateConfig("body", state["body"]);
+    if (state["diffInput"]) setDiffInput(state["diffInput"]);
+  }, [updateConfig, setDiffInput]);
+
+  const { share } = useShareState({ toolSlug: "git-commit-generator", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({
+      description: config.description,
+      type: config.type,
+      scope: config.scope,
+      body: config.body,
+      diffInput,
+    });
+  }, [share, config.description, config.type, config.scope, config.body, diffInput]);
+
+  useToolShortcuts({
+    onExecute: () => {
+      generate();
+      if (isAIEnabled) {
+        void generateCommitWithAI(config.description + (diffInput ? `\n\nDiff:\n${diffInput}` : ""), locale);
+      }
+    },
+    onCopyOutput: () => {
+      if (message) {
+        try { void navigator.clipboard.writeText(message); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const [activeTab, setActiveTab] = useState<"composer" | "changelog" | "history" | string>("composer");
   const [batchInput, setBatchInput] = useState("");
   const scopeSuggestions = useMemo(() => getSuggestions(config.description), [config.description, getSuggestions]);
@@ -86,14 +126,14 @@ export default function GitCommitGeneratorPage() {
         return (
           <div className="flex flex-col gap-0.5 max-w-[300px]">
             <span className="font-mono text-xs font-black truncate text-primary">{item.message.split("\n")[0]}</span>
-            <span className="text-xs opacity-40 font-mono italic truncate">{item.timestamp}</span>
+            <span className="text-xs text-muted-foreground font-mono italic truncate">{item.timestamp}</span>
           </div>
         );
       case "type":
         const info = getCommitTypeInfo(item.type);
         return <Chip size="sm" variant="primary" className="font-black text-xs uppercase">{info.emoji} {item.type}</Chip>;
       case "scope":
-        return item.scope ? <Chip size="sm" variant="primary" color="default" className="font-bold text-xs uppercase">{item.scope}</Chip> : <span className="opacity-20">-</span>;
+        return item.scope ? <Chip size="sm" variant="primary" color="default" className="font-bold text-xs uppercase">{item.scope}</Chip> : <span className="text-muted-foreground">-</span>;
       case "actions":
         return <CopyButton text={item.message} size="sm" variant="ghost" />;
       default:
@@ -120,10 +160,13 @@ export default function GitCommitGeneratorPage() {
         description={t("gitCommit.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -159,7 +202,7 @@ export default function GitCommitGeneratorPage() {
                           {getCommitTypeInfo(config.type).emoji} {config.type}
                         </span>
                       ) : t("gitCommit.selectType")}
-                      <ChevronRight className="size-3 rotate-90 opacity-40" />
+                      <ChevronRight className="size-3 rotate-90 text-muted-foreground" />
                     </Button>
                     <Dropdown.Popover>
                       <Dropdown.Menu
@@ -177,7 +220,7 @@ export default function GitCommitGeneratorPage() {
                                 <span className="mr-2">{commitType.emoji}</span>
                                 <div className="flex flex-col">
                                   <span className="font-bold">{commitType.label}</span>
-                                  <span className="text-xs opacity-60">{commitType.description}</span>
+                                  <span className="text-xs text-muted-foreground">{commitType.description}</span>
                                 </div>
                               </div>
                             </Label>
@@ -302,7 +345,7 @@ export default function GitCommitGeneratorPage() {
                     });
                   }
                 }} variant="primary" className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/30 border-0 transition-all text-md" isDisabled={!validation.isValid} isLoading={isAIEnabled && isAIGenerating}>
-                  <Sparkles className="size-4 mr-2" /> {t("gitCommit.forgeMessage")}
+                  <Sparkles className="size-4 mr-2" /> {t("gitCommit.forgeMessage")} <KbdHint shortcut="⌘↵" className="ml-2" />
                 </Button>
             </div>
           </Card>
@@ -368,7 +411,7 @@ export default function GitCommitGeneratorPage() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-xs font-bold">{t("gitCommit.previewBranch")}</span>
-                        <span className="text-xs opacity-40 font-mono">{t("gitCommit.previewRef")}</span>
+                        <span className="text-xs text-muted-foreground font-mono">{t("gitCommit.previewRef")}</span>
                       </div>
                     </div>
                     <CopyButton text={message || ""} />
@@ -380,7 +423,7 @@ export default function GitCommitGeneratorPage() {
                         <p className="text-muted-foreground">{message.split("\n").slice(1).join("\n")}</p>
                       </div>
                     ) : (
-                      <span className="opacity-20 italic">{t("gitCommit.forgingMessage")}</span>
+                      <span className="text-muted-foreground italic">{t("gitCommit.forgingMessage")}</span>
                     )}
                   </div>
                   <div className="p-4 border-t border-divider bg-muted/5 flex gap-2">

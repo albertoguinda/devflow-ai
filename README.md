@@ -7,7 +7,7 @@
 ### 20 herramientas para developers &middot; IA integrada &middot; Local-first &middot; Open Source
 
 [![Build](https://img.shields.io/github/actions/workflow/status/albertoguinda/devflow-ai/ci.yml?branch=main&style=flat-square&logo=github&label=CI)](https://github.com/albertoguinda/devflow-ai/actions)
-[![Tests](https://img.shields.io/badge/tests-1694_passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
+[![Tests](https://img.shields.io/badge/tests-1758_passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
 [![Coverage](https://img.shields.io/badge/coverage-strategic_(100%2F80%2F0)-blue?style=flat-square&logo=vitest&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
 [![Lighthouse](https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-brightgreen?style=flat-square&logo=lighthouse&logoColor=white)](https://github.com/albertoguinda/devflow-ai)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
@@ -71,6 +71,7 @@
 - **PWA** &mdash; installable as standalone app with offline support (service worker)
 - **Export/Import settings** &mdash; backup and restore all preferences as JSON
 - **Local history** &mdash; localStorage persistence
+- **Share via URL** &mdash; every tool state is shareable via compressed URL (gzip + base64url)
 - **Copy to clipboard** &mdash; 1-click from any tool
 - **Dark / Light mode** &mdash; auto-detection + manual toggle
 - **Bilingual** &mdash; English / Spanish, switchable from sidebar
@@ -243,7 +244,7 @@ We follow a **Strategic Coverage** architecture. Not all code needs the same lev
 **Per-file enforcement** is enabled: each CORE file must individually meet thresholds. The CI pipeline fails if any file drops below its floor.
 
 ```bash
-npm run test:run                                             # All unit tests (1694+)
+npm run test:run                                             # All unit tests (1758+)
 npx vitest run tests/unit/application/json-formatter.test.ts # Single file
 npx vitest run -t "should format"                            # By pattern
 npm run test:coverage                                        # Coverage report
@@ -396,6 +397,7 @@ Coverage reports and Playwright reports are uploaded as artifacts.
 - **PWA** &mdash; instalable como app standalone con soporte offline (service worker)
 - **Exportar/Importar configuracion** &mdash; respalda y restaura preferencias como JSON
 - **Historial local** &mdash; persistencia con localStorage
+- **Compartir por URL** &mdash; cada estado de herramienta es compartible via URL comprimida (gzip + base64url)
 - **Copy to clipboard** &mdash; en 1 click desde cualquier herramienta
 - **Dark / Light mode** &mdash; deteccion automatica + toggle manual
 - **Bilingue** &mdash; Ingles / Espanol, cambiable desde la barra lateral

@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import { Lock, RotateCcw, Shield, Layers } from "lucide-react";
 import { Slider, Switch, Label } from "@heroui/react";
 import { usePasswordGenerator } from "@/hooks/use-password-generator";
@@ -10,6 +12,8 @@ import { ToolHeader } from "@/components/shared/tool-header";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { Button, Card } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import type { PasswordStrengthLevel } from "@/types/password-generator";
 
 const STRENGTH_COLORS: Record<PasswordStrengthLevel, string> = {
@@ -42,6 +46,39 @@ export default function PasswordGeneratorPage() {
     reset,
   } = usePasswordGenerator();
 
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["length"]) updateConfig("length", Number(state["length"]));
+    if (state["uppercase"]) updateConfig("uppercase", state["uppercase"] === "true");
+    if (state["lowercase"]) updateConfig("lowercase", state["lowercase"] === "true");
+    if (state["numbers"]) updateConfig("numbers", state["numbers"] === "true");
+    if (state["symbols"]) updateConfig("symbols", state["symbols"] === "true");
+    if (state["excludeAmbiguous"]) updateConfig("excludeAmbiguous", state["excludeAmbiguous"] === "true");
+  }, [updateConfig]);
+
+  const { share } = useShareState({ toolSlug: "password-generator", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({
+      length: String(config.length),
+      uppercase: String(config.uppercase),
+      lowercase: String(config.lowercase),
+      numbers: String(config.numbers),
+      symbols: String(config.symbols),
+      excludeAmbiguous: String(config.excludeAmbiguous),
+    });
+  }, [share, config.length, config.uppercase, config.lowercase, config.numbers, config.symbols, config.excludeAmbiguous]);
+
+  useToolShortcuts({
+    onExecute: generate,
+    onCopyOutput: () => {
+      if (result?.password) {
+        try { void navigator.clipboard.writeText(result.password); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const canGenerate = useMemo(() => {
     return config.uppercase || config.lowercase || config.numbers || config.symbols;
   }, [config.uppercase, config.lowercase, config.numbers, config.symbols]);
@@ -60,10 +97,13 @@ export default function PasswordGeneratorPage() {
         gradient="from-red-500 to-orange-600"
         breadcrumb
         actions={
-          <Button variant="ghost" size="sm" onPress={reset} aria-label={t("common.reset")}>
-            <RotateCcw className="size-4" aria-hidden="true" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="ghost" size="sm" onPress={reset} aria-label={t("common.reset")}>
+              <RotateCcw className="size-4" aria-hidden="true" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -205,7 +245,7 @@ export default function PasswordGeneratorPage() {
             className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-red-500 to-orange-600 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 border-0 transition-all text-md"
           >
             <Shield className="size-5 mr-2" aria-hidden="true" />
-            {t("password.generate")}
+            {t("password.generate")} <KbdHint shortcut="⌘↵" className="ml-2" />
           </Button>
         </div>
       </Card>
@@ -265,7 +305,7 @@ export default function PasswordGeneratorPage() {
                 {/* Stats row */}
                 <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
                   <span>
-                    {t("password.entropy")}: <strong className="text-foreground">{strength.entropy} bits</strong>
+                    {t("password.entropy")}: <strong className="text-foreground">{strength.entropy} {t("password.bits")}</strong>
                   </span>
                   <span>
                     {t("password.crackTime")}: <strong className="text-foreground">{strength.crackTime}</strong>
@@ -327,9 +367,9 @@ export default function PasswordGeneratorPage() {
       {/* Empty state */}
       {!result && batchResults.length === 0 && (
         <div className="text-center text-muted-foreground py-8">
-          <Lock className="size-12 mx-auto mb-3 opacity-30" aria-hidden="true" />
+          <Lock className="size-12 mx-auto mb-3 opacity-50" aria-hidden="true" />
           <p className="text-sm">{t("password.emptyState")}</p>
-          <p className="text-xs mt-1 opacity-70">{t("password.emptyStateHint")}</p>
+          <p className="text-xs mt-1 text-muted-foreground">{t("password.emptyStateHint")}</p>
         </div>
       )}
 

@@ -5,6 +5,45 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.20.0] - 2026-03-09
+
+### UX Enhancements — Keyboard Shortcuts, Visual Polish, Tool Upgrades
+
+#### Added
+- **Per-tool keyboard shortcuts** (`hooks/use-tool-shortcuts.ts`) — `Ctrl+Enter` execute, `Ctrl+Shift+C` copy output, `Ctrl+Shift+S` share, `Escape` clear. Integrated into all 20 tools
+- **Keyboard hint component** (`components/shared/kbd-hint.tsx`) — displays shortcut hints next to CTA buttons
+- **Clipboard auto-detection** — MagicInput reads clipboard on focus, shows "Paste from clipboard?" chip if content matches a tool type (JSON, JWT, regex, etc.)
+- **Regex railroad diagram** (`lib/application/regex-railroad.ts`) — pure TypeScript SVG generator for visual regex syntax diagrams. Handles literals, character classes, quantifiers, alternation, groups, anchors, escape sequences. +22 tests
+- **JSON tree view** (`components/tools/json-tree-view.tsx`, `lib/application/json-tree.ts`) — collapsible tree with color-coded types, expand/collapse all, JSONPath display. New tab in JSON Formatter. +22 tests
+- **~14 new i18n keys** (EN + ES in parity): regex.railroadDiagram, regex.railroadDescription, jsonFmt.treeView, jsonFmt.treeItems, jsonFmt.treeExpand, jsonFmt.treeCollapse, magic.pasteFromClipboard, magic.clipboardDetected, shortcuts.*
+- **+44 unit tests** (1714 → 1758 tests across 53 files)
+
+#### Fixed
+- **Cost Calculator duplicate key** — Deduplicated model names in projection/bar charts to prevent "Mistral Small" duplicate React key error
+- **Cost Calculator tooltip** — Bar chart hover now uses theme-aware colors (`var(--color-foreground)`) instead of hardcoded black text
+- **Cost Calculator empty badges** — Added `mistral` and `together` providers to `PROVIDER_LABELS` with colors/emojis. Chips now show plain text fallback for unknown providers
+- **Groq badge** — Changed from `bg-orange` (collided with Anthropic) to `bg-amber` for visual distinction
+- **ESLint CI blocker** — Removed `useCallback` from `renderStatusCell` in HTTP Status Finder (React Compiler handles memoization)
+- **20-tool visual audit** — Fixed ~60 illegible text instances across all tools: replaced `opacity-20/30/40` with `text-muted-foreground`, fixed hardcoded colors (`fill: 'gray'`, `color: '#000'`) to use CSS variables, improved dark mode contrast on severity badges, empty state icons, and secondary labels
+- **Recharts dark mode** — All chart tooltips, grid lines, and axis ticks now use `var(--color-*)` CSS variables. Bar chart cursor uses `var(--color-muted)` at 30% opacity instead of white
+- **Color Converter** — Contrast preview fallback colors now use `var(--color-foreground/background)` instead of hardcoded `#000/#fff`
+
+---
+
+## [4.19.0] - 2026-03-08
+
+### Share via URL — Every Tool State is Now Shareable
+
+#### Added
+- **Share State infrastructure** (`lib/application/share-state.ts`) — encode/decode tool state into URL-safe strings using CompressionStream gzip (with plain base64url fallback). UTF-8 safe for Unicode, emoji, and CJK characters. Format: `"c."` prefix for compressed, `"p."` prefix for plain
+- **Share hook** (`hooks/use-share-state.ts`) — `useShareState()` encodes state → returns full URL, loads shared state from URL hash on mount, cleans hash after loading
+- **ShareButton component** (`components/shared/share-button.tsx`) — Web Share API where available (mobile), clipboard copy fallback, toast feedback, 2s check icon confirmation
+- **Integrated into all 20 tool pages** — every tool now has a Share button in the ToolHeader actions area. Each tool shares its essential input state and restores it when loaded from a shared URL
+- **+6 i18n keys** (1571 → 1577 keys, EN + ES in parity): share.share, share.copied, share.tooLong, share.title, share.text, share.shareState
+- **+20 unit tests** (1694 → 1714 tests across 51 files) — share-state encode/decode round-trips, Unicode handling, large state, error handling, URL building, safe length checks
+
+---
+
 ## [4.18.0] - 2026-03-08
 
 ### Gloss Luxury Visual Upgrade + 5 New Tools (15 → 20)

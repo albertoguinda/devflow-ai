@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   Sparkles,
   History,
@@ -47,6 +49,8 @@ import { Card, Button } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import { downloadBlob } from "@/lib/utils/download";
 import type { PromptIssue, AnatomyElement, PromptAnalysisResult, PromptDimension } from "@/types/prompt-analyzer";
 
@@ -71,9 +75,9 @@ const DIMENSION_COLORS: Record<AnatomyElement, string> = {
 };
 
 const SEVERITY_COLORS = {
-  high: "text-red-900 bg-red-100 dark:bg-red-900/30 dark:text-red-200",
-  medium: "text-yellow-900 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-200",
-  low: "text-blue-900 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-200",
+  high: "text-red-800 bg-red-100 dark:bg-red-900/30 dark:text-red-300",
+  medium: "text-yellow-800 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-300",
+  low: "text-blue-800 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300",
 };
 
 const AXIS_LABEL_KEYS: Record<AnatomyElement, string> = {
@@ -255,6 +259,27 @@ export default function PromptAnalyzerPage() {
   const { addToast } = useToast();
   const { navigateTo } = useSmartNavigation();
 
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["prompt"]) setPrompt(state["prompt"]);
+  }, []);
+
+  const { share } = useShareState({ toolSlug: "prompt-analyzer", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({ prompt });
+  }, [share, prompt]);
+
+  useToolShortcuts({
+    onExecute: () => { void handleAnalyze(); },
+    onCopyOutput: () => {
+      if (result?.refinedPrompt) {
+        try { void navigator.clipboard.writeText(result.refinedPrompt); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: () => setPrompt(""),
+  });
+
   const handleAnalyze = async () => {
     if (!prompt.trim()) {
       addToast(t("promptAnalyzer.toastEnterPrompt"), "warning");
@@ -320,6 +345,9 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
         title={t("promptAnalyzer.title")}
         description={t("promptAnalyzer.description")}
         breadcrumb
+        actions={
+          <ShareButton getShareUrl={getShareUrl} />
+        }
       />
 
       <ToolSuggestions toolId="prompt-analyzer" input={prompt} output={result?.refinedPrompt || ""} />
@@ -376,7 +404,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
               className="btn-luxury h-12 font-black bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 border-0 transition-all text-md gap-2"
             >
               <Sparkles className="size-4" />
-              {t("promptAnalyzer.analyzePrompt")}
+              {t("promptAnalyzer.analyzePrompt")} <KbdHint shortcut="⌘↵" className="ml-2" />
             </Button>
           </div>
         </div>
@@ -586,7 +614,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                 const barColor = DIMENSION_COLORS[dim.id];
                 const status = dim.score >= 60 ? "detected" : dim.score >= 30 ? "partial" : "missing";
                 const StatusIcon = status === "detected" ? CheckCircle2 : status === "partial" ? CircleDot : XCircle;
-                const statusColor = status === "detected" ? "text-emerald-500 dark:text-emerald-400" : status === "partial" ? "text-amber-500 dark:text-amber-400" : "text-red-400";
+                const statusColor = status === "detected" ? "text-emerald-500 dark:text-emerald-400" : status === "partial" ? "text-amber-500 dark:text-amber-400" : "text-red-500 dark:text-red-400";
 
                 return (
                   <div key={dim.id} className="group rounded-lg border border-border p-3 transition-colors duration-200 hover:bg-muted/30">

@@ -24,12 +24,17 @@ import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { ShareButton } from "@/components/shared/share-button";
 import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
+import { useShareState } from "@/hooks/use-share-state";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
+import { generateRailroadSvg } from "@/lib/application/regex-railroad";
 import type { RegexGroup, RegexFlavor } from "@/types/regex-humanizer";
 
 export default function RegexHumanizerPage() {
@@ -54,6 +59,25 @@ export default function RegexHumanizerPage() {
   const { generateRegexWithAI, aiResult: aiRegexResult, isAILoading: isAIGenerating, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const { addToast } = useToast();
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["pattern"]) setPattern(state["pattern"]);
+  }, [setPattern]);
+  const { share } = useShareState({ toolSlug: "regex-humanizer", onLoad: handleShareLoad });
+  const getShareUrl = useCallback(() => {
+    return share({ pattern });
+  }, [share, pattern]);
+
+  useToolShortcuts({
+    onExecute: () => { explain(pattern); },
+    onCopyOutput: () => {
+      if (explanation?.explanation) {
+        try { void navigator.clipboard.writeText(explanation.explanation); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const [testText, setTestText] = useState(t("regex.defaultTestText"));
   const [activeTab, setActiveTab] = useState<"explain" | "generate" | string>("explain");
   const [resultTab, setResultTab] = useState<"explanation" | "groups" | "test" | string>("explanation");
@@ -68,6 +92,11 @@ export default function RegexHumanizerPage() {
     } catch {
       return false;
     }
+  }, [pattern]);
+
+  const railroadSvg = useMemo(() => {
+    if (!pattern.trim()) return "";
+    return generateRailroadSvg(pattern);
   }, [pattern]);
 
   const handleTest = useCallback(() => {
@@ -103,10 +132,13 @@ export default function RegexHumanizerPage() {
         description={t("regex.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -212,7 +244,7 @@ export default function RegexHumanizerPage() {
                   variant="primary"
                   className="btn-luxury w-full h-12 font-bold bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 border-0 transition-all"
                 >
-                  {t("regex.analyzePattern")}
+                  {t("regex.analyzePattern")} <KbdHint shortcut="⌘↵" className="ml-2" />
                 </Button>
               </div>
             </Tabs.Panel>
@@ -307,7 +339,7 @@ export default function RegexHumanizerPage() {
                   className="flex justify-between items-center px-2 h-auto py-1 bg-muted/30 text-xs font-mono"
                 >
                   <span className="text-primary font-bold">{ref.s}</span>
-                  <span className="opacity-60">{ref.d}</span>
+                  <span className="text-muted-foreground">{ref.d}</span>
                 </Button>
               ))}
             </div>
@@ -348,8 +380,8 @@ export default function RegexHumanizerPage() {
                 <Card className="relative overflow-hidden p-6 col-span-2 border-border/40">
                   <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-cyan-500 to-blue-600" />
                   <h3 className="text-sm font-bold mb-3 flex items-center gap-2 mt-1">
-                    <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md">
-                      <Info className="size-4 text-white" />
+                    <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md text-white dark:text-white">
+                      <Info className="size-4" />
                     </div>
                     {t("regex.structuralBreakdown")}
                   </h3>
@@ -522,7 +554,7 @@ export default function RegexHumanizerPage() {
                                     <div className="flex flex-wrap gap-2 mt-1">
                                       {Object.entries(m.groups).map(([key, val]) => (
                                         <div key={key} className="flex items-center gap-1.5 bg-muted px-2 py-0.5 rounded border border-border/50">
-                                          <span className="font-bold opacity-50">{key}:</span>
+                                          <span className="font-bold text-muted-foreground">{key}:</span>
                                           <span className="font-mono text-primary">{val}</span>
                                         </div>
                                       ))}
@@ -538,6 +570,24 @@ export default function RegexHumanizerPage() {
                   </Tabs.Panel>
                 </Tabs>
               </Card>
+
+              {/* Railroad Diagram */}
+              {railroadSvg && (
+                <Card className="relative overflow-hidden p-6 border-border/40">
+                  <div className="absolute inset-x-0 top-0 h-0.5 accent-glow bg-gradient-to-r from-cyan-500 to-blue-600" />
+                  <h3 className="text-sm font-bold mb-1 flex items-center gap-2 mt-1">
+                    <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-md text-white dark:text-white">
+                      <Regex className="size-4" />
+                    </div>
+                    {t("regex.railroadDiagram")}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mb-4">{t("regex.railroadDescription")}</p>
+                  <div
+                    className="overflow-x-auto rounded-xl bg-muted/20 border border-border p-4"
+                    dangerouslySetInnerHTML={{ __html: railroadSvg }}
+                  />
+                </Card>
+              )}
             </>
           ) : (
             <Card className="relative p-8 sm:p-20 border-dashed border-2 border-cyan-500/20 overflow-hidden flex flex-col items-center justify-center text-center h-full">

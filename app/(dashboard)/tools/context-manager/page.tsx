@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   AlertDialog,
   Chip,
@@ -48,6 +50,7 @@ import { AI_MODELS } from "@/config/ai-models";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
 import type { ContextDocument as Document, Priority, DocumentType } from "@/types/context-manager";
 
 export default function ContextManagerPage() {
@@ -73,6 +76,35 @@ export default function ContextManagerPage() {
     setSearchQuery,
     filteredDocuments,
   } = useContextManager();
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["searchQuery"]) setSearchQuery(state["searchQuery"]);
+  }, [setSearchQuery]);
+
+  const { share } = useShareState({ toolSlug: "context-manager", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({
+      searchQuery,
+      activeWindowId: activeWindowId || "",
+    });
+  }, [share, searchQuery, activeWindowId]);
+
+  useToolShortcuts({
+    onExecute: () => {
+      const exported = exportForAI();
+      if (exported) {
+        try { void navigator.clipboard.writeText(exported); } catch { /* noop */ }
+      }
+    },
+    onCopyOutput: () => {
+      const exported = exportForAI();
+      if (exported) {
+        try { void navigator.clipboard.writeText(exported); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+  });
 
   const [showAddDoc, setShowAddDoc] = useState(false);
   const [newWindowName, setNewWindowName] = useState("");
@@ -305,6 +337,9 @@ export default function ContextManagerPage() {
         title={t("ctxMgr.title")}
         description={t("ctxMgr.description")}
         breadcrumb
+        actions={
+          <ShareButton getShareUrl={getShareUrl} />
+        }
       />
 
       <ToolSuggestions toolId="context-manager" input={activeWindow?.name || ""} output={""} />
@@ -347,7 +382,7 @@ export default function ContextManagerPage() {
           <div className="space-y-1.5 overflow-auto max-h-[600px] pr-1 scrollbar-hide">
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-2">{t("ctxMgr.projectContexts")}</p>
             {windows.length === 0 && (
-              <p className="text-xs text-muted-foreground/50 px-2 py-4 text-center italic">
+              <p className="text-xs text-muted-foreground px-2 py-4 text-center italic">
                 {t("ctxMgr.noWindowsHint")}
               </p>
             )}
@@ -369,7 +404,7 @@ export default function ContextManagerPage() {
                   aria-pressed={activeWindowId === w.id}
                 >
                   <span className="text-xs font-bold truncate">{w.name}</span>
-                  <span className="text-xs opacity-60">{t("ctxMgr.docsAndTokens", { docs: w.documents.length, tokens: w.totalTokens.toLocaleString() })}</span>
+                  <span className="text-xs text-muted-foreground">{t("ctxMgr.docsAndTokens", { docs: w.documents.length, tokens: w.totalTokens.toLocaleString() })}</span>
                 </button>
                 <Button
                   isIconOnly
@@ -523,7 +558,7 @@ export default function ContextManagerPage() {
                   </h3>
                   {activeWindow.documents.length > 0 ? (
                     <div className="space-y-2">
-                      <div className="text-[11px] font-mono leading-relaxed overflow-auto max-h-[350px] text-foreground/70 space-y-0.5">
+                      <div className="text-[11px] font-mono leading-relaxed overflow-auto max-h-[350px] text-muted-foreground space-y-0.5">
                         {activeWindow.documents.map(d => d.filePath || d.title).sort().map((p, i) => (
                           <div key={i} className="flex items-center gap-1.5 py-0.5">
                             <FileText className="size-3 shrink-0 text-primary/50" />
@@ -539,8 +574,8 @@ export default function ContextManagerPage() {
                         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openFileBrowser(); }}
                         aria-label={t("ctxMgr.uploadFile")}
                       >
-                        <Plus className="size-3 text-muted-foreground/40 group-hover:text-primary transition-colors duration-200" />
-                        <span className="text-xs text-muted-foreground/40 group-hover:text-primary font-bold transition-colors duration-200">
+                        <Plus className="size-3 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
+                        <span className="text-xs text-muted-foreground group-hover:text-primary font-bold transition-colors duration-200">
                           {t("ctxMgr.addMoreFiles")}
                         </span>
                       </div>
@@ -554,9 +589,9 @@ export default function ContextManagerPage() {
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openFileBrowser(); }}
                       aria-label={t("ctxMgr.dropFilesHere")}
                     >
-                      <Upload className="size-5 mb-1.5 text-muted-foreground/40 group-hover:text-primary transition-colors duration-200" />
+                      <Upload className="size-5 mb-1.5 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
                       <p className="text-xs font-bold text-muted-foreground group-hover:text-primary transition-colors duration-200">{t("ctxMgr.dropOrBrowse")}</p>
-                      <p className="text-xs text-muted-foreground/60">{t("ctxMgr.dropOrBrowseHint")}</p>
+                      <p className="text-xs text-muted-foreground">{t("ctxMgr.dropOrBrowseHint")}</p>
                     </div>
                   )}
                 </Card>
@@ -704,7 +739,7 @@ export default function ContextManagerPage() {
               <p className="text-muted-foreground max-w-md mx-auto font-bold mb-2">
                 {t("ctxMgr.emptyValueProp")}
               </p>
-              <p className="text-muted-foreground/70 max-w-md mx-auto font-medium mb-8 text-sm">
+              <p className="text-muted-foreground max-w-md mx-auto font-medium mb-8 text-sm">
                 {t("ctxMgr.selectCreateDesc")}
               </p>
 
@@ -718,7 +753,7 @@ export default function ContextManagerPage() {
                     <div className="size-10 bg-primary/10 rounded-xl flex items-center justify-center">
                       <step.icon className="size-5 text-primary" />
                     </div>
-                    <span className="text-xs font-black uppercase text-foreground/70">{step.label}</span>
+                    <span className="text-xs font-black uppercase text-muted-foreground">{step.label}</span>
                     <span className="text-xs text-muted-foreground leading-tight">{step.desc}</span>
                   </div>
                 ))}

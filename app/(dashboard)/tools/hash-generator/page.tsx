@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   Hash,
   RotateCcw,
@@ -19,6 +21,8 @@ import { Button, Card } from "@/components/ui";
 import { HASH_ALGORITHM_LABELS } from "@/types/hash-generator";
 import type { HashAlgorithm, HashOutputFormat } from "@/types/hash-generator";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 
 const ALGORITHMS: HashAlgorithm[] = ["md5", "sha1", "sha256", "sha384", "sha512"];
 const OUTPUT_FORMATS: { value: HashOutputFormat; label: string }[] = [
@@ -56,6 +60,27 @@ export default function HashGeneratorPage() {
     reset,
   } = useHashGenerator();
 
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["input"]) setInput(state["input"]);
+  }, [setInput]);
+
+  const { share } = useShareState({ toolSlug: "hash-generator", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({ input });
+  }, [share, input]);
+
+  useToolShortcuts({
+    onExecute: generate,
+    onCopyOutput: () => {
+      if (result?.hash) {
+        try { void navigator.clipboard.writeText(result.hash); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const canGenerate = useMemo(() => input.trim().length > 0, [input]);
 
   return (
@@ -67,10 +92,13 @@ export default function HashGeneratorPage() {
         gradient="from-slate-500 to-zinc-600"
         breadcrumb
         actions={
-          <Button variant="ghost" size="sm" onPress={reset} aria-label={t("common.reset")}>
-            <RotateCcw className="size-4" aria-hidden="true" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="ghost" size="sm" onPress={reset} aria-label={t("common.reset")}>
+              <RotateCcw className="size-4" aria-hidden="true" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -131,7 +159,7 @@ export default function HashGeneratorPage() {
             className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-slate-500 to-zinc-600 text-white shadow-lg shadow-slate-500/25 hover:shadow-xl hover:shadow-slate-500/30 border-0 transition-all text-md"
           >
             <ShieldCheck className="size-5 mr-2" aria-hidden="true" />
-            {t("hash.generate")}
+            {t("hash.generate")} <KbdHint shortcut="⌘↵" className="ml-2" />
           </Button>
         </div>
       </Card>
@@ -314,9 +342,9 @@ export default function HashGeneratorPage() {
       {/* Empty state */}
       {!result && (
         <div className="text-center text-muted-foreground py-8">
-          <Hash className="size-12 mx-auto mb-3 opacity-30" aria-hidden="true" />
+          <Hash className="size-12 mx-auto mb-3 opacity-50" aria-hidden="true" />
           <p className="text-sm">{t("hash.emptyState")}</p>
-          <p className="text-xs mt-1 opacity-70">{t("hash.emptyStateHint")}</p>
+          <p className="text-xs mt-1 text-muted-foreground">{t("hash.emptyStateHint")}</p>
         </div>
       )}
 

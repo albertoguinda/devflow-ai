@@ -28,11 +28,15 @@ import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { ShareButton } from "@/components/shared/share-button";
 import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
+import { useShareState } from "@/hooks/use-share-state";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import type { TailwindAuditItem } from "@/types/tailwind-sorter";
 
 export default function TailwindSorterPage() {
@@ -52,6 +56,25 @@ export default function TailwindSorterPage() {
   const { optimizeTailwindWithAI, aiResult, isAILoading, aiError } = useAISuggest();
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const locale = useLocaleStore((s) => s.locale);
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["input"]) setInput(state["input"]);
+  }, [setInput]);
+  const { share } = useShareState({ toolSlug: "tailwind-sorter", onLoad: handleShareLoad });
+  const getShareUrl = useCallback(() => {
+    return share({ input });
+  }, [share, input]);
+
+  useToolShortcuts({
+    onExecute: sort,
+    onCopyOutput: () => {
+      if (result?.output) {
+        try { void navigator.clipboard.writeText(result.output); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
 
   const [activeView, setActiveView] = useState<"result" | "audit" | "diff" | "breakpoints" | string>("result");
 
@@ -98,10 +121,13 @@ export default function TailwindSorterPage() {
         description={t("tailwind.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -167,7 +193,7 @@ export default function TailwindSorterPage() {
                 variant="primary"
                 className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-sky-500 to-cyan-600 text-white shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 border-0 transition-all text-md"
               >
-                <Sparkles className="size-4 mr-2" /> {t("tailwind.sortOptimize")}
+                <Sparkles className="size-4 mr-2" /> {t("tailwind.sortOptimize")} <KbdHint shortcut="⌘↵" className="ml-2" />
               </Button>
             </div>
           </Card>
@@ -184,22 +210,22 @@ export default function TailwindSorterPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
               <div className="flex flex-col items-center">
                 <span className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.lightPreview")}</span>
-                <div className="flex items-center justify-center p-4 sm:p-6 bg-white rounded-2xl border border-default-200 min-h-[120px] w-full">
+                <div className="flex items-center justify-center p-4 sm:p-6 rounded-2xl border border-default-200 min-h-[120px] w-full" style={{ backgroundColor: "#ffffff" }}>
                   <div className={cn("transition-all duration-300 ease-out p-4 rounded", result?.output || "bg-sky-500 text-white")}>
-                    <span className="text-sm font-bold text-gray-900">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
+                    <span className="text-sm font-bold" style={{ color: "#111827" }}>{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">{t("tailwind.darkPreview")}</span>
-                <div className="flex items-center justify-center p-4 sm:p-6 bg-gray-900 rounded-2xl border border-gray-700 min-h-[120px] w-full dark">
+                <div className="flex items-center justify-center p-4 sm:p-6 rounded-2xl border border-default-200 min-h-[120px] w-full dark" style={{ backgroundColor: "#111827" }}>
                   <div className={cn("transition-all duration-300 ease-out p-4 rounded", result?.output || "bg-sky-500 text-white")}>
-                    <span className="text-sm font-bold text-gray-100">{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
+                    <span className="text-sm font-bold" style={{ color: "#f3f4f6" }}>{result?.output ? t("tailwind.styledElement") : t("tailwind.sampleElement")}</span>
                   </div>
                 </div>
               </div>
             </div>
-            <p className="text-xs text-center mt-4 text-muted-foreground/60 italic relative z-10">{t("tailwind.sandboxNote")}</p>
+            <p className="text-xs text-center mt-4 text-muted-foreground italic relative z-10">{t("tailwind.sandboxNote")}</p>
           </Card>
 
           {result && isAIEnabled && (
@@ -316,7 +342,7 @@ export default function TailwindSorterPage() {
                     <div className="p-0">
                       {result.conflicts.length > 0 && (
                         <div className="p-4 bg-red-50 dark:bg-red-950/20 border-b border-red-100 dark:border-red-900/30">
-                          <p className="text-xs font-black text-red-700 uppercase mb-3">{t("tailwind.criticalConflicts")}</p>
+                          <p className="text-xs font-black text-red-700 dark:text-red-300 uppercase mb-3">{t("tailwind.criticalConflicts")}</p>
                           <div className="flex flex-wrap gap-2">
                             {result.conflicts.map((c, i) => (
                               <Chip key={i} size="sm" color="danger" variant="soft" className="font-bold border border-danger/20">

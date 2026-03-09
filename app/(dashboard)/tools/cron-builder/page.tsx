@@ -27,11 +27,14 @@ import { useLocaleStore } from "@/lib/stores/locale-store";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
+import { ShareButton } from "@/components/shared/share-button";
 import { AIResultSkeleton } from "@/components/shared/skeletons";
 import { CopyButton } from "@/components/shared/copy-button";
+import { useShareState } from "@/hooks/use-share-state";
 import { DataTable, Button, Card, type ColumnConfig } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
 import { parseExpression } from "@/hooks/use-cron-builder";
 import type { ConfigFormat, NextExecution } from "@/types/cron-builder";
 
@@ -69,7 +72,7 @@ function MiniCalendar({ executions }: { executions: NextExecution[] }) {
             key={day}
             className={cn(
               "text-center text-xs font-bold py-1 rounded-md transition-colors duration-200",
-              isActive ? "bg-orange-500 text-white" : "text-muted-foreground",
+              isActive ? "bg-orange-500 dark:bg-orange-600 text-white dark:text-white" : "text-muted-foreground",
               isToday && "ring-1 ring-primary"
             )}
           >
@@ -102,6 +105,37 @@ export default function CronBuilderPage() {
   const { addToast } = useToast();
   const [naturalLanguageInput, setNaturalLanguageInput] = useState("");
   const [pasteInput, setPasteInput] = useState("");
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["minute"] !== undefined) {
+      setExpression({
+        minute: state["minute"] ?? "*",
+        hour: state["hour"] ?? "*",
+        dayOfMonth: state["dayOfMonth"] ?? "*",
+        month: state["month"] ?? "*",
+        dayOfWeek: state["dayOfWeek"] ?? "*",
+      });
+    }
+  }, [setExpression]);
+  const { share } = useShareState({ toolSlug: "cron-builder", onLoad: handleShareLoad });
+  const getShareUrl = useCallback(() => {
+    return share({
+      minute: expression.minute,
+      hour: expression.hour,
+      dayOfMonth: expression.dayOfMonth,
+      month: expression.month,
+      dayOfWeek: expression.dayOfWeek,
+    });
+  }, [share, expression]);
+
+  useToolShortcuts({
+    onCopyOutput: () => {
+      const cronStr = Object.values(expression).join(" ");
+      try { void navigator.clipboard.writeText(cronStr); } catch { /* noop */ }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
 
   const [activeTab, setActiveTab] = useState<"builder" | "infra" | string>("builder");
 
@@ -175,10 +209,13 @@ export default function CronBuilderPage() {
         description={t("cron.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 

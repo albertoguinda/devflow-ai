@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import { Input } from "@heroui/react";
 import {
   Palette,
@@ -20,6 +22,8 @@ import { StatusBadge } from "@/components/shared/status-badge";
 import { Button, Card } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import { COLOR_FORMATS, PALETTE_TYPES } from "@/types/color-converter";
 
 export default function ColorConverterPage() {
@@ -47,6 +51,27 @@ export default function ColorConverterPage() {
     reset,
     clearHistory,
   } = useColorConverter();
+
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["input"]) setInput(state["input"]);
+  }, [setInput]);
+
+  const { share } = useShareState({ toolSlug: "color-converter", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({ input });
+  }, [share, input]);
+
+  useToolShortcuts({
+    onExecute: convert,
+    onCopyOutput: () => {
+      if (result?.conversions["hex"]) {
+        try { void navigator.clipboard.writeText(result.conversions["hex"]); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
 
   // Color picker state (native picker returns hex)
   const [pickerColor, setPickerColor] = useState("#6366f1");
@@ -76,10 +101,13 @@ export default function ColorConverterPage() {
         description={t("color.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <RotateCcw className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <RotateCcw className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -147,7 +175,7 @@ export default function ColorConverterPage() {
                 className="btn-luxury w-full h-12 font-black bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg shadow-pink-500/25 hover:shadow-xl hover:shadow-pink-500/30 border-0 transition-all text-md"
               >
                 <Sparkles className="size-4 mr-2" />
-                {t("color.convert")}
+                {t("color.convert")} <KbdHint shortcut="⌘↵" className="ml-2" />
               </Button>
             </div>
           </Card>
@@ -163,7 +191,7 @@ export default function ColorConverterPage() {
 
             <div className="space-y-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-muted-foreground/70 ml-1">
+                <label className="text-xs font-bold text-muted-foreground ml-1">
                   {t("color.foreground")}
                 </label>
                 <div className="flex items-center gap-2">
@@ -188,7 +216,7 @@ export default function ColorConverterPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-muted-foreground/70 ml-1">
+                <label className="text-xs font-bold text-muted-foreground ml-1">
                   {t("color.background")}
                 </label>
                 <div className="flex items-center gap-2">
@@ -219,8 +247,8 @@ export default function ColorConverterPage() {
                   <div
                     className="p-4 rounded-xl border border-divider text-center font-bold transition-colors"
                     style={{
-                      color: fgColor ? `rgb(${Math.round(fgColor.r * 255)}, ${Math.round(fgColor.g * 255)}, ${Math.round(fgColor.b * 255)})` : "#000",
-                      backgroundColor: bgColor ? `rgb(${Math.round(bgColor.r * 255)}, ${Math.round(bgColor.g * 255)}, ${Math.round(bgColor.b * 255)})` : "#fff",
+                      color: fgColor ? `rgb(${Math.round(fgColor.r * 255)}, ${Math.round(fgColor.g * 255)}, ${Math.round(fgColor.b * 255)})` : "var(--color-foreground)",
+                      backgroundColor: bgColor ? `rgb(${Math.round(bgColor.r * 255)}, ${Math.round(bgColor.g * 255)}, ${Math.round(bgColor.b * 255)})` : "var(--color-background)",
                     }}
                   >
                     {t("color.sampleText")}
@@ -260,7 +288,7 @@ export default function ColorConverterPage() {
                   </div>
                 </div>
               ) : (
-                <p className="text-xs text-muted-foreground/60 italic text-center py-2">
+                <p className="text-xs text-muted-foreground italic text-center py-2">
                   {t("color.contrastEmpty")}
                 </p>
               )}
@@ -282,11 +310,12 @@ export default function ColorConverterPage() {
               </div>
               <div className="flex flex-wrap gap-2">
                 {history.map((item) => (
-                  <button
+                  <Button
                     key={item.id}
-                    type="button"
-                    className="group flex items-center gap-2 rounded-lg border border-divider px-2.5 py-1.5 text-xs font-mono hover:border-primary/40 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                    onClick={() => setInput(item.input)}
+                    variant="ghost"
+                    size="sm"
+                    className="group flex items-center gap-2 rounded-lg border border-divider px-2.5 py-1.5 text-xs font-mono hover:border-primary/40 transition-colors h-auto min-h-[44px]"
+                    onPress={() => setInput(item.input)}
                     aria-label={`${t("color.applyColor")} ${item.hex}`}
                   >
                     <div
@@ -296,7 +325,7 @@ export default function ColorConverterPage() {
                     <span className="text-muted-foreground group-hover:text-foreground transition-colors">
                       {item.hex}
                     </span>
-                  </button>
+                  </Button>
                 ))}
               </div>
             </Card>
@@ -350,19 +379,19 @@ export default function ColorConverterPage() {
                   />
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 flex-1">
                     <div>
-                      <span className="text-xs font-bold text-muted-foreground/60 uppercase">R</span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase">R</span>
                       <p className="text-lg font-black">{Math.round(result.color.r * 255)}</p>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-muted-foreground/60 uppercase">G</span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase">G</span>
                       <p className="text-lg font-black">{Math.round(result.color.g * 255)}</p>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-muted-foreground/60 uppercase">B</span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase">B</span>
                       <p className="text-lg font-black">{Math.round(result.color.b * 255)}</p>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-muted-foreground/60 uppercase">A</span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase">A</span>
                       <p className="text-lg font-black">{Math.round(result.color.a * 100)}%</p>
                     </div>
                   </div>
@@ -404,7 +433,7 @@ export default function ColorConverterPage() {
                         title={pc.hex}
                         aria-label={`${pc.label}: ${pc.hex}`}
                       />
-                      <span className="text-xs font-bold text-muted-foreground/70">{pc.label}</span>
+                      <span className="text-xs font-bold text-muted-foreground">{pc.label}</span>
                       <div className="flex items-center gap-1">
                         <code className="text-xs font-mono text-muted-foreground">{pc.hex}</code>
                         <CopyButton text={pc.hex} size="sm" className="size-6 min-w-0 px-0" />
@@ -422,7 +451,7 @@ export default function ColorConverterPage() {
                 <div className="size-24 rounded-2xl bg-gradient-to-br from-pink-500/15 to-rose-500/15 flex items-center justify-center mb-6 mx-auto">
                   <Palette className="size-12 text-pink-500/40" />
                 </div>
-                <h3 className="text-2xl font-black mb-2 text-foreground/60">
+                <h3 className="text-2xl font-black mb-2 text-muted-foreground">
                   {t("color.emptyTitle")}
                 </h3>
                 <p className="text-muted-foreground max-w-sm mx-auto font-medium">

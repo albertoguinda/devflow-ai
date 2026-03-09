@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useShareState } from "@/hooks/use-share-state";
+import { ShareButton } from "@/components/shared/share-button";
 import {
   Tabs,
   Chip,
@@ -33,6 +35,8 @@ import { CopyButton } from "@/components/shared/copy-button";
 import { Button, Card } from "@/components/ui";
 import { ToolSuggestions } from "@/components/shared/tool-suggestions";
 import { cn } from "@/lib/utils";
+import { useToolShortcuts } from "@/hooks/use-tool-shortcuts";
+import { KbdHint } from "@/components/shared/kbd-hint";
 import { downloadBlob } from "@/lib/utils/download";
 import { useAISuggest } from "@/hooks/use-ai-suggest";
 import { useAISettingsStore } from "@/lib/stores/ai-settings-store";
@@ -66,6 +70,35 @@ export default function DtoMaticPage() {
   const isAIEnabled = useAISettingsStore((s) => s.isAIEnabled);
   const locale = useLocaleStore((s) => s.locale);
 
+  const handleShareLoad = useCallback((state: Record<string, string>) => {
+    if (state["jsonInput"]) setJsonInput(state["jsonInput"]);
+    if (state["rootName"]) updateConfig("rootName", state["rootName"]);
+    if (state["targetLanguage"]) updateConfig("targetLanguage", state["targetLanguage"] as TargetLanguage);
+    if (state["mode"]) setMode(state["mode"] as "clean-arch" | "zod" | "quick");
+  }, [setJsonInput, updateConfig, setMode]);
+
+  const { share } = useShareState({ toolSlug: "dto-matic", onLoad: handleShareLoad });
+
+  const getShareUrl = useCallback(() => {
+    return share({
+      jsonInput,
+      rootName: config.rootName,
+      targetLanguage: config.targetLanguage,
+      mode: config.mode,
+    });
+  }, [share, jsonInput, config.rootName, config.targetLanguage, config.mode]);
+
+  useToolShortcuts({
+    onExecute: generate,
+    onCopyOutput: () => {
+      if (selectedFile?.content) {
+        try { void navigator.clipboard.writeText(selectedFile.content); } catch { /* noop */ }
+      }
+    },
+    onShare: getShareUrl,
+    onClear: reset,
+  });
+
   const [view, setView] = useState<"code" | "schema" | "mock" | string>("code");
   const [mockCount, setMockCount] = useState(5);
 
@@ -78,10 +111,13 @@ export default function DtoMaticPage() {
         description={t("dtoMatic.description")}
         breadcrumb
         actions={
-          <Button variant="outline" size="sm" onPress={reset} className="gap-2">
-            <Trash2 className="size-4" />
-            {t("common.reset")}
-          </Button>
+          <>
+            <ShareButton getShareUrl={getShareUrl} />
+            <Button variant="outline" size="sm" onPress={reset} className="gap-2">
+              <Trash2 className="size-4" />
+              {t("common.reset")}
+            </Button>
+          </>
         }
       />
 
@@ -144,7 +180,7 @@ export default function DtoMaticPage() {
               className="btn-luxury w-full mt-4 font-bold h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-xl hover:shadow-green-500/30 border-0 transition-all text-md"
               isDisabled={!jsonInput.trim() || !config.rootName.trim()}
             >
-              <Sparkles className="size-4 mr-2" /> {t("dtoMatic.generateArch")}
+              <Sparkles className="size-4 mr-2" /> {t("dtoMatic.generateArch")} <KbdHint shortcut="⌘↵" className="ml-2" />
             </Button>
           </Card>
 
@@ -214,7 +250,7 @@ export default function DtoMaticPage() {
                     </Button>
                   ))}
                 </div>
-                <p className="text-xs text-muted-foreground/70 ml-1 mt-1">
+                <p className="text-xs text-muted-foreground ml-1 mt-1">
                   {config.mode === "clean-arch" && t("dtoMatic.cleanArchDescLong")}
                   {config.mode === "zod" && t("dtoMatic.zodDescLong")}
                   {config.mode === "quick" && t("dtoMatic.quickDescLong")}
@@ -431,7 +467,7 @@ export default function DtoMaticPage() {
                       <CopyButton text={mockData || ""} />
                     </div>
                     <pre className="p-6 font-mono text-xs leading-relaxed overflow-auto flex-1 bg-background text-foreground/80">
-                      <code>{mockData || <span className="text-muted-foreground/50 italic">{t("dtoMatic.emptyMockState")}</span>}</code>
+                      <code>{mockData || <span className="text-muted-foreground italic">{t("dtoMatic.emptyMockState")}</span>}</code>
                     </pre>
                   </Card>
                 </Tabs.Panel>
@@ -444,7 +480,7 @@ export default function DtoMaticPage() {
                 <div className="size-24 rounded-2xl bg-gradient-to-br from-green-500/15 to-emerald-500/15 flex items-center justify-center mb-6 mx-auto">
                   <FolderTree className="size-12 text-green-500/40" />
                 </div>
-                <h3 className="text-2xl font-black mb-2 text-foreground/60">{t("dtoMatic.architecturalEngine")}</h3>
+                <h3 className="text-2xl font-black mb-2 text-muted-foreground">{t("dtoMatic.architecturalEngine")}</h3>
                 <p className="text-muted-foreground max-w-sm mx-auto font-medium">
                   {t("dtoMatic.architecturalEngineDesc")}
                 </p>
