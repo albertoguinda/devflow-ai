@@ -178,7 +178,7 @@ const faqJsonLd = {
       name: "Is DevFlowAI free?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, DevFlowAI is 100% free and open source. All 15 tools work without login, API keys, or credit card. AI features use free providers by default.",
+        text: "Yes, DevFlowAI is 100% free and open source. All 20 tools work without login, API keys, or credit card. AI features use free providers by default.",
       },
     },
     {
@@ -194,7 +194,7 @@ const faqJsonLd = {
       name: "What tools are included in DevFlowAI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "DevFlowAI includes 15 tools: Prompt Analyzer, Code Review Assistant, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder/Decoder, and UUID Generator.",
+        text: "DevFlowAI includes 20 tools: Prompt Analyzer, Code Review Assistant, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder/Decoder, UUID Generator, Hash Generator, JWT Decoder, Color Converter, Diff Comparer, and Password Generator.",
       },
     },
     {

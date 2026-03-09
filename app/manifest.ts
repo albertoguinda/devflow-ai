@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "DevFlow AI",
     short_name: "DevFlow",
-    description: "AI-Powered Developer Toolkit — 15 tools for developers",
+    description: "AI-Powered Developer Toolkit — 20 tools for developers",
     start_url: "/tools",
     display: "standalone",
     background_color: "#0a0a0a",
