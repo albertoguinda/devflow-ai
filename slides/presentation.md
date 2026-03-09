@@ -3,7 +3,7 @@ theme: default
 title: "DevFlow AI — TFM"
 info: |
   Trabajo Final de Master: Desarrollo con IA (BIG School)
-  Alberto Guinda Sevilla — Febrero 2026
+  Alberto Guinda Sevilla — Marzo 2026
 class: text-center
 drawings:
   persist: false
@@ -17,7 +17,7 @@ mdc: true
 
 **Trabajo Final de Master** — Desarrollo con IA (BIG School)
 
-Alberto Guinda Sevilla &middot; Febrero 2026
+Alberto Guinda Sevilla &middot; Marzo 2026
 
 <div class="abs-br m-6 flex gap-2">
   <a href="https://github.com/albertoguinda/devflow-ai" target="_blank" class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
@@ -540,5 +540,5 @@ class: text-center
 </div>
 
 <div class="mt-12 text-sm opacity-50">
-  Alberto Guinda Sevilla &middot; Master Desarrollo con IA &middot; BIG School &middot; Febrero 2026
+  Alberto Guinda Sevilla &middot; Master Desarrollo con IA &middot; BIG School &middot; Marzo 2026
 </div>
