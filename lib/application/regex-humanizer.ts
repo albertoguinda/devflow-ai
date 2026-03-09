@@ -9,7 +9,7 @@ import type {
 } from "@/types/regex-humanizer";
 
 // --- Locale type (no React dependency) ---
-type RegexLocale = "en" | "es";
+type RegexLocale = string; // "en" | "es" have full translations; others fallback to "en"
 
 // --- i18n Strings ---
 const REGEX_STRINGS = {
@@ -325,7 +325,7 @@ const REGEX_STRINGS = {
 
 // Helper to get the strings object for a locale
 function getStrings(locale: RegexLocale) {
-  return REGEX_STRINGS[locale];
+  return (REGEX_STRINGS[locale as "en" | "es"] ?? REGEX_STRINGS.en);
 }
 
 // --- Advanced Safety Patterns (ReDoS Detection) ---
@@ -529,7 +529,8 @@ function getFlavorWarnings(pattern: string, flags: string, flavor: RegexFlavor, 
   const warnings: string[] = [];
   for (const check of FLAVOR_CHECKS) {
     if (check.test(pattern, flags) && check.incompatible.includes(flavor)) {
-      warnings.push(check.message[locale]);
+      const msg = (locale === "es" ? check.message["es"] : check.message["en"]) ?? "";
+      if (msg) warnings.push(msg);
     }
   }
   return warnings;

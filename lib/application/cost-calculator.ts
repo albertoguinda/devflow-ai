@@ -80,7 +80,7 @@ export function convertCost(cost: number, currency: Currency): number {
   return cost * EXCHANGE_RATES[currency];
 }
 
-export function formatCost(cost: number, currency: Currency = "USD", locale: "en" | "es" = "en"): string {
+export function formatCost(cost: number, currency: Currency = "USD", locale: string = "en"): string {
   const converted = convertCost(cost, currency);
   const symbol = CURRENCY_SYMBOLS[currency];
   if (converted < 0.0001) return `${symbol}0.00`;

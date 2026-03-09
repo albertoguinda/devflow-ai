@@ -14,7 +14,7 @@ import { TYPE_CONVENTIONS } from "@/types/variable-name-wizard";
 
 // --- Locale type (pure, no React) ---
 
-type Locale = "en" | "es";
+type Locale = string; // "en" | "es" have full translations; others fallback to "en"
 
 const WIZARD_STRINGS = {
   en: {
@@ -346,7 +346,7 @@ function generateReasoning(
   convention: NamingConvention,
   locale: Locale = "en"
 ): string {
-  const s = WIZARD_STRINGS[locale].reasoning;
+  const s = (WIZARD_STRINGS[locale as "en" | "es"] ?? WIZARD_STRINGS.en).reasoning;
   const parts: string[] = [];
 
   const preferredConventions = TYPE_CONVENTIONS[type];
@@ -377,7 +377,7 @@ function generateReasoning(
 // --- Auditing ---
 
 function performAudit(name: string, _type: VariableType, locale: Locale = "en"): NameAudit {
-  const a = WIZARD_STRINGS[locale].audit;
+  const a = (WIZARD_STRINGS[locale as "en" | "es"] ?? WIZARD_STRINGS.en).audit;
   const findings: string[] = [];
   const words = splitIntoWords(name);
   const lowerName = name.toLowerCase();

@@ -10,7 +10,7 @@ import type {
 // ---------------------------------------------------------------------------
 // Locale type (mirrors locale-store but no React import needed)
 // ---------------------------------------------------------------------------
-type Locale = "en" | "es";
+type Locale = string; // "en" | "es" have full translations; others fallback to "en"
 
 // ---------------------------------------------------------------------------
 // Per-status-code localizable strings: description, whenToUse, example
@@ -328,11 +328,11 @@ const STATUS_CODES_BASE: StatusCodeBase[] = [
 // Build locale-aware HttpStatusCode[] from base + strings
 // ---------------------------------------------------------------------------
 function buildStatusCodes(locale: Locale): HttpStatusCode[] {
-  const strings = STATUS_STRINGS[locale];
+  const strings = STATUS_STRINGS[locale as "en" | "es"] ?? STATUS_STRINGS["en"];
   return STATUS_CODES_BASE.map((base) => {
-    const localized = strings[base.code];
+    const localized = strings?.[base.code];
     // Fallback to English if a code is somehow missing in the locale map
-    const fallback = STATUS_STRINGS["en"][base.code];
+    const fallback = STATUS_STRINGS["en"]?.[base.code];
     const s = localized ?? fallback;
     return {
       ...base,
@@ -469,10 +469,11 @@ export function isValidStatusCode(code: number): boolean {
  */
 export function getCategoryInfo(category: HttpStatusCategory, locale: Locale = "en"): CategoryInfo {
   const base = CATEGORY_INFO_BASE[category];
-  const strings = CATEGORY_STRINGS[locale][category];
+  const catLocale = CATEGORY_STRINGS[locale as "en" | "es"] ?? CATEGORY_STRINGS["en"];
+  const strings = catLocale?.[category];
   return {
     ...base,
-    description: strings.description,
+    description: strings?.description ?? "",
   };
 }
 

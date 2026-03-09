@@ -4,8 +4,14 @@ import { useCallback } from "react";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import en from "@/locales/en.json";
 import es from "@/locales/es.json";
+import fr from "@/locales/fr.json";
+import pt from "@/locales/pt.json";
+import de from "@/locales/de.json";
+import it from "@/locales/it.json";
+import zh from "@/locales/zh.json";
+import ja from "@/locales/ja.json";
 
-const TRANSLATIONS: Record<string, Record<string, string>> = { en, es };
+const TRANSLATIONS: Record<string, Record<string, string>> = { en, es, fr, pt, de, it, zh, ja };
 
 export function useTranslation() {
   const locale = useLocaleStore((s) => s.locale);

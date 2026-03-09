@@ -12,7 +12,7 @@ import type {
 
 // --- Locale type (pure, no React) ---
 
-type Locale = "en" | "es";
+type Locale = string; // "en" | "es" have full translations; others fallback to "en"
 
 // --- i18n Strings ---
 
@@ -85,7 +85,7 @@ const COMMIT_TYPES_BASE: Omit<CommitTypeInfo, "description">[] = [
 
 /** Get locale-aware commit types */
 export function getCommitTypes(locale: Locale = "en"): CommitTypeInfo[] {
-  const descs = COMMIT_STRINGS[locale].typeDescriptions;
+  const descs = (COMMIT_STRINGS[locale as "en" | "es"] ?? COMMIT_STRINGS.en).typeDescriptions;
   return COMMIT_TYPES_BASE.map((base) => ({
     ...base,
     description: descs[base.type],
@@ -251,7 +251,7 @@ export function generateCommitMessage(config: CommitConfig): CommitResult {
  */
 export function validateCommitMessage(message: string, config?: CommitConfig, locale: Locale = "en"): CommitValidation {
   const errors: string[] = [];
-  const v = COMMIT_STRINGS[locale].validation;
+  const v = (COMMIT_STRINGS[locale as "en" | "es"] ?? COMMIT_STRINGS.en).validation;
 
   if (!message.trim()) {
     return { isValid: false, errors: [v.emptyMessage] };

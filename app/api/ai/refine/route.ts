@@ -30,7 +30,11 @@ export async function POST(request: NextRequest) {
     return errorResponse("AI is not configured on this server", 503);
   }
 
-  const localeHint = locale === "es" ? "[IMPORTANT: Respond entirely in Spanish (es-ES).]\n\n" : "";
+  const LOCALE_NAMES: Record<string, string> = {
+    es: "Spanish (es-ES)", fr: "French (fr-FR)", pt: "Portuguese (pt-BR)",
+    de: "German (de-DE)", it: "Italian (it-IT)", zh: "Chinese (zh-CN)", ja: "Japanese (ja-JP)",
+  };
+  const localeHint = locale && locale !== "en" && LOCALE_NAMES[locale] ? `[IMPORTANT: Respond entirely in ${LOCALE_NAMES[locale]}.]\n\n` : "";
   const userPrompt = `${localeHint}Goal: ${goal}\n\nPrompt to refine:\n<user_input>\n${prompt}\n</user_input>`;
 
   try {

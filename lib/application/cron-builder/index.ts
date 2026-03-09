@@ -17,7 +17,7 @@ import { CRON_FIELD_RANGES } from "@/types/cron-builder";
 
 // --- Locale type (pure, no React) ---
 
-type Locale = "en" | "es";
+type Locale = string; // "en" | "es" have full translations; others fallback to "en"
 
 // --- i18n Strings Lookup ---
 
@@ -201,7 +201,7 @@ const CRON_STRINGS = {
 
 /** Helper to get the locale-aware strings object */
 function t(locale: Locale) {
-  return CRON_STRINGS[locale];
+  return (CRON_STRINGS[locale as "en" | "es"] ?? CRON_STRINGS.en);
 }
 
 // --- IaC Generators ---

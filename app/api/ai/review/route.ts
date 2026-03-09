@@ -35,7 +35,11 @@ export async function POST(request: NextRequest) {
   }
 
   // 5. Build prompt
-  const localeHint = locale === "es" ? "[IMPORTANT: Respond entirely in Spanish (es-ES).]\n\n" : "";
+  const LOCALE_NAMES: Record<string, string> = {
+    es: "Spanish (es-ES)", fr: "French (fr-FR)", pt: "Portuguese (pt-BR)",
+    de: "German (de-DE)", it: "Italian (it-IT)", zh: "Chinese (zh-CN)", ja: "Japanese (ja-JP)",
+  };
+  const localeHint = locale && locale !== "en" && LOCALE_NAMES[locale] ? `[IMPORTANT: Respond entirely in ${LOCALE_NAMES[locale]}.]\n\n` : "";
   const userPrompt = `${localeHint}Language: ${language}\n\nCode:\n<user_input>\n\`\`\`${language}\n${code}\n\`\`\`\n</user_input>`;
 
   try {

@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type Locale = "en" | "es";
+type Locale = "en" | "es" | "fr" | "pt" | "de" | "it" | "zh" | "ja";
 
-const SUPPORTED_LOCALES: Locale[] = ["en", "es"];
+const SUPPORTED_LOCALES: Locale[] = ["en", "es", "fr", "pt", "de", "it", "zh", "ja"];
 
 function detectBrowserLocale(): Locale {
   if (typeof navigator === "undefined") return "en";

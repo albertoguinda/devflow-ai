@@ -1,10 +1,16 @@
 import { cookies } from "next/headers";
 import en from "@/locales/en.json";
 import es from "@/locales/es.json";
+import fr from "@/locales/fr.json";
+import pt from "@/locales/pt.json";
+import de from "@/locales/de.json";
+import it from "@/locales/it.json";
+import zh from "@/locales/zh.json";
+import ja from "@/locales/ja.json";
 
-const TRANSLATIONS: Record<string, Record<string, string>> = { en, es };
+const TRANSLATIONS: Record<string, Record<string, string>> = { en, es, fr, pt, de, it, zh, ja };
 
-const SUPPORTED_LOCALES = new Set(["en", "es"]);
+const SUPPORTED_LOCALES = new Set(["en", "es", "fr", "pt", "de", "it", "zh", "ja"]);
 
 /**
  * Read the user's locale from the cookie set by the client.

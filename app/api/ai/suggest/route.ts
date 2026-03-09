@@ -31,9 +31,15 @@ function delimit(content: string): string {
   return `<user_input>\n${content}\n</user_input>`;
 }
 
+const LOCALE_NAMES: Record<string, string> = {
+  es: "Spanish (es-ES)", fr: "French (fr-FR)", pt: "Portuguese (pt-BR)",
+  de: "German (de-DE)", it: "Italian (it-IT)", zh: "Chinese (zh-CN)", ja: "Japanese (ja-JP)",
+};
+
 function localeHint(locale?: string): string {
-  if (locale === "es") return "[IMPORTANT: Respond entirely in Spanish (es-ES).]\n\n";
-  return "";
+  if (!locale || locale === "en") return "";
+  const name = LOCALE_NAMES[locale];
+  return name ? `[IMPORTANT: Respond entirely in ${name}.]\n\n` : "";
 }
 
 function getPromptForMode(mode: string, context: string, type?: string, language?: string, locale?: string): { systemPrompt: string; userPrompt: string } {

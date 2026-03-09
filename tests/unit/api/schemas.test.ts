@@ -87,7 +87,7 @@ describe("aiSuggestSchema", () => {
     const result = aiSuggestSchema.safeParse({
       context: "test",
       mode: "cost-advise",
-      locale: "fr",
+      locale: "xx",
     });
     expect(result.success).toBe(false);
   });

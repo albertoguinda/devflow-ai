@@ -8,7 +8,7 @@ import { aiFetcher } from "@/lib/api/fetcher";
 interface ReviewArgs {
   code: string;
   language: SupportedLanguage;
-  locale?: "en" | "es" | undefined;
+  locale?: string | undefined;
 }
 
 async function reviewFetcher(
@@ -25,7 +25,7 @@ export function useAICodeReview() {
   );
 
   return {
-    reviewWithAI: (code: string, language: SupportedLanguage, locale?: "en" | "es") =>
+    reviewWithAI: (code: string, language: SupportedLanguage, locale?: string) =>
       trigger({ code, language, locale }),
     aiResult: data ?? null,
     aiError: error as Error | null,
