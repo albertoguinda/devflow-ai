@@ -7,17 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.20.0] - 2026-03-09
 
-### UX Enhancements — Keyboard Shortcuts, Visual Polish, Tool Upgrades
+### UX Enhancements — Keyboard Shortcuts, Visual Polish, 8-Language i18n
 
 #### Added
+- **8-language i18n** — Expanded from 2 languages (EN/ES) to 8: English, Spanish, French, Portuguese, German, Italian, Chinese, Japanese. Browser auto-detection via `navigator.language`. New locale picker dropdown with flag emojis and native language names
+- **Full inline translations** — All application-layer strings translated to 8 languages with zero English fallback: CRON_STRINGS (~170 entries), REGEX_STRINGS (~180 entries), STATUS_STRINGS (~150 entries), COMMIT_STRINGS, WIZARD_STRINGS, LABELS, ANATOMY_SUGGESTIONS, ISSUE_SUGGESTIONS (+2583 lines across 7 modules)
+- **6 new locale files** — `locales/fr.json`, `locales/pt.json`, `locales/de.json`, `locales/it.json`, `locales/zh.json`, `locales/ja.json` (~1551 keys each, full parity with EN/ES)
+- **AI responses in 8 languages** — All AI route handlers (review, suggest, refine) detect locale and instruct the model to respond in the user's language
 - **Per-tool keyboard shortcuts** (`hooks/use-tool-shortcuts.ts`) — `Ctrl+Enter` execute, `Ctrl+Shift+C` copy output, `Ctrl+Shift+S` share, `Escape` clear. Integrated into all 20 tools
 - **Keyboard hint component** (`components/shared/kbd-hint.tsx`) — displays shortcut hints next to CTA buttons
 - **Clipboard auto-detection** — MagicInput reads clipboard on focus, shows "Paste from clipboard?" chip if content matches a tool type (JSON, JWT, regex, etc.)
 - **Regex railroad diagram** (`lib/application/regex-railroad.ts`) — pure TypeScript SVG generator for visual regex syntax diagrams. Handles literals, character classes, quantifiers, alternation, groups, anchors, escape sequences. +22 tests
 - **JSON tree view** (`components/tools/json-tree-view.tsx`, `lib/application/json-tree.ts`) — collapsible tree with color-coded types, expand/collapse all, JSONPath display. New tab in JSON Formatter. +22 tests
-- **~14 new i18n keys** (EN + ES in parity): regex.railroadDiagram, regex.railroadDescription, jsonFmt.treeView, jsonFmt.treeItems, jsonFmt.treeExpand, jsonFmt.treeCollapse, magic.pasteFromClipboard, magic.clipboardDetected, shortcuts.*
 - **+66 unit tests** (1714 → 1780 tests across 53 files)
 - **5 new E2E specs** — hash-generator, jwt-decoder, color-converter, diff-comparer, password-generator (25 E2E specs total, all 20 tools now covered)
+
+#### Changed
+- **Locale toggle** — Redesigned from simple EN↔ES button to HeroUI Dropdown with 8 languages, flag emojis, and native language names (Globe icon trigger)
+- **Locale store** — Browser locale auto-detection on first visit (`navigator.language` → supported locale mapping)
 
 #### Fixed
 - **Cost Calculator duplicate key** — Deduplicated model names in projection/bar charts to prevent "Mistral Small" duplicate React key error

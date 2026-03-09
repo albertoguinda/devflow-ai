@@ -74,7 +74,7 @@
 - **Share via URL** &mdash; every tool state is shareable via compressed URL (gzip + base64url)
 - **Copy to clipboard** &mdash; 1-click from any tool
 - **Dark / Light mode** &mdash; auto-detection + manual toggle
-- **Bilingual** &mdash; English / Spanish, switchable from sidebar
+- **8 languages** &mdash; EN, ES, FR, PT, DE, IT, ZH, JA &mdash; auto-detected from browser, switchable from sidebar
 - **Strategic test coverage** &mdash; 100/80/0 architecture with per-file enforcement
 - **TypeScript strict** &mdash; all strict flags enabled, zero `any`
 - **Clean Architecture** &mdash; Domain, Application, Presentation layers
@@ -244,11 +244,11 @@ We follow a **Strategic Coverage** architecture. Not all code needs the same lev
 **Per-file enforcement** is enabled: each CORE file must individually meet thresholds. The CI pipeline fails if any file drops below its floor.
 
 ```bash
-npm run test:run                                             # All unit tests (1758+)
+npm run test:run                                             # All unit tests (1780+)
 npx vitest run tests/unit/application/json-formatter.test.ts # Single file
 npx vitest run -t "should format"                            # By pattern
 npm run test:coverage                                        # Coverage report
-npm run test:e2e                                             # Playwright E2E (20 specs, 70 tests)
+npm run test:e2e                                             # Playwright E2E (25 specs, 85 tests)
 ```
 
 ---
@@ -328,7 +328,7 @@ quality:    ESLint (+ security plugin) → TypeScript → Tests + Coverage → P
 security:   npm audit --audit-level=high + lockfile-lint (parallel)
 dep-review: dependency-review-action on PRs (moderate+ blocked)
 build:      next build → SBOM generation (CycloneDX, 90-day retention) + bundle size tracking
-e2e:        Playwright E2E tests (20 specs, 70 tests, Chromium, after build)
+e2e:        Playwright E2E tests (25 specs, 85 tests, Chromium, after build)
 a11y:       axe-core WCAG AAA accessibility audit (19 pages, after build)
 codeql:     CodeQL JS/TS SAST (push + PRs + weekly)
 semgrep:    Semgrep SAST — OWASP Top 10, React, Next.js, TypeScript rules (SARIF → Security tab)
@@ -400,7 +400,7 @@ Coverage reports and Playwright reports are uploaded as artifacts.
 - **Compartir por URL** &mdash; cada estado de herramienta es compartible via URL comprimida (gzip + base64url)
 - **Copy to clipboard** &mdash; en 1 click desde cualquier herramienta
 - **Dark / Light mode** &mdash; deteccion automatica + toggle manual
-- **Bilingue** &mdash; Ingles / Espanol, cambiable desde la barra lateral
+- **8 idiomas** &mdash; EN, ES, FR, PT, DE, IT, ZH, JA &mdash; auto-deteccion del navegador, cambiable desde la barra lateral
 - **Cobertura estrategica** &mdash; arquitectura 100/80/0 con enforcement per-file
 - **TypeScript strict** &mdash; todos los flags estrictos activados, cero `any`
 - **Clean Architecture** &mdash; separacion en capas Domain, Application, Presentation
