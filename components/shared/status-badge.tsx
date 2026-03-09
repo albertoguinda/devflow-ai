@@ -16,7 +16,7 @@ interface StatusBadgeProps {
 const VARIANT_CLASSES: Record<StatusBadgeVariant, string> = {
   success: "bg-green-50 text-green-900 dark:bg-green-950 dark:text-green-300",
   info: "bg-blue-50 text-blue-900 dark:bg-blue-950 dark:text-blue-300",
-  warning: "bg-amber-50 text-amber-900 dark:bg-amber-950 dark:text-amber-300",
+  warning: "bg-amber-50 text-amber-900 dark:bg-amber-950 dark:text-amber-200",
   error: "bg-red-50 text-red-900 dark:bg-red-950 dark:text-red-300",
   neutral: "bg-muted text-muted-foreground",
   purple: "bg-purple-50 text-purple-900 dark:bg-purple-950 dark:text-purple-300",

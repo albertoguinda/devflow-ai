@@ -284,7 +284,7 @@ export default function GitCommitGeneratorPage() {
                     className="text-xs font-black text-primary uppercase h-auto px-1"
                     aria-label={t("gitCommit.addPoint")}
                   >
-                    <ListPlus className="size-2.5" aria-hidden="true" /> {t("gitCommit.addPoint")}
+                    <ListPlus className="size-3.5" aria-hidden="true" /> {t("gitCommit.addPoint")}
                   </Button>
                 </div>
                 <TextArea
@@ -312,14 +312,14 @@ export default function GitCommitGeneratorPage() {
                     <Checkbox
                       isSelected={config.useEmojis}
                       onChange={(v: boolean) => updateConfig("useEmojis", v)}
-                      className="text-xs font-black uppercase"
+                      className="text-xs font-semibold"
                     >
                       {t("gitCommit.useGitmoji")}
                     </Checkbox>
                     <Checkbox
                       isSelected={config.requireIssue}
                       onChange={(v: boolean) => updateConfig("requireIssue", v)}
-                      className="text-xs font-black uppercase"
+                      className="text-xs font-semibold"
                     >
                       {t("gitCommit.mandatoryIssue")}
                     </Checkbox>
@@ -327,10 +327,10 @@ export default function GitCommitGeneratorPage() {
                 </div>
 
                 {validation.errors.length > 0 && (
-                  <div className="space-y-2 p-3 bg-danger/5 border border-danger/20 rounded-xl">
+                  <div className="space-y-2 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-xl">
                     {validation.errors.map((err, i) => (
-                      <p key={i} className="text-xs text-danger font-bold flex items-center gap-2">
-                        <AlertTriangle className="size-3" /> {err}
+                      <p key={i} className="text-xs text-red-700 dark:text-red-300 font-bold flex items-center gap-2">
+                        <AlertTriangle className="size-3.5 shrink-0" /> {err}
                       </p>
                     ))}
                   </div>
@@ -426,7 +426,7 @@ export default function GitCommitGeneratorPage() {
                       <span className="text-muted-foreground italic">{t("gitCommit.forgingMessage")}</span>
                     )}
                   </div>
-                  <div className="p-4 border-t border-divider bg-muted/5 flex gap-2">
+                  <div className="p-4 border-t border-divider bg-muted/10 flex gap-2">
                      <CopyButton text={(message || "").includes("\n") ? `git commit -m "${(message || "").split("\n")[0]?.replace(/"/g, '\\"')}" -m "${(message || "").split("\n").slice(1).join("\n").replace(/"/g, '\\"')}"` : `git commit -m "${(message || "").replace(/"/g, '\\"')}"`} label={t("gitCommit.copyCli")} className="flex-1 h-10 font-bold" />
                   </div>
                 </Card>
@@ -446,7 +446,7 @@ export default function GitCommitGeneratorPage() {
                     <div className="flex justify-between items-center text-xs">
                       <span>{t("gitCommit.headerLength")}</span>
                       <StatusBadge variant={config.description.length <= 72 ? "success" : "error"}>
-                        {t("gitCommit.chars", { count: String(config.description.length) })}
+                        {config.description.length === 0 ? t("gitCommit.bodyNa") : t("gitCommit.chars", { count: String(config.description.length) })}
                       </StatusBadge>
                     </div>
                     <div className="flex justify-between items-center text-xs">
