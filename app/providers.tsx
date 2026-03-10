@@ -30,33 +30,46 @@ function HtmlLangSync() {
 
 function ConsoleEasterEgg() {
   useEffect(() => {
-    // console.info is excluded from removeConsole in next.config.ts
+    // console.info is preserved by removeConsole in next.config.ts
     try {
+      const h = "font-weight:900;letter-spacing:0.5px;text-shadow:0 2px 4px rgba(0,0,0,0.3);";
+
+      // ── Banner ──
       console.info(
-        "\n%c  DevFlow AI  %c  PARA VOSOTROS, DEVELOPERS  \n",
-        "background:linear-gradient(135deg,#2563eb,#6366f1);color:#fff;font-size:22px;font-weight:900;padding:12px 20px;border-radius:8px 0 0 8px;letter-spacing:0.5px;text-shadow:0 1px 2px rgba(0,0,0,0.3);",
-        "background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:22px;font-weight:900;padding:12px 20px;border-radius:0 8px 8px 0;letter-spacing:0.5px;text-shadow:0 1px 2px rgba(0,0,0,0.3);",
+        "%c\n" +
+        "  \u2588\u2588\u2588\u2588\u2588\u2588\u2557            \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557                    \n" +
+        "  \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557           \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2551                    \n" +
+        "  \u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551 \u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557   \u2588\u2588\u2557\n" +
+        "  \u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255D\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255D  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255D\u2588\u2588\u2551   \u2588\u2588\u2551\n" +
+        "  \u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2551    \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\n" +
+        "  \u2550\u2550\u2550\u2550\u2550\u2550\u255D \u2550\u2550\u2550\u2550\u255D \u2550\u255D\u2550\u255D    \u2550\u255D\u2550\u2550\u2550\u2550\u255D\u2550\u2550\u2550\u2550\u2550\u2550\u255D\n",
+        "color:#818cf8;font-family:monospace;font-size:10px;line-height:1.1;",
       );
+
+      // ── Title ──
       console.info(
-        "%c  20 free tools  %c  No login  %c  Open Source  %c  8 languages  ",
-        "background:#0ea5e9;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;margin:2px;",
-        "background:#10b981;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;margin:2px;",
-        "background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;margin:2px;",
-        "background:#8b5cf6;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;margin:2px;",
+        "\n%c  DevFlow AI  %c  v4.21.0  ",
+        `background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:20px;padding:10px 18px;border-radius:8px 0 0 8px;${h}`,
+        `background:#1e1b4b;color:#a5b4fc;font-size:12px;padding:14px 14px;border-radius:0 8px 8px 0;font-weight:700;`,
       );
+
+      // ── Feature pills ──
       console.info(
-        "\n%c\u2605 Star us on GitHub%c\nhttps://github.com/albertoguinda/devflow-ai\n",
-        "color:#facc15;font-size:14px;font-weight:bold;",
-        "color:#60a5fa;font-size:12px;text-decoration:underline;",
+        "\n%c 20 tools %c No login %c Open Source %c 8 languages ",
+        "background:#0ea5e9;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:12px;margin:3px;",
+        "background:#10b981;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:12px;margin:3px;",
+        "background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:12px;margin:3px;",
+        "background:#8b5cf6;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:12px;margin:3px;",
       );
+
+      // ── Links ──
       console.info(
-        "%c\ud83d\udc64 Alberto Guinda%c\nhttps://linkedin.com/in/albertoguindasevilla\n",
-        "color:#0ea5e9;font-size:14px;font-weight:bold;",
-        "color:#60a5fa;font-size:12px;text-decoration:underline;",
-      );
-      console.info(
-        "%cWant to contribute? Open an issue \u2192 https://github.com/albertoguinda/devflow-ai/issues\n",
-        "color:#a78bfa;font-size:12px;",
+        "\n%c\u2605 GitHub%c  https://github.com/albertoguinda/devflow-ai" +
+        "\n%c\u2139 Author%c  Alberto Guinda \u2014 https://linkedin.com/in/albertoguindasevilla" +
+        "\n%c\u2764 Contribute%c  https://github.com/albertoguinda/devflow-ai/issues\n",
+        "color:#facc15;font-weight:bold;font-size:12px;", "color:#94a3b8;font-size:12px;",
+        "color:#60a5fa;font-weight:bold;font-size:12px;", "color:#94a3b8;font-size:12px;",
+        "color:#f472b6;font-weight:bold;font-size:12px;", "color:#94a3b8;font-size:12px;",
       );
     } catch {
       // Silently ignore console errors in restrictive environments

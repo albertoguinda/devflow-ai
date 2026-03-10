@@ -32,9 +32,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Focus rings** — replaced rectangular `outline` with `box-shadow` that follows `border-radius` on all interactive elements
 - **Easter egg** — redesigned console output: gradient badges, feature pills, cleaner links, try/catch wrapper
 - **Tool name translations** — translated 5 newer tools (hash/jwt/color/diff/password) into DE/PT/IT/JA; fixed ES capitalization
+- **ES tool names** — all 33 `.title` and `tool.*.name` keys fixed: Title Case → sentence case, 12 untranslated English titles translated to Spanish (Cron Builder → Constructor de cron, Prompt Analyzer → Analizador de prompts, etc.)
 - **Docs cards** — responsive layout (`flex-col sm:flex-row`), reduced padding on mobile, smaller text on narrow screens
 - **Home page mobile** — full-width buttons, reduced card padding/gap, smaller text on mobile
 - **Prompt Analyzer mobile** — responsive radar chart (220px→280px), stacking layouts, flex-wrap AI buttons, responsive margins
+- **Cost Calculator mobile** — ToolHeader actions `flex-wrap`, button labels hidden on small screens (icons only)
+- **Cron Builder mobile** — field label width `w-14 sm:w-20`, range indicator `w-8 sm:w-10`, reduced gap
+- **JSON Formatter mobile** — TypeScript tab `p-4 sm:p-8`, diff content `whitespace-pre-wrap break-all`
+- **Base64 mobile** — output `pre` padding `p-4 sm:p-8` on text and JSON views
+- **Git Commit mobile** — preview padding `p-4 sm:p-8`
+- **HTTP Status mobile** — implementation snippets card padding `p-4 sm:p-8`
+- **Color Converter mobile** — color info layout `flex-col sm:flex-row`, swatch `size-16 sm:size-24`
+- **Diff Comparer mobile** — side-by-side view wrapped with `overflow-x-auto` + `min-w-[500px]`
+- **Mobile sidebar** — overlay fade transition (opacity 300ms), close on orientation change / resize past md breakpoint
+- **Easter egg** — ASCII art banner, cleaner layout, pill-shaped feature badges, compact link section
 
 #### Removed
 - **`home.badge` i18n key** — deleted from all 8 locale files (code reference already removed)

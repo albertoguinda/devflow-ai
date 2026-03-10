@@ -416,7 +416,7 @@ export default function GitCommitGeneratorPage() {
                     </div>
                     <CopyButton text={message || ""} />
                   </div>
-                  <div className="p-8 font-mono text-sm leading-relaxed whitespace-pre-wrap min-h-[200px]">
+                  <div className="p-4 sm:p-8 font-mono text-sm leading-relaxed whitespace-pre-wrap min-h-[200px]">
                     {message ? (
                       <div className="space-y-2">
                         <p className="font-black text-primary underline decoration-primary/20 underline-offset-4">{message.split("\n")[0]}</p>

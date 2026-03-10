@@ -479,7 +479,7 @@ export default function JsonFormatterPage() {
                   <span className="text-xs font-black text-primary uppercase tracking-widest ml-2">{t("jsonFmt.tsDefinition")}</span>
                   <CopyButton text={tsOutput} />
                 </div>
-                <div className="flex-1 bg-muted/30 dark:bg-muted/50 p-8 overflow-auto">
+                <div className="flex-1 bg-muted/30 dark:bg-muted/50 p-4 sm:p-8 overflow-auto">
                   {tsOutput ? (
                     <pre className="font-mono text-xs leading-relaxed text-primary">
                       <code>{tsOutput}</code>
@@ -584,7 +584,7 @@ export default function JsonFormatterPage() {
                             <span className="inline-block w-4 text-center select-none shrink-0 font-bold">
                               {line.status === "added" ? "+" : line.status === "removed" ? "−" : " "}
                             </span>
-                            <span className="flex-1 whitespace-pre">{line.content}</span>
+                            <span className="flex-1 whitespace-pre-wrap break-all">{line.content}</span>
                           </div>
                         ))}
                       </pre>

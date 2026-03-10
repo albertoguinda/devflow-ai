@@ -86,7 +86,8 @@ function SideBySideView({ lines }: { lines: DiffLine[] }) {
   }, [lines]);
 
   return (
-    <div className="grid grid-cols-2 divide-x divide-divider">
+    <div className="overflow-x-auto">
+    <div className="grid grid-cols-2 divide-x divide-divider min-w-[500px]">
       {/* Left (original) */}
       <div className="overflow-x-auto">
         {leftLines.map((line, idx) => {
@@ -141,6 +142,7 @@ function SideBySideView({ lines }: { lines: DiffLine[] }) {
           );
         })}
       </div>
+    </div>
     </div>
   );
 }

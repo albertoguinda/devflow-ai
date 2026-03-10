@@ -389,7 +389,7 @@ export default function CostCalculatorPage() {
         description={t("costCalc.description")}
         breadcrumb
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <ShareButton getShareUrl={getShareUrl} />
             {isUsingFallback && !isSyncing && (
               <Chip size="sm" variant="soft" className="bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs">
@@ -404,11 +404,11 @@ export default function CostCalculatorPage() {
               className="gap-2 text-primary"
             >
               <RefreshCw className={`size-4 ${isSyncing ? "animate-spin" : ""}`} />
-              {isSyncing ? t("costCalc.syncing") : t("costCalc.syncPrices")}
+              <span className="hidden sm:inline">{isSyncing ? t("costCalc.syncing") : t("costCalc.syncPrices")}</span>
             </Button>
             <Button variant="outline" size="sm" onPress={reset} className="gap-2">
               <RotateCcw className="size-4" />
-              {t("common.reset")}
+              <span className="hidden sm:inline">{t("common.reset")}</span>
             </Button>
           </div>
         }

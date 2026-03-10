@@ -70,6 +70,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     };
   }, [sidebarOpen]);
 
+  // Close mobile sidebar on resize/orientation change (crossing md breakpoint)
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const handler = () => { if (mq.matches) closeSidebar(); };
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [closeSidebar]);
+
   const NAV_ITEMS = useMemo(() => [
     { href: "/tools", label: t("sidebar.tools"), icon: Wrench },
     { href: "/docs", label: t("sidebar.docs"), icon: BookOpen },
@@ -176,13 +184,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </aside>
 
       {/* Mobile Sidebar Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={closeSidebar}
-          aria-hidden="true"
-        />
-      )}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-black/50 md:hidden transition-opacity duration-300",
+          sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+        onClick={closeSidebar}
+        aria-hidden="true"
+      />
 
       {/* Mobile Sidebar Drawer */}
       <aside

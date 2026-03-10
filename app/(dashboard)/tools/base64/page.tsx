@@ -327,7 +327,7 @@ export default function Base64Page() {
                     <span className="text-xs font-mono text-muted-foreground/50">{t("base64.characters", { count: result?.stats.outputLength || 0 })}</span>
                   </div>
                   {result?.output ? (
-                    <pre className="p-8 font-mono text-[11px] leading-relaxed overflow-auto flex-1 bg-background break-all">
+                    <pre className="p-4 sm:p-8 font-mono text-[11px] leading-relaxed overflow-auto flex-1 bg-background break-all">
                       <code>{result.output}</code>
                     </pre>
                   ) : (
@@ -376,7 +376,7 @@ export default function Base64Page() {
                   )}
 
                   {result?.detectedType === "json" && (
-                    <Card className="p-8 border-emerald-500/20 dark:border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-500/10 h-full">
+                    <Card className="p-4 sm:p-8 border-emerald-500/20 dark:border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-500/10 h-full">
                       <div className="flex items-center justify-between mb-6">
                         <h3 className="font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-2 text-md italic">
                           <Database className="size-5" /> {t("base64.structuredObject")}

@@ -340,8 +340,8 @@ export default function HttpStatusFinderPage() {
               </div>
 
               {/* Implementation Snippets */}
-              <Card className="p-8">
-                <h3 className="font-black text-lg mb-6 flex items-center gap-2">
+              <Card className="p-4 sm:p-8">
+                <h3 className="font-black text-lg mb-4 sm:mb-6 flex items-center gap-2">
                   <Terminal className="size-5 text-primary" />
                   {t("httpStatus.codeImpl")}
                 </h3>

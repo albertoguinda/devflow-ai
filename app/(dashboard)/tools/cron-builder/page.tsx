@@ -381,8 +381,8 @@ export default function CronBuilderPage() {
                       { field: "month", label: t("cron.monthLabel"), range: "1-12" },
                       { field: "dayOfWeek", label: t("cron.weekdayLabel"), range: "0-6" },
                     ].map((f) => (
-                      <div key={f.field} className="flex items-center gap-3">
-                        <label className="w-20 text-xs font-bold uppercase tracking-wider text-muted-foreground text-right shrink-0">{f.label}</label>
+                      <div key={f.field} className="flex items-center gap-2 sm:gap-3">
+                        <label className="w-14 sm:w-20 text-xs font-bold uppercase tracking-wider text-muted-foreground text-right shrink-0">{f.label}</label>
                         <Input
                           variant="primary"
                           value={expression[f.field as keyof typeof expression]}
@@ -397,7 +397,7 @@ export default function CronBuilderPage() {
                           placeholder={t("cron.fieldPlaceholder")}
                           aria-label={f.label}
                         />
-                        <span className="text-xs text-muted-foreground/50 font-mono w-10 shrink-0" title={t("cron.validRange", { range: f.range })}>{f.range}</span>
+                        <span className="text-xs text-muted-foreground/50 font-mono w-8 sm:w-10 shrink-0" title={t("cron.validRange", { range: f.range })}>{f.range}</span>
                       </div>
                     ))}
                   </div>

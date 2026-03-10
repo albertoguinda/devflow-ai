@@ -371,9 +371,9 @@ export default function ColorConverterPage() {
                 <h3 className="text-xs font-black uppercase text-muted-foreground tracking-widest mb-4">
                   {t("color.colorInfo")}
                 </h3>
-                <div className="flex items-center gap-6">
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                   <div
-                    className="size-24 rounded-2xl border-2 border-divider shadow-lg flex-shrink-0 transition-colors duration-300"
+                    className="size-16 sm:size-24 rounded-2xl border-2 border-divider shadow-lg flex-shrink-0 transition-colors duration-300"
                     style={{ backgroundColor: result.conversions["hex"] }}
                     aria-label={t("color.previewSwatch")}
                   />
