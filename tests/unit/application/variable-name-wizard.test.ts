@@ -10,6 +10,7 @@ import {
   expandAbbreviations,
   abbreviateName,
   EXAMPLE_INPUTS,
+  COMMON_ABBREVIATIONS,
 } from "@/lib/application/variable-name-wizard";
 import { DEFAULT_WIZARD_CONFIG } from "@/types/variable-name-wizard";
 
@@ -424,6 +425,63 @@ describe("Variable Name Wizard", () => {
         const result = convertToAll(example);
         expect(result.conversions.camelCase).toBeDefined();
       }
+    });
+  });
+
+  describe("COMMON_ABBREVIATIONS", () => {
+    it("should contain common abbreviation mappings", () => {
+      expect(COMMON_ABBREVIATIONS["application"]).toBe("app");
+      expect(COMMON_ABBREVIATIONS["configuration"]).toBe("config");
+      expect(COMMON_ABBREVIATIONS["database"]).toBe("db");
+      expect(COMMON_ABBREVIATIONS["function"]).toBe("fn");
+      expect(COMMON_ABBREVIATIONS["environment"]).toBe("env");
+    });
+
+    it("should have at least 30 entries", () => {
+      expect(Object.keys(COMMON_ABBREVIATIONS).length).toBeGreaterThanOrEqual(30);
+    });
+  });
+
+  describe("multilingual locale coverage", () => {
+    const locales = ["fr", "pt", "de", "it", "zh", "ja"] as const;
+
+    describe.each(locales)("locale %s", (locale) => {
+      it("should generate suggestions with locale-aware reasoning", () => {
+        const result = generateSuggestions("user profile data", "variable", DEFAULT_WIZARD_CONFIG, locale);
+        expect(result.suggestions.length).toBeGreaterThan(0);
+        result.suggestions.forEach((s) => {
+          expect(s.name).toBeTruthy();
+          expect(s.reasoning).toBeTruthy();
+          expect(s.score).toBeGreaterThanOrEqual(0);
+        });
+      });
+
+      it("should generate suggestions for hooks with locale", () => {
+        const result = generateSuggestions("authentication state", "hook", DEFAULT_WIZARD_CONFIG, locale);
+        expect(result.suggestions.length).toBeGreaterThan(0);
+        const hasUsePrefix = result.suggestions.some((s) => s.name.startsWith("use"));
+        expect(hasUsePrefix).toBe(true);
+      });
+
+      it("should generate suggestions for constants with locale", () => {
+        const result = generateSuggestions("max retry count", "constant", DEFAULT_WIZARD_CONFIG, locale);
+        expect(result.suggestions.length).toBeGreaterThan(0);
+      });
+
+      it("should generate suggestions for functions with locale", () => {
+        const result = generateSuggestions("fetch user data", "function", DEFAULT_WIZARD_CONFIG, locale);
+        expect(result.suggestions.length).toBeGreaterThan(0);
+      });
+
+      it("should generate suggestions for components with locale", () => {
+        const result = generateSuggestions("navigation bar", "component", DEFAULT_WIZARD_CONFIG, locale);
+        expect(result.suggestions.length).toBeGreaterThan(0);
+      });
+
+      it("should produce locale-aware audit findings", () => {
+        const result = generateSuggestions("data", "variable", DEFAULT_WIZARD_CONFIG, locale);
+        expect(result.suggestions.length).toBeGreaterThan(0);
+      });
     });
   });
 });

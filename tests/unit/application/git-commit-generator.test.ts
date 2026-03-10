@@ -6,6 +6,7 @@ import {
   validateCommitMessage,
   parseCommitMessage,
   getCommitTypeInfo,
+  getCommitTypes,
   suggestScope,
   analyzeDiff,
   generateChangelog,
@@ -666,5 +667,55 @@ describe("Git Commit Message Generator", () => {
       const parsed = parseCommitMessage(msg);
       expect(parsed?.body).toContain("body line here");
     });
+  });
+
+  describe("getCommitTypes", () => {
+    it("should return all 11 commit types for English locale", () => {
+      const types = getCommitTypes("en");
+      expect(types).toHaveLength(11);
+      types.forEach((ct) => {
+        expect(ct.type).toBeTruthy();
+        expect(ct.label).toBeTruthy();
+        expect(ct.description).toBeTruthy();
+        expect(ct.emoji).toBeTruthy();
+      });
+    });
+
+    it("should return Spanish descriptions for es locale", () => {
+      const types = getCommitTypes("es");
+      expect(types).toHaveLength(11);
+      const feat = types.find((ct) => ct.type === "feat");
+      expect(feat?.description).toBeTruthy();
+      // Spanish description should differ from English
+      const enTypes = getCommitTypes("en");
+      const enFeat = enTypes.find((ct) => ct.type === "feat");
+      expect(feat?.description).not.toBe(enFeat?.description);
+    });
+
+    it("should fallback to English for unsupported locale", () => {
+      const types = getCommitTypes("xx");
+      const enTypes = getCommitTypes("en");
+      expect(types).toHaveLength(11);
+      expect(types[0]?.description).toBe(enTypes[0]?.description);
+    });
+
+    it("should default to English when called without arguments", () => {
+      const types = getCommitTypes();
+      const enTypes = getCommitTypes("en");
+      expect(types[0]?.description).toBe(enTypes[0]?.description);
+    });
+  });
+
+  describe("validateCommitMessage — multilingual headerTooLong", () => {
+    const longHeader = "feat: " + "a".repeat(80); // 86 chars, over 72 limit
+
+    it.each(["fr", "pt", "de", "it", "zh", "ja"] as const)(
+      "should return headerTooLong error in %s locale",
+      (locale) => {
+        const result = validateCommitMessage(longHeader, DEFAULT_COMMIT_CONFIG, locale);
+        expect(result.isValid).toBe(false);
+        expect(result.errors.length).toBeGreaterThan(0);
+      },
+    );
   });
 });

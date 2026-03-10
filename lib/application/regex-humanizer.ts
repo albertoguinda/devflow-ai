@@ -53,10 +53,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `Escaped character: "${ch}" literal`,
-    quantifierFallback: (q: string) => `Quantifier: ${q}`,
-    anchorFallback: (a: string) => `Anchor: ${a}`,
-    alternationFallback: (a: string) => `Alternation: ${a}`,
-    metacharFallback: (m: string) => `Metacharacter: ${m}`,
     literalChar: (ch: string) => `Literal character: "${ch}"`,
 
     // Character class parts
@@ -207,10 +203,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `Carácter escapado: "${ch}" literal`,
-    quantifierFallback: (q: string) => `Cuantificador: ${q}`,
-    anchorFallback: (a: string) => `Ancla: ${a}`,
-    alternationFallback: (a: string) => `Alternación: ${a}`,
-    metacharFallback: (m: string) => `Metacarácter: ${m}`,
     literalChar: (ch: string) => `Carácter literal: "${ch}"`,
 
     // Character class parts
@@ -361,10 +353,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `Caractère échappé : "${ch}" littéral`,
-    quantifierFallback: (q: string) => `Quantificateur : ${q}`,
-    anchorFallback: (a: string) => `Ancre : ${a}`,
-    alternationFallback: (a: string) => `Alternance : ${a}`,
-    metacharFallback: (m: string) => `Métacaractère : ${m}`,
     literalChar: (ch: string) => `Caractère littéral : "${ch}"`,
 
     // Character class parts
@@ -515,10 +503,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `Caractere escapado: "${ch}" literal`,
-    quantifierFallback: (q: string) => `Quantificador: ${q}`,
-    anchorFallback: (a: string) => `Âncora: ${a}`,
-    alternationFallback: (a: string) => `Alternância: ${a}`,
-    metacharFallback: (m: string) => `Metacaractere: ${m}`,
     literalChar: (ch: string) => `Caractere literal: "${ch}"`,
 
     // Character class parts
@@ -669,10 +653,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `Escape-Zeichen: "${ch}" literal`,
-    quantifierFallback: (q: string) => `Quantifizierer: ${q}`,
-    anchorFallback: (a: string) => `Anker: ${a}`,
-    alternationFallback: (a: string) => `Alternative: ${a}`,
-    metacharFallback: (m: string) => `Metazeichen: ${m}`,
     literalChar: (ch: string) => `Literales Zeichen: "${ch}"`,
 
     // Character class parts
@@ -823,10 +803,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `Carattere di escape: "${ch}" letterale`,
-    quantifierFallback: (q: string) => `Quantificatore: ${q}`,
-    anchorFallback: (a: string) => `Ancora: ${a}`,
-    alternationFallback: (a: string) => `Alternanza: ${a}`,
-    metacharFallback: (m: string) => `Metacarattere: ${m}`,
     literalChar: (ch: string) => `Carattere letterale: "${ch}"`,
 
     // Character class parts
@@ -977,10 +953,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `转义字符："${ch}" 字面值`,
-    quantifierFallback: (q: string) => `量词：${q}`,
-    anchorFallback: (a: string) => `锚点：${a}`,
-    alternationFallback: (a: string) => `交替：${a}`,
-    metacharFallback: (m: string) => `元字符：${m}`,
     literalChar: (ch: string) => `字面字符："${ch}"`,
 
     // Character class parts
@@ -1131,10 +1103,6 @@ const REGEX_STRINGS = {
 
     // Fallback descriptions
     escapedChar: (ch: string) => `エスケープ文字：「${ch}」リテラル`,
-    quantifierFallback: (q: string) => `量指定子：${q}`,
-    anchorFallback: (a: string) => `アンカー：${a}`,
-    alternationFallback: (a: string) => `交替：${a}`,
-    metacharFallback: (m: string) => `メタ文字：${m}`,
     literalChar: (ch: string) => `リテラル文字：「${ch}」`,
 
     // Character class parts
@@ -1650,7 +1618,7 @@ function tokenizeRegex(pattern: string, locale: RegexLocale = "en"): RegexToken[
       tokens.push({
         type: "quantifier",
         value: char,
-        description: tokenExplanations[char] ?? s.quantifierFallback(char),
+        description: tokenExplanations[char] ?? char,
         start: i,
         end: i + 1,
       });
@@ -1663,7 +1631,7 @@ function tokenizeRegex(pattern: string, locale: RegexLocale = "en"): RegexToken[
       tokens.push({
         type: "anchor",
         value: char,
-        description: tokenExplanations[char] ?? s.anchorFallback(char),
+        description: tokenExplanations[char] ?? char,
         start: i,
         end: i + 1,
       });
@@ -1676,7 +1644,7 @@ function tokenizeRegex(pattern: string, locale: RegexLocale = "en"): RegexToken[
       tokens.push({
         type: "alternation",
         value: char,
-        description: tokenExplanations[char] ?? s.alternationFallback(char),
+        description: tokenExplanations[char] ?? char,
         start: i,
         end: i + 1,
       });
@@ -1689,7 +1657,7 @@ function tokenizeRegex(pattern: string, locale: RegexLocale = "en"): RegexToken[
       tokens.push({
         type: "literal",
         value: char,
-        description: tokenExplanations[char] ?? s.metacharFallback(char),
+        description: tokenExplanations[char] ?? char,
         start: i,
         end: i + 1,
       });

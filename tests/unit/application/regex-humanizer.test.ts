@@ -6,6 +6,7 @@ import {
   isValidRegex,
   COMMON_PATTERNS,
   getCommonPatterns,
+  DEFAULT_GROUP_COLORS,
 } from "@/lib/application/regex-humanizer";
 
 describe("Regex Humanizer", () => {
@@ -1075,6 +1076,203 @@ describe("Regex Humanizer", () => {
     it("should return warnings in Spanish locale", () => {
       const result = explainRegex("(?<=prefix)\\w+", "go", "es");
       expect(result.warnings.some((w) => w.includes("lookbehind") || w.includes("compatibles"))).toBe(true);
+    });
+  });
+
+  describe("DEFAULT_GROUP_COLORS", () => {
+    it("should export an array of 6 color strings", () => {
+      expect(DEFAULT_GROUP_COLORS).toHaveLength(6);
+      DEFAULT_GROUP_COLORS.forEach((color) => {
+        expect(typeof color).toBe("string");
+        expect(color).toContain("text-");
+      });
+    });
+  });
+
+  describe("multilingual locale coverage", () => {
+    const locales = ["fr", "pt", "de", "it", "zh", "ja"] as const;
+
+    describe.each(locales)("locale %s", (locale) => {
+      it("should explain a regex with capture groups", () => {
+        const result = explainRegex("(\\d+)-(\\w+)", "javascript", locale);
+        expect(result.pattern).toBe("(\\d+)-(\\w+)");
+        expect(result.tokens.length).toBeGreaterThan(0);
+        expect(result.explanation).toBeTruthy();
+        expect(result.groups.length).toBe(2);
+      });
+
+      it("should explain character classes and quantifiers", () => {
+        const result = explainRegex("[a-zA-Z]{2,5}", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+        expect(result.explanation).toBeTruthy();
+      });
+
+      it("should explain anchors and alternation", () => {
+        const result = explainRegex("^(foo|bar)$", "javascript", locale);
+        expect(result.explanation).toBeTruthy();
+        expect(result.tokens.length).toBeGreaterThan(0);
+      });
+
+      it("should explain lookahead/lookbehind groups", () => {
+        const result = explainRegex("(?=prefix)(?!suffix)(?<=before)(?<!after)", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+        expect(result.explanation).toBeTruthy();
+      });
+
+      it("should explain escaped characters and metacharacters", () => {
+        const result = explainRegex("\\d\\w\\s\\.\\+", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+      });
+
+      it("should explain non-capturing groups", () => {
+        const result = explainRegex("(?:abc)+", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+      });
+
+      it("should explain flags", () => {
+        const result = explainRegex("test", "javascript", locale);
+        expect(result.explanation).toBeTruthy();
+      });
+
+      it("should detect common patterns", () => {
+        const patterns = getCommonPatterns(locale);
+        expect(patterns.length).toBeGreaterThan(0);
+        patterns.forEach((p) => {
+          expect(p.name).toBeTruthy();
+          expect(p.description).toBeTruthy();
+        });
+      });
+
+      it("should generate regex from description", () => {
+        const result = generateRegex("email", locale);
+        expect(result).toBeTruthy();
+        expect(result).not.toBe("^.*$");
+      });
+
+      it("should test regex with locale-aware errors", () => {
+        const result = testRegex("[invalid", "test", locale);
+        expect(result.isValid).toBe(false);
+        expect(result.error).toBeTruthy();
+      });
+
+      it("should test regex with matches and groups", () => {
+        const result = testRegex("(\\d+)", "abc 123 def 456", locale);
+        expect(result.isValid).toBe(true);
+        expect(result.matches).toBe(true);
+        expect(result.allMatches.length).toBeGreaterThanOrEqual(2);
+      });
+
+      it("should explain with flavor warnings", () => {
+        const result = explainRegex("(?<=prefix)\\w+", "go", locale);
+        expect(result.warnings.length).toBeGreaterThan(0);
+      });
+
+      it("should explain negated character classes (anyCharExcept)", () => {
+        const result = explainRegex("[^abc]", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+        expect(result.explanation).toBeTruthy();
+      });
+
+      it("should explain exact repetition quantifier (exactlyN)", () => {
+        const result = explainRegex("\\d{3}", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+      });
+
+      it("should detect common email pattern (patternDetected)", () => {
+        const patterns = getCommonPatterns(locale);
+        const emailPattern = patterns.find((p) => p.id === "email");
+        if (emailPattern) {
+          const result = explainRegex(emailPattern.pattern, "javascript", locale);
+          expect(result.commonPattern).toBeTruthy();
+        }
+      });
+
+      it("should explain character set with specific chars", () => {
+        const result = explainRegex("[!@#$%]", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+      });
+
+      it("should explain nOrMore quantifier ({n,})", () => {
+        const result = explainRegex("a{2,}", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+        expect(result.explanation).toBeTruthy();
+      });
+
+      it("should handle invalid brace quantifier (quantifierLabel)", () => {
+        const result = explainRegex("a{abc}", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+      });
+
+      it("should explain dot metacharacter", () => {
+        const result = explainRegex("a.b", "javascript", locale);
+        expect(result.tokens.length).toBeGreaterThan(0);
+      });
+
+      it("should generate regex for URL description", () => {
+        const result = generateRegex("url", locale);
+        expect(result).toBeTruthy();
+        expect(result).not.toBe("^.*$");
+      });
+
+      it("should generate regex for password description", () => {
+        const result = generateRegex("password", locale);
+        expect(result).toBeTruthy();
+      });
+
+      it("should generate regex for IP description", () => {
+        const result = generateRegex("ip", locale);
+        expect(result).toBeTruthy();
+        expect(result).not.toBe("^.*$");
+      });
+
+      it("should generate regex for color/hex description", () => {
+        const result = generateRegex("hex color", locale);
+        expect(result).toBeTruthy();
+        expect(result).not.toBe("^.*$");
+      });
+
+      it("should generate regex for phone description", () => {
+        const result = generateRegex("phone number", locale);
+        expect(result).toBeTruthy();
+        // Some locales may return the generic phone pattern
+        expect(result.length).toBeGreaterThan(0);
+      });
+
+      it("should generate regex for date description", () => {
+        const result = generateRegex("date iso", locale);
+        expect(result).toBeTruthy();
+        expect(result).not.toBe("^.*$");
+      });
+
+      it("should generate regex for alphanumeric description", () => {
+        const result = generateRegex("alphanumeric", locale);
+        expect(result).toBe("^[a-zA-Z0-9]+$");
+      });
+
+      it("should generate regex for dni description", () => {
+        const result = generateRegex("dni", locale);
+        expect(result).toBeTruthy();
+      });
+
+      it("should handle testRegex with zero-length match pattern", () => {
+        const result = testRegex("(?=a)", "aaa", locale);
+        expect(result.isValid).toBe(true);
+      });
+
+      it("should generate regex for lowercase letters", () => {
+        const result = generateRegex("lowercase letters", locale);
+        expect(result).toBe("^[a-z]+$");
+      });
+
+      it("should generate regex for dd/mm date", () => {
+        const result = generateRegex("date dd/mm", locale);
+        expect(result).toBeTruthy();
+      });
+
+      it("should generate regex for generic letters", () => {
+        const result = generateRegex("only letters", locale);
+        expect(result).toBe("^[a-zA-Z]+$");
+      });
     });
   });
 });

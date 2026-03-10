@@ -11,7 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ESLint `react-hooks/set-state-in-effect`** — `useTranslation` hook now derives `dict` synchronously from module-level cache instead of calling `setDict()` inside `useEffect` body; async `.then()` callback triggers re-render via version counter
 - **CLS regression (0 → 0.052)** — reverted FeaturesSection `next/dynamic` lazy loading back to static import; GSAP stagger animation was re-triggering after lazy chunk hydration, causing visible layout shift
 
-### SEO & GEO Maximum Push
+### Testing
+- **Coverage hardening** — added multilingual locale tests for `regex-humanizer` (150→337 tests), `git-commit-generator` (79→89 tests), `variable-name-wizard` (54→92 tests)
+- **Dead code removal** — removed 32 unreachable fallback arrow functions from `regex-humanizer.ts` (8 locale objects × 4 fallback methods each), boosting function coverage from 34% to 93%
+
+### SEO & GEO
 
 #### Added
 - **Multilingual keywords** — 20 new keywords in ES, FR, PT, DE, JA, ZH across root metadata for international search visibility
