@@ -84,6 +84,63 @@ export function useStaggerIn(childSelector = ":scope > *", delay = 0) {
   return ref;
 }
 
+// --- Hook: Scroll-triggered stagger (IntersectionObserver + GSAP stagger) ---
+// Unlike useStaggerIn which runs on mount (causing CLS when used with next/dynamic),
+// this hook only animates when the container enters the viewport.
+export function useStaggerReveal(childSelector = ":scope > *") {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    if (prefersReducedMotion()) {
+      return; // Content already visible via SSR — no animation needed
+    }
+
+    const container = ref.current;
+    let tween: { kill: () => void } | undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const elements =
+              childSelector === ":scope > *" || childSelector === "> *"
+                ? Array.from((entry.target as HTMLElement).children)
+                : entry.target.querySelectorAll(childSelector);
+
+            if (elements.length === 0) return;
+
+            import("gsap").then(({ default: gsap }) => {
+              tween = gsap.fromTo(
+                elements,
+                { opacity: 0, y: 16 },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.4,
+                  stagger: 0.06,
+                  ease: "power2.out",
+                }
+              );
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(container);
+    return () => {
+      tween?.kill();
+      observer.disconnect();
+    };
+  }, [childSelector]);
+
+  return ref;
+}
+
 // --- Hook: Scroll triggered animation ---
 export function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null);

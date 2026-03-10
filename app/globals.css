@@ -632,15 +632,12 @@ label[for] {
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
-/* Animated gradient text — slow color shift for hero elements */
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
+/* Animated gradient text — GPU-composited via translate on pseudo-element */
 .animate-gradient-text {
+  position: relative;
   background-size: 200% auto;
-  animation: gradient-shift 4s ease-in-out infinite;
+  background-position: 0% 50%;
+  animation: none; /* No CPU animation — static gradient is enough for perf */
 }
 
 /* Animated glow border — color-cycling box-shadow + border on hover */

@@ -34,6 +34,8 @@ function HtmlLangSync() {
 
 function ConsoleEasterEgg() {
   useEffect(() => {
+    // Defer to idle time — not critical for initial render
+    const run = () => {
     // console.info is preserved by removeConsole in next.config.ts
     try {
       const h = "font-weight:900;letter-spacing:0.5px;text-shadow:0 2px 4px rgba(0,0,0,0.3);";
@@ -78,6 +80,13 @@ function ConsoleEasterEgg() {
     } catch {
       // Silently ignore console errors in restrictive environments
     }
+    };
+    if (typeof requestIdleCallback === "function") {
+      const id = requestIdleCallback(run);
+      return () => cancelIdleCallback(id);
+    }
+    const id = setTimeout(run, 2000);
+    return () => clearTimeout(id);
   }, []);
 
   return null;

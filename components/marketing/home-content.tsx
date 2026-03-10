@@ -1,11 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Zap, Monitor, LockOpen, Star, Github, Linkedin, Heart, ArrowRight } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
-import { FeaturesSection } from "@/components/marketing/features-section";
 import { GsapReveal } from "@/components/marketing/gsap-reveal";
 import { cn } from "@/lib/utils";
+
+// Lazy load FeaturesSection — below the fold, defers 27 icons + TOOLS_DATA + Card chunk.
+// Uses useStaggerReveal (IntersectionObserver) so SSR HTML stays visible → no CLS.
+const FeaturesSection = dynamic(
+  () => import("@/components/marketing/features-section").then((m) => m.FeaturesSection),
+);
 
 interface HomeContentProps {
   stars: number | null;

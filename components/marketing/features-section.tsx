@@ -1,14 +1,14 @@
 "use client";
 
 import NextLink from "next/link";
-import { useStaggerIn } from "@/hooks/use-gsap";
+import { useStaggerReveal } from "@/hooks/use-gsap";
 import { useTranslation } from "@/hooks/use-translation";
 import { FeatureCard } from "@/components/ui/feature-card";
 import { TOOLS_DATA } from "@/config/tools-data";
 import { TOOL_ICON_MAP } from "@/config/tool-icon-map";
 
 export function FeaturesSection() {
-  const ref = useStaggerIn("> *", 0.3);
+  const ref = useStaggerReveal("> *");
   const { t } = useTranslation();
 
   return (

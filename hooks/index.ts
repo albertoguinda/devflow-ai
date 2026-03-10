@@ -19,6 +19,7 @@ export { useHttpStatusFinder } from "./use-http-status-finder";
 export {
   useFadeIn,
   useStaggerIn,
+  useStaggerReveal,
   useScrollReveal,
 } from "./use-gsap";
 export { useTranslation } from "./use-translation";
