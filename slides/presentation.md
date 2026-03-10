@@ -23,7 +23,7 @@ Alberto Guinda Sevilla &middot; Marzo 2026
   <a href="https://github.com/albertoguinda/devflow-ai" target="_blank" class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
     <carbon-logo-github />
   </a>
-  <a href="https://devflowai.vercel.app" target="_blank" class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
+  <a href="https://devflowai.dev" target="_blank" class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
     <carbon-launch />
   </a>
 </div>
@@ -409,10 +409,15 @@ const { t } = useTranslation();
 - Redirige a la herramienta correcta
 - JSON, Cron, Regex, Base64...
 
-### History + Favorites
-- `useToolHistory<T>` generico
-- Max 50 items por herramienta
-- Timestamps relativos (EN/ES)
+### Share via URL
+- Compresion gzip + base64url
+- Web Share API + clipboard fallback
+- Las 20 herramientas
+
+### Keyboard Shortcuts
+- `Ctrl+Enter` ejecutar, `Ctrl+Shift+C` copiar
+- `Ctrl+Shift+S` compartir, `Esc` limpiar
+- Las 20 herramientas
 
 </div>
 </div>
@@ -476,6 +481,7 @@ const { t } = useTranslation();
 6. **UX avanzada** — PWA, Cmd+K, Share URL, shortcuts
 7. **IA opcional** — 4 proveedores, BYOK, fallback
 8. **i18n 8 idiomas** — ~1590 claves x8, deteccion automatica
+9. **SEO/GEO** — JSON-LD, llms.txt, dominio propio
 
 </div>
 <div>
@@ -487,7 +493,7 @@ const { t } = useTranslation();
 - **TypeScript strict** previene categorias de bugs
 - **100/80/0** es mas sostenible que 100% global
 - **Claude Code** como pair programmer acelera significativamente
-- **3 auditorias** (68 fixes) llevan a 0 vulnerabilidades
+- **4 auditorias** (79+ fixes) llevan a 0 vulnerabilidades
 
 ### Trabajo futuro
 
@@ -507,8 +513,8 @@ class: text-center
 # Demo en vivo
 
 <div class="text-2xl mt-4 mb-8">
-  <a href="https://devflowai.vercel.app" target="_blank" class="text-blue-400">
-    devflowai.vercel.app
+  <a href="https://devflowai.dev" target="_blank" class="text-blue-400">
+    devflowai.dev
   </a>
 </div>
 
@@ -536,7 +542,7 @@ class: text-center
 
 | Recurso | Enlace |
 |---------|--------|
-| Demo | [devflowai.vercel.app](https://devflowai.vercel.app) |
+| Demo | [devflowai.dev](https://devflowai.dev) |
 | Repositorio | [github.com/albertoguinda/devflow-ai](https://github.com/albertoguinda/devflow-ai) |
 | TFM Documento | [docs/TFM.md](https://github.com/albertoguinda/devflow-ai/blob/main/docs/TFM.md) |
 

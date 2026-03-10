@@ -94,7 +94,7 @@ Abre http://localhost:3030/export y selecciona la opcion PPTX/images.
 
 ## Tips para la presentacion
 
-1. **Demo en vivo**: Abre https://devflowai.vercel.app antes de empezar. Muestra Prompt Analyzer con un prompt malicioso, Cost Calculator y Code Review
+1. **Demo en vivo**: Abre https://devflowai.dev antes de empezar. Muestra Prompt Analyzer con un prompt malicioso, Cost Calculator y Code Review
 2. **Dark mode**: Pulsa `d` para toggle — queda mejor en proyector oscuro
 3. **Backup**: Si falla la conexion, usa el PDF exportado
 4. **Overview**: Pulsa `o` para mostrar todas las slides al tribunal si piden saltar a un tema

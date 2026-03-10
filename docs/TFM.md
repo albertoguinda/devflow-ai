@@ -4,7 +4,7 @@
 **Master:** Desarrollo con IA (BIG School)
 **Fecha:** Marzo 2026
 **Repositorio:** https://github.com/albertoguinda/devflow-ai
-**Demo:** https://devflowai.vercel.app
+**Demo:** https://devflowai.dev
 
 ---
 
@@ -647,7 +647,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 
 ### 7.2 Produccion
 
-- **URL:** https://devflowai.vercel.app
+- **URL:** https://devflowai.dev
 - **CDN:** Vercel Edge Network (global)
 - **ISR:** Homepage revalida cada hora (GitHub stars)
 - **Error tracking:** Sentry con 10% sampling, 100% en errores
@@ -728,7 +728,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 
 ---
 
-## 8.5 Sprints Finales (v4.9.0 — v4.15.0)
+## 8.5 Sprints Finales (v4.9.0 — v4.21.0)
 
 ### Sprint de Pulido (v4.9.0)
 
@@ -762,6 +762,33 @@ Auditoria exhaustiva de responsividad y accesibilidad visual — 11 fixes en 4 f
 - **Fase 3 (Consistencia Visual):** 216 instancias text-[9px]/text-[10px] → text-xs (legibilidad WCAG), 10 botones con touch targets 44px, 8 grupos de botones con gap-2, debounce 150ms, StatusBadge contraste AAA (7:1)
 - **Fase 4 (Code Quality):** localStorage try/catch en importSettings (QuotaExceededError), bug fix en generateValue para campos null
 
+### AI Locale + UX Polish (v4.16.0 — v4.17.0)
+
+- **v4.16.0 AI Locale:** Correcion sistemica de idioma IA — los 13 tools con IA pasan `locale` a los Route Handlers; la IA ahora responde en el idioma de la app. Cadena schema/hook/route/page: 3 schemas + 3 hooks + 3 routes + 13 pages actualizados. +6 tests (1481→1487)
+- **v4.17.0 UX Polish:** Auditoria exhaustiva de las 20 herramientas — 25 nuevas claves i18n, empty states, loading states, ARIA progressbars, focus-visible, grids responsive mobile, scrollbar-hide CSS, fixes de contraste
+
+### 5 Nuevas Herramientas + Share via URL (v4.18.0 — v4.19.0)
+
+- **v4.18.0 (5 tools):** Hash Generator (33t), JWT Decoder (33t), Color Converter (49t), Diff Comparer (33t), Password Generator (59t) — todas con patron 5-capas, cero dependencias externas. +207 tests (1487→1694), +~210 claves i18n
+- **v4.19.0 Share via URL:** Infraestructura core de share-state (gzip + base64url), ShareButton en las 20 herramientas, Web Share API + fallback clipboard. +20 tests (1694→1714), +6 claves i18n
+
+### UX Enhancements + Keyboard Shortcuts (v4.20.0)
+
+Atajos de teclado (Ctrl+Enter/Shift+C/Shift+S/Esc) en las 20 herramientas, deteccion automatica de clipboard en MagicInput, diagrama railroad de regex (22t), tree view JSON (22t), auditoria visual de 20 herramientas (~60 fixes), polish dark mode Cost Calculator. +44 tests (1714→1758, total acumulado: 1780)
+
+### SEO/GEO Overhaul + Mobile Responsive (v4.21.0)
+
+Sprint de SEO profesional y responsive mobile — 31 archivos (5 nuevos + 26 edits):
+
+- **SEO:** 5 nuevos `layout.tsx` con metadata/JSON-LD para herramientas invisibles a Google; ItemList + HowTo structured data; OG images en todos los tools; sitemap actualizado; robots noindex en paginas de usuario
+- **GEO:** Reescritura completa de `llms.txt` y `llms-full.txt` — 20 herramientas, URLs devflowai.dev, 8 idiomas
+- **Domain:** Migracion de URLs de devflowai.vercel.app a devflowai.dev
+- **i18n ES:** 33 nombres de herramientas corregidos — Title Case → sentence case, 12 titulos sin traducir traducidos al espanol
+- **Mobile:** Overflow corregido en 8 herramientas (375px viewport), sidebar con fade transition + cierre automatico en cambio de orientacion, prevencion de zoom iOS en inputs
+- **Easter egg:** Rediseno con ASCII art, pills de features, links compactos
+
+**Resultado acumulado sprints v4.16-v4.21:** 1780 tests passing, 0 vulnerabilidades, 0 lint errors, 0 type errors, produccion live en devflowai.dev
+
 ---
 
 ## 9. Conclusiones
@@ -772,7 +799,7 @@ Auditoria exhaustiva de responsividad y accesibilidad visual — 11 fixes en 4 f
 2. **Arquitectura ejemplar:** Clean Architecture con patron 5-capas replicado sin excepciones en las 20 herramientas
 3. **Performance maxima:** Lighthouse 100/100/100/100, Server Components, ISR
 4. **Testing robusto:** 1780 tests unitarios + 25 E2E specs + accessibility audit (axe-core WCAG AAA), coverage per-file
-5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner. Cuatro auditorias exhaustivas con 79 fixes totales: prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, crypto.getRandomValues, prompt sandboxing, storage validation, responsive/a11y
+5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner. Cuatro auditorias exhaustivas con 79+ fixes: prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, crypto.getRandomValues, prompt sandboxing, storage validation, responsive/a11y
 6. **Developer Experience:** TypeScript strict, ESLint + security plugin, CI/CD con 10 quality gates
 7. **UX avanzada:** PWA instalable, Command Palette (Cmd+K), MagicInput, Export/Import, dark/light mode, WCAG AAA
 8. **IA opcional:** 4 proveedores con fallback automatico, BYOK, rate limiting IP-based
@@ -816,6 +843,9 @@ _Completado (ya implementado):_
 - ~~axe-core WCAG AAA audit~~ → 19 paginas auditadas (20 tools + settings + docs + history + tools index)
 - ~~Export/Import de configuracion~~ → JSON roundtrip con validacion Zod
 - ~~Command Palette~~ → `Cmd+K` con busqueda fuzzy de 20 tools + acciones
+- ~~Share via URL~~ → Compartir estado de herramienta con compresion gzip + base64url
+- ~~Keyboard shortcuts~~ → Ctrl+Enter, Ctrl+Shift+C/S, Escape en las 20 herramientas
+- ~~SEO/GEO profesional~~ → JSON-LD structured data, llms.txt, sitemap, OG images, dominio propio devflowai.dev
 
 _Corto plazo (1-2 meses):_
 
@@ -827,7 +857,7 @@ _Medio plazo (3-6 meses):_
 - Supabase integration para cloud sync
 - Team collaboration (context windows compartidos)
 - Browser extension (analizar prompts in-page)
-- ~~Mas idiomas (FR, DE, PT)~~ → Implementado: 8 idiomas (EN, ES, FR, PT, DE, IT, ZH, JA) con deteccion automatica del navegador
+- ~~Mas idiomas (FR, DE, PT)~~ → Implementado: 8 idiomas (EN, ES, FR, PT, DE, IT, ZH, JA) con deteccion automatica del navegador, IA responde en el idioma seleccionado
 
 _Largo plazo (6-12 meses):_
 
@@ -892,7 +922,7 @@ Archivos clave:
 
 ### Anexo C: Demo en Produccion
 
-https://devflowai.vercel.app
+https://devflowai.dev
 
 ### Anexo D: Guia de Instalacion
 
