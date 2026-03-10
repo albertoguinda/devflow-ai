@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
-  preload: false, // Not needed for LCP — loads on-demand when font-mono class is used
+  preload: true,
   adjustFontFallback: true,
 });
 
