@@ -7,7 +7,7 @@ import { HeroUIProvider } from "@heroui/system";
 import { SWRConfig } from "swr";
 import { FavoritesProvider } from "@/lib/context";
 import { ToastProvider } from "@/components/shared/toast-container";
-import { useLocaleStore } from "@/lib/stores/locale-store";
+import { useLocaleStore, hydrateLocale } from "@/lib/stores/locale-store";
 const CommandPalette = dynamic(
   () => import("@/components/shared/command-palette").then((m) => m.CommandPalette),
   { ssr: false },
@@ -20,6 +20,10 @@ const InstallPrompt = dynamic(
 
 function HtmlLangSync() {
   const locale = useLocaleStore((s) => s.locale);
+
+  useEffect(() => {
+    hydrateLocale();
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = locale;
