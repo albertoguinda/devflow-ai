@@ -1,11 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Zap, Monitor, LockOpen, Star, Github, Linkedin, Heart, ArrowRight } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { GsapReveal } from "@/components/marketing/gsap-reveal";
-import { FeaturesSection } from "@/components/marketing/features-section";
 import { cn } from "@/lib/utils";
+
+// Lazy load FeaturesSection — below the fold, splits TOOLS_DATA + TOOL_ICON_MAP into separate chunk
+const FeaturesSection = dynamic(
+  () => import("@/components/marketing/features-section").then((m) => ({ default: m.FeaturesSection })),
+);
 
 interface HomeContentProps {
   stars: number | null;
