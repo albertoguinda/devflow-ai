@@ -24,19 +24,18 @@ const loaders: Record<string, (() => Promise<{ default: Record<string, string> }
 
 export function useTranslation() {
   const locale = useLocaleStore((s) => s.locale);
-  const [dict, setDict] = useState<Record<string, string>>(() => localeCache[locale] ?? en);
+  const [, setVersion] = useState(0);
+
+  // Dict derived synchronously from module cache — no setState in effect body needed
+  const dict = localeCache[locale] ?? en;
 
   useEffect(() => {
-    const cached = localeCache[locale];
-    if (cached) {
-      setDict(cached);
-      return;
-    }
+    if (localeCache[locale]) return;
     const load = loaders[locale];
     if (load) {
       load().then((mod) => {
         localeCache[locale] = mod.default;
-        setDict(mod.default);
+        setVersion((v) => v + 1); // async callback — lint-safe
       });
     }
   }, [locale]);

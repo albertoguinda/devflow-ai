@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.21.0] - 2026-03-10
 
+### Fixed
+- **ESLint `react-hooks/set-state-in-effect`** — `useTranslation` hook now derives `dict` synchronously from module-level cache instead of calling `setDict()` inside `useEffect` body; async `.then()` callback triggers re-render via version counter
+- **CLS regression (0 → 0.052)** — reverted FeaturesSection `next/dynamic` lazy loading back to static import; GSAP stagger animation was re-triggering after lazy chunk hydration, causing visible layout shift
+
 ### SEO + GEO Overhaul & Mobile Responsiveness
 
 #### Added
