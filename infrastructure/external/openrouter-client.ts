@@ -51,7 +51,7 @@ export class OpenRouterClient implements AIProviderPort {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.apiKey}`,
-          "HTTP-Referer": "https://devflowai.vercel.app",
+          "HTTP-Referer": "https://devflowai.dev",
           "X-Title": "DevFlow AI",
         },
         body: JSON.stringify({

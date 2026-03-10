@@ -118,13 +118,13 @@ export const TOOLS_DATA: Tool[] = [
     name: "Regex Humanizer",
     slug: "regex-humanizer",
     description:
-      "Explain regex in plain Spanish, generate patterns from descriptions.",
+      "Explain regex in plain language, generate patterns from descriptions.",
     longDescription:
-      "Regex Humanizer makes regular expressions accessible. Paste any regex to get a detailed explanation in Spanish, or describe what you need and get the pattern generated for you. Includes a real-time tester with syntax highlighting and capture group visualization.",
+      "Regex Humanizer makes regular expressions accessible. Paste any regex to get a detailed explanation in plain language, or describe what you need and get the pattern generated for you. Includes a real-time tester with syntax highlighting and capture group visualization.",
     icon: "Regex",
     category: "analysis",
     features: [
-      "Regex explanation in Spanish",
+      "Regex explanation in plain language",
       "Pattern generation from text",
       "Real-time testing",
       "Syntax highlighting",
@@ -169,7 +169,7 @@ export const TOOLS_DATA: Tool[] = [
     description:
       "Visual cron expression builder with human-readable explanations.",
     longDescription:
-      "Cron Builder makes scheduling easy. Build cron expressions visually without memorizing cryptic syntax. See human-readable explanations in Spanish, preview next execution times, and choose from common presets. Perfect for DevOps, backend developers, and anyone working with scheduled tasks.",
+      "Cron Builder makes scheduling easy. Build cron expressions visually without memorizing cryptic syntax. See human-readable explanations in your language, preview next execution times, and choose from common presets. Perfect for DevOps, backend developers, and anyone working with scheduled tasks.",
     icon: "Clock",
     category: "generation",
     features: [
@@ -344,14 +344,14 @@ export const TOOLS_DATA: Tool[] = [
     description:
       "Search and learn about HTTP status codes with examples and usage tips.",
     longDescription:
-      "HTTP Status Finder is your comprehensive reference for HTTP status codes. Search by code number or keyword, filter by category (1xx-5xx), and get detailed information including description, when to use, and real-world examples. Features 55+ status codes with Spanish descriptions, color-coded categories, and quick access to the most common codes. Perfect for API developers and backend engineers.",
+      "HTTP Status Finder is your comprehensive reference for HTTP status codes. Search by code number or keyword, filter by category (1xx-5xx), and get detailed information including description, when to use, and real-world examples. Features 55+ status codes with multilingual descriptions, color-coded categories, and quick access to the most common codes. Perfect for API developers and backend engineers.",
     icon: "Globe",
     category: "analysis",
     features: [
       "55+ HTTP status codes",
       "Search by code or keyword",
       "Filter by category (1xx-5xx)",
-      "Detailed descriptions in Spanish",
+      "Detailed descriptions in your language",
       "When to use guidelines",
       "Real-world examples",
       "Color-coded categories",

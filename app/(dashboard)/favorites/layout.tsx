@@ -4,9 +4,7 @@ export const metadata: Metadata = {
   title: "Favorites",
   description:
     "Your favorite DevFlowAI developer tools. Quick access to the tools you use most.",
-  alternates: {
-    canonical: "https://devflowai.dev/favorites",
-  },
+  robots: { index: false, follow: true },
 };
 
 export default function FavoritesLayout({

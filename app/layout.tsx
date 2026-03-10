@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s | DevFlowAI",
   },
   description:
-    "Free, open-source developer toolkit for AI development. Analyze prompts, review code, calculate API costs, visualize tokens, and manage context windows. Built by developers, for developers.",
+    "Free, open-source developer toolkit with 20 browser-based tools. JSON formatter, regex tester, Base64 encoder, UUID generator, hash generator, JWT decoder, color converter, diff comparer, password generator, prompt analyzer, code review, API cost calculator, and more. No login required.",
   keywords: [
     "AI developer tools",
     "free developer tools",
@@ -49,6 +49,14 @@ export const metadata: Metadata = {
     "git commit generator",
     "HTTP status codes",
     "variable name generator",
+    "hash generator online",
+    "SHA-256 hash",
+    "JWT decoder online",
+    "color converter hex rgb hsl",
+    "diff comparer online",
+    "password generator secure",
+    "developer utilities online free",
+    "browser-based developer tools",
     "LLM tools",
     "ChatGPT tools",
     "Claude tools",
@@ -74,12 +82,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    alternateLocale: "es_ES",
+    alternateLocale: ["es_ES", "fr_FR", "pt_BR", "de_DE", "it_IT", "zh_CN", "ja_JP"],
     url: SITE_URL,
     siteName: "DevFlowAI",
     title: "DevFlowAI - Free & Open Source Developer Utilities",
     description:
-      "Free, open-source developer toolkit for AI development. 15 browser-based tools — prompt analyzer, code review, API cost calculator, token visualizer, and more. No login required.",
+      "Free, open-source developer toolkit for AI development. 20 browser-based tools — prompt analyzer, code review, API cost calculator, token visualizer, hash generator, JWT decoder, and more. No login required.",
   },
   twitter: {
     card: "summary_large_image",
@@ -116,7 +124,7 @@ const jsonLd = {
   url: SITE_URL,
   description:
     "Free & open-source developer toolkit for AI development. Analyze prompts, review code, calculate API costs, and more.",
-  inLanguage: ["en", "es"],
+  inLanguage: ["en", "es", "fr", "pt", "de", "it", "zh", "ja"],
   creator: {
     "@type": "Organization",
     name: "DevFlowAI Community",
@@ -136,14 +144,14 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "DevFlowAI",
   url: SITE_URL,
-  logo: `${SITE_URL}/icon-512.png`,
+  logo: `${SITE_URL}/icons/icon-512x512.png`,
   description:
     "Open-source developer tools community building free, privacy-first utilities for AI development.",
   sameAs: [
     "https://github.com/albertoguinda/devflow-ai",
   ],
   foundingDate: "2025",
-  knowsLanguage: ["en", "es"],
+  knowsLanguage: ["en", "es", "fr", "pt", "de", "it", "zh", "ja"],
 };
 
 const softwareJsonLd = {
@@ -158,8 +166,10 @@ const softwareJsonLd = {
     price: "0",
     priceCurrency: "USD",
   },
-  featureList: "Prompt Analyzer, Code Review, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder, UUID Generator",
-  softwareVersion: "4.15.2",
+  featureList: "Prompt Analyzer, Code Review, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder, UUID Generator, Hash Generator, JWT Decoder, Color Converter, Diff Comparer, Password Generator",
+  softwareVersion: "4.20.0",
+  datePublished: "2025-01-01",
+  dateModified: "2026-03-10",
   numberOfDownloads: "10000+",
   aggregateRating: {
     "@type": "AggregateRating",

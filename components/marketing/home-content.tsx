@@ -30,13 +30,8 @@ export function HomeContent({ stars }: HomeContentProps) {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_50%_at_80%_50%,rgba(236,72,153,0.08),transparent)] dark:bg-[radial-gradient(ellipse_60%_50%_at_80%_50%,rgba(236,72,153,0.05),transparent)]" />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_50%_at_20%_80%,rgba(16,185,129,0.06),transparent)] dark:bg-[radial-gradient(ellipse_60%_50%_at_20%_80%,rgba(16,185,129,0.04),transparent)]" />
 
-        <div className="container mx-auto px-4 py-16 md:py-24">
-          <div className="mx-auto max-w-4xl space-y-6 text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-900 dark:bg-blue-900/30 dark:text-blue-200">
-              <Zap className="size-4" />
-              {t("home.badge")}
-            </span>
-
+        <div className="container mx-auto px-4 py-20 md:py-32">
+          <div className="mx-auto max-w-4xl space-y-8 text-center">
             <h1 className="text-5xl font-bold leading-tight text-foreground md:text-7xl">
               {t("home.title1")}
               <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent animate-gradient-text">
@@ -44,14 +39,14 @@ export function HomeContent({ stars }: HomeContentProps) {
               </span>
             </h1>
 
-            <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
+            <p className="mx-auto max-w-2xl text-lg md:text-xl text-muted-foreground">
               {t("home.subtitle")}
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link
                 href="/tools"
-                className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 px-8 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
+                className="inline-flex h-12 w-full sm:w-auto sm:min-w-[200px] cursor-pointer items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 px-8 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
               >
                 {t("home.getStarted")}
                 <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -61,7 +56,7 @@ export function HomeContent({ stars }: HomeContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${t("home.starGithub")} (GitHub)`}
-                className="inline-flex h-12 min-w-[200px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-8 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-lg"
+                className="inline-flex h-12 w-full sm:w-auto sm:min-w-[200px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-background px-8 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 <Github className="size-5" aria-hidden="true" />
                 {t("home.starGithub")}
@@ -79,12 +74,12 @@ export function HomeContent({ stars }: HomeContentProps) {
       {/* Stats Section */}
       <GsapReveal className="container mx-auto px-4 py-10">
         <h2 className="sr-only">{t("home.statsLabel")}</h2>
-        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-6 md:grid-cols-4">
+        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">
           {stats.map((stat) => (
             <div
               key={stat.label}
               className={cn(
-                "group relative cursor-pointer overflow-hidden rounded-xl bg-muted/50 p-6 text-center border border-border/40 transition-all duration-300 card-glow-border",
+                "group relative cursor-pointer overflow-hidden rounded-xl bg-muted/50 p-4 sm:p-6 text-center border border-border/40 transition-all duration-300 card-glow-border",
                 "hover:-translate-y-1 hover:shadow-[0_0_30px_-5px]",
                 stat.glow
               )}
@@ -94,7 +89,7 @@ export function HomeContent({ stars }: HomeContentProps) {
               <div className={cn("mb-3 mx-auto flex size-10 items-center justify-center rounded-lg bg-gradient-to-br text-white transition-transform duration-300 group-hover:scale-110", stat.color)}>
                 {stat.icon}
               </div>
-              <span className="block h-9 text-3xl font-bold text-foreground">
+              <span className="block h-9 text-2xl sm:text-3xl font-bold text-foreground">
                 {stat.value ?? (stars !== null ? stars.toLocaleString() : "\u2014")}
               </span>
               <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
@@ -133,7 +128,7 @@ export function HomeContent({ stars }: HomeContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${t("home.starGithub")} — DevFlowAI`}
-                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-gray-800 to-gray-950 dark:from-gray-100 dark:to-gray-300 px-6 text-base font-semibold text-white dark:text-gray-900 shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
+                className="inline-flex h-12 w-full sm:w-auto sm:min-w-[200px] items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-gray-800 to-gray-950 dark:from-gray-100 dark:to-gray-300 px-6 text-base font-semibold text-white dark:text-gray-900 shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
               >
                 <Github className="size-5" aria-hidden="true" />
                 {t("home.starGithub")}
@@ -143,7 +138,7 @@ export function HomeContent({ stars }: HomeContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("home.contributeTools")}
-                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-md"
+                className="inline-flex h-12 w-full sm:w-auto sm:min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-md"
               >
                 <Zap className="size-5" aria-hidden="true" />
                 {t("home.contributeTools")}
@@ -153,7 +148,7 @@ export function HomeContent({ stars }: HomeContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("home.followLinkedin")}
-                className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-md"
+                className="inline-flex h-12 w-full sm:w-auto sm:min-w-[200px] items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 text-base font-semibold text-foreground transition-all hover:bg-muted hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-md"
               >
                 <Linkedin className="size-5" aria-hidden="true" />
                 {t("home.followLinkedin")}

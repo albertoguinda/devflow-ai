@@ -1,79 +1,99 @@
 # DevFlowAI
 
-> Free, open-source developer toolkit for AI development. 15 browser-based tools. No login, no API keys required. Everything works locally. AI features are optional and free.
+> Free, open-source developer toolkit for AI development. 20 browser-based tools. No login, no API keys required. Everything works locally. AI features are optional and free.
 
-- Full documentation: https://devflowai.vercel.app/llms-full.txt
+- Full documentation: https://devflowai.dev/llms-full.txt
 
 ## About
 
-DevFlowAI is a collection of 15 developer productivity tools that run entirely in the browser. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS v4. Designed for developers working with AI/LLM APIs.
+DevFlowAI is a collection of 20 developer productivity tools that run entirely in the browser. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS v4. Designed for developers working with AI/LLM APIs.
 
-- URL: https://devflowai.vercel.app
+- URL: https://devflowai.dev
 - Source: https://github.com/albertoguinda/devflow-ai
 - License: MIT
-- Languages: English, Spanish (full bilingual UI)
+- Languages: English, Spanish, French, Portuguese, German, Italian, Chinese, Japanese
 
 ## Tools
 
 ### Prompt Analyzer
 Analyze prompt quality, detect injection vulnerabilities, and optimize prompts for LLMs. Scores prompts on clarity, specificity, context, and safety. Generates refined versions using XML-structured prompt engineering techniques.
-URL: https://devflowai.vercel.app/tools/prompt-analyzer
+URL: https://devflowai.dev/tools/prompt-analyzer
 
 ### Code Review Assistant
 Automated code quality analysis with issue detection, complexity scoring, and refactoring suggestions. Supports TypeScript, JavaScript, Python, and more.
-URL: https://devflowai.vercel.app/tools/code-review
+URL: https://devflowai.dev/tools/code-review
 
 ### API Cost Calculator
 Compare AI API costs across OpenAI, Anthropic, Google, and other providers. Input tokens, output tokens, and daily requests to see monthly cost projections with interactive charts.
-URL: https://devflowai.vercel.app/tools/cost-calculator
+URL: https://devflowai.dev/tools/cost-calculator
 
 ### Token Visualizer
 Real-time token counting and visualization for GPT and Claude tokenizers. See how AI models split your text into tokens, identify waste, and optimize prompt efficiency.
-URL: https://devflowai.vercel.app/tools/token-visualizer
+URL: https://devflowai.dev/tools/token-visualizer
 
 ### Context Manager
 Build and optimize LLM context windows. Upload files, organize by priority, track token budgets, and export optimized context in XML or JSON format.
-URL: https://devflowai.vercel.app/tools/context-manager
+URL: https://devflowai.dev/tools/context-manager
 
 ### Regex Humanizer
 Explain regular expressions in plain language. Paste any regex to get a detailed breakdown, or describe what you need and get the pattern generated. Includes real-time tester.
-URL: https://devflowai.vercel.app/tools/regex-humanizer
+URL: https://devflowai.dev/tools/regex-humanizer
 
 ### DTO-Matic
 Convert JSON API responses to TypeScript interfaces, domain entities, mapper functions, and Zod schemas. Follows Clean Architecture principles.
-URL: https://devflowai.vercel.app/tools/dto-matic
+URL: https://devflowai.dev/tools/dto-matic
 
 ### Cron Builder
 Visual cron expression builder with human-readable explanations, next execution preview, and common presets.
-URL: https://devflowai.vercel.app/tools/cron-builder
+URL: https://devflowai.dev/tools/cron-builder
 
 ### Tailwind Sorter
 Sort Tailwind CSS classes by category, remove duplicates, order responsive variants, and preview light/dark mode output.
-URL: https://devflowai.vercel.app/tools/tailwind-sorter
+URL: https://devflowai.dev/tools/tailwind-sorter
 
 ### Variable Name Wizard
 Generate variable names from descriptions, convert between 8 naming conventions (camelCase, PascalCase, snake_case, etc.), and get type-aware suggestions.
-URL: https://devflowai.vercel.app/tools/variable-name-wizard
+URL: https://devflowai.dev/tools/variable-name-wizard
 
 ### JSON Formatter
 Format, minify, validate JSON. Extract paths, compare documents, generate TypeScript interfaces, and view real-time statistics.
-URL: https://devflowai.vercel.app/tools/json-formatter
+URL: https://devflowai.dev/tools/json-formatter
 
 ### HTTP Status Finder
 Search and explore HTTP status codes with descriptions, use cases, code snippets, and a decision wizard to find the right status code.
-URL: https://devflowai.vercel.app/tools/http-status-finder
+URL: https://devflowai.dev/tools/http-status-finder
 
 ### Git Commit Generator
 Generate Conventional Commits messages from diffs or descriptions. Supports feat, fix, docs, style, refactor, test, and chore types with scopes and breaking changes.
-URL: https://devflowai.vercel.app/tools/git-commit-generator
+URL: https://devflowai.dev/tools/git-commit-generator
 
 ### Base64 Encoder/Decoder
 Encode and decode Base64 with support for text, files, and images. Includes batch processing, JWT decoding, byte analysis, and hex/binary views.
-URL: https://devflowai.vercel.app/tools/base64
+URL: https://devflowai.dev/tools/base64
 
 ### UUID Generator
 Generate UUID v1, v3, v4, v5, and v7. Batch generation, namespace support, bit-level inspection, and bulk validation.
-URL: https://devflowai.vercel.app/tools/uuid-generator
+URL: https://devflowai.dev/tools/uuid-generator
+
+### Hash Generator
+Generate cryptographic hashes (MD5, SHA-1, SHA-256, SHA-384, SHA-512) for text and files. Compare hashes, batch processing, and HMAC support.
+URL: https://devflowai.dev/tools/hash-generator
+
+### JWT Decoder
+Decode and inspect JSON Web Tokens. View header, payload, and signature. Validate expiration, check claims, and format output.
+URL: https://devflowai.dev/tools/jwt-decoder
+
+### Color Converter
+Convert colors between HEX, RGB, HSL, HSB, and CMYK formats. Color picker, contrast checker, palette generation, and CSS output.
+URL: https://devflowai.dev/tools/color-converter
+
+### Diff Comparer
+Compare two texts side-by-side with syntax highlighting. Detect additions, deletions, and modifications. Supports unified and split diff views.
+URL: https://devflowai.dev/tools/diff-comparer
+
+### Password Generator
+Generate secure passwords with customizable length, character sets, and entropy calculation. Passphrase mode, strength meter, and batch generation.
+URL: https://devflowai.dev/tools/password-generator
 
 ## Technical Stack
 
@@ -81,6 +101,6 @@ URL: https://devflowai.vercel.app/tools/uuid-generator
 - Language: TypeScript 5 (maximum strict mode, zero `any`)
 - Styling: Tailwind CSS v4 + HeroUI v3
 - AI Backend: 4 providers (Gemini, Groq, OpenRouter, Pollinations)
-- Testing: 1466+ unit tests (Vitest), 20 E2E specs (Playwright)
+- Testing: 1780+ unit tests (Vitest), 25 E2E specs (Playwright)
 - Accessibility: WCAG AAA compliant, axe-core audited
 - Architecture: Clean Architecture with 5-layer pattern per tool

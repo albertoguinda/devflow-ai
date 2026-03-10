@@ -4,9 +4,7 @@ export const metadata: Metadata = {
   title: "Settings",
   description:
     "Configure your DevFlowAI preferences. Manage theme, notifications, and tool settings.",
-  alternates: {
-    canonical: "https://devflowai.dev/settings",
-  },
+  robots: { index: false, follow: true },
 };
 
 export default function SettingsLayout({

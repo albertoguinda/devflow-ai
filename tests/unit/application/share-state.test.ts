@@ -127,8 +127,8 @@ describe("share-state", () => {
 
   describe("buildShareUrl", () => {
     it("should build a valid URL with hash", () => {
-      const url = buildShareUrl("https://devflowai.vercel.app/tools/json-formatter", "c.abc123");
-      expect(url).toBe("https://devflowai.vercel.app/tools/json-formatter#c.abc123");
+      const url = buildShareUrl("https://devflowai.dev/tools/json-formatter", "c.abc123");
+      expect(url).toBe("https://devflowai.dev/tools/json-formatter#c.abc123");
     });
 
     it("should replace existing hash", () => {

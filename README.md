@@ -609,7 +609,7 @@ quality:    ESLint (+ plugin seguridad) → TypeScript → Tests + Coverage → 
 security:   npm audit --audit-level=high + lockfile-lint (en paralelo)
 dep-review: dependency-review-action en PRs (moderate+ bloqueado)
 build:      next build → generacion SBOM (CycloneDX, retencion 90 dias) + tracking tamano bundle
-e2e:        Tests E2E Playwright (20 specs, 70 tests, Chromium, despues de build)
+e2e:        Tests E2E Playwright (25 specs, 85 tests, Chromium, despues de build)
 a11y:       Auditoria de accesibilidad axe-core WCAG AAA (19 paginas, despues de build)
 codeql:     CodeQL JS/TS SAST (push + PRs + semanal)
 semgrep:    Semgrep SAST — OWASP Top 10, React, Next.js, TypeScript (SARIF → pestana Security)
@@ -648,7 +648,7 @@ Este proyecto es el TFM del **Master Desarrollo con IA** (BIG School).
 | Presentacion (PPTX) | [docs/TFM-Slides.pptx](./docs/TFM-Slides.pptx) |
 | Presentacion (Slidev interactivo) | [slides/presentation.md](./slides/presentation.md) — `npx @slidev/cli slides/presentation.md` |
 | Guia de slides | [docs/SLIDES-GUIDE.md](./docs/SLIDES-GUIDE.md) |
-| Demo en produccion | https://devflowai.vercel.app |
+| Demo en produccion | https://devflowai.dev |
 | Repositorio | https://github.com/albertoguinda/devflow-ai |
 
 ---

@@ -437,7 +437,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
               {history.slice(0, 10).map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-4 rounded-lg border border-border p-3 transition-colors duration-200 hover:bg-muted/50"
+                  className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 rounded-lg border border-border p-3 transition-colors duration-200 hover:bg-muted/50"
                 >
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
                     <span
@@ -529,7 +529,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
 
               {/* Zone 2: Radar chart - centered, larger */}
               <div className="flex-1 flex justify-center">
-                <div className="size-[280px]">
+                <div className="size-[220px] sm:size-[280px]">
                   <AnatomyRadar dimensions={result.dimensions} compareDimensions={compareItem?.dimensions} axisLabels={radarLabels} />
                 </div>
               </div>
@@ -547,7 +547,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                 <p className="mt-1.5 text-sm text-muted-foreground">
                   {t("promptAnalyzer.scoreResult", { score: result.score, category: t(`promptAnalyzer.category.${result.category}`) })}
                 </p>
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div className="flex items-center gap-2 rounded-lg bg-muted/40 px-3 py-2">
                     <FileText className="size-4 shrink-0 text-blue-500" />
                     <span className="text-sm font-medium">{t("common.tokens", { count: result.tokenCount })}</span>
@@ -562,7 +562,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                   </div>
                 </div>
 
-                <div className="mt-4 flex gap-2">
+                <div className="mt-4 flex flex-col sm:flex-row gap-2">
                   <Button
                     size="sm"
                     variant="outline"
@@ -588,7 +588,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
 
           {/* Anatomy Breakdown */}
           <Card className="p-6">
-            <div className="mb-5 flex items-center justify-between">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="flex items-center gap-2 font-semibold text-foreground">
                   <Layers className="size-5 text-primary" />
@@ -598,7 +598,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                   {t("promptAnalyzer.anatomy.subtitle")}
                 </p>
               </div>
-              <div className="flex items-center gap-3 rounded-xl bg-primary/10 px-4 py-2">
+              <div className="flex items-center gap-3 rounded-xl bg-primary/10 px-4 py-2 self-start sm:self-auto">
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   {t("promptAnalyzer.anatomy.score")}
                 </span>
@@ -653,11 +653,11 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                       </div>
                     </div>
                     {dim.evidence ? (
-                      <p className="mt-2 ml-11 text-xs text-muted-foreground italic truncate">
+                      <p className="mt-2 ml-8 sm:ml-11 text-xs text-muted-foreground italic truncate">
                         &ldquo;{dim.evidence}&rdquo;
                       </p>
                     ) : (
-                      <p className="mt-2 ml-11 text-xs text-muted-foreground">
+                      <p className="mt-2 ml-8 sm:ml-11 text-xs text-muted-foreground">
                         {t(`promptAnalyzer.anatomy.tip.${dim.id}`)}
                       </p>
                     )}
@@ -715,7 +715,7 @@ ${result.refinedPrompt ? `## Refined Prompt\n${result.refinedPrompt}` : ""}
                     {t("ai.getRefinement")}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {(["clarity", "specificity", "conciseness"] as const).map((goal) => (
                     <Button
                       key={goal}

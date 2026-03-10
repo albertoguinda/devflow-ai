@@ -4,9 +4,7 @@ export const metadata: Metadata = {
   title: "History",
   description:
     "View your DevFlowAI usage history. Revisit previous tool results and analyses.",
-  alternates: {
-    canonical: "https://devflowai.dev/history",
-  },
+  robots: { index: false, follow: true },
 };
 
 export default function HistoryLayout({

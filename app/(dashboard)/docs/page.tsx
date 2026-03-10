@@ -113,9 +113,9 @@ export default function DocsPage() {
               {/* Colored top bar */}
               <div className={cn("h-1.5 bg-gradient-to-r transition-all duration-300 group-hover:h-2", tool.color)} />
 
-              <div className="p-5">
+              <div className="p-4 sm:p-5">
                 {/* Header: Icon + Title + Open button */}
-                <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-3">
                   <div className="flex items-center gap-3 min-w-0">
                     {IconComponent && (
                       <div className={cn(
@@ -126,17 +126,17 @@ export default function DocsPage() {
                       </div>
                     )}
                     <div className="min-w-0">
-                      <h2 className="text-lg font-bold text-foreground truncate">
+                      <h2 className="text-base sm:text-lg font-bold text-foreground truncate">
                         {t(`tool.${tool.slug}.name`)}
                       </h2>
-                      <p className="text-sm text-muted-foreground line-clamp-1">
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
                         {t(`tool.${tool.slug}.description`)}
                       </p>
                     </div>
                   </div>
                   <NextLink
                     href={`/tools/${tool.slug}`}
-                    className="relative z-10 flex shrink-0 items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:border-foreground/30"
+                    className="relative z-10 flex self-start shrink-0 items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:border-foreground/30"
                   >
                     {t("docs.openTool")}
                     <ExternalLink className="size-3.5" aria-hidden="true" />

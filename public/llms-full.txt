@@ -1,22 +1,22 @@
 # DevFlowAI — Full Documentation for AI Systems
 
-> Free, open-source developer toolkit for AI development. 15 browser-based tools. No login, no API keys required. Everything works locally. AI features are optional and free.
+> Free, open-source developer toolkit for AI development. 20 browser-based tools. No login, no API keys required. Everything works locally. AI features are optional and free.
 
 ## About
 
-DevFlowAI is a collection of 15 developer productivity tools that run entirely in the browser. Built with Next.js 16, React 19, TypeScript 5, and Tailwind CSS v4. Designed for developers working with AI/LLM APIs.
+DevFlowAI is a collection of 20 developer productivity tools that run entirely in the browser. Built with Next.js 16, React 19, TypeScript 5, and Tailwind CSS v4. Designed for developers working with AI/LLM APIs.
 
-- URL: https://devflowai.vercel.app
+- URL: https://devflowai.dev
 - Source: https://github.com/albertoguinda/devflow-ai
 - License: MIT
-- Languages: English, Spanish (full bilingual UI with 1667 i18n keys)
+- Languages: 8 languages (EN, ES, FR, PT, DE, IT, ZH, JA)
 - Architecture: Clean Architecture, local-first, privacy-focused
-- Tests: 1466 unit tests + 20 E2E specs + axe-core WCAG accessibility audits
+- Tests: 1780 unit tests + 25 E2E specs + axe-core WCAG accessibility audits
 
 ## Tools — Detailed Reference
 
 ### 1. Prompt Analyzer
-**URL:** https://devflowai.vercel.app/tools/prompt-analyzer
+**URL:** https://devflowai.dev/tools/prompt-analyzer
 **Purpose:** Analyze prompt quality, detect injection vulnerabilities, and optimize prompts for LLMs.
 **Input:** Any text prompt intended for an AI model.
 **Output:** Quality score (0-100) across 4 dimensions (clarity, specificity, context, safety), list of issues with severity, and AI-refined versions.
@@ -25,11 +25,11 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 - Detects 12 prompt injection patterns (ignore instructions, role hijacking, data exfiltration, etc.)
 - Generates refined prompt versions with 3 optimization goals: clarity, specificity, conciseness
 - Uses XML-structured prompt engineering techniques (role, context, task, guidelines, output_format)
-- Bilingual: analyzes and generates in English or Spanish based on input language
+- Multilingual: analyzes and generates in 8 languages based on user locale
 **Use case:** Before sending a prompt to GPT-4, Claude, or Gemini, run it through the analyzer to catch issues and improve quality.
 
 ### 2. Code Review Assistant
-**URL:** https://devflowai.vercel.app/tools/code-review
+**URL:** https://devflowai.dev/tools/code-review
 **Purpose:** Automated code quality analysis with issue detection and refactoring suggestions.
 **Input:** Code snippet in any supported language (TypeScript, JavaScript, Python, Go, Rust, Java).
 **Output:** List of issues (type, line, description, suggestion), complexity score (1-10), summary, optional refactored snippet.
@@ -41,7 +41,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Paste a function before PR review to catch common issues and get actionable suggestions.
 
 ### 3. API Cost Calculator
-**URL:** https://devflowai.vercel.app/tools/cost-calculator
+**URL:** https://devflowai.dev/tools/cost-calculator
 **Purpose:** Compare AI API costs across providers with real-time pricing.
 **Input:** Number of input tokens, output tokens, and daily requests.
 **Output:** Monthly cost projection per model, comparison charts, cost optimization recommendations.
@@ -54,7 +54,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Before choosing an AI provider for production, compare monthly costs for your expected usage pattern.
 
 ### 4. Token Visualizer
-**URL:** https://devflowai.vercel.app/tools/token-visualizer
+**URL:** https://devflowai.dev/tools/token-visualizer
 **Purpose:** Real-time token counting and visualization for GPT and Claude tokenizers.
 **Input:** Any text string.
 **Output:** Token count, color-coded token boundaries, cost estimation per model, character-to-token ratio.
@@ -67,7 +67,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Optimize prompts for token efficiency — see which words waste tokens and how to restructure.
 
 ### 5. Context Manager
-**URL:** https://devflowai.vercel.app/tools/context-manager
+**URL:** https://devflowai.dev/tools/context-manager
 **Purpose:** Build and optimize LLM context windows with file management.
 **Input:** Text documents, files (drag & drop), or pasted content.
 **Output:** Organized context window with token budgets, utilization percentage, XML/JSON export.
@@ -80,7 +80,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** When building a RAG pipeline, organize and preview exactly what context goes to the LLM.
 
 ### 6. Regex Humanizer
-**URL:** https://devflowai.vercel.app/tools/regex-humanizer
+**URL:** https://devflowai.dev/tools/regex-humanizer
 **Purpose:** Explain regular expressions in plain language and generate patterns from descriptions.
 **Input:** A regex pattern OR a natural language description.
 **Output:** Plain-language explanation, matching/non-matching examples, warnings about edge cases.
@@ -89,11 +89,11 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 - Real-time tester with match highlighting and capture group visualization
 - Common pattern presets (email, URL, IP, phone, date, etc.)
 - AI-powered pattern generation from descriptions (optional)
-- Bilingual explanations (English/Spanish)
+- Multilingual explanations (8 languages)
 **Use case:** Debug a complex regex by pasting it and reading the human-readable explanation.
 
 ### 7. DTO-Matic
-**URL:** https://devflowai.vercel.app/tools/dto-matic
+**URL:** https://devflowai.dev/tools/dto-matic
 **Purpose:** Convert JSON API responses to TypeScript interfaces, entities, mappers, and Zod schemas.
 **Input:** Raw JSON object (e.g., API response body).
 **Output:** TypeScript interface (DTO), domain entity, mapper function, Zod validation schema.
@@ -107,7 +107,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Paste a JSON response from an API and instantly get production-ready TypeScript types.
 
 ### 8. Cron Builder
-**URL:** https://devflowai.vercel.app/tools/cron-builder
+**URL:** https://devflowai.dev/tools/cron-builder
 **Purpose:** Visual cron expression builder with human-readable explanations.
 **Input:** Cron expression string OR visual selection.
 **Output:** Validated cron expression, human-readable explanation, next 5 execution times.
@@ -120,7 +120,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Build a cron schedule visually instead of memorizing cron syntax.
 
 ### 9. Tailwind Sorter
-**URL:** https://devflowai.vercel.app/tools/tailwind-sorter
+**URL:** https://devflowai.dev/tools/tailwind-sorter
 **Purpose:** Sort and organize Tailwind CSS classes by category.
 **Input:** String of Tailwind CSS classes.
 **Output:** Sorted classes grouped by category, duplicates removed, variants ordered.
@@ -133,7 +133,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Clean up messy Tailwind class strings in your components.
 
 ### 10. Variable Name Wizard
-**URL:** https://devflowai.vercel.app/tools/variable-name-wizard
+**URL:** https://devflowai.dev/tools/variable-name-wizard
 **Purpose:** Generate meaningful variable names and convert between naming conventions.
 **Input:** Description of what the variable represents, or an existing variable name.
 **Output:** 5+ name suggestions with rationale, conversions across 8 naming conventions.
@@ -146,7 +146,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Stop naming variables "data" or "temp" — describe what it holds and get professional names.
 
 ### 11. JSON Formatter
-**URL:** https://devflowai.vercel.app/tools/json-formatter
+**URL:** https://devflowai.dev/tools/json-formatter
 **Purpose:** Format, minify, validate JSON with advanced features.
 **Input:** Raw JSON string.
 **Output:** Formatted/minified JSON, validation results, extracted paths, TypeScript interfaces.
@@ -162,7 +162,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Paste minified API response JSON to format it, or validate JSON before sending to an API.
 
 ### 12. Base64 Encoder/Decoder
-**URL:** https://devflowai.vercel.app/tools/base64
+**URL:** https://devflowai.dev/tools/base64
 **Purpose:** Encode and decode Base64 with support for text, files, and images.
 **Input:** Plain text, Base64 string, or file upload.
 **Output:** Encoded/decoded result with statistics.
@@ -177,7 +177,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Decode a Base64-encoded JWT token or encode an image for data URL embedding.
 
 ### 13. UUID Generator
-**URL:** https://devflowai.vercel.app/tools/uuid-generator
+**URL:** https://devflowai.dev/tools/uuid-generator
 **Purpose:** Generate, validate, and parse UUIDs in all versions.
 **Input:** Optional: existing UUID for validation/parsing.
 **Output:** Generated UUIDs with metadata.
@@ -192,7 +192,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Generate v4 UUIDs for database primary keys or v7 for sortable IDs.
 
 ### 14. Git Commit Generator
-**URL:** https://devflowai.vercel.app/tools/git-commit-generator
+**URL:** https://devflowai.dev/tools/git-commit-generator
 **Purpose:** Generate Conventional Commits messages from diffs or descriptions.
 **Input:** Code diff or natural language description of changes.
 **Output:** 3 commit message options ranked by conventionality.
@@ -208,7 +208,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 **Use case:** Paste your git diff and get a properly formatted Conventional Commit message.
 
 ### 15. HTTP Status Finder
-**URL:** https://devflowai.vercel.app/tools/http-status-finder
+**URL:** https://devflowai.dev/tools/http-status-finder
 **Purpose:** Search and explore HTTP status codes with descriptions and code snippets.
 **Input:** Status code number or keyword search.
 **Output:** Detailed status code information with examples.
@@ -222,6 +222,83 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 - Grid and table view modes
 **Use case:** Find the right HTTP status code for your API response instead of using 200 for everything.
 
+### 16. Hash Generator
+**URL:** https://devflowai.dev/tools/hash-generator
+**Purpose:** Generate cryptographic hashes for text and files using Web Crypto API.
+**Input:** Text string or file upload.
+**Output:** Hash digests in multiple algorithms simultaneously.
+**Features:**
+- Algorithms: MD5, SHA-1, SHA-256, SHA-384, SHA-512
+- File hashing via drag & drop
+- Hash comparison (verify integrity)
+- HMAC generation with secret key
+- Batch processing for multiple inputs
+- Copy individual or all hashes
+- Uppercase/lowercase output toggle
+**Use case:** Verify file integrity with SHA-256 checksums or generate HMAC signatures for API authentication.
+
+### 17. JWT Decoder
+**URL:** https://devflowai.dev/tools/jwt-decoder
+**Purpose:** Decode, inspect, and validate JSON Web Tokens without sending them to a server.
+**Input:** JWT string (header.payload.signature format).
+**Output:** Decoded header, payload with formatted claims, and signature info.
+**Features:**
+- Decode header (algorithm, type, key ID)
+- Parse all standard claims (iss, sub, aud, exp, nbf, iat, jti)
+- Expiration validation with countdown
+- Color-coded token segments
+- Claim descriptions and tooltips
+- Copy decoded sections
+- Privacy-first: never sends token to any server
+**Use case:** Debug authentication issues by inspecting JWT claims, expiration, and algorithm without exposing tokens.
+
+### 18. Color Converter
+**URL:** https://devflowai.dev/tools/color-converter
+**Purpose:** Convert colors between multiple formats with live preview and accessibility checking.
+**Input:** Color value in any supported format (HEX, RGB, HSL, HSB, CMYK).
+**Output:** Converted values in all formats, contrast ratios, and CSS code.
+**Features:**
+- Convert between HEX, RGB, HSL, HSB/HSV, and CMYK
+- Visual color picker with real-time preview
+- WCAG contrast ratio checker (AA/AAA compliance)
+- Palette generation (complementary, analogous, triadic, tetradic)
+- CSS variable output
+- Color blindness simulation
+- Named color lookup
+**Use case:** Convert a designer's HEX color to HSL for CSS custom properties, and verify WCAG contrast compliance.
+
+### 19. Diff Comparer
+**URL:** https://devflowai.dev/tools/diff-comparer
+**Purpose:** Compare two text blocks to find differences with line-level precision.
+**Input:** Two text blocks (original and modified).
+**Output:** Side-by-side or unified diff view with highlighted changes.
+**Features:**
+- Side-by-side (split) and unified diff views
+- Line-level and character-level diff highlighting
+- Addition, deletion, and modification detection
+- Line numbers with change indicators
+- Statistics: lines added, removed, modified
+- Copy diff output
+- Syntax highlighting for code diffs
+**Use case:** Compare two versions of a config file or code snippet to see exactly what changed.
+
+### 20. Password Generator
+**URL:** https://devflowai.dev/tools/password-generator
+**Purpose:** Generate cryptographically secure passwords with full customization.
+**Input:** Length, character set preferences, and generation mode.
+**Output:** Generated password(s) with strength analysis.
+**Features:**
+- Customizable length (4-128 characters)
+- Character sets: uppercase, lowercase, digits, symbols
+- Exclude ambiguous characters (0/O, 1/l/I)
+- Passphrase mode (word-based passwords)
+- Entropy calculation in bits
+- Visual strength meter
+- Batch generation (up to 100 passwords)
+- Estimated crack time display
+- Copy with one click
+**Use case:** Generate a 32-character password with high entropy for a database credential, or a memorable passphrase for a master password.
+
 ## Technical Architecture
 
 ### Stack
@@ -230,7 +307,7 @@ DevFlowAI is a collection of 15 developer productivity tools that run entirely i
 - **Styling:** Tailwind CSS v4 + HeroUI v3 component library
 - **AI Backend:** 4 providers with automatic fallback chain: Gemini 2.0 Flash -> Groq -> OpenRouter -> Pollinations (free)
 - **State:** Zustand (global) + localStorage (per-tool) + SWR (AI data fetching)
-- **Testing:** 1466 unit tests (Vitest) + 20 E2E specs (Playwright) + axe-core a11y
+- **Testing:** 1780 unit tests (Vitest) + 25 E2E specs (Playwright) + axe-core a11y
 - **Accessibility:** WCAG AAA compliant (7:1 contrast, 44px touch targets, keyboard navigation)
 - **CI/CD:** 8 GitHub Actions jobs (quality, security, build, a11y, e2e, CodeQL, Semgrep, Lighthouse)
 
@@ -266,7 +343,7 @@ tests/unit/application/<tool>.test.ts -> Unit tests
 ## FAQ
 
 **Is DevFlowAI free?**
-Yes, 100% free and open source (MIT license). All 15 tools work without login, API keys, or credit card.
+Yes, 100% free and open source (MIT license). All 20 tools work without login, API keys, or credit card.
 
 **Does it require an API key?**
 No. All tools work locally without any API key. AI features are optional and use Pollinations (free) by default. You can optionally bring your own key for Gemini, Groq, or OpenRouter.
@@ -275,7 +352,7 @@ No. All tools work locally without any API key. AI features are optional and use
 Yes. DevFlowAI is local-first. All processing happens in your browser. Data never leaves your machine unless you explicitly use an AI feature.
 
 **What languages does it support?**
-Full bilingual UI: English and Spanish. 1667 translation keys with complete parity.
+Full multilingual UI in 8 languages: English, Spanish, French, Portuguese, German, Italian, Chinese, and Japanese. ~1590 translation keys with complete parity.
 
 **Can I self-host it?**
 Yes. Clone the repo, run `npm install && npm run build && npm start`. Works with any Node.js 20+ hosting.

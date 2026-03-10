@@ -5,6 +5,40 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.21.0] - 2026-03-10
+
+### SEO + GEO Overhaul & Mobile Responsiveness
+
+#### Added
+- **5 tool layout files** — `layout.tsx` with `generateToolMetadata()` + `ToolJsonLd` for hash-generator, jwt-decoder, color-converter, diff-comparer, password-generator (previously invisible to search engines)
+- **ItemList JSON-LD** on `/tools` — 20-item structured data for Google catalog/carousel eligibility
+- **HowTo JSON-LD** on marketing layout — 4-step structured data for "how to use" rich results
+- **OG images** on all per-tool metadata — branded social share preview for all 20 tools
+- **iOS zoom prevention** — `font-size: max(16px, 1em)` on mobile inputs prevents Safari auto-zoom
+- **Sitemap expansion** — Added `/about` and `/docs` pages; removed user-specific pages (`/favorites`, `/history`, `/settings`)
+- **`robots: { index: false }`** on favorites, history, settings layouts (empty to crawlers)
+
+#### Changed
+- **"15 tools" → "20 tools"** across all metadata: root layout OG, opengraph-image, about layout, docs layout, tools layout, 8 locale `docs.subtitle` keys
+- **Domain migration** — `devflowai.vercel.app` → `devflowai.dev` in OpenRouter HTTP-Referer, dto-matic comment, share-state tests, `.env.example`, README
+- **`alternateLocale`** — expanded from `es_ES` to 7 locales (ES, FR, PT, DE, IT, ZH, JA)
+- **`inLanguage` / `knowsLanguage`** — expanded from `["en", "es"]` to 8 languages in WebSite + Organization JSON-LD
+- **Software JSON-LD** — featureList 20 tools, `softwareVersion` 4.20.0 → 4.21.0, added `datePublished`/`dateModified`
+- **Organization logo** — fixed 404 path (`/icon-512.png` → `/icons/icon-512x512.png`)
+- **Root description** — rewritten with tool names for long-tail SEO (+8 new keywords)
+- **OG image** — 20 tool pills (reduced sizing to fit), "20 developer tools" headline
+- **`llms.txt` + `llms-full.txt`** — full rewrite: 20 tools, `devflowai.dev` URLs, 8 languages, 1780 tests, 5 new tool sections
+- **tools-data.ts** — "Spanish" → "plain language" / "your language" / "multilingual" (6 occurrences)
+- **Focus rings** — replaced rectangular `outline` with `box-shadow` that follows `border-radius` on all interactive elements
+- **Easter egg** — redesigned console output: gradient badges, feature pills, cleaner links, try/catch wrapper
+- **Tool name translations** — translated 5 newer tools (hash/jwt/color/diff/password) into DE/PT/IT/JA; fixed ES capitalization
+- **Docs cards** — responsive layout (`flex-col sm:flex-row`), reduced padding on mobile, smaller text on narrow screens
+- **Home page mobile** — full-width buttons, reduced card padding/gap, smaller text on mobile
+- **Prompt Analyzer mobile** — responsive radar chart (220px→280px), stacking layouts, flex-wrap AI buttons, responsive margins
+
+#### Removed
+- **`home.badge` i18n key** — deleted from all 8 locale files (code reference already removed)
+
 ## [4.20.0] - 2026-03-09
 
 ### UX Enhancements — Keyboard Shortcuts, Visual Polish, 8-Language i18n

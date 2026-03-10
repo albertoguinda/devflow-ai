@@ -36,11 +36,20 @@ export function generateToolMetadata(slug: string): Metadata {
       url: `${SITE_URL}/tools/${tool.slug}`,
       type: "website",
       siteName: "DevFlowAI",
+      images: [
+        {
+          url: `${SITE_URL}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: `${tool.name} — Free Online Developer Tool | DevFlowAI`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [`${SITE_URL}/opengraph-image`],
     },
   };
 }

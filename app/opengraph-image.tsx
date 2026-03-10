@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "DevFlowAI - 15 Free Developer Tools for AI Development";
+export const alt = "DevFlowAI - 20 Free Developer Tools for AI Development";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -22,6 +22,11 @@ const TOOL_NAMES = [
   "Git Commit",
   "Base64",
   "UUID Generator",
+  "Hash Gen",
+  "JWT Decoder",
+  "Colors",
+  "Diff Compare",
+  "Password Gen",
 ];
 
 export default function OGImage() {
@@ -186,7 +191,7 @@ export default function OGImage() {
               margin: 0,
             }}
           >
-            15 developer tools
+            20 developer tools
           </h1>
           <h1
             style={{
@@ -209,11 +214,11 @@ export default function OGImage() {
               <span
                 key={name}
                 style={{
-                  fontSize: "13px",
+                  fontSize: "12px",
                   fontWeight: 600,
                   color: "#cbd5e1",
                   background: "rgba(148,163,184,0.1)",
-                  padding: "5px 14px",
+                  padding: "4px 10px",
                   borderRadius: "8px",
                   border: "1px solid rgba(148,163,184,0.15)",
                 }}
