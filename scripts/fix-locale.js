@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports, security/detect-non-literal-fs-filename */
 const fs = require("fs");
 const path = require("path");
 

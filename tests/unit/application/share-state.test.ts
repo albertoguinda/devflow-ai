@@ -283,6 +283,7 @@ describe("share-state", () => {
 
       // Patch Blob.prototype.stream to return a proper ReadableStream
       Blob.prototype.stream = function (this: Blob) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const blob = this;
         return new ReadableStream({
           async start(controller) {

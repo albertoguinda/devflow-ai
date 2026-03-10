@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const en = require('../locales/en.json');
 const es = require('../locales/es.json');
 const enK = Object.keys(en);

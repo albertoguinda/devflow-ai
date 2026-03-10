@@ -337,10 +337,11 @@ Duration: ~72s
 
 ### Sistema custom (sin i18next)
 
-- **~1590 claves** por idioma (EN/ES)
+- **8 idiomas:** EN, ES, FR, PT, DE, IT, ZH, JA
+- **~1590 claves** por idioma (x8 archivos)
 - Hook `useTranslation()` con interpolacion
-- Cambio instantaneo via Zustand
-- Paridad perfecta verificada
+- Deteccion automatica del navegador (`navigator.language`)
+- Cambio instantaneo via Zustand + Dropdown con banderas
 
 ### Cobertura
 
@@ -348,6 +349,8 @@ Duration: ~72s
 - Landing page, settings, docs, history
 - ARIA labels, placeholders, toasts
 - Error messages, empty states
+- **Strings inline de aplicacion** (cron days, regex tokens, HTTP descriptions, commit types) traducidas a los 8 idiomas
+- **IA responde en el idioma del usuario**
 
 </div>
 <div>
@@ -355,11 +358,11 @@ Duration: ~72s
 ### Ejemplo
 
 ```typescript
-// locales/en.json
+// locales/en.json (x8 archivos)
 { "costCalc.cachedPrices": "Using cached prices" }
 
-// locales/es.json
-{ "costCalc.cachedPrices": "Usando precios en cache" }
+// locales/ja.json
+{ "costCalc.cachedPrices": "キャッシュ価格を使用中" }
 
 // En el componente
 const { t } = useTranslation();
@@ -437,7 +440,7 @@ const { t } = useTranslation();
 
 <div class="p-4 bg-amber-500/10 rounded-lg text-center">
   <div class="text-4xl font-bold text-amber-400">~1590</div>
-  <div>Claves i18n (x2)</div>
+  <div>Claves i18n (x8)</div>
 </div>
 
 <div class="p-4 bg-cyan-500/10 rounded-lg text-center">
@@ -468,11 +471,11 @@ const { t } = useTranslation();
 1. **Producto funcional** — 20 tools en produccion
 2. **Clean Architecture** — 5-capas sin excepciones
 3. **Performance maxima** — Lighthouse 100x4
-4. **Testing robusto** — 1780 + 20 E2E + a11y
+4. **Testing robusto** — 1780 + 25 E2E + a11y
 5. **Seguridad enterprise** — SAST, CSP, rate limiting
 6. **UX avanzada** — PWA, Cmd+K, Share URL, shortcuts
 7. **IA opcional** — 4 proveedores, BYOK, fallback
-8. **i18n completo** — ~1590 claves EN/ES
+8. **i18n 8 idiomas** — ~1590 claves x8, deteccion automatica
 
 </div>
 <div>

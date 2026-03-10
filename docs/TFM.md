@@ -20,11 +20,11 @@ DevFlow AI es una plataforma open-source que centraliza **20 herramientas** esen
 
 - 20 herramientas funcionales end-to-end
 - 100% ejecucion local + IA opcional con 4 proveedores (Gemini, Groq, OpenRouter, Pollinations)
-- **1758 tests** con coverage estrategico 100/80/0 per-file (53 archivos de test)
-- 20 E2E specs con Playwright (20 tools + settings + navigation + accessibility WCAG AAA)
+- **1780 tests** con coverage estrategico 100/80/0 per-file (53 archivos de test)
+- 25 E2E specs con Playwright (20 tools + settings + navigation + accessibility WCAG AAA + command-palette + settings-export)
 - Lighthouse score **100/100/100/100** en Desktop
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
-- Internacionalizacion completa (English/Castellano, **~1590 claves** por idioma)
+- Internacionalizacion completa (**8 idiomas**: EN, ES, FR, PT, DE, IT, ZH, JA — **~1590 claves** por idioma, deteccion automatica del navegador)
 - **40 rutas** generadas (pages + API routes)
 - **10 CI jobs**: quality, security, dependency-review, build, e2e, a11y, CodeQL SAST, Semgrep SAST, Lighthouse, release
 - Command Palette (`Cmd+K`) para acceso rapido a cualquier herramienta
@@ -54,7 +54,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 
 - Aplicar React 19 y Next.js 16 con App Router y Server Components
 - Implementar Clean Architecture en un proyecto real de 20 herramientas
-- Crear una suite de tests comprehensiva (1758 tests) con Vitest + Playwright E2E
+- Crear una suite de tests comprehensiva (1780 tests) con Vitest + Playwright E2E
 - Utilizar IA generativa (Claude Code) como herramienta de desarrollo
 - Demostrar dominio de TypeScript 5 en modo maximo estricto
 
@@ -64,7 +64,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 - Lograr coverage estrategico 100/80/0 con enforcement per-file
 - Deploy en produccion con CI/CD completo (10 jobs: quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse)
 - Lighthouse score 100 en todas las metricas (Desktop)
-- Internacionalizacion completa (EN/ES, ~1590 claves por idioma)
+- Internacionalizacion completa (8 idiomas: EN/ES/FR/PT/DE/IT/ZH/JA, ~1590 claves por idioma, deteccion automatica del navegador)
 - Seguridad enterprise: CSP, HSTS, prototype pollution, SAST (CodeQL + Semgrep), harden-runner, eslint-plugin-security
 
 #### Objetivos de Producto
@@ -202,8 +202,9 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 
 **RF-18: Internacionalizacion**
 
-- ~1590 claves traducidas en English y Castellano
-- Cambio de idioma en tiempo real sin recarga
+- ~1590 claves traducidas en 8 idiomas (EN, ES, FR, PT, DE, IT, ZH, JA)
+- Deteccion automatica del idioma del navegador (`navigator.language`)
+- Cambio de idioma en tiempo real sin recarga via Dropdown con banderas y nombres nativos
 
 **RF-19: Share via URL**
 
@@ -408,7 +409,8 @@ page.tsx (Server Component - async)
 
 **Zustand (Locale):**
 
-- Store minimalista para idioma (en/es)
+- Store minimalista para idioma (8 locales: en/es/fr/pt/de/it/zh/ja)
+- Deteccion automatica del navegador en primera visita
 - Persistido en localStorage key `devflow-locale`
 
 **React Context + useReducer (Favoritos):**
@@ -426,10 +428,13 @@ page.tsx (Server Component - async)
 
 **Sistema custom ligero** (sin dependencia de i18next):
 
-- ~1590 claves de traduccion en `locales/en.json` y `locales/es.json`
+- ~1590 claves de traduccion en 8 archivos: `locales/{en,es,fr,pt,de,it,zh,ja}.json`
+- Traducciones inline de aplicacion (cron days/months, regex tokens, HTTP descriptions, commit types, wizard labels) en 8 idiomas — sin fallback a ingles
 - Hook `useTranslation()` con interpolacion `{key}`
 - Funcion server-side `t()` para Server Components
-- Cambio de idioma instantaneo via Zustand
+- Deteccion automatica del idioma del navegador (`navigator.language` → locale mapping)
+- Cambio de idioma instantaneo via Zustand + Dropdown con banderas emoji y nombres nativos
+- IA responde en el idioma del usuario (locale se pasa a los Route Handlers)
 
 ### 4.6 Seguridad
 
@@ -483,8 +488,8 @@ Modelo de coverage estrategico con enforcement per-file:
 
 ```
 Test Files  53 passed (53)
-Tests       1758 passed (1758)
-Duration    ~72s
+Tests       1780 passed (1780)
+Duration    ~97s
 ```
 
 **Distribucion por area (actual):**
@@ -514,15 +519,15 @@ Duration    ~72s
 | color-converter             | 49    |          |
 | diff-comparer               | 33    |          |
 | password-generator          | 59    |          |
-| share-state                 | 20    |          |
+| share-state                 | 42    |          |
 | regex-railroad              | 22    |          |
 | json-tree                   | 22    |          |
 | **Component tests**         | 95    | 11       |
 | **Infrastructure tests**    | 55    | 8        |
 | **API tests**               | 45    | 5        |
 | **Integration tests**       | 28    | 2        |
-| **Total**                   | **1758** | **53** |
-| **E2E (Playwright)**        | 20 specs | 20 tools + navigation + settings + accessibility (axe-core WCAG AA) + command-palette + settings-export |
+| **Total**                   | **1780** | **53** |
+| **E2E (Playwright)**        | 25 specs | 20 tools + navigation + settings + accessibility (axe-core WCAG AA) + command-palette + settings-export |
 
 ### 5.3 Tipos de Tests Implementados
 
@@ -599,7 +604,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 │  Job 1: QUALITY (paralelo)                                            │
 │  ├─ npm run lint              (ESLint 9 + eslint-plugin-security)     │
 │  ├─ npm run type-check        (tsc --noEmit strict)                   │
-│  ├─ npm run test:coverage     (1758 tests + umbrales per-file)        │
+│  ├─ npm run test:coverage     (1780 tests + umbrales per-file)        │
 │  └─ PR coverage comments      (artifacts 14 dias)                     │
 │                                                                        │
 │  Job 2: SECURITY (paralelo)                                           │
@@ -615,7 +620,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 │  └─ CycloneDX SBOM           (retencion 90 dias)                     │
 │                                                                        │
 │  Job 5: E2E (depende de Build)                                        │
-│  └─ Playwright tests          (20 specs, Chromium, retry=2)           │
+│  └─ Playwright tests          (25 specs, Chromium, retry=2)           │
 │                                                                        │
 │  Job 6: A11Y (depende de Build)                                       │
 │  └─ axe-core WCAG AAA         (19 paginas, critical/serious = 0)     │
@@ -657,14 +662,14 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | Metrica                    | Valor              |
 | -------------------------- | ------------------ |
 | Herramientas               | 20                 |
-| Tests unitarios            | 1758               |
-| Tests E2E (Playwright)     | 20 specs (70 tests)|
-| Archivos de test           | 53 unit + 20 E2E   |
+| Tests unitarios            | 1780               |
+| Tests E2E (Playwright)     | 25 specs (85 tests)|
+| Archivos de test           | 53 unit + 25 E2E   |
 | Archivos fuente (.ts/.tsx) | 228                |
 | Componentes React          | 25+                |
 | Custom hooks               | 22+                |
 | Paginas (routes)           | 40                 |
-| Claves i18n                | ~1590 (x2 idiomas) |
+| Claves i18n                | ~1590 (x8 idiomas: EN/ES/FR/PT/DE/IT/ZH/JA) |
 | Jobs CI/CD                 | 10                 |
 | Commits                    | 200+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
@@ -695,9 +700,9 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 - Skeletons de carga ✓
 - TypeScript strict mode ✓
 - Dark/Light mode con deteccion automatica ✓
-- i18n completo (EN/ES, ~1590 claves por idioma) ✓
-- Tests unitarios (1758 passing, 53 archivos) ✓
-- Tests E2E con Playwright (20 specs, 20 tools + a11y) ✓
+- i18n completo (8 idiomas, ~1590 claves por idioma, deteccion automatica del navegador) ✓
+- Tests unitarios (1780 passing, 53 archivos) ✓
+- Tests E2E con Playwright (25 specs, 20 tools + a11y + command-palette + settings-export) ✓
 - CI/CD pipeline (10 jobs) ✓
 - SAST (CodeQL + Semgrep) ✓
 - Command Palette (`Cmd+K`) ✓
@@ -719,7 +724,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 | Ejecucion local (privacidad) | Si         | No          | No           |
 | Open source                  | Si         | No          | Variable     |
 | Gratuito                     | Si         | Limitado    | Limitado     |
-| i18n                         | EN/ES      | Multi       | Ingles       |
+| i18n                         | 8 idiomas  | Multi       | Ingles       |
 
 ---
 
@@ -746,7 +751,7 @@ Tres auditorias exhaustivas con agentes especializados (security, quality, perfo
 - **Auditoria 2 (v4.13.0):** 24 fixes — prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, `crypto.getRandomValues()`
 - **Auditoria 3 (v4.14.0):** 25 fixes — prompt sandboxing (`<user_input>` XML delimiters), storage shape validation, `useMemo`/`useCallback` optimizations, `Set`/`Map` caching, input size caps
 
-**Resultado acumulado:** 68 fixes en 72 archivos. Estado final: 0 vulnerabilidades, 0 lint errors, 0 type errors, 1758 tests passing
+**Resultado acumulado:** 68 fixes en 72 archivos. Estado final: 0 vulnerabilidades, 0 lint errors, 0 type errors, 1780 tests passing
 
 ### Auditoria Pixel-Perfect & Responsive (v4.15.0)
 
@@ -766,7 +771,7 @@ Auditoria exhaustiva de responsividad y accesibilidad visual — 11 fixes en 4 f
 1. **Producto funcional end-to-end:** 20 herramientas reales desplegadas en produccion con 40 rutas
 2. **Arquitectura ejemplar:** Clean Architecture con patron 5-capas replicado sin excepciones en las 20 herramientas
 3. **Performance maxima:** Lighthouse 100/100/100/100, Server Components, ISR
-4. **Testing robusto:** 1758 tests unitarios + 20 E2E specs + accessibility audit (axe-core WCAG AAA), coverage per-file
+4. **Testing robusto:** 1780 tests unitarios + 25 E2E specs + accessibility audit (axe-core WCAG AAA), coverage per-file
 5. **Seguridad enterprise:** CSP sin unsafe-eval, HSTS, CodeQL + Semgrep SAST, SHA-pinned actions, harden-runner. Cuatro auditorias exhaustivas con 79 fixes totales: prototype pollution, XML/CSV injection, ReDoS, AbortController timeouts, crypto.getRandomValues, prompt sandboxing, storage validation, responsive/a11y
 6. **Developer Experience:** TypeScript strict, ESLint + security plugin, CI/CD con 10 quality gates
 7. **UX avanzada:** PWA instalable, Command Palette (Cmd+K), MagicInput, Export/Import, dark/light mode, WCAG AAA
@@ -807,7 +812,7 @@ Auditoria exhaustiva de responsividad y accesibilidad visual — 11 fixes en 4 f
 
 _Completado (ya implementado):_
 
-- ~~E2E tests con Playwright~~ → 20 specs (20 tools + navigation + settings + accessibility)
+- ~~E2E tests con Playwright~~ → 25 specs (20 tools + navigation + settings + accessibility + command-palette + settings-export)
 - ~~axe-core WCAG AAA audit~~ → 19 paginas auditadas (20 tools + settings + docs + history + tools index)
 - ~~Export/Import de configuracion~~ → JSON roundtrip con validacion Zod
 - ~~Command Palette~~ → `Cmd+K` con busqueda fuzzy de 20 tools + acciones
@@ -822,7 +827,7 @@ _Medio plazo (3-6 meses):_
 - Supabase integration para cloud sync
 - Team collaboration (context windows compartidos)
 - Browser extension (analizar prompts in-page)
-- Mas idiomas (FR, DE, PT)
+- ~~Mas idiomas (FR, DE, PT)~~ → Implementado: 8 idiomas (EN, ES, FR, PT, DE, IT, ZH, JA) con deteccion automatica del navegador
 
 _Largo plazo (6-12 meses):_
 
@@ -883,7 +888,7 @@ Archivos clave:
 - `lib/application/*.ts` - Logica pura de las 20 herramientas
 - `hooks/use-*.ts` - 22+ custom hooks
 - `app/(dashboard)/tools/*/page.tsx` - UI de cada herramienta
-- `tests/` - Suite de 1758 tests (53 archivos unit/component/integration + 20 E2E specs)
+- `tests/` - Suite de 1780 tests (53 archivos unit/component/integration + 25 E2E specs)
 
 ### Anexo C: Demo en Produccion
 

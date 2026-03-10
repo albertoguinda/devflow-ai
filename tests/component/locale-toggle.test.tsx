@@ -23,33 +23,42 @@ vi.mock("@/hooks/use-translation", () => ({
 
 // Mock HeroUI Dropdown as a simple button (dropdown behavior tested via Playwright)
 vi.mock("@heroui/react", () => {
-  const Dropdown = ({ children }: { children: React.ReactNode }) => <div data-testid="dropdown">{children}</div>;
-  Dropdown.Popover = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
-  Dropdown.Menu = ({ children }: { children: React.ReactNode }) => <div data-testid="dropdown-menu">{children}</div>;
-  Dropdown.Item = ({ children, id }: { children: React.ReactNode; id: string }) => <div data-testid={`locale-${id}`}>{children}</div>;
-  Dropdown.ItemIndicator = () => null;
-  const Label = ({ children }: { children: React.ReactNode }) => <span>{children}</span>;
-  return { Dropdown, Label };
+  function MockDropdown({ children }: { children: React.ReactNode }) { return <div data-testid="dropdown">{children}</div>; }
+  MockDropdown.displayName = "Dropdown";
+  function MockPopover({ children }: { children: React.ReactNode }) { return <div>{children}</div>; }
+  MockPopover.displayName = "Dropdown.Popover";
+  function MockMenu({ children }: { children: React.ReactNode }) { return <div data-testid="dropdown-menu">{children}</div>; }
+  MockMenu.displayName = "Dropdown.Menu";
+  function MockItem({ children, id }: { children: React.ReactNode; id: string }) { return <div data-testid={`locale-${id}`}>{children}</div>; }
+  MockItem.displayName = "Dropdown.Item";
+  MockDropdown.Popover = MockPopover;
+  MockDropdown.Menu = MockMenu;
+  MockDropdown.Item = MockItem;
+  function MockItemIndicator() { return null; }
+  MockItemIndicator.displayName = "Dropdown.ItemIndicator";
+  MockDropdown.ItemIndicator = MockItemIndicator;
+  const Label = function MockLabel({ children }: { children: React.ReactNode }) { return <span>{children}</span>; };
+  Label.displayName = "Label";
+  return { Dropdown: MockDropdown, Label };
 });
 
 // Mock Button
-vi.mock("@/components/ui", () => ({
-  Button: ({
-    children,
-    onPress,
-    isIconOnly,
-    ...props
-  }: Record<string, unknown>) => (
-    <button
-      onClick={() => (onPress as () => void)?.()}
-      aria-label={props["aria-label"] as string | undefined}
-      data-testid="locale-btn"
-      data-icon-only={isIconOnly ? "true" : undefined}
-    >
-      {children as React.ReactNode}
-    </button>
-  ),
-}));
+vi.mock("@/components/ui", () => {
+  function MockButton({ children, onPress, isIconOnly, ...props }: Record<string, unknown>) {
+    return (
+      <button
+        onClick={() => (onPress as () => void)?.()}
+        aria-label={props["aria-label"] as string | undefined}
+        data-testid="locale-btn"
+        data-icon-only={isIconOnly ? "true" : undefined}
+      >
+        {children as React.ReactNode}
+      </button>
+    );
+  }
+  MockButton.displayName = "Button";
+  return { Button: MockButton };
+});
 
 // Mock lucide-react
 vi.mock("lucide-react", () => ({
