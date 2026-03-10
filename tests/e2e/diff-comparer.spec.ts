@@ -39,7 +39,7 @@ test.describe("Diff Comparer Page", () => {
 
     // Click compare button
     const compareBtn = page
-      .getByRole("button", { name: /^compare$|^comparar$/i })
+      .getByRole("button", { name: /compare|comparar/i })
       .first();
     await expect(compareBtn).toBeVisible();
     await compareBtn.click();

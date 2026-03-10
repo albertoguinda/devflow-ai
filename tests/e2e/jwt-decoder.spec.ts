@@ -43,6 +43,6 @@ test.describe("JWT Decoder Page", () => {
     await decodeBtn.click();
 
     // Decoded payload should be visible with the "John Doe" name claim
-    await expect(page.getByText("John Doe")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("John Doe").first()).toBeVisible({ timeout: 10000 });
   });
 });

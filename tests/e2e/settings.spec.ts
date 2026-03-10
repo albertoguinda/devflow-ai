@@ -20,11 +20,15 @@ test.describe("Settings", () => {
     const settingsHeading = page.getByRole("heading", { level: 1 });
     const initialText = await settingsHeading.textContent();
 
-    // Click locale toggle
-    const localeToggle = page.getByRole("button", { name: /language|idioma|locale|en|es/i }).first();
-    await localeToggle.click();
+    // Open the locale selector (HeroUI v3 Select compound component)
+    // Target the Select trigger specifically (has aria-haspopup="listbox")
+    const localeTrigger = page.locator('button[aria-haspopup="listbox"][aria-label*="anguage" i], button[aria-haspopup="listbox"][aria-label*="dioma" i]').first();
+    await localeTrigger.click();
 
-    // Heading text should change after locale switch
-    await expect(settingsHeading).not.toHaveText(initialText ?? "");
+    // Select Español from the listbox
+    await page.getByRole("option", { name: /español/i }).click();
+
+    // Wait for async locale load + re-render
+    await expect(settingsHeading).not.toHaveText(initialText ?? "", { timeout: 10000 });
   });
 });

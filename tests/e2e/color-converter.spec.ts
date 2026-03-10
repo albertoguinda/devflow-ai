@@ -16,7 +16,7 @@ test.describe("Color Converter Page", () => {
 
   test("should have input field and accept a hex color", async ({ page }) => {
     // The color input field
-    const input = page.locator("input[type='text']").first();
+    const input = page.getByRole("textbox").first();
     await expect(input).toBeVisible();
     await input.fill("#ff6600");
     await expect(input).toHaveValue("#ff6600");
