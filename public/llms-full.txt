@@ -1,5 +1,17 @@
 # DevFlowAI — Full Documentation for AI Systems
 
+---
+title: DevFlowAI
+version: 4.21.0
+updated: 2026-03-10
+url: https://devflowai.dev
+source: https://github.com/albertoguinda/devflow-ai
+license: MIT
+languages: en, es, fr, pt, de, it, zh, ja
+categories: developer-tools, ai-tools, productivity, open-source
+capabilities: json-formatting, code-review, prompt-analysis, token-counting, regex-testing, uuid-generation, hash-generation, jwt-decoding, color-conversion, diff-comparison, password-generation, cron-building, base64-encoding, dto-generation, variable-naming, tailwind-sorting, http-status-lookup, git-commit-generation, context-management, cost-calculation
+---
+
 > Free, open-source developer toolkit for AI development. 20 browser-based tools. No login, no API keys required. Everything works locally. AI features are optional and free.
 
 ## About
@@ -12,6 +24,8 @@ DevFlowAI is a collection of 20 developer productivity tools that run entirely i
 - Languages: 8 languages (EN, ES, FR, PT, DE, IT, ZH, JA)
 - Architecture: Clean Architecture, local-first, privacy-focused
 - Tests: 1780 unit tests + 25 E2E specs + axe-core WCAG accessibility audits
+- Accessibility: WCAG AAA (7:1 contrast ratio, 44px touch targets, full keyboard navigation)
+- PWA: Installable, works offline for local tools
 
 ## Tools — Detailed Reference
 
@@ -356,3 +370,113 @@ Full multilingual UI in 8 languages: English, Spanish, French, Portuguese, Germa
 
 **Can I self-host it?**
 Yes. Clone the repo, run `npm install && npm run build && npm start`. Works with any Node.js 20+ hosting.
+
+**What browsers are supported?**
+All modern browsers: Chrome 90+, Firefox 90+, Safari 15+, Edge 90+. Progressive Web App support on Chrome and Edge.
+
+**How do I use AI features?**
+AI features work out of the box with Pollinations (free, no key needed). For better results, add your own API key for Gemini, Groq, or OpenRouter in Settings.
+
+## Tool Capability Matrix
+
+| Tool | AI-Enhanced | Local-Only | Input Type | Output Type | API Endpoint |
+|------|:-----------:|:----------:|------------|-------------|-------------|
+| Prompt Analyzer | Yes | Yes | Text prompt | Score + issues + improved prompt | /api/ai/suggest |
+| Code Review | Yes | Yes | Code snippet | Issues + complexity + refactoring | /api/ai/review |
+| Cost Calculator | No | Yes | Token counts + requests | Cost projections + charts | — |
+| Token Visualizer | No | Yes | Text | Token count + visualization + cost | — |
+| Context Manager | Yes | Yes | Documents/files | Organized context + token budget | /api/ai/refine |
+| Regex Humanizer | Yes | Yes | Regex OR description | Explanation + examples + warnings | /api/ai/suggest |
+| DTO-Matic | Yes | Yes | JSON object | TS interface + entity + mapper + Zod | /api/ai/suggest |
+| Cron Builder | No | Yes | Cron expression | Human description + next runs | — |
+| Tailwind Sorter | No | Yes | CSS classes | Sorted classes | — |
+| Variable Name Wizard | Yes | Yes | Description | 5+ name suggestions | /api/ai/suggest |
+| JSON Formatter | No | Yes | JSON string | Formatted/minified JSON | — |
+| HTTP Status Finder | No | Yes | Code or keyword | Status details + snippets | — |
+| Git Commit Generator | Yes | Yes | Diff or description | 3 commit options | /api/ai/suggest |
+| Base64 | No | Yes | Text/file/image | Encoded/decoded result | — |
+| UUID Generator | No | Yes | Optional UUID | Generated UUIDs + metadata | — |
+| Hash Generator | No | Yes | Text/file | Hash digests (MD5-SHA512) | — |
+| JWT Decoder | No | Yes | JWT string | Decoded header + payload | — |
+| Color Converter | No | Yes | Color value | All format conversions | — |
+| Diff Comparer | No | Yes | Two text blocks | Highlighted diff | — |
+| Password Generator | No | Yes | Length + options | Secure password + entropy | — |
+
+## Example Interactions
+
+### Prompt Analyzer — Example
+Input: "Tell me about dogs"
+Output:
+- Score: 32/100
+- Issues: [lack of specificity, no context, no output format, too vague]
+- Improved: "As a veterinary expert, provide a comprehensive overview of the top 5 most popular dog breeds for families with children. Include temperament, exercise needs, and grooming requirements. Format as a comparison table."
+
+### JSON Formatter — Example
+Input: `{"name":"DevFlowAI","tools":20,"free":true}`
+Output:
+```json
+{
+  "name": "DevFlowAI",
+  "tools": 20,
+  "free": true
+}
+```
+
+### Hash Generator — Example
+Input: "Hello, World!"
+Output:
+- MD5: 65a8e27d8879283831b664bd8b7f0ad4
+- SHA-256: dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f
+
+### Token Visualizer — Example
+Input: "The quick brown fox jumps over the lazy dog"
+Output: 9 tokens (cl100k_base), cost: $0.000009 (GPT-4o input)
+
+## Multilingual Support
+
+DevFlowAI's UI is fully translated into 8 languages with ~1590 translation keys per locale. AI-enhanced tools respond in the user's selected language. All tool names, descriptions, labels, error messages, and help text are localized.
+
+Supported locales: en (English), es (Spanish), fr (French), pt (Portuguese), de (German), it (Italian), zh (Chinese), ja (Japanese).
+
+## Integration Guide
+
+### Self-Hosting
+```bash
+git clone https://github.com/albertoguinda/devflow-ai.git
+cd devflow-ai
+npm install
+cp .env.example .env.local  # Optional: add AI provider keys
+npm run build
+npm start  # http://localhost:3000
+```
+
+### Environment Variables (all optional)
+- `GEMINI_API_KEY` — Google Gemini API key
+- `GROQ_API_KEY` — Groq API key
+- `OPENROUTER_API_KEY` — OpenRouter API key
+- `RATE_LIMIT_RPM` — Requests per minute (default: 10)
+- `RATE_LIMIT_DAILY_TOKENS` — Daily token limit (default: 500000)
+- `NEXT_PUBLIC_SENTRY_DSN` — Sentry error tracking (optional)
+
+### Using the AI API
+All AI endpoints accept JSON POST requests. No authentication required for default providers.
+
+```bash
+# Code review
+curl -X POST https://devflowai.dev/api/ai/review \
+  -H "Content-Type: application/json" \
+  -d '{"code": "function add(a, b) { return a + b; }", "language": "javascript"}'
+
+# Prompt analysis
+curl -X POST https://devflowai.dev/api/ai/suggest \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Tell me about dogs", "type": "analyze"}'
+```
+
+### BYOK (Bring Your Own Key)
+Add custom headers to use your own API key:
+```
+X-DevFlow-Provider: gemini|groq|openrouter
+X-DevFlow-API-Key: your-api-key-here
+```
+BYOK users get 5x rate limits (50 RPM, 2.5M daily tokens).

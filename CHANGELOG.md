@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ESLint `react-hooks/set-state-in-effect`** — `useTranslation` hook now derives `dict` synchronously from module-level cache instead of calling `setDict()` inside `useEffect` body; async `.then()` callback triggers re-render via version counter
 - **CLS regression (0 → 0.052)** — reverted FeaturesSection `next/dynamic` lazy loading back to static import; GSAP stagger animation was re-triggering after lazy chunk hydration, causing visible layout shift
 
+### SEO & GEO Maximum Push
+
+#### Added
+- **Multilingual keywords** — 20 new keywords in ES, FR, PT, DE, JA, ZH across root metadata for international search visibility
+- **Language alternates** — `alternates.languages` with all 8 locales + `x-default` on root metadata and all tool pages
+- **SoftwareSourceCode JSON-LD** — structured data for open-source repository discoverability (codeRepository, programmingLanguage, license)
+- **DNS prefetch** — `<link rel="dns-prefetch">` for AI provider APIs (Gemini, Groq, OpenRouter, Pollinations) and `<link rel="preconnect">` for Google Fonts
+- **16 AI crawler bots in robots.txt** — GPTBot, ClaudeBot, anthropic-ai, OAI-SearchBot, PerplexityBot, Amazonbot, CCBot, Meta-ExternalAgent, Bytespider, cohere-ai, YouBot, Diffbot, Bingbot, Applebot, YandexBot, Baiduspider
+- **Sitemap language alternates** — every URL now declares 8 language + x-default alternates for international indexing
+- **llms.txt structured rewrite** — version/date metadata, capability tags, categorized tool catalog (AI-enhanced vs local-only), key capabilities summary
+- **llms-full.txt expansion** — YAML-style metadata headers, capability matrix table (20 tools × 6 columns), example interactions, integration guide with curl examples, environment variables reference, BYOK documentation
+- **Per-tool multilingual keywords** — each tool page now includes `{name} online`, `{name} free`, `{name} herramienta gratis`, `{name} outil gratuit`, `{name} ferramenta gratis`
+- **Per-tool JSON-LD enhancements** — added `browserRequirements`, `softwareVersion`, `inLanguage` (8 langs), `availability`, `screenshot`, `author` to every WebApplication schema
+- **Expanded speculation rules** — prerender 7 top tools (was 3): json-formatter, regex-humanizer, uuid-generator, hash-generator, base64, password-generator, jwt-decoder
+
+#### Changed
+- **Sitemap priorities** — `/tools` hub upgraded to 0.9; removed `/dashboard` route (no SEO value)
+- **Sitemap frequency** — home + tools changed from monthly to weekly
+- **softwareVersion** bumped to 4.21.0 in root SoftwareApplication JSON-LD
+
 ### SEO + GEO Overhaul & Mobile Responsiveness
 
 #### Added

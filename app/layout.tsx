@@ -31,6 +31,7 @@ export const metadata: Metadata = {
   description:
     "Free, open-source developer toolkit with 20 browser-based tools. JSON formatter, regex tester, Base64 encoder, UUID generator, hash generator, JWT decoder, color converter, diff comparer, password generator, prompt analyzer, code review, API cost calculator, and more. No login required.",
   keywords: [
+    // English — primary
     "AI developer tools",
     "free developer tools",
     "open source developer toolkit",
@@ -62,10 +63,30 @@ export const metadata: Metadata = {
     "Claude tools",
     "GPT token counter",
     "no login developer tools",
+    // Spanish
     "herramientas para desarrolladores",
     "herramientas IA gratis",
+    "formateador JSON online",
+    "generador UUID gratis",
+    "calculadora costes API IA",
+    // French
+    "outils développeur gratuits",
+    "formateur JSON en ligne",
+    "générateur de mots de passe",
+    // Portuguese
+    "ferramentas para desenvolvedores",
+    "ferramentas IA gratuitas",
+    // German
+    "Entwickler-Tools kostenlos",
+    "JSON-Formatter online",
+    // Japanese
+    "開発者ツール 無料",
+    "AIツール オープンソース",
+    // Chinese
+    "免费开发者工具",
+    "AI开发工具",
   ],
-  authors: [{ name: "DevFlowAI Community" }],
+  authors: [{ name: "DevFlowAI Community", url: SITE_URL }],
   creator: "DevFlowAI",
   publisher: "DevFlowAI",
   robots: {
@@ -98,8 +119,22 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      "en": SITE_URL,
+      "es": SITE_URL,
+      "fr": SITE_URL,
+      "pt": SITE_URL,
+      "de": SITE_URL,
+      "it": SITE_URL,
+      "zh": SITE_URL,
+      "ja": SITE_URL,
+      "x-default": SITE_URL,
+    },
   },
   category: "Developer Tools",
+  other: {
+    "google-site-verification": process.env["GOOGLE_SITE_VERIFICATION"] ?? "",
+  },
 };
 
 export const viewport: Viewport = {
@@ -167,7 +202,7 @@ const softwareJsonLd = {
     priceCurrency: "USD",
   },
   featureList: "Prompt Analyzer, Code Review, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder, UUID Generator, Hash Generator, JWT Decoder, Color Converter, Diff Comparer, Password Generator",
-  softwareVersion: "4.20.0",
+  softwareVersion: "4.21.0",
   datePublished: "2025-01-01",
   dateModified: "2026-03-10",
   numberOfDownloads: "10000+",
@@ -176,6 +211,27 @@ const softwareJsonLd = {
     ratingValue: "4.8",
     ratingCount: "15",
     bestRating: "5",
+  },
+};
+
+const sourceCodeJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "DevFlowAI",
+  codeRepository: "https://github.com/albertoguinda/devflow-ai",
+  codeSampleType: "full",
+  programmingLanguage: ["TypeScript", "React", "CSS"],
+  runtimePlatform: "Node.js 20+",
+  targetProduct: {
+    "@type": "SoftwareApplication",
+    name: "DevFlowAI",
+    url: SITE_URL,
+  },
+  license: "https://opensource.org/licenses/MIT",
+  author: {
+    "@type": "Organization",
+    name: "DevFlowAI Community",
+    url: SITE_URL,
   },
 };
 
@@ -227,6 +283,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="philosophy" content="Para vosotros, developers" />
+        {/* DNS prefetch for AI provider APIs and external resources */}
+        <link rel="dns-prefetch" href="https://generativelanguage.googleapis.com" />
+        <link rel="dns-prefetch" href="https://api.groq.com" />
+        <link rel="dns-prefetch" href="https://openrouter.ai" />
+        <link rel="dns-prefetch" href="https://text.pollinations.ai" />
+        <link rel="dns-prefetch" href="https://github.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* GEO: LLM-readable alternate representations */}
         <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site description" />
         <link rel="alternate" type="text/plain" href="/llms-full.txt" title="LLM-readable full documentation" />
         <script
@@ -244,6 +308,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(sourceCodeJsonLd) }}
         />
       </head>
       <body
