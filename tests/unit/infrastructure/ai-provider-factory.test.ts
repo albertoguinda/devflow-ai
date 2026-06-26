@@ -38,6 +38,14 @@ vi.mock("@/infrastructure/external/pollinations-client", () => ({
   },
 }));
 
+// Capture the ordered provider chain handed to the fallback wrapper.
+vi.mock("@/infrastructure/external/fallback-ai-provider", () => ({
+  FallbackAIProvider: class MockFallbackAIProvider {
+    constructor(public providers: Array<{ _provider: string }>) {}
+    isAvailable() { return this.providers.length > 0; }
+  },
+}));
+
 import { createAIProvider } from "@/infrastructure/external/ai-provider-factory";
 
 const defaultEnv = {
@@ -48,74 +56,80 @@ const defaultEnv = {
   RATE_LIMIT_DAILY_TOKENS: 500_000,
 };
 
-describe("createAIProvider", () => {
+function chain(provider: unknown): string[] {
+  return (provider as { providers: Array<{ _provider: string }> }).providers.map(
+    (p) => p._provider,
+  );
+}
+
+describe("createAIProvider (runtime fallback chain)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGetServerEnv.mockReturnValue({ ...defaultEnv });
   });
 
-  // --- BYOK tests ---
+  // --- BYOK: user's provider first, Pollinations as safety net ---
 
-  it("returns GeminiClient when BYOK provider is gemini", () => {
-    const provider = createAIProvider({ key: "user-key", provider: "gemini" });
-    expect(provider).not.toBeNull();
-    expect((provider as unknown as { _provider: string })._provider).toBe("gemini");
+  it("BYOK gemini → [gemini, pollinations]", () => {
+    expect(chain(createAIProvider({ key: "user-key", provider: "gemini" }))).toEqual([
+      "gemini",
+      "pollinations",
+    ]);
   });
 
-  it("returns GroqClient when BYOK provider is groq", () => {
-    const provider = createAIProvider({ key: "user-key", provider: "groq" });
-    expect(provider).not.toBeNull();
-    expect((provider as unknown as { _provider: string })._provider).toBe("groq");
+  it("BYOK groq → [groq, pollinations]", () => {
+    expect(chain(createAIProvider({ key: "user-key", provider: "groq" }))).toEqual([
+      "groq",
+      "pollinations",
+    ]);
   });
 
-  it("returns OpenRouterClient when BYOK provider is openrouter", () => {
-    const provider = createAIProvider({ key: "user-key", provider: "openrouter" });
-    expect(provider).not.toBeNull();
-    expect((provider as unknown as { _provider: string })._provider).toBe("openrouter");
+  it("BYOK openrouter → [openrouter, pollinations]", () => {
+    expect(
+      chain(createAIProvider({ key: "user-key", provider: "openrouter" })),
+    ).toEqual(["openrouter", "pollinations"]);
   });
 
-  it("returns PollinationsClient when BYOK provider is pollinations", () => {
-    const provider = createAIProvider({ key: "user-key", provider: "pollinations" });
-    expect(provider).not.toBeNull();
-    expect((provider as unknown as { _provider: string })._provider).toBe("pollinations");
+  // --- Env-based chain: in order, Pollinations always last ---
+
+  it("only GEMINI_API_KEY → [gemini, pollinations]", () => {
+    mockGetServerEnv.mockReturnValue({ ...defaultEnv, GEMINI_API_KEY: "gm" });
+    expect(chain(createAIProvider())).toEqual(["gemini", "pollinations"]);
   });
 
-  // --- Env-based tests ---
-
-  it("returns GeminiClient when GEMINI_API_KEY is set", () => {
-    mockGetServerEnv.mockReturnValue({ ...defaultEnv, GEMINI_API_KEY: "gm-key" });
-    const provider = createAIProvider();
-    expect((provider as unknown as { _provider: string })._provider).toBe("gemini");
+  it("only GROQ_API_KEY → [groq, pollinations]", () => {
+    mockGetServerEnv.mockReturnValue({ ...defaultEnv, GROQ_API_KEY: "gq" });
+    expect(chain(createAIProvider())).toEqual(["groq", "pollinations"]);
   });
 
-  it("returns GroqClient when GROQ_API_KEY is set (no Gemini)", () => {
-    mockGetServerEnv.mockReturnValue({ ...defaultEnv, GROQ_API_KEY: "gq-key" });
-    const provider = createAIProvider();
-    expect((provider as unknown as { _provider: string })._provider).toBe("groq");
+  it("all keys → [gemini, groq, openrouter, pollinations]", () => {
+    mockGetServerEnv.mockReturnValue({
+      ...defaultEnv,
+      GEMINI_API_KEY: "gm",
+      GROQ_API_KEY: "gq",
+      OPENROUTER_API_KEY: "or",
+    });
+    expect(chain(createAIProvider())).toEqual([
+      "gemini",
+      "groq",
+      "openrouter",
+      "pollinations",
+    ]);
   });
 
-  it("returns OpenRouterClient when OPENROUTER_API_KEY is set (no Gemini/Groq)", () => {
-    mockGetServerEnv.mockReturnValue({ ...defaultEnv, OPENROUTER_API_KEY: "or-key" });
-    const provider = createAIProvider();
-    expect((provider as unknown as { _provider: string })._provider).toBe("openrouter");
-  });
-
-  it("returns PollinationsClient (fallback) when no keys are set", () => {
-    mockGetServerEnv.mockReturnValue({ ...defaultEnv });
-    const provider = createAIProvider();
-    expect(provider).not.toBeNull();
-    expect((provider as unknown as { _provider: string })._provider).toBe("pollinations");
+  it("no keys → [pollinations] (still works, no hard fail)", () => {
+    expect(chain(createAIProvider())).toEqual(["pollinations"]);
   });
 
   it("BYOK takes priority over env vars", () => {
-    mockGetServerEnv.mockReturnValue({ ...defaultEnv, GEMINI_API_KEY: "gm-key" });
-    const provider = createAIProvider({ key: "user-key", provider: "groq" });
-    expect((provider as unknown as { _provider: string })._provider).toBe("groq");
+    mockGetServerEnv.mockReturnValue({ ...defaultEnv, GEMINI_API_KEY: "gm" });
+    expect(chain(createAIProvider({ key: "user-key", provider: "groq" }))).toEqual([
+      "groq",
+      "pollinations",
+    ]);
   });
 
-  it("createAIProvider never returns null (Pollinations always available)", () => {
-    mockGetServerEnv.mockReturnValue({ ...defaultEnv });
-    const provider = createAIProvider();
-    expect(provider).not.toBeNull();
+  it("never returns null (Pollinations always present)", () => {
+    expect(createAIProvider()).not.toBeNull();
   });
 });
