@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./providers";
 import { ErrorBoundary } from "@/components/shared";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -323,6 +324,11 @@ export default function RootLayout({
         <Providers>
           <ErrorBoundary>{children}</ErrorBoundary>
         </Providers>
+        <Script
+          defer
+          src="https://analytics.deskfrost.com/script.js"
+          data-website-id="87088269-5fd6-4c2d-95a1-2aaca246a1be"
+        />
       </body>
     </html>
   );
