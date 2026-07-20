@@ -62,7 +62,7 @@ export function generateToolMetadata(slug: string): Metadata {
 }
 
 /** Serialize JSON-LD safely — escapes injection vectors */
-function safeJsonLd(data: unknown): string {
+export function safeJsonLd(data: unknown): string {
   return JSON.stringify(data)
     .replace(/</g, "\\u003c")
     .replace(/>/g, "\\u003e")
@@ -86,7 +86,8 @@ export function ToolJsonLd({ slug }: { slug: string }) {
     url: toolUrl,
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
-    browserRequirements: "Requires a modern web browser (Chrome 90+, Firefox 90+, Safari 15+, Edge 90+)",
+    browserRequirements:
+      "Requires a modern web browser (Chrome 90+, Firefox 90+, Safari 15+, Edge 90+)",
     softwareVersion: "4.21.0",
     inLanguage: ["en", "es", "fr", "pt", "de", "it", "zh", "ja"],
     offers: {

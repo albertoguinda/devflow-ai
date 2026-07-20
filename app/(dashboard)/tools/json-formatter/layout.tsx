@@ -1,4 +1,5 @@
 import { generateToolMetadata, ToolJsonLd } from "@/lib/metadata";
+import { ToolSeoContent } from "@/components/shared";
 
 export const metadata = generateToolMetadata("json-formatter");
 
@@ -9,6 +10,7 @@ export default function JsonFormatterLayout({
     <>
       <ToolJsonLd slug="json-formatter" />
       {children}
+      <ToolSeoContent slug="json-formatter" />
     </>
   );
 }

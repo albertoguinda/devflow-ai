@@ -51,6 +51,45 @@ const howToJsonLd = {
   },
 };
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is DevFlowAI free?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, DevFlowAI is 100% free and open source. All 20 tools work without login, API keys, or credit card. AI features use free providers by default.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does DevFlowAI require an API key?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. All tools work locally in your browser without any API key. AI-enhanced features are optional and use free providers (Pollinations). You can optionally bring your own key (BYOK) for Gemini, Groq, or OpenRouter.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What tools are included in DevFlowAI?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "DevFlowAI includes 20 tools: Prompt Analyzer, Code Review Assistant, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder/Decoder, UUID Generator, Hash Generator, JWT Decoder, Color Converter, Diff Comparer, and Password Generator.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is my data safe with DevFlowAI?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. DevFlowAI is local-first — all processing happens in your browser. Data is stored in localStorage and never sent to any server unless you explicitly use an AI feature. No tracking, no analytics cookies.",
+      },
+    },
+  ],
+};
+
 export default function MarketingLayout({
   children,
 }: Readonly<{
@@ -62,8 +101,14 @@ export default function MarketingLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(howToJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }}
+      />
       <Navbar />
-      <main id="main-content" className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">
+        {children}
+      </main>
     </>
   );
 }
