@@ -326,8 +326,8 @@ export default function RootLayout({
         </Providers>
         <Script
           defer
-          src="https://analytics.deskfrost.com/script.js"
-          data-website-id="87088269-5fd6-4c2d-95a1-2aaca246a1be"
+          src="https://stats.cherrydevlabs.com/script.js"
+          data-website-id="06a8edb1-02c0-4378-abd7-ff03136c5df5"
         />
       </body>
     </html>
