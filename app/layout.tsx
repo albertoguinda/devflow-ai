@@ -104,7 +104,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    alternateLocale: ["es_ES", "fr_FR", "pt_BR", "de_DE", "it_IT", "zh_CN", "ja_JP"],
+    alternateLocale: [
+      "es_ES",
+      "fr_FR",
+      "pt_BR",
+      "de_DE",
+      "it_IT",
+      "zh_CN",
+      "ja_JP",
+    ],
     url: SITE_URL,
     siteName: "DevFlowAI",
     title: "DevFlowAI - Free & Open Source Developer Utilities",
@@ -139,7 +147,10 @@ export const viewport: Viewport = {
 
 /** Serialize JSON-LD safely — escapes </script> injection vectors */
 function safeJsonLd(data: unknown): string {
-  return JSON.stringify(data).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
 }
 
 const jsonLd = {
@@ -172,9 +183,7 @@ const organizationJsonLd = {
   logo: `${SITE_URL}/icons/icon-512x512.png`,
   description:
     "Open-source developer tools community building free, privacy-first utilities for AI development.",
-  sameAs: [
-    "https://github.com/albertoguinda/devflow-ai",
-  ],
+  sameAs: ["https://github.com/albertoguinda/devflow-ai"],
   foundingDate: "2025",
   knowsLanguage: ["en", "es", "fr", "pt", "de", "it", "zh", "ja"],
 };
@@ -191,11 +200,11 @@ const softwareJsonLd = {
     price: "0",
     priceCurrency: "USD",
   },
-  featureList: "Prompt Analyzer, Code Review, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder, UUID Generator, Hash Generator, JWT Decoder, Color Converter, Diff Comparer, Password Generator",
+  featureList:
+    "Prompt Analyzer, Code Review, API Cost Calculator, Token Visualizer, Context Manager, JSON Formatter, Regex Humanizer, DTO-Matic, Cron Builder, Tailwind Sorter, Variable Name Wizard, HTTP Status Finder, Git Commit Generator, Base64 Encoder, UUID Generator, Hash Generator, JWT Decoder, Color Converter, Diff Comparer, Password Generator",
   softwareVersion: "4.21.0",
   datePublished: "2025-01-01",
   dateModified: "2026-03-10",
-  numberOfDownloads: "10000+",
 };
 
 const sourceCodeJsonLd = {
@@ -268,15 +277,32 @@ export default function RootLayout({
       <head>
         <meta name="philosophy" content="Para vosotros, developers" />
         {/* DNS prefetch for AI provider APIs and external resources */}
-        <link rel="dns-prefetch" href="https://generativelanguage.googleapis.com" />
+        <link
+          rel="dns-prefetch"
+          href="https://generativelanguage.googleapis.com"
+        />
         <link rel="dns-prefetch" href="https://api.groq.com" />
         <link rel="dns-prefetch" href="https://openrouter.ai" />
         <link rel="dns-prefetch" href="https://text.pollinations.ai" />
         <link rel="dns-prefetch" href="https://github.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         {/* GEO: LLM-readable alternate representations */}
-        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site description" />
-        <link rel="alternate" type="text/plain" href="/llms-full.txt" title="LLM-readable full documentation" />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/llms.txt"
+          title="LLM-readable site description"
+        />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/llms-full.txt"
+          title="LLM-readable full documentation"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}

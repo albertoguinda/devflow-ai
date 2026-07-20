@@ -8,8 +8,6 @@ export interface Tool {
   category: ToolCategory;
   features: string[];
   tags: string[];
-  rating: number;
-  usersCount: number;
   isFree: boolean;
   color: string;
 }

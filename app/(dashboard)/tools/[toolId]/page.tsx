@@ -4,13 +4,7 @@ import { use } from "react";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 import { Card, Button } from "@heroui/react";
-import {
-  Heart,
-  ArrowLeft,
-  Star,
-  Users,
-  Check,
-} from "lucide-react";
+import { Heart, ArrowLeft, Check } from "lucide-react";
 import { useFavorites } from "@/lib/context";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { useTranslation } from "@/hooks/use-translation";
@@ -48,7 +42,12 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
 
       {/* Header Card */}
       <Card className="group relative overflow-hidden border border-border/50 transition-all duration-300 hover:shadow-lg card-glow-border">
-        <div className={cn("h-1.5 bg-gradient-to-r transition-all duration-300 group-hover:h-2", tool.color)} />
+        <div
+          className={cn(
+            "h-1.5 bg-gradient-to-r transition-all duration-300 group-hover:h-2",
+            tool.color,
+          )}
+        />
         <div className="p-6">
           {/* Title Row */}
           <div className="mb-6 flex items-start justify-between">
@@ -56,7 +55,7 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
               <div
                 className={cn(
                   "flex size-16 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg transition-transform duration-300 group-hover:scale-105",
-                  tool.color
+                  tool.color,
                 )}
               >
                 {IconComponent ? (
@@ -70,16 +69,10 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
                   {t(`tool.${tool.slug}.name`)}
                 </h1>
                 <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Star className="size-4 fill-amber-500 text-amber-500" />
-                    {tool.rating}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Users className="size-4" />
-                    {t("tools.users", { count: tool.usersCount.toLocaleString() })}
-                  </span>
                   {tool.isFree && (
-                    <StatusBadge variant="success">{t("tools.free")}</StatusBadge>
+                    <StatusBadge variant="success">
+                      {t("tools.free")}
+                    </StatusBadge>
                   )}
                 </div>
               </div>
@@ -99,7 +92,7 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
                   "size-5",
                   favorited
                     ? "fill-red-500 text-red-500"
-                    : "text-muted-foreground"
+                    : "text-muted-foreground",
                 )}
               />
             </Button>
@@ -134,7 +127,9 @@ export default function ToolDetailPage({ params }: ToolDetailPageProps) {
                   className="flex items-center gap-3 rounded-lg bg-muted/50 px-4 py-3"
                 >
                   <Check className="size-5 shrink-0 text-green-500" />
-                  <span className="text-sm text-foreground">{t(`tool.${tool.slug}.feature.${String(idx)}`)}</span>
+                  <span className="text-sm text-foreground">
+                    {t(`tool.${tool.slug}.feature.${String(idx)}`)}
+                  </span>
                 </div>
               ))}
             </div>
