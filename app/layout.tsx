@@ -196,12 +196,6 @@ const softwareJsonLd = {
   datePublished: "2025-01-01",
   dateModified: "2026-03-10",
   numberOfDownloads: "10000+",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    ratingCount: "15",
-    bestRating: "5",
-  },
 };
 
 const sourceCodeJsonLd = {
