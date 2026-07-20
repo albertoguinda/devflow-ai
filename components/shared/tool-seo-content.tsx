@@ -52,14 +52,14 @@ export function ToolSeoContent({ slug }: { slug: string }) {
     >
       <div className="space-y-3">
         <h2 id={aboutId} className="text-xl font-semibold text-foreground">
-          About {tool.name}
+          About this tool
         </h2>
         <p className="leading-relaxed text-muted-foreground">{content.intro}</p>
       </div>
 
       <div className="space-y-3">
         <h2 id={howToId} className="text-xl font-semibold text-foreground">
-          How to use {tool.name}
+          How to use it
         </h2>
         <ol className="list-decimal space-y-2 pl-5 text-muted-foreground marker:text-muted-foreground">
           {content.howTo.map((step) => (
