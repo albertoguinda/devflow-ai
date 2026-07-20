@@ -120,17 +120,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
-    languages: {
-      "en": SITE_URL,
-      "es": SITE_URL,
-      "fr": SITE_URL,
-      "pt": SITE_URL,
-      "de": SITE_URL,
-      "it": SITE_URL,
-      "zh": SITE_URL,
-      "ja": SITE_URL,
-      "x-default": SITE_URL,
-    },
   },
   category: "Developer Tools",
   other: {

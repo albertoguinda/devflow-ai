@@ -36,17 +36,6 @@ export function generateToolMetadata(slug: string): Metadata {
     ],
     alternates: {
       canonical: `${SITE_URL}/tools/${tool.slug}`,
-      languages: {
-        "en": `${SITE_URL}/tools/${tool.slug}`,
-        "es": `${SITE_URL}/tools/${tool.slug}`,
-        "fr": `${SITE_URL}/tools/${tool.slug}`,
-        "pt": `${SITE_URL}/tools/${tool.slug}`,
-        "de": `${SITE_URL}/tools/${tool.slug}`,
-        "it": `${SITE_URL}/tools/${tool.slug}`,
-        "zh": `${SITE_URL}/tools/${tool.slug}`,
-        "ja": `${SITE_URL}/tools/${tool.slug}`,
-        "x-default": `${SITE_URL}/tools/${tool.slug}`,
-      },
     },
     openGraph: {
       title,
@@ -109,12 +98,6 @@ export function ToolJsonLd({ slug }: { slug: string }) {
     description: tool.longDescription,
     featureList: tool.features.join(", "),
     screenshot: `${SITE_URL}/opengraph-image`,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: String(tool.rating),
-      ratingCount: String(tool.usersCount),
-      bestRating: "5",
-    },
     author: {
       "@type": "Organization",
       name: "DevFlowAI Community",
