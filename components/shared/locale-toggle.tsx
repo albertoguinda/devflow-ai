@@ -32,26 +32,28 @@ export function LocaleToggle({ variant = "icon" }: LocaleToggleProps) {
 
   return (
     <Dropdown>
-      {variant === "full" ? (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="gap-3 px-4 py-2.5 text-sm font-medium w-full justify-start"
-          aria-label={t("sidebar.switchLocale")}
-        >
-          <span className="text-lg" aria-hidden="true">{current.flag}</span>
-          {current.native}
-        </Button>
-      ) : (
-        <Button
-          isIconOnly
-          variant="ghost"
-          size="sm"
-          aria-label={t("sidebar.switchLocale")}
-        >
-          <Globe className="size-5" />
-        </Button>
-      )}
+      <Dropdown.Trigger>
+        {variant === "full" ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-3 px-4 py-2.5 text-sm font-medium w-full justify-start"
+            aria-label={t("sidebar.switchLocale")}
+          >
+            <span className="text-lg" aria-hidden="true">{current.flag}</span>
+            {current.native}
+          </Button>
+        ) : (
+          <Button
+            isIconOnly
+            variant="ghost"
+            size="sm"
+            aria-label={t("sidebar.switchLocale")}
+          >
+            <Globe className="size-5" />
+          </Button>
+        )}
+      </Dropdown.Trigger>
       <Dropdown.Popover>
         <Dropdown.Menu
           selectionMode="single"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useLocaleStore } from "@/lib/stores/locale-store";
 import enDict from "@/locales/en.json";
 
@@ -24,7 +24,12 @@ const loaders: Record<string, (() => Promise<{ default: Record<string, string> }
 
 export function useTranslation() {
   const locale = useLocaleStore((s) => s.locale);
-  const [, setVersion] = useState(0);
+  // Subscribing to dictVersion re-renders EVERY consumer when any locale chunk
+  // finishes loading, so a language switch translates the whole page at once
+  // (not just the first component that triggered the load). The value itself
+  // is unused — the subscription is the point.
+  useLocaleStore((s) => s.dictVersion);
+  const markDictLoaded = useLocaleStore((s) => s.markDictLoaded);
 
   // Dict derived synchronously from module cache — no setState in effect body needed
   const dict = localeCache[locale] ?? en;
@@ -35,10 +40,10 @@ export function useTranslation() {
     if (load) {
       load().then((mod) => {
         localeCache[locale] = mod.default;
-        setVersion((v) => v + 1); // async callback — lint-safe
+        markDictLoaded();
       });
     }
-  }, [locale]);
+  }, [locale, markDictLoaded]);
 
   const t = useCallback(
     (key: string, params?: Record<string, string | number>): string => {
