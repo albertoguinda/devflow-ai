@@ -1,4 +1,5 @@
 import { generateToolMetadata, ToolJsonLd } from "@/lib/metadata";
+import { ToolSeoContent } from "@/components/shared";
 
 export const metadata = generateToolMetadata("cron-builder");
 
@@ -9,6 +10,7 @@ export default function CronBuilderLayout({
     <>
       <ToolJsonLd slug="cron-builder" />
       {children}
+      <ToolSeoContent slug="cron-builder" />
     </>
   );
 }

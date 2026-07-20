@@ -1,4 +1,5 @@
 import { generateToolMetadata, ToolJsonLd } from "@/lib/metadata";
+import { ToolSeoContent } from "@/components/shared";
 
 export const metadata = generateToolMetadata("tailwind-sorter");
 
@@ -9,6 +10,7 @@ export default function TailwindSorterLayout({
     <>
       <ToolJsonLd slug="tailwind-sorter" />
       {children}
+      <ToolSeoContent slug="tailwind-sorter" />
     </>
   );
 }

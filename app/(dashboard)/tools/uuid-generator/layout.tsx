@@ -1,4 +1,5 @@
 import { generateToolMetadata, ToolJsonLd } from "@/lib/metadata";
+import { ToolSeoContent } from "@/components/shared";
 
 export const metadata = generateToolMetadata("uuid-generator");
 
@@ -9,6 +10,7 @@ export default function UuidGeneratorLayout({
     <>
       <ToolJsonLd slug="uuid-generator" />
       {children}
+      <ToolSeoContent slug="uuid-generator" />
     </>
   );
 }
