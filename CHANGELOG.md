@@ -5,6 +5,12 @@ All notable changes to DevFlow AI will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+- **0 vulnerabilidades** (`npm audit`): añadido `overrides: { "postcss": ">=8.5.10" }` en `package.json` para forzar la copia transitiva de Next (era `postcss@8.4.31`, XSS moderate [GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93)) a `8.5.21`. `next build` (42 páginas) en verde. Evita el `npm audit fix --force`, que degradaría Next a la 9.x.
+- Mirrored a OneDev (`192.168.1.244:3000/DevFlowAI.git`).
+
 ## [4.21.0] - 2026-03-10
 
 ### Fixed
