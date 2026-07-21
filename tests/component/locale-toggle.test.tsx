@@ -50,6 +50,7 @@ describe("LocaleToggle", () => {
     fireEvent.click(screen.getByRole("button", { name: "Switch language" }));
     expect(screen.getAllByRole("menuitemradio")).toHaveLength(8);
     for (const native of ["Español", "Français", "Português", "Deutsch", "Italiano"]) {
+      // eslint-disable-next-line security/detect-non-literal-regexp -- hardcoded locale names, not user input
       expect(screen.getByRole("menuitemradio", { name: new RegExp(native, "i") })).toBeInTheDocument();
     }
   });
