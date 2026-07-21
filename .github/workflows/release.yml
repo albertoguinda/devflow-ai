@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_APP_URL: https://devflowai.vercel.app
+          NEXT_PUBLIC_APP_URL: https://devflowai.dev
 
       - name: Generate SBOM
         run: npm sbom --sbom-format cyclonedx > sbom.json

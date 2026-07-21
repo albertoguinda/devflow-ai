@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Repository
 
 - **Repo**: https://github.com/albertoguinda/devflow-ai
-- **Live**: https://devflowai.vercel.app
+- **Live**: https://devflowai.dev
 - **Default branch**: `main`
 - All commits and pushes go to `https://github.com/albertoguinda/devflow-ai`. Use Conventional Commits (`feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`).
 
