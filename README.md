@@ -29,6 +29,47 @@
 
 **No login. No API keys required. Everything works locally. AI features are optional and free.**
 
+![The 20-tool catalogue](./docs/screenshots/tools-catalogue.png)
+
+<details>
+<summary><b>More screenshots</b> — JSON Formatter and DTO-Matic</summary>
+
+JSON formatted, validated and analysed without a single byte leaving the browser:
+
+![JSON Formatter](./docs/screenshots/json-formatter.png)
+
+One JSON sample in, a TypeScript interface, a domain entity, a mapper and a Zod schema out:
+
+![DTO-Matic](./docs/screenshots/dto-matic.png)
+
+</details>
+
+---
+
+## How It Compares
+
+Honest version, because a skewed comparison table is worse than none:
+
+|                        | DevFlowAI | [it-tools](https://it-tools.tech) | [DevToys](https://devtoys.app) | [CyberChef](https://gchq.github.io/CyberChef/) |
+| ---------------------- | :-------: | :-------------------------------: | :----------------------------: | :--------------------------------------------: |
+| Tools                  | 20        | ~86                               | 30+                            | 300+                                           |
+| Runs in the browser    | Yes       | Yes                               | Desktop app                    | Yes                                            |
+| Login / account        | No        | No                                | No                             | No                                             |
+| Optional AI assistance | **Yes**   | No                                | No                             | No                                             |
+| Shareable tool state   | **Yes**   | No                                | No                             | Recipes                                        |
+| Interface languages    | **8**     | ~15                               | ~10                            | English                                        |
+| Accessibility target   | WCAG AAA  | —                                 | —                              | —                                              |
+| Licence                | MIT       | GPL-3.0                           | MIT                            | Apache-2.0                                     |
+
+**Pick it-tools** if raw tool count is what you want. **Pick DevToys** if you would rather
+have a native desktop app. **Pick CyberChef** for security and data-forensics pipelines —
+nothing here competes with 300+ chainable operations.
+
+**Pick DevFlowAI** if you want everyday web-development tools that also explain themselves:
+the regex in plain English, the cron expression with its next runs, the prompt with an
+injection score, the JSON as typed code. That, plus a shareable URL that carries your work,
+is what the others do not have.
+
 ---
 
 ## Tools

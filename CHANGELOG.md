@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Los tres menús desplegables de la aplicación estaban muertos en producción.** El
+  `Dropdown` de `@heroui/react@3.0.0-beta.7` no abre su popover en este proyecto: al pulsar el
+  disparador no aparece ningún `menu`, `listbox`, `menuitem` ni `option` en el árbol de
+  accesibilidad, con o sin el envoltorio `Dropdown.Trigger` documentado. Afectaba al selector
+  de formato de exportación del generador de UUID, al menú de acciones del asistente de
+  revisión de código y al selector de tipo del generador de commits — este último, además, con
+  el `Button` colgando directo de `<Dropdown>`, sin `Dropdown.Trigger`. **Ningún test los
+  cubría, que es por lo que se publicaron así.**
+
+  Sustituidos por `components/shared/action-menu.tsx`, el mismo patrón que ya se había escrito
+  a mano para `locale-toggle` por este motivo, ahora extraído una vez en lugar de copiado por
+  cuarta vez. Teclado completo (Enter/Espacio/↓ abren, flechas mueven, Inicio/Fin saltan, Enter
+  elige, Escape cierra y devuelve el foco al disparador, Tab cierra) y sin interactivos
+  anidados. `tests/e2e/action-menu.spec.ts` cubre los tres y la navegación por teclado: 89/89.
+
+### Added
+- **README con capturas y comparativa honesta** frente a it-tools, DevToys y CyberChef,
+  incluyendo dónde pierde (20 herramientas contra 86 y 300+). Es lo que mira un mantenedor de
+  lista curada antes de aceptar un proyecto, y hasta ahora el repo no tenía ni una imagen del
+  producto. Las capturas se regeneran con `node docs/demo/shots.mjs`.
+
+---
+
 Auditoría completa de SEO, GEO y posicionamiento (2026-07-29) más los arreglos que salieron
 de ella. El hilo común de casi todos: **fallos que no lanzan ninguna excepción**. Devuelven
 algo plausible, no rompen el build, y rompen el producto. Plan completo en

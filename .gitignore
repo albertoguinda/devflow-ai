@@ -83,6 +83,10 @@ docs/slides.md
 !/public/icons/*.png
 !/app/apple-icon.png
 !/app/opengraph-image.png
+# README screenshots. Tracked on purpose: a repo with no picture of the product
+# gets rejected from curated lists and read past on GitHub. Regenerate with
+# `node docs/demo/shots.mjs`.
+!/docs/screenshots/*.png
 
 # Demo media. The GENERATORS (docs/demo/*.mjs) are tracked — they are the tool.
 # The output is not: it is tens of MB and it is regenerated in one command.
