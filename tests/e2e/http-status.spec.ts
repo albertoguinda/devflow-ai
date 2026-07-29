@@ -18,7 +18,8 @@ test.describe("HTTP Status Finder", () => {
       .first();
     await card404.click();
 
-    // Detail view should show the status name and description
-    await expect(page.getByText("Not Found")).toBeVisible({ timeout: 10000 });
+    // Detail view should show the status name and description. `.first()`: the
+    // name appears both in the result card and in the detail panel.
+    await expect(page.getByText("Not Found").first()).toBeVisible({ timeout: 10000 });
   });
 });

@@ -7,8 +7,11 @@ test.describe("Cost Calculator", () => {
     const heading = page.getByRole("heading", { level: 1 });
     await expect(heading).toBeVisible();
 
-    // The estimated monthly cost section should be visible (contains dollar amount)
-    await expect(page.getByText(/estimated monthly cost/i)).toBeVisible({ timeout: 10000 });
+    // The estimated monthly cost section should be visible (contains dollar amount).
+    // `.first()`: the label appears twice (summary card + comparison table), and a
+    // bare getByText resolves to both, which is a strict-mode violation — the test
+    // failed on the assertion, not on the page.
+    await expect(page.getByText(/estimated monthly cost/i).first()).toBeVisible({ timeout: 10000 });
   });
 
   test("displays model names in the comparison table", async ({ page }) => {

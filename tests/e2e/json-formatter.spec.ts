@@ -25,7 +25,9 @@ test.describe("JSON Formatter", () => {
     const formatBtn = page.getByRole("button", { name: /format/i }).first();
     await formatBtn.click();
 
-    // Error badge should appear
-    await expect(page.getByText("ERROR")).toBeVisible();
+    // Error badge should appear. `.first()`: "ERROR" shows up in four places at
+    // once (badge, status line, output panel and stats), so a bare getByText is a
+    // strict-mode violation rather than a real failure.
+    await expect(page.getByText("ERROR").first()).toBeVisible();
   });
 });

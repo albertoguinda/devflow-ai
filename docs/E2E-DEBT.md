@@ -1,36 +1,86 @@
-# E2E test debt (para una sesión futura)
+# E2E test debt
 
-Estado a 2026-07-21. La suite Playwright e2e (`tests/e2e/`) tiene ~15 tests **funcionales** en rojo. Documentado aquí para atacarlo con tiempo, no en caliente.
+**Estado a 2026-07-29: no hay deuda. 85/85 tests en verde** (`npx playwright test`, Chromium,
+contra el build de producción).
 
-## Por qué aflora ahora
+Este fichero se escribió el 2026-07-21 documentando "~15 tests funcionales en rojo" para
+atacarlos con tiempo. Al medirlo de verdad hoy eran **3**, y ninguno era un fallo de la
+aplicación.
 
-El job **E2E Tests** (y el de a11y) estaba **`skipped` en TODOS los runs de CI anteriores** — el pipeline fallaba antes (vulnerabilidades `npm audit`), así que estos jobs nunca llegaban a ejecutarse ni a gatear. Al arreglar las vulns (2026-07-20), el pipeline avanza y por primera vez corren e2e + a11y, revelando deuda acumulada.
+## Qué eran realmente los 3
+
+Los tres fallaban por **violación de strict mode de Playwright**, no porque la herramienta no
+funcionase. `getByText(...)` sin `.first()` casa con todos los nodos que contienen ese texto, y
+si hay más de uno Playwright aborta la aserción en vez de resolverla:
+
+| Test | Coincidencias reales | Por qué |
+| --- | --- | --- |
+| `cost-calculator.spec.ts:4` — pricing display visible | 2 | "Estimated monthly cost" sale en la tarjeta de resumen y otra vez en la tabla comparativa |
+| `json-formatter.spec.ts:19` — error con JSON inválido | 4 | "ERROR" sale en la insignia, la línea de estado, el panel de salida y las estadísticas |
+| `http-status.spec.ts:12` — detalle de un código | 2 | "Not Found" sale en la tarjeta de resultado y en el panel de detalle |
+
+Arreglados añadiendo `.first()` con el motivo escrito al lado, para que nadie lo vuelva a
+"arreglar" tocando la aplicación.
+
+## Por qué la cifra vieja estaba inflada
+
+El job **E2E** (y el de a11y) llevaba `skipped` en todas las ejecuciones anteriores de CI: el
+pipeline fallaba antes, en el `npm audit`, así que nunca llegaban a correr. Al arreglar las
+vulnerabilidades el 2026-07-20 empezaron a ejecutarse y la deuda afloró de golpe. La cifra de
+"~15" se estimó en caliente, en mitad de esa tanda, mezclando fallos que se arreglaron en la
+misma sesión con el mismo fallo contado varias veces.
+
+**La lección no es la cifra, es el método:** una deuda apuntada de memoria envejece mal. Antes
+de planificar una sesión sobre este fichero, ejecuta la suite y mira lo que hay.
 
 ## Ya arreglado (no volver a tocar)
 
-- **Colisión de headings**: el bloque SEO (`ToolSeoContent`) añadía `<h2>About {tool.name}</h2>` / `How to use {tool.name}` que chocaban con `getByRole('heading', {name:/tool/i})` de los tests → strict mode violation. Corregido: headings sin el nombre del tool ("About this tool" / "How to use it").
-- **a11y `nested-interactive`**: HeroUI v3 beta `Dropdown.Trigger` + `Button` anidado. Regla desactivada en `accessibility.spec.ts` (junto a `color-contrast`/`duplicate-id`, ya desactivadas por "HeroUI beta"). Audit re-etiquetado a **WCAG 2.2 AA**.
-- **Language switcher**: reescrito sin el `Dropdown` de HeroUI (ver abajo). Verificado con e2e local.
+- **Colisión de encabezados**: `ToolSeoContent` añadía `<h2>About {tool.name}</h2>` y
+  `How to use {tool.name}`, que chocaban con el `getByRole('heading', {name:/tool/i})` de los
+  tests. Ahora los encabezados no llevan el nombre de la herramienta ("About this tool" /
+  "How to use it").
+- **a11y `nested-interactive`**: `Dropdown.Trigger` de HeroUI v3 beta con un `Button` anidado.
+  Regla desactivada en `accessibility.spec.ts`, junto a `color-contrast` y `duplicate-id`, ya
+  desactivadas por el mismo motivo. La auditoría está etiquetada como **WCAG 2.2 AA**.
+- **Selector de idioma**: reescrito sin el `Dropdown` de HeroUI (ver abajo).
 
-## Pendiente (la deuda)
+## Sigue vivo: el `Dropdown` de HeroUI v3 beta no abre
 
-~15 tests funcionales que fallan **también en local** (no son de CI ni del entorno):
+El `Dropdown` de `@heroui/react@3.0.0-beta.7` **no despliega su menú al hacer click** en este
+proyecto (verificado: tras el click no aparece `menu`/`listbox`/`option` en el árbol de
+accesibilidad).
 
-- `hash-generator.spec.ts:23` — generar hash al pulsar el botón.
-- `json-formatter.spec.ts:4,19` — formatear JSON / mostrar error (selector `.text-cyan-600` no encontrado → selector obsoleto).
-- `regex-humanizer.spec.ts:10` — el click en "analyze pattern" no produce salida (¿depende de IA sin key en CI/local?).
-- `variable-name-wizard`, `code-review`, `cost-calculator`, `context-manager`, `dto-matic`, `color-converter`, `diff-comparer`, `jwt-decoder`, `password-generator`, `tailwind-sorter`, `http-status` — varios "should load the page / functional".
+- **`locale-toggle`** — RESUELTO: reescrito como dropdown propio (botón + estado +
+  click-fuera/Escape, con `role="menu"` y `menuitemradio`). Sin dependencia del de HeroUI.
+- **`uuid-generator`, `code-review`, `git-commit-generator`** — sus menús de exportación y
+  acciones siguen usando `Dropdown.Trigger > Button`, el mismo patrón roto: **probablemente
+  tampoco abren**. Ningún test los cubre, que es justo por lo que no salta. Migrarlos al patrón
+  propio del `locale-toggle` o esperar a que HeroUI v3 estabilice el componente.
 
-**Causas probables** (a confirmar por spec):
-1. **Selectores obsoletos**: la UI cambió (clases/estructura) y los tests no se actualizaron (nunca corrían).
-2. **Tests que dependen de IA**: features que llaman a un proveedor LLM; sin API key en CI/local el output no llega y el test expira. Habría que mockear la ruta AI o marcarlos `test.skip` cuando no hay key.
-3. **Flaky**: 11 marcados flaky en el run — timings/red.
+## Aviso operativo, no de tests
 
-**Plan sugerido** (sesión dedicada): correr `npx playwright test --project=chromium` en local, ir spec a spec: actualizar selectores a `data-testid` estables, mockear/condicionar los de IA, y subir el umbral solo cuando el spec pase de verdad. No relajar tests a ciegas.
+Durante la ejecución, el proveedor de IA de último recurso responde:
 
-## Hallazgo importante: HeroUI v3 beta `Dropdown` no abre
+```
+[pollinations] upstream error 402: API key budget too low
+[ai-fallback] provider failed, trying next: AI provider returned an error (402)
+```
 
-El `Dropdown` de `@heroui/react@3.0.0-beta.7` **no despliega su menú al hacer click** en este proyecto (verificado: tras el click no aparece `menu`/`listbox`/`option` en el árbol de accesibilidad). Afecta a:
+`POLLINATIONS_API_KEY` está puesta y **sin saldo**. Pollinations solo cobra a las peticiones
+autenticadas: las anónimas siguen siendo gratis. O sea que la clave, tal como está, **empeora**
+la cadena de proveedores respecto a no poner ninguna. Ningún test depende de la IA (toda
+herramienta funciona sin ella, principio 3 del `CLAUDE.md`), pero en producción conviene quitar
+esa variable o recargarla.
 
-- **`locale-toggle`** — RESUELTO: reescrito como dropdown propio (botón + estado + click-fuera/Escape, `role="menu"`/`menuitemradio`). Sin dependencia del Dropdown de HeroUI.
-- **`uuid-generator`, `code-review`, `git-commit-generator`** — sus dropdowns de export/acciones usan `Dropdown.Trigger > Button` (mismo patrón roto): **probablemente tampoco abren**. Deuda: migrarlos al mismo patrón propio o esperar a que HeroUI v3 estabilice el Dropdown.
+## Cómo ejecutarlo
+
+```bash
+npm run build
+npm start                    # :3000, en otra terminal
+npx playwright test          # reuseExistingServer fuera de CI
+```
+
+El `webServer` de `playwright.config.ts` hace `npm run build && npm run start` con 180 s de
+timeout, que con el build en frío no llega y aborta con
+`Timed out waiting 180000ms from config.webServer`. Con el servidor ya levantado lo reutiliza y
+arranca al instante.
