@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-require-imports, security/detect-non-literal-fs-filename */
+/* eslint-disable @typescript-eslint/no-require-imports */
+// `security/detect-non-literal-fs-filename` ya está desactivada para scripts/ en
+// eslint.config.mjs, así que silenciarla aquí sobra y ESLint lo señala.
 const fs = require("fs");
 const path = require("path");
 
