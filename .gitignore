@@ -83,3 +83,13 @@ docs/slides.md
 !/public/icons/*.png
 !/app/apple-icon.png
 !/app/opengraph-image.png
+
+# Demo media. The GENERATORS (docs/demo/*.mjs) are tracked — they are the tool.
+# The output is not: it is tens of MB and it is regenerated in one command.
+# The published copy lives in C:\PROYECTOS\CAPTURAS\devflow-ai.
+/.work-demo/
+/docs/demo/.voice-cache/
+/docs/demo/shots/
+/docs/demo/*.mp4
+/docs/demo/*.webm
+/docs/demo/*.srt

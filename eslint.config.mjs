@@ -28,6 +28,20 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+  {
+    // Node-side tooling: the demo recorder, the screenshot script and the repo
+    // checkers. They are run by hand on this machine, over paths that come from
+    // this repo and from env vars the developer sets — never from a request or
+    // from user input. `detect-non-literal-fs-filename` and
+    // `detect-non-literal-regexp` model a threat that does not exist here, and
+    // firing on every `readFileSync(file)` in a loop drowns the real signal.
+    // They stay ON everywhere else, which is where they matter.
+    files: ["docs/demo/**/*.mjs", "scripts/**/*.{js,mjs}"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-regexp": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
