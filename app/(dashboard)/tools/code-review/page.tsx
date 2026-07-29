@@ -2,10 +2,10 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { useShareState } from "@/hooks/use-share-state";
+import { ActionMenu } from "@/components/shared/action-menu";
 import { ShareButton } from "@/components/shared/share-button";
 import {
   Chip,
-  Dropdown,
   TextArea,
   Select,
   Label,
@@ -197,26 +197,24 @@ export default function CodeReviewPage() {
         );
       case "actions":
         return (
-          <Dropdown>
-            <Dropdown.Trigger>
-              <Button isIconOnly size="sm" variant="ghost" aria-label={t("codeReview.issueActions")} className="min-h-11 min-w-11">
-                <MoreVertical className="size-4 text-muted-foreground" />
-              </Button>
-            </Dropdown.Trigger>
-            <Dropdown.Popover>
-              <Dropdown.Menu aria-label={t("codeReview.ariaIssueActions")}>
-                <Dropdown.Item
-                  id="wizard"
-                  onAction={() => navigateTo("variable-name-wizard" as ToolRoute, issue.message)}
-                >
-                  <div className="flex items-center gap-2">
-                    <Wand2 className="size-3" />
+          <ActionMenu
+            label={t("codeReview.issueActions")}
+            onSelect={() => navigateTo("variable-name-wizard" as ToolRoute, issue.message)}
+            triggerClassName="min-h-11 min-w-11 text-muted-foreground hover:bg-muted hover:text-foreground"
+            trigger={<MoreVertical className="size-4" aria-hidden="true" />}
+            items={[
+              {
+                id: "wizard",
+                textValue: t("codeReview.improveNames"),
+                label: (
+                  <span className="flex items-center gap-2">
+                    <Wand2 className="size-3" aria-hidden="true" />
                     <span>{t("codeReview.improveNames")}</span>
-                  </div>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown.Popover>
-          </Dropdown>
+                  </span>
+                ),
+              },
+            ]}
+          />
         );
       default:
         return String(issue[key as keyof typeof issue] ?? "");

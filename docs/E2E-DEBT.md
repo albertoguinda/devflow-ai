@@ -1,6 +1,6 @@
 # E2E test debt
 
-**Estado a 2026-07-29: no hay deuda. 85/85 tests en verde** (`npx playwright test`, Chromium,
+**Estado a 2026-07-29: no hay deuda. 89/89 tests en verde** (`npx playwright test`, Chromium,
 contra el build de producción).
 
 Este fichero se escribió el 2026-07-21 documentando "~15 tests funcionales en rojo" para
@@ -44,18 +44,25 @@ de planificar una sesión sobre este fichero, ejecuta la suite y mira lo que hay
   desactivadas por el mismo motivo. La auditoría está etiquetada como **WCAG 2.2 AA**.
 - **Selector de idioma**: reescrito sin el `Dropdown` de HeroUI (ver abajo).
 
-## Sigue vivo: el `Dropdown` de HeroUI v3 beta no abre
+## RESUELTO: el `Dropdown` de HeroUI v3 beta no abría
 
 El `Dropdown` de `@heroui/react@3.0.0-beta.7` **no despliega su menú al hacer click** en este
-proyecto (verificado: tras el click no aparece `menu`/`listbox`/`option` en el árbol de
-accesibilidad).
+proyecto. Confirmado el 2026-07-29 contra el build de producción: tras pulsar el disparador no
+aparece ningún `menu`, `listbox`, `menuitem` ni `option` en el árbol de accesibilidad. Da igual
+que se use el envoltorio `Dropdown.Trigger` documentado o no.
 
-- **`locale-toggle`** — RESUELTO: reescrito como dropdown propio (botón + estado +
-  click-fuera/Escape, con `role="menu"` y `menuitemradio`). Sin dependencia del de HeroUI.
-- **`uuid-generator`, `code-review`, `git-commit-generator`** — sus menús de exportación y
-  acciones siguen usando `Dropdown.Trigger > Button`, el mismo patrón roto: **probablemente
-  tampoco abren**. Ningún test los cubre, que es justo por lo que no salta. Migrarlos al patrón
-  propio del `locale-toggle` o esperar a que HeroUI v3 estabilice el componente.
+Los tres menús de la aplicación estaban **muertos en producción**, y ningún test los cubría —
+que es exactamente por lo que se publicaron así. El de `git-commit-generator` tenía además el
+`Button` colgando directo de `<Dropdown>`, sin `Dropdown.Trigger`, o sea que ni siquiera usaba
+bien la API.
+
+Sustituidos por `components/shared/action-menu.tsx`, que es el patrón que ya se había escrito a
+mano para `locale-toggle` por este mismo motivo, ahora extraído una vez en lugar de copiado por
+cuarta vez. Teclado completo: Enter/Espacio/Flecha abajo abren, las flechas mueven, Inicio/Fin
+saltan, Enter elige, Escape cierra y devuelve el foco al disparador, Tab cierra.
+
+`tests/e2e/action-menu.spec.ts` cubre los tres menús y la navegación por teclado. Si HeroUI
+arregla su `Dropdown` algún día, esos tests son la red para volver a él.
 
 ## Aviso operativo, no de tests
 

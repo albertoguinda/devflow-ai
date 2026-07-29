@@ -14,3 +14,4 @@ export { ToolHeader } from "./tool-header";
 export { HelpLink } from "./help-link";
 export { GitHubStars } from "./github-stars";
 export { ToolSeoContent } from "./tool-seo-content";
+export { ActionMenu, type ActionMenuItem } from "./action-menu";

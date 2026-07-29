@@ -4,7 +4,6 @@ import { useState, useMemo, useCallback } from "react";
 import {
   Tabs,
   Input,
-  Dropdown,
   TextArea,
   Select,
   Label,
@@ -26,6 +25,7 @@ import {
 import { useUuidGenerator } from "@/hooks/use-uuid-generator";
 import { useTranslation } from "@/hooks/use-translation";
 import { useToast } from "@/hooks/use-toast";
+import { ActionMenu } from "@/components/shared/action-menu";
 import { CopyButton } from "@/components/shared/copy-button";
 import { ShareButton } from "@/components/shared/share-button";
 import { ToolHeader } from "@/components/shared/tool-header";
@@ -377,24 +377,24 @@ export default function UuidGeneratorPage() {
                   {t("uuid.sequenceRegistry", { count: result.uuids.length })}
                 </h3>
                 <div className="flex gap-2 w-full sm:w-auto">
-                  <Dropdown>
-                    <Dropdown.Trigger>
-                      <Button size="sm" variant="ghost" className="font-black flex-1 sm:flex-none border border-divider">
-                        <div className="flex items-center gap-2">
-                          {exportFormat.toUpperCase()}
-                          <ChevronDown className="size-3" />
-                        </div>
-                      </Button>
-                    </Dropdown.Trigger>
-                    <Dropdown.Popover>
-                      <Dropdown.Menu onAction={(k) => setExportFormat(k as "text" | "json" | "csv" | "sql")}>
-                        <Dropdown.Item id="text">{t("uuid.plainText")}</Dropdown.Item>
-                        <Dropdown.Item id="json">{t("uuid.jsonArray")}</Dropdown.Item>
-                        <Dropdown.Item id="csv">{t("uuid.csvTable")}</Dropdown.Item>
-                        <Dropdown.Item id="sql">{t("uuid.sqlInsert")}</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown.Popover>
-                  </Dropdown>
+                  <ActionMenu
+                    label={t("uuid.exportFormat")}
+                    selectedId={exportFormat}
+                    onSelect={(id) => setExportFormat(id as "text" | "json" | "csv" | "sql")}
+                    triggerClassName="h-8 flex-1 sm:flex-none rounded-md border border-divider px-3 text-sm font-black text-foreground hover:bg-muted"
+                    trigger={
+                      <>
+                        {exportFormat.toUpperCase()}
+                        <ChevronDown className="size-3" aria-hidden="true" />
+                      </>
+                    }
+                    items={[
+                      { id: "text", label: t("uuid.plainText") },
+                      { id: "json", label: t("uuid.jsonArray") },
+                      { id: "csv", label: t("uuid.csvTable") },
+                      { id: "sql", label: t("uuid.sqlInsert") },
+                    ]}
+                  />
                   <Button size="sm" variant="primary" onPress={handleExport} className="font-black">
                     <Download className="size-3 mr-1" /> {t("uuid.saveBtn")}
                   </Button>
