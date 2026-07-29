@@ -4,8 +4,8 @@
 
 | Formato | Archivo | Uso |
 |---------|---------|-----|
-| **PDF** (recomendado) | [docs/TFM-Slides.pdf](./TFM-Slides.pdf) | Abrir directamente, imprimir, enviar por email |
-| **PPTX** | [docs/TFM-Slides.pptx](./TFM-Slides.pptx) | Editar en PowerPoint/Google Slides |
+| **PDF** (recomendado) | [claro](./TFM-Slides-Light.pdf) · [oscuro](./TFM-Slides-Dark.pdf) | Abrir directamente, imprimir, enviar por email |
+| **PPTX** | [claro](./TFM-Slides-Light.pptx) · [oscuro](./TFM-Slides-Dark.pptx) | Editar en PowerPoint/Google Slides |
 | **Slidev** (interactivo) | [slides/presentation.md](../slides/presentation.md) | Presentar con animaciones y transiciones |
 
 > Si el PDF o PPTX no se visualizan correctamente, la fuente de verdad es `slides/presentation.md`. Ejecuta el comando de abajo para regenerarlos.
@@ -58,9 +58,9 @@ const { chromium } = require('playwright');
   const page = await browser.newPage();
   await page.goto('http://localhost:3030/export', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(3000);
-  await page.pdf({ path: 'docs/TFM-Slides.pdf', format: 'A4', landscape: true, printBackground: true });
+  await page.pdf({ path: 'docs/TFM-Slides-Light.pdf', format: 'A4', landscape: true, printBackground: true });
   await browser.close();
-  console.log('PDF exportado en docs/TFM-Slides.pdf');
+  console.log('PDF exportado en docs/TFM-Slides-Light.pdf');
 })();
 "
 ```

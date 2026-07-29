@@ -20,11 +20,11 @@ DevFlow AI es una plataforma open-source que centraliza **20 herramientas** esen
 
 - 20 herramientas funcionales end-to-end
 - 100% ejecucion local + IA opcional con 4 proveedores (Gemini, Groq, OpenRouter, Pollinations)
-- **1780 tests** con coverage estrategico 100/80/0 per-file (53 archivos de test)
+- **2016 tests** con coverage estrategico 100/80/0 per-file (53 archivos de test)
 - 25 E2E specs con Playwright (20 tools + settings + navigation + accessibility WCAG AAA + command-palette + settings-export)
 - Lighthouse score **100/100/100/100** en Desktop
 - Homepage optimizada con Server Components (RSC) para rendimiento movil
-- Internacionalizacion completa (**8 idiomas**: EN, ES, FR, PT, DE, IT, ZH, JA — **~1590 claves** por idioma, deteccion automatica del navegador)
+- Internacionalizacion completa (**8 idiomas**: EN, ES, FR, PT, DE, IT, ZH, JA — **1585 claves** por idioma, deteccion automatica del navegador)
 - **40 rutas** generadas (pages + API routes)
 - **10 CI jobs**: quality, security, dependency-review, build, e2e, a11y, CodeQL SAST, Semgrep SAST, Lighthouse, release
 - Command Palette (`Cmd+K`) para acceso rapido a cualquier herramienta
@@ -54,7 +54,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 
 - Aplicar React 19 y Next.js 16 con App Router y Server Components
 - Implementar Clean Architecture en un proyecto real de 20 herramientas
-- Crear una suite de tests comprehensiva (1780 tests) con Vitest + Playwright E2E
+- Crear una suite de tests comprehensiva (2016 tests) con Vitest + Playwright E2E
 - Utilizar IA generativa (Claude Code) como herramienta de desarrollo
 - Demostrar dominio de TypeScript 5 en modo maximo estricto
 
@@ -64,7 +64,7 @@ Ademas, los desarrolladores frontend enfrentan tareas repetitivas diarias: forma
 - Lograr coverage estrategico 100/80/0 con enforcement per-file
 - Deploy en produccion con CI/CD completo (10 jobs: quality, security, dep-review, build, e2e, a11y, release, CodeQL, Semgrep, Lighthouse)
 - Lighthouse score 100 en todas las metricas (Desktop)
-- Internacionalizacion completa (8 idiomas: EN/ES/FR/PT/DE/IT/ZH/JA, ~1590 claves por idioma, deteccion automatica del navegador)
+- Internacionalizacion completa (8 idiomas: EN/ES/FR/PT/DE/IT/ZH/JA, 1585 claves por idioma, deteccion automatica del navegador)
 - Seguridad enterprise: CSP, HSTS, prototype pollution, SAST (CodeQL + Semgrep), harden-runner, eslint-plugin-security
 
 #### Objetivos de Producto
@@ -202,7 +202,7 @@ La calidad de un prompt impacta directamente en la respuesta del LLM. Tecnicas c
 
 **RF-18: Internacionalizacion**
 
-- ~1590 claves traducidas en 8 idiomas (EN, ES, FR, PT, DE, IT, ZH, JA)
+- 1585 claves traducidas en 8 idiomas (EN, ES, FR, PT, DE, IT, ZH, JA)
 - Deteccion automatica del idioma del navegador (`navigator.language`)
 - Cambio de idioma en tiempo real sin recarga via Dropdown con banderas y nombres nativos
 
@@ -428,7 +428,7 @@ page.tsx (Server Component - async)
 
 **Sistema custom ligero** (sin dependencia de i18next):
 
-- ~1590 claves de traduccion en 8 archivos: `locales/{en,es,fr,pt,de,it,zh,ja}.json`
+- 1585 claves de traduccion en 8 archivos: `locales/{en,es,fr,pt,de,it,zh,ja}.json`
 - Traducciones inline de aplicacion (cron days/months, regex tokens, HTTP descriptions, commit types, wizard labels) en 8 idiomas — sin fallback a ingles
 - Hook `useTranslation()` con interpolacion `{key}`
 - Funcion server-side `t()` para Server Components
@@ -527,6 +527,10 @@ Duration    ~97s
 | **API tests**               | 45    | 5        |
 | **Integration tests**       | 28    | 2        |
 | **Total**                   | **1780** | **53** |
+
+> Desglose por fichero congelado en la v4.21.0. El total vigente es **2016** tests en 53
+> ficheros (2026-07-29): +207 de la tanda de cobertura multilingue, +4 de la regresion de
+> gitmoji del generador de commits, +resto de la auditoria.
 | **E2E (Playwright)**        | 25 specs | 20 tools + navigation + settings + accessibility (axe-core WCAG AA) + command-palette + settings-export |
 
 ### 5.3 Tipos de Tests Implementados
@@ -659,17 +663,20 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 
 ### 8.1 Metricas del Proyecto
 
+> Cifras verificadas por ejecucion real el 2026-07-29 (type-check, lint, vitest, npm audit
+> y build de produccion), no estimadas.
+
 | Metrica                    | Valor              |
 | -------------------------- | ------------------ |
 | Herramientas               | 20                 |
-| Tests unitarios            | 1780               |
+| Tests unitarios            | 2016               |
 | Tests E2E (Playwright)     | 25 specs (85 tests)|
 | Archivos de test           | 53 unit + 25 E2E   |
 | Archivos fuente (.ts/.tsx) | 228                |
 | Componentes React          | 25+                |
 | Custom hooks               | 22+                |
 | Paginas (routes)           | 40                 |
-| Claves i18n                | ~1590 (x8 idiomas: EN/ES/FR/PT/DE/IT/ZH/JA) |
+| Claves i18n                | 1585 (x8 idiomas: EN/ES/FR/PT/DE/IT/ZH/JA) |
 | Jobs CI/CD                 | 10                 |
 | Commits                    | 200+               |
 | Proveedores IA             | 4 (Gemini, Groq, OpenRouter, Pollinations) |
@@ -700,7 +707,7 @@ GitHub Actions ejecuta **10 jobs** en cada push a `main`/`develop` y todas las P
 - Skeletons de carga ✓
 - TypeScript strict mode ✓
 - Dark/Light mode con deteccion automatica ✓
-- i18n completo (8 idiomas, ~1590 claves por idioma, deteccion automatica del navegador) ✓
+- i18n completo (8 idiomas, 1585 claves por idioma, deteccion automatica del navegador) ✓
 - Tests unitarios (1780 passing, 53 archivos) ✓
 - Tests E2E con Playwright (25 specs, 20 tools + a11y + command-palette + settings-export) ✓
 - CI/CD pipeline (10 jobs) ✓
@@ -903,8 +910,8 @@ _Largo plazo (6-12 meses):_
 
 | Formato | Archivo | Uso |
 |---------|---------|-----|
-| **PDF** | [TFM-Slides.pdf](./TFM-Slides.pdf) | Abrir directamente, imprimir, enviar |
-| **PPTX** | [TFM-Slides.pptx](./TFM-Slides.pptx) | Editar en PowerPoint/Google Slides |
+| **PDF** | [claro](./TFM-Slides-Light.pdf) · [oscuro](./TFM-Slides-Dark.pdf) | Abrir directamente, imprimir, enviar |
+| **PPTX** | [claro](./TFM-Slides-Light.pptx) · [oscuro](./TFM-Slides-Dark.pptx) | Editar en PowerPoint/Google Slides |
 | **Slidev** | [slides/presentation.md](../slides/presentation.md) | Presentar con animaciones: `npx @slidev/cli slides/presentation.md` |
 
 Ver [SLIDES-GUIDE.md](./SLIDES-GUIDE.md) para instrucciones de ejecucion, controles de teclado y regeneracion de exports.

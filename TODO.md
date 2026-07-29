@@ -1,8 +1,28 @@
-# TODO — DevFlow AI v4.20.0 Roadmap
+# TODO — DevFlow AI Roadmap
 
-> Last updated: 2026-03-09
-> Context: 20-tool expansion, share via URL, UX enhancements, visual polish.
-> Baseline: 1758 tests, 53 files, ~1590 i18n keys, 0 vulnerabilities, 0 TS errors, 0 ESLint warnings.
+> Last updated: 2026-07-29
+> Context: 20 tools shipped. This session was a full SEO/GEO/positioning audit plus its
+> cheap fixes; the expensive half is scoped in **[`docs/SEO-ROADMAP.md`](docs/SEO-ROADMAP.md)**,
+> which is the file to read before opening a new SEO session.
+> Baseline: 2016 tests, 53 files, 1585 i18n keys × 8 languages, 0 vulnerabilities,
+> 0 TS errors, 0 ESLint warnings, production build green.
+
+---
+
+## Next up
+
+1. **Off-site seeding** — the on-site GEO layer is done; what is missing is a corpus to be
+   cited from. AlternativeTo → Product Hunt → Show HN (one shot) → awesome-* PRs → dev.to.
+   See `docs/SEO-ROADMAP.md` §1.
+2. **Comparison pages** `/vs/it-tools`, `/vs/devtoys`, `/vs/cyberchef` + `/alternatives`.
+   Best-evidenced finding of the audit. §2.
+3. **Internal linking between tools** — the served HTML of a tool page contains **zero**
+   links to any other tool. `ToolSuggestions` renders `<Button onPress>`, not `<a href>`. §3.
+4. **Umami events** — pageviews only today, so there is no way to tell an acquisition
+   problem from an activation one. Five events, four files. §8.
+5. **Category hubs** (5 pages) and extended per-tool content. §4, §5.
+6. **`/es/` routes** — the biggest and most expensive lever. Routing is cheap; the 20
+   intros + ~80 steps + ~100 FAQ entries of hand-written Spanish are not. §7.
 
 ---
 
@@ -125,31 +145,37 @@
 
 ### Fase 1 — Cross-cutting tasks
 
-#### Registry & Navigation
-- [ ] Update `config/tools-data.ts` — add 5 new tools with metadata
-- [ ] Update `config/tool-icon-map.ts` — map 5 new icons
-- [ ] Update `config/commands.ts` — add 5 tools to command palette
-- [ ] Update `hooks/use-smart-navigation.ts` — add 5 new tool routes to `ToolRoute` union type
-- [ ] Update MagicInput detection for new tool types
+#### Registry & Navigation — COMPLETED
+- [x] `config/tools-data.ts` — 20 tools with metadata
+- [x] `config/tool-icon-map.ts` — all icons mapped
+- [x] `config/commands.ts` — all 20 tools in the command palette
+- [x] `hooks/use-smart-navigation.ts` — `ToolRoute` union covers the 20 routes
+- [x] MagicInput detection for the new tool types
+- [x] **Fixed 2026-07-29:** the `/tools` category filter was still listing 5 of the 7
+      categories, so `generation` (7 tools) and `formatting` (3) were unreachable. It is
+      now derived from `TOOLS_DATA` instead of hand-written.
 
-#### E2E Tests
-- [ ] Create `tests/e2e/hash-generator.spec.ts` — basic flow (input → hash → copy)
-- [ ] Create `tests/e2e/jwt-decoder.spec.ts` — paste JWT → see decoded parts
-- [ ] Create `tests/e2e/color-converter.spec.ts` — input hex → see RGB/HSL
-- [ ] Create `tests/e2e/diff-comparer.spec.ts` — input two texts → see diff
-- [ ] Create `tests/e2e/password-generator.spec.ts` — generate → copy → strength visible
+#### E2E Tests — COMPLETED
+- [x] `tests/e2e/hash-generator.spec.ts`
+- [x] `tests/e2e/jwt-decoder.spec.ts`
+- [x] `tests/e2e/color-converter.spec.ts`
+- [x] `tests/e2e/diff-comparer.spec.ts`
+- [x] `tests/e2e/password-generator.spec.ts`
+      (25 specs in total)
 
-#### Documentation
-- [ ] Update `README.md` — 15→20 tools, update stats (EN + ES sections)
-- [ ] Update `CHANGELOG.md` — v4.18.0 section
-- [ ] Update `docs/TFM.md` — tool count, test count, i18n keys
+#### Documentation — COMPLETED
+- [x] `README.md` — 20 tools, EN + ES sections
+- [x] `CHANGELOG.md`
+- [x] `docs/TFM.md` — tool count, test count, i18n keys
 
-#### Verification Gate
-- [ ] `npx tsc --noEmit` — 0 errors
-- [ ] `npx vitest run` — all tests pass (target: 1587+)
-- [ ] `npm run lint` — 0 new warnings
-- [ ] `npm run build` — production build succeeds
-- [ ] Visual QA: all 5 new tools in light/dark mode, 375px mobile
+#### Verification Gate — COMPLETED
+- [x] `npm run type-check` — 0 errors
+- [x] `npm run test:run` — 2016 tests in 53 files
+- [x] `npm run lint` — 0 problems
+- [x] `npm run check:i18n` — every key resolves, 8 locales in parity
+- [x] `npm run build` — production build green
+- [x] Visual QA of the 20 tools via `docs/demo/shots.mjs` (21 screenshots, aborts on any
+      half-loaded screen)
 
 ---
 
@@ -272,11 +298,16 @@
 
 ## KPIs
 
-| Metric | v4.17.0 | v4.18.0 (actual) | v5.0.0 vision |
-|--------|:-----------------:|:--------------:|:-------------:|
+| Metric | v4.17.0 | Today (2026-07-29) | v5.0.0 vision |
+|--------|:-------:|:------------------:|:-------------:|
 | Tools | 15 | **20** | 23+ |
-| Unit tests | 1,487 | **1,694** | 2,000+ |
-| i18n keys | 1,356 | **1,571** | 1,800+ |
+| Unit tests | 1,487 | **2,016** (53 files) | 2,500+ |
+| i18n keys | 1,356 | **1,585** × 8 languages | 1,800+ |
+| npm vulnerabilities | — | **0** | 0 |
+| Indexable URLs | — | **24** | 30+ (hubs, `/vs/*`, `/guides`) |
+| Indexable languages | 1 | **1** (UI in 8, content in EN) | 2 (EN + ES with real routes) |
+| Tool→tool internal links | 0 | **0** | 3-5 per tool |
+| Umami custom events | 0 | **0** | 5 |
 | Lighthouse PWA | ~70 | ~70 | 100 |
 | WCAG level | AAA | AAA | AAA |
 | Offline support | Partial | Partial | Full (SW) |

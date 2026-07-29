@@ -31,11 +31,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - Touch targets minimum 44px (WCAG 2.2 AA).
    - Decorative icons get `aria-hidden="true"`. Functional icons get `aria-label`.
    - Skip-to-content link on every layout. Error messages use `role="alert" aria-live="assertive"`.
-   - Test with axe-core: `npm run test:e2e` includes accessibility specs on all 19 pages.
+   - Test with axe-core: `npm run test:e2e` includes accessibility specs on every page.
 
 6. **HeroUI v3 Components** — Use HeroUI v3 beta compound components for ALL interactive elements (Button, Input, Modal, Tabs, etc.). No raw `<button>`, `<input>`, or `<select>` in production code. **Exception:** DataTable uses `@heroui/table` v2 + `@heroui/pagination` v2 (intentionally stays on v2). Before using any HeroUI component, check the docs in `.heroui-docs/react/`.
 
-7. **i18n Mandatory** — All user-facing text MUST use `useTranslation()` hook with keys from `locales/en.json` and `locales/es.json`. No hardcoded strings. Both locales must stay in parity.
+7. **i18n Mandatory** — All user-facing text MUST use `useTranslation()` hook with keys from `locales/*.json` (8 languages). No hardcoded strings, and all 8 locales must stay in parity.
+   - `t()` resolves `dict[key] ?? en[key] ?? key`. That last fallback means a **missing key does not fail — it prints the raw identifier on screen** (35 shipped that way once: `color.pass`, `password.result`, `diff.swap`…). Run `npm run check:i18n` after touching any `t()` call; it checks literal keys, the dynamic families listed inside it, and 8-locale parity.
+   - Adding a `t(\`prefix.${variable}\`)` means adding that family to `DINAMICAS` in `scripts/check-i18n-keys.mjs`, otherwise it is invisible to the checker.
 
 ## Documentation Maintenance
 
@@ -62,6 +64,7 @@ npm run test:coverage    # Coverage with per-file thresholds enforced
 npm run test:e2e         # Playwright E2E tests (builds first)
 npm run test:e2e:ui      # Playwright with interactive UI
 npm run audit:security   # npm audit --audit-level=high
+npm run check:i18n       # Every t("key") exists + the 8 locales are in parity
 npm run analyze          # Bundle analysis (ANALYZE=true next build)
 
 # Run a single test file:
@@ -76,7 +79,7 @@ npx playwright test tests/e2e/navigation.spec.ts
 
 ## Architecture
 
-15-tool developer toolkit with local-first browser tools and optional server-side AI. All tool state persists via localStorage with `devflow-*` prefix keys.
+20-tool developer toolkit with local-first browser tools and optional server-side AI. All tool state persists via localStorage with `devflow-*` prefix keys.
 
 ### 5-Layer Pattern (every tool follows this)
 
@@ -122,14 +125,14 @@ infrastructure/config/env.ts         → Zod-validated server env
 ### Route Groups
 
 - `app/(marketing)/` — Landing page, about
-- `app/(dashboard)/` — Sidebar layout + 15 tool pages + docs, favorites, history, settings
-- `app/(dashboard)/tools/[toolId]/page.tsx` — Dynamic tool detail page (reads from `config/tools-data.ts`)
-- `app/(dashboard)/tools/<slug>/page.tsx` — Individual tool implementations
+- `app/(dashboard)/` — Sidebar layout + 20 tool pages + docs, favorites, history, settings
+- `app/(dashboard)/tools/<slug>/page.tsx` — Individual tool implementations. There is **no** `[toolId]` dynamic route: all 20 slugs are static pages, so the dynamic one only ever matched invalid slugs and answered them with HTTP 200 instead of a 404. It was removed.
+- There is no `/dashboard` page either — `next.config.ts` redirects it to `/tools` with a 308
 
 ### Key Shared Infrastructure
 
 - **Provider chain** (`app/providers.tsx`): ThemeProvider → HeroUIProvider → SWRConfig → FavoritesProvider → ToastProvider (+ HtmlLangSync, CommandPalette, InstallPrompt)
-- **Tool registry** (`config/tools-data.ts`): All 15 tools defined with metadata, icons, categories
+- **Tool registry** (`config/tools-data.ts`): All 20 tools defined with metadata, icons, categories
 - **AI model pricing** (`config/ai-models.ts`): Static pricing for 8 models across 5 providers; live prices fetched via `infrastructure/services/pricing-service.ts` from LiteLLM GitHub JSON
 - **Icon map** (`config/tool-icon-map.ts`): Maps tool icon strings to Lucide components
 - **i18n** (`hooks/use-translation.ts`): Flat JSON dictionaries in `locales/en.json` and `locales/es.json`. Uses zustand store (`lib/stores/locale-store.ts`) for locale. Keys are flat strings like `"tools.free"`.
@@ -165,12 +168,12 @@ infrastructure/config/env.ts         → Zod-validated server env
 Test directory structure:
 
 ```
-tests/unit/application/     → 19 test files (one per lib/application module + shared/naming-utils, prototype-pollution)
+tests/unit/application/     → 27 test files (one per lib/application module + shared/naming-utils, prototype-pollution)
 tests/unit/infrastructure/  → 8 test files (AI providers, rate limiter, pricing, env)
 tests/unit/api/             → 5 test files (route handler logic)
 tests/component/            → 11 files (copy-button, status-badge, toast, tool-header, command-palette, theme-toggle, locale-toggle, install-prompt, tool-suggestions, error-boundary, api-key-guide)
 tests/integration/          → Cross-tool pipeline integration tests
-tests/e2e/                  → 20 Playwright specs: 15 tools + navigation + settings + accessibility + command-palette + settings-export
+tests/e2e/                  → 25 Playwright specs: 20 tools + navigation + settings + accessibility + command-palette + settings-export
 ```
 
 Playwright config: Chromium only, `tests/e2e/` dir, auto builds + starts server, 180s timeout, 2 retries on CI.
@@ -201,6 +204,24 @@ Path aliases: `@/*` maps to project root (e.g., `@/lib/application/json-formatte
 - `images.formats: ["image/avif", "image/webp"]`
 - Sentry wrapping with `withSentryConfig` (silent, deletes sourcemaps after upload)
 
+## Demo media (`docs/demo/`)
+
+Screenshots and the demo video are generated by script, never by hand, so they can be re-shot after any UI change:
+
+```bash
+npm run build && npm start                              # production build on :3000
+node docs/demo/shots.mjs                                # 21 screenshots, 1600×1200 (4:3)
+SHOTS_ONLY=json,jwt node docs/demo/shots.mjs            # re-shoot just those
+MINIMAX_API_KEY=… node docs/demo/record-demo.mjs es     # narrated video + burned-in subtitles
+MINIMAX_API_KEY=… node docs/demo/record-demo.mjs en
+```
+
+- `guion.mjs` holds the narration, one sentence per beat. The recorder aborts if a section's sentence count does not match its beat count, rather than narrating one line over another scene.
+- The UI language is not set by hand: Playwright opens the context with `locale: 'es-ES'` / `'en-US'` and `hydrateLocale()` picks it up from `navigator.language`, so the buttons on camera match the voice.
+- Every scene has a `ready`/`listo` guard that **aborts** if the expected result never appears. A screenshot of a skeleton or a voice narrating an empty panel is worse than no media at all.
+- Button lookups are not anchored: the accessible name carries the keyboard hint (`"Format ⌘↵"`), so `/^(format)$/` matches nothing.
+- Published media (3 best shots + both videos + `.srt`) lives outside the repo, in `C:\PROYECTOS\CAPTURAS\devflow-ai`.
+
 ## Sentry (Optional)
 
 Only active when `NEXT_PUBLIC_SENTRY_DSN` env var is set. Config files: `sentry.client.config.ts`, `sentry.server.config.ts`, `sentry.edge.config.ts`. Server/edge init via `instrumentation.ts` at project root.
@@ -216,11 +237,12 @@ Only active when `NEXT_PUBLIC_SENTRY_DSN` env var is set. Config files: `sentry.
 - **a11y** — axe-core WCAG AA accessibility audit on all pages
 - **e2e** — Playwright tests (after build succeeds, Chromium)
 
-3 additional workflow files:
+4 additional workflow files:
 
 - `.github/workflows/codeql.yml` — CodeQL SAST (JS/TS, `security-extended`, weekly + push/PR)
 - `.github/workflows/semgrep.yml` — Semgrep SAST (OWASP Top 10, React, Next.js rulesets, uploads SARIF)
 - `.github/workflows/lighthouse.yml` — Lighthouse CI on PRs (audits `/`, `/tools`, `/tools/json-formatter`)
+- `.github/workflows/release.yml` — release automation
 
 All actions SHA-pinned, StepSecurity `harden-runner` on all jobs. `eslint-plugin-security` configured in flat config. Renovate configured for automated dependency updates (`renovate.json`).
 

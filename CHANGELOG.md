@@ -7,9 +7,122 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Auditoría completa de SEO, GEO y posicionamiento (2026-07-29) más los arreglos que salieron
+de ella. El hilo común de casi todos: **fallos que no lanzan ninguna excepción**. Devuelven
+algo plausible, no rompen el build, y rompen el producto. Plan completo en
+[`docs/SEO-ROADMAP.md`](docs/SEO-ROADMAP.md).
+
 ### Security
+- **Fuga de contenido del usuario a la analítica.** Los enlaces de compartir llevan el
+  estado de la herramienta comprimido en el fragmento de la URL (`buildShareUrl` →
+  `url.hash`), y el script de Umami solo lo recorta con `data-exclude-hash="true"`, que no
+  estaba puesto. Resultado: el JSON, los JWT y el código que pegaba el usuario viajaban
+  dentro del campo URL de cada evento hacia `stats.cherrydevlabs.com`. Añadido el atributo
+  en `app/layout.tsx`.
+- **3 vulnerabilidades high → 0.** `next` 16.2.10 → 16.2.12 (nueve avisos, entre ellos
+  bypass de middleware en App Router, SSRF en Server Actions y en rewrites, y exposición no
+  autenticada de endpoints internos de Server Functions); `overrides` nuevos para
+  `sharp >= 0.35.0` (CVE-2026-33327/33328/35590/35591 heredados de libvips) y
+  `brace-expansion >= 5.0.8` (DoS por expansión sin límite).
 - **0 vulnerabilidades** (`npm audit`): añadido `overrides: { "postcss": ">=8.5.10" }` en `package.json` para forzar la copia transitiva de Next (era `postcss@8.4.31`, XSS moderate [GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93)) a `8.5.21`. `next build` (42 páginas) en verde. Evita el `npm audit fix --force`, que degradaría Next a la 9.x.
 - Mirrored a OneDev (`192.168.1.244:3000/DevFlowAI.git`).
+
+### Fixed
+- **10 de las 20 herramientas no se podían filtrar.** El array `CATEGORIES` de
+  `app/(dashboard)/tools/page.tsx` estaba escrito a mano y se había quedado con cinco de las
+  siete categorías reales: faltaban `generation` (7 herramientas) y `formatting` (3), pese a
+  que las claves `tools.generation` y `tools.formatting` sí existían en los ocho idiomas.
+  Ahora la lista se deriva de `TOOLS_DATA`, así que una categoría nueva aparece sola.
+- **El botón principal del generador de commits estaba deshabilitado siempre.** Gitmoji
+  viene activado por defecto y `generateCommitMessage` antepone el emoji al encabezado
+  (`✨ feat(api): …`), pero `validateCommitMessage` comprobaba
+  `^(feat|fix|…)` contra ese encabezado con el emoji delante. La validación nunca pasaba y
+  "Forge message" no se podía pulsar con la configuración por defecto. El emoji se retira
+  antes de la comprobación de formato (es una convención de Gitmoji encima de Conventional
+  Commits, no un error). +4 tests de regresión.
+- **35 claves de traducción inexistentes, visibles en pantalla.** `t()` resuelve
+  `dict[key] ?? en[key] ?? key`: ese último `?? key` hace que una clave que falta no falle
+  ni deje hueco, sino que pinte el identificador en crudo. En producción se leía
+  `color.pass`, `password.result`, `diff.swap`, `cmdPalette.title`,
+  `color.palette.complementary`… Añadidas en los 8 idiomas.
+- **Slugs inexistentes devolvían HTTP 200.** `app/(dashboard)/tools/[toolId]/page.tsx` era
+  un componente de cliente que llamaba a `notFound()` desde el cuerpo: la respuesta salía
+  con estado 200, dos `<meta name="robots">` contradictorios (`index, follow` + `noindex`) y
+  canónica a `/tools`. Las 20 herramientas tienen ruta estática, así que la dinámica solo se
+  ejecutaba para slugs inválidos. Ruta eliminada.
+- **`/dashboard` era un duplicado indexable de `/tools`.** Un `redirect("/tools")` dentro de
+  una página prerenderizada no produce un 308: produce un 200 con `meta refresh`, 55 KB de
+  HTML, `index, follow` y canónica propia. Sustituido por un redirect real en
+  `next.config.ts`.
+- **Enlaces rotos a las diapositivas** en `README.md`, `docs/TFM.md` y `docs/SLIDES-GUIDE.md`:
+  apuntaban a `TFM-Slides.pdf`/`.pptx`, que no existen. Los ficheros reales son las variantes
+  `-Light` y `-Dark`.
+
+### SEO & GEO
+- **`hreflang` inválido eliminado** de `app/sitemap.ts`. Cada URL declaraba nueve
+  alternativas (`x-default` + 8 idiomas) **apuntando todas a la misma URL**. Un clúster
+  hreflang exige URLs distintas; Google descarta el grupo entero. Revierte de forma
+  deliberada los "Language alternates" y "Sitemap language alternates" de la 4.21.0: la i18n
+  es de cliente, así que esas ocho versiones no existen como páginas indexables. Volverán
+  con rutas `/es/` reales.
+- **Los 20 `<title>` no llegaban a la plantilla de marca.** En vivo se servía
+  `<title>JSON Formatter</title>`: 9-22 caracteres, sin marca. El `title: "Developer Tools"`
+  de `app/(dashboard)/tools/layout.tsx` es una cadena plana, y eso sustituye el objeto
+  `title` completo —plantilla `%s | DevFlowAI` incluida— para todo su subárbol. Ahora ambos
+  usan `title: { absolute: … }`.
+- **Títulos con la keyword delante.** Cinco herramientas tenían nombre inventado que no
+  cruza con ninguna búsqueda ("DTO-Matic", "Regex Humanizer", "Token Visualizer", "Variable
+  Name Wizard", "Context Manager"). `DTO-Matic` pasa a
+  `JSON to TypeScript, Zod & Mappers | DevFlowAI`.
+- **Meta descriptions de 236-508 caracteres → 150-160 con llamada a la acción.** Se usaba
+  `tool.longDescription`, que Google corta sobre los 155-160: las 20 salían truncadas a
+  media frase.
+- **`ItemList` de las 20 herramientas movido al hub.** Estaba en el layout padre, así que
+  cada página de herramienta anunciaba además el catálogo entero como entidad propia.
+- **`/about` deja de ser huérfana**: estaba en el sitemap con cero enlaces internos desde
+  cualquier parte de la aplicación. Añadida al navbar, con la clave `nav.about` en los 8
+  idiomas.
+- **`robots.ts`**: `Disallow: /api/` **en todos los grupos**, no solo en `*`. Los grupos de
+  robots.txt no se heredan: un rastreador obedece el grupo más específico que lo nombra e
+  ignora el resto, así que un grupo `Googlebot` con solo `Allow: /` le habría dejado
+  rastrear `/api/health` y `/api/ai/status`, que responden 200. Las reglas se generan ahora
+  desde dos listas para que no vuelva a divergir. Añadidos cinco agentes de recuperación
+  de 2025-2026 (`Claude-User`, `Claude-SearchBot`, `Perplexity-User`, `Applebot-Extended`,
+  `MistralAI-User`).
+- **`llms.txt` al día**: estaba fechado en marzo. Bloque de desambiguación (la marca
+  "DevFlow" colisiona con al menos seis productos), posicionamiento honesto frente a
+  it-tools, DevToys, CyberChef, jwt.io y jsonformatter.org, y diez pares
+  pregunta-respuesta cortos y citables.
+- **Doble marca** en los títulos de `/about` y `/docs` ("About | DevFlow AI | DevFlowAI").
+
+### Changed
+- **Texto de privacidad corregido.** El FAQ del sitio afirmaba "No tracking, no analytics
+  cookies" —dentro del JSON-LD `FAQPage`, que es lo que lee Google— con Umami cargado. Ahora
+  dice lo que hay: analítica sin cookies ni datos personales, y nunca el contenido que se
+  pega en una herramienta. Mismo cambio en `public/llms-full.txt`.
+
+### Added
+- **`npm run check:i18n`** (`scripts/check-i18n-keys.mjs`): falla si un `t("clave")` no
+  existe en `en.json` o si los 8 idiomas se desincronizan. Cubre también las familias
+  dinámicas (`t(\`color.palette.${x}\`)`), que son las que se colaron esta vez.
+- **`docs/demo/`** — generación de media por script, repetible tras cualquier cambio de UI:
+  `shots.mjs` (21 capturas 1600×1200) y `record-demo.mjs` + `guion.mjs` (vídeo narrado con
+  MiniMax TTS y subtítulos incrustados, ES e EN). Cada escena aborta si el resultado que
+  promete la narración no aparece en pantalla.
+- **`docs/SEO-ROADMAP.md`** — auditoría completa y plan pendiente: siembra off-site,
+  comparativas `/vs/*`, enlazado interno entre herramientas, cinco hubs de categoría,
+  contenido ampliado por herramienta, `/guides`, rutas `/es/` e instrumentación de eventos.
+
+### Removed
+- **28-29 claves duplicadas por idioma** en `locales/*.json`. Eran líneas muertas: al
+  parsear el JSON solo sobrevivía la última. Verificado que no cambia ningún valor ni se
+  pierde ninguna clave.
+- **Dos de las tres copias de `safeJsonLd`.** Estaba duplicada literalmente en
+  `app/layout.tsx`, `app/(marketing)/layout.tsx` y `lib/metadata.tsx`: tres copias de una
+  función de escapado son tres oportunidades de que una se quede atrás y deje de escapar,
+  y va dentro de un `dangerouslySetInnerHTML`. Ahora vive en `lib/json-ld.ts`, en su propio
+  módulo y no dentro de `lib/metadata.tsx`, para que un componente de cliente pueda
+  importarla sin arrastrar al navegador las tablas de títulos y descripciones por herramienta.
 
 ## [4.21.0] - 2026-03-10
 
