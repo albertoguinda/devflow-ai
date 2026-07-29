@@ -404,10 +404,18 @@ export function validateCommitMessage(message: string, config?: CommitConfig, lo
   const lines = message.split("\n");
   const header = lines[0] ?? "";
 
+  // Gitmoji is ON by default, and `generateCommitMessage` prefixes the header
+  // with "✨ ". Validating the raw header therefore failed the format check on
+  // every default-config message, which left the "Forge message" button disabled
+  // permanently — the tool's primary action never fired out of the box.
+  // The emoji is a Gitmoji convention layered on top of Conventional Commits, so
+  // it is stripped before the format check rather than rejected.
+  const headerSinEmoji = header.replace(/^\p{Extended_Pictographic}[️‍\p{Extended_Pictographic}]*\s+/u, "");
+
   // Check header format: type(scope)?: description
   // eslint-disable-next-line security/detect-unsafe-regex -- static conventional commit format
   const headerRegex = /^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(\(.+\))?!?:\s.+$/;
-  if (!headerRegex.test(header)) {
+  if (!headerRegex.test(headerSinEmoji)) {
     errors.push(v.invalidHeader);
   }
 

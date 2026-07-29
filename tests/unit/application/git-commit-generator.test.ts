@@ -202,6 +202,20 @@ describe("Git Commit Message Generator", () => {
       expect(result.isValid).toBe(true);
     });
 
+    it("should validate a gitmoji-prefixed header", () => {
+      // Regression: gitmoji is on by default, so generateCommitMessage emits
+      // "✨ feat(api): ...". Validating the raw header failed the format check on
+      // every default message and left the primary button disabled for good.
+      expect(validateCommitMessage("✨ feat(api): add rate limiting").isValid).toBe(true);
+      expect(validateCommitMessage("🐛 fix: handle null token").isValid).toBe(true);
+      // Variation-selector emoji (♻️) must not leave a stray codepoint behind.
+      expect(validateCommitMessage("♻️ refactor(auth): extract token parser").isValid).toBe(true);
+    });
+
+    it("should still invalidate a gitmoji header with an unknown type", () => {
+      expect(validateCommitMessage("✨ feature: add login").isValid).toBe(false);
+    });
+
     it("should invalidate empty message", () => {
       const result = validateCommitMessage("");
       expect(result.isValid).toBe(false);
