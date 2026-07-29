@@ -1,14 +1,7 @@
 import { Navbar } from "@/components/layout/navbar";
+import { safeJsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://devflowai.dev";
-
-/** Serialize JSON-LD safely — escapes injection vectors */
-function safeJsonLd(data: unknown): string {
-  return JSON.stringify(data)
-    .replace(/</g, "\\u003c")
-    .replace(/>/g, "\\u003e")
-    .replace(/&/g, "\\u0026");
-}
 
 const howToJsonLd = {
   "@context": "https://schema.org",
@@ -84,7 +77,7 @@ const faqJsonLd = {
       name: "Is my data safe with DevFlowAI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. DevFlowAI is local-first — all processing happens in your browser. Data is stored in localStorage and never sent to any server unless you explicitly use an AI feature. No tracking, no analytics cookies.",
+        text: "Yes. DevFlowAI is local-first — all processing happens in your browser. Data is stored in localStorage and never sent to any server unless you explicitly use an AI feature. Site analytics are cookieless and anonymous (self-hosted Umami): no cookies, no personal data, and never the content you paste.",
       },
     },
   ],

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./providers";
 import { ErrorBoundary } from "@/components/shared";
+import { safeJsonLd } from "@/lib/json-ld";
 import "./globals.css";
 import Script from "next/script";
 
@@ -145,14 +146,6 @@ export const viewport: Viewport = {
   ],
 };
 
-/** Serialize JSON-LD safely — escapes </script> injection vectors */
-function safeJsonLd(data: unknown): string {
-  return JSON.stringify(data)
-    .replace(/</g, "\\u003c")
-    .replace(/>/g, "\\u003e")
-    .replace(/&/g, "\\u0026");
-}
-
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -290,10 +283,16 @@ export default function RootLayout({
         <Providers>
           <ErrorBoundary>{children}</ErrorBoundary>
         </Providers>
+        {/*
+          data-exclude-hash is NOT optional here: share links carry the whole tool
+          state (JSON, JWTs, source code) inside the URL fragment, and without this
+          flag Umami ships that fragment as part of the page URL.
+        */}
         <Script
           defer
           src="https://stats.cherrydevlabs.com/script.js"
           data-website-id="06a8edb1-02c0-4378-abd7-ff03136c5df5"
+          data-exclude-hash="true"
         />
       </body>
     </html>

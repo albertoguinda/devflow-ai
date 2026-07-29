@@ -343,7 +343,7 @@ tests/unit/application/<tool>.test.ts -> Unit tests
 ### Privacy
 - Local-first: all processing happens in the browser
 - Data stored in localStorage, never sent to servers (unless explicit AI feature use)
-- No tracking, no analytics cookies, no telemetry
+- Cookieless, anonymous site analytics (self-hosted Umami): no cookies, no personal data, and the content you paste is never sent
 - Open source: full code audit available on GitHub
 
 ## API Endpoints (for developers integrating)
