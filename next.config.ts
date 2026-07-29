@@ -73,6 +73,12 @@ const nextConfig: NextConfig = {
       "js-tiktoken",
     ],
   } as NextConfig["experimental"] & { viewTransition: boolean },
+  async redirects() {
+    // /dashboard used to be a page calling redirect("/tools"). Pre-rendered,
+    // that becomes a 200 with a meta-refresh: an indexable 55 KB duplicate of
+    // /tools. A real 308 costs nothing and leaves one canonical page.
+    return [{ source: "/dashboard", destination: "/tools", permanent: true }];
+  },
   async headers() {
     // CSP blocks Turbopack dev scripts — only apply in production
     const headers = process.env.NODE_ENV === "production"

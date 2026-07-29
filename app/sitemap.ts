@@ -3,19 +3,19 @@ import { TOOLS_DATA } from "@/config/tools-data";
 
 const SITE_URL = "https://devflowai.dev";
 
-/** All supported languages — client-side i18n serves all from same URL */
-const LANGUAGES = ["en", "es", "fr", "pt", "de", "it", "zh", "ja"] as const;
-
-/** Build language alternates for a given path (same URL = client-side multilingual) */
-function langAlternates(path: string): Record<string, string> {
-  const url = path ? `${SITE_URL}${path}` : SITE_URL;
-  const alts: Record<string, string> = { "x-default": url };
-  for (const lang of LANGUAGES) {
-    alts[lang] = url;
-  }
-  return alts;
-}
-
+/*
+ * No `alternates.languages` here on purpose.
+ *
+ * The UI is translated into 8 languages, but the translation happens in the
+ * client (zustand + locales/*.json): every language is served from the SAME
+ * URL and the HTML that crawlers get is always English. This file used to
+ * declare 8 hreflang entries all pointing at that single URL, which is an
+ * invalid hreflang cluster — Google drops it, and it advertised 7 language
+ * versions that do not exist as indexable pages.
+ *
+ * Re-add hreflang only alongside real per-locale routes (`/es/tools/<slug>`)
+ * with server-rendered translated content.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
@@ -25,28 +25,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1.0,
-      alternates: { languages: langAlternates("") },
     },
     {
       url: `${SITE_URL}/tools`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
-      alternates: { languages: langAlternates("/tools") },
     },
     {
       url: `${SITE_URL}/about`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
-      alternates: { languages: langAlternates("/about") },
     },
     {
       url: `${SITE_URL}/docs`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
-      alternates: { languages: langAlternates("/docs") },
     },
   ];
 
@@ -55,7 +51,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
     changeFrequency: "monthly" as const,
     priority: 0.9,
-    alternates: { languages: langAlternates(`/tools/${tool.slug}`) },
   }));
 
   return [...staticPages, ...toolPages];

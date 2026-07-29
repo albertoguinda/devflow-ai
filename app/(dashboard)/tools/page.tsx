@@ -8,21 +8,44 @@ import { TOOLS_DATA } from "@/config/tools-data";
 import { useTranslation } from "@/hooks/use-translation";
 import { ToolHeader } from "@/components/shared/tool-header";
 import { Button } from "@/components/ui";
+import { safeJsonLd } from "@/lib/json-ld";
 import type { ToolCategory } from "@/types/tools";
+
+const SITE_URL = "https://devflowai.dev";
+
+const TOOLS_ITEM_LIST_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "DevFlowAI Developer Tools",
+  description: "Free, open-source browser-based developer tools",
+  numberOfItems: TOOLS_DATA.length,
+  itemListElement: TOOLS_DATA.map((tool, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: tool.name,
+    url: `${SITE_URL}/tools/${tool.slug}`,
+  })),
+};
 
 export default function ToolsPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<ToolCategory | "all">("all");
   const { t } = useTranslation();
 
-  const CATEGORIES: { label: string; value: ToolCategory | "all" }[] = [
-    { label: t("tools.all"), value: "all" },
-    { label: t("tools.analysis"), value: "analysis" },
-    { label: t("tools.review"), value: "review" },
-    { label: t("tools.calculation"), value: "calculation" },
-    { label: t("tools.visualization"), value: "visualization" },
-    { label: t("tools.management"), value: "management" },
-  ];
+  // Derived from the registry, not hand-listed: the hardcoded list had gone
+  // stale and omitted "generation" (7 tools) and "formatting" (3), so half the
+  // catalogue was unreachable through the filter. Deriving it means a new
+  // category shows up the moment a tool declares it.
+  const CATEGORIES: { label: string; value: ToolCategory | "all" }[] = useMemo(
+    () => [
+      { label: t("tools.all"), value: "all" as const },
+      ...[...new Set(TOOLS_DATA.map((tool) => tool.category))].map((value) => ({
+        label: t(`tools.${value}`),
+        value,
+      })),
+    ],
+    [t],
+  );
 
   const filteredTools = useMemo(() => {
     return TOOLS_DATA.filter((tool) => {
@@ -39,6 +62,12 @@ export default function ToolsPage() {
 
   return (
     <div className="space-y-8">
+      {/* Catalogue entity — belongs to the hub only, not to every tool page. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(TOOLS_ITEM_LIST_JSON_LD) }}
+      />
+
       {/* Header */}
       <div className="relative -mx-4 -mt-4 md:-mx-8 md:-mt-8 mb-4 overflow-hidden rounded-b-2xl bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-950/20 dark:via-purple-950/10 dark:to-pink-950/20 px-4 py-8 md:px-8">
         <div className="absolute -top-20 -right-20 size-60 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-3xl" aria-hidden="true" />

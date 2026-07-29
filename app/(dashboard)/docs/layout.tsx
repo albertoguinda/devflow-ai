@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Documentation | DevFlow AI",
+  // Bare: the root layout appends " | DevFlowAI".
+  title: "Documentation",
   description:
     "DevFlow AI documentation — setup guides, tool reference, and API documentation for all 20 developer utilities.",
   alternates: {

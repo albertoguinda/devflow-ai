@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 const SITE_URL = "https://devflowai.dev";
 
 export const metadata: Metadata = {
-  title: "About | DevFlow AI",
+  // Bare: the root layout appends " | DevFlowAI". Also "DevFlow AI" with a space
+  // is a different brand token from "DevFlowAI" — keep one spelling everywhere.
+  title: "About",
   description:
     "Learn about DevFlow AI — a free, open-source developer toolkit with 20 local-first tools and optional AI enhancements. No login, no API keys required.",
   alternates: {

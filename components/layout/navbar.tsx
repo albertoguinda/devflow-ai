@@ -4,7 +4,7 @@ import { useState } from "react";
 import NextLink from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Github, Wrench, BookOpen } from "lucide-react";
+import { Menu, X, Github, Wrench, BookOpen, Info } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -20,6 +20,8 @@ export function Navbar() {
   const navLinks: { href: string; label: string; icon: LucideIcon }[] = [
     { href: "/tools", label: t("nav.tools"), icon: Wrench },
     { href: "/docs", label: t("nav.docs"), icon: BookOpen },
+    // /about was in the sitemap with zero inbound links from anywhere in the app.
+    { href: "/about", label: t("nav.about"), icon: Info },
   ];
 
   return (
